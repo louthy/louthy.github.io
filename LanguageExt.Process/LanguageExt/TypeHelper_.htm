@@ -1,0 +1,78 @@
+<html ><head ><link rel="stylesheet" type="text/css" href="doc.css"></link></head><body ><div class="nav-bar"><a class="nav-bar-link" href="../index.htm">API Reference</a> \ <a class="nav-bar-link" href="../LanguageExt/index.htm">LanguageExt</a> \ <span class="nav-bar-link" href="TypeHelper_.htm">TypeHelper</span></div><div class="nav-panel"><h3 >METHODS</h3><a class="nav-link" href="#HasStateTypeOf">HasStateTypeOf(Type, Type[])</a><a class="nav-link" href="#HasStateTypeOf">HasStateTypeOf(Type, string[])</a><a class="nav-link" href="#IsMessageValidForProcess">IsMessageValidForProcess(Type, Type[])</a><a class="nav-link" href="#IsMessageValidForProcess">IsMessageValidForProcess(object, Type[])</a><a class="nav-link" href="#IsMessageValidForProcess">IsMessageValidForProcess(object, string[])</a></div><div class="content-panel"><h1 >TypeHelper Class</h1><p ></p><div class="left"><div class="section"><div class="section_title">DECLARATION</div><div class="code"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="ident">TypeHelper</span></div></div></div><div class="right"><div class="section"><div class="section_title">NAMESPACE</div>LanguageExt</div></div><h2 >Methods</h2><div class="member-title"><a name="HasStateTypeOf"></a>HasStateTypeOf(Type, Type[])<div class="source-link-cont"><a class="source-link" href="#" onclick="document.getElementById(&#39;code-HasStateTypeOf__Type__stateType__Type__stateTypeInterfaces_&#39;).style.display=&#39;&#39;;">SOURCE</a></div></div><div class="section"><div class="left"><div class="section_title">PARAMETERS</div><div class="arg"><div class="arg-header"><div class="arg-name">stateType</div><div class="arg-type"><span class="ident">Type</span></div></div></div><div class="arg"><div class="arg-header"><div class="arg-name">stateTypeInterfaces</div><div class="arg-type"><span class="ident">Type</span>[]</div></div></div></div><div class="right"><div class="section_title">DECLARATION</div><div class="code"><span class="keyword">public</span> <span class="keyword">static</span> <span class="ident">Either</span>&lt;<span class="keyword">string</span>, <span class="keyword">bool</span>&gt; <span class="ident">HasStateTypeOf</span>(<span class="ident">Type</span> stateType, <span class="ident">Type</span>[] stateTypeInterfaces)</div><div class="section_title">RETURNS</div><div class="code"><div class="member-title"><span class="ident">Either</span>&lt;<span class="keyword">string</span>, <span class="keyword">bool</span>&gt;</div><div class="normal"></div></div></div><div style="display:none" id="code-HasStateTypeOf__Type__stateType__Type__stateTypeInterfaces_"><div class="section_title">SOURCE</div><div class="code">
+            if (stateType == null) throw new ArgumentNullException(nameof(stateType));
+
+            var stateTypeInfo = stateType.GetTypeInfo();
+
+            var res = stateTypeInterfaces == null || stateTypeInterfaces.Length == 0
+                ? Left&lt;string, bool&gt;(&quot;No public interfaces&quot;)
+                : Right&lt;string, bool&gt;(stateTypeInterfaces.Filter(notnull).Map(t =&gt; t.GetTypeInfo()).Fold(false, (value, type) =&gt;
+                    value
+                        ? true
+                        : type.IsAssignableFrom(stateTypeInfo)));
+
+            if(res.IsRight &amp;&amp; res.Lift())
+            {
+                return res;
+            }
+            else
+            {
+                return Left&lt;string, bool&gt;(&quot;State-type (&quot; + stateType.FullName + &quot;) doesn&#39;t match inbox declared interfaces: &quot; + String.Join(&quot;, &quot;, stateTypeInterfaces.Map(x =&gt; x.FullName)));
+            }
+        </div></div></div><div class="member-title"><a name="HasStateTypeOf"></a>HasStateTypeOf(Type, string[])<div class="source-link-cont"><a class="source-link" href="#" onclick="document.getElementById(&#39;code-HasStateTypeOf__Type__stateType__string__stateTypeInterfaces_&#39;).style.display=&#39;&#39;;">SOURCE</a></div></div><div class="section"><div class="left"><div class="section_title">PARAMETERS</div><div class="arg"><div class="arg-header"><div class="arg-name">stateType</div><div class="arg-type"><span class="ident">Type</span></div></div></div><div class="arg"><div class="arg-header"><div class="arg-name">stateTypeInterfaces</div><div class="arg-type"><span class="keyword">string</span>[]</div></div></div></div><div class="right"><div class="section_title">DECLARATION</div><div class="code"><span class="keyword">public</span> <span class="keyword">static</span> <span class="ident">Either</span>&lt;<span class="keyword">string</span>, <span class="keyword">bool</span>&gt; <span class="ident">HasStateTypeOf</span>(<span class="ident">Type</span> stateType, <span class="keyword">string</span>[] stateTypeInterfaces)</div><div class="section_title">RETURNS</div><div class="code"><div class="member-title"><span class="ident">Either</span>&lt;<span class="keyword">string</span>, <span class="keyword">bool</span>&gt;</div><div class="normal"></div></div></div><div style="display:none" id="code-HasStateTypeOf__Type__stateType__string__stateTypeInterfaces_"><div class="section_title">SOURCE</div><div class="code">
+            stateTypeInterfaces == null
+                ? Left&lt;string, bool&gt;(&quot;State-type invalid (meta-data type is null)&quot;)
+                : HasStateTypeOf(stateType, stateTypeInterfaces.Map(x =&gt; x.GetType()).ToArray())</div></div></div><div class="member-title"><a name="IsMessageValidForProcess"></a>IsMessageValidForProcess(Type, Type[])<div class="source-link-cont"><a class="source-link" href="#" onclick="document.getElementById(&#39;code-IsMessageValidForProcess__Type__messageType__Type__inboxDeclaredType_&#39;).style.display=&#39;&#39;;">SOURCE</a></div></div><div class="section"><div class="left"><div class="section_title">PARAMETERS</div><div class="arg"><div class="arg-header"><div class="arg-name">messageType</div><div class="arg-type"><span class="ident">Type</span></div></div></div><div class="arg"><div class="arg-header"><div class="arg-name">inboxDeclaredType</div><div class="arg-type"><span class="ident">Type</span>[]</div></div></div></div><div class="right"><div class="section_title">DECLARATION</div><div class="code"><span class="keyword">public</span> <span class="keyword">static</span> <span class="ident">Either</span>&lt;<span class="keyword">string</span>, <span class="keyword">bool</span>&gt; <span class="ident">IsMessageValidForProcess</span>(<span class="ident">Type</span> messageType, <span class="ident">Type</span>[] inboxDeclaredType)</div><div class="section_title">RETURNS</div><div class="code"><div class="member-title"><span class="ident">Either</span>&lt;<span class="keyword">string</span>, <span class="keyword">bool</span>&gt;</div><div class="normal"></div></div></div><div style="display:none" id="code-IsMessageValidForProcess__Type__messageType__Type__inboxDeclaredType_"><div class="section_title">SOURCE</div><div class="code">
+            if (messageType == null)
+            {
+                return Left&lt;string, bool&gt;(&quot;Message invalid (null)&quot;);
+            }
+            var messageTypeInfo = messageType.GetTypeInfo();
+
+            if (typeof(TerminatedMessage).GetTypeInfo().IsAssignableFrom(messageTypeInfo) ||
+                typeof(UserControlMessage).GetTypeInfo().IsAssignableFrom(messageTypeInfo) ||
+                typeof(SystemMessage).GetTypeInfo().IsAssignableFrom(messageTypeInfo) ||
+                typeof(RelayMsg).GetTypeInfo().IsAssignableFrom(messageTypeInfo))
+            {
+                return Right&lt;string, bool&gt;(true);
+            }
+
+            return inboxDeclaredType == null || inboxDeclaredType.Length == 0
+                ? Left&lt;string, bool&gt;(&quot;No declared types&quot;)
+                : Right&lt;string, bool&gt;(inboxDeclaredType.Filter(notnull).Map(t =&gt; t.GetTypeInfo()).Fold(false, (value, type) =&gt;
+                    value
+                        ? true
+                        : type.IsAssignableFrom(messageTypeInfo)));
+        </div></div></div><div class="member-title"><a name="IsMessageValidForProcess"></a>IsMessageValidForProcess(object, Type[])<div class="source-link-cont"><a class="source-link" href="#" onclick="document.getElementById(&#39;code-IsMessageValidForProcess__object__message__Type__inboxDeclaredType_&#39;).style.display=&#39;&#39;;">SOURCE</a></div></div><div class="section"><div class="left"><div class="section_title">PARAMETERS</div><div class="arg"><div class="arg-header"><div class="arg-name">message</div><div class="arg-type"><span class="keyword">object</span></div></div></div><div class="arg"><div class="arg-header"><div class="arg-name">inboxDeclaredType</div><div class="arg-type"><span class="ident">Type</span>[]</div></div></div></div><div class="right"><div class="section_title">DECLARATION</div><div class="code"><span class="keyword">public</span> <span class="keyword">static</span> <span class="ident">Either</span>&lt;<span class="keyword">string</span>, <span class="keyword">object</span>&gt; <span class="ident">IsMessageValidForProcess</span>(<span class="keyword">object</span> message, <span class="ident">Type</span>[] inboxDeclaredType)</div><div class="section_title">RETURNS</div><div class="code"><div class="member-title"><span class="ident">Either</span>&lt;<span class="keyword">string</span>, <span class="keyword">object</span>&gt;</div><div class="normal"></div></div></div><div style="display:none" id="code-IsMessageValidForProcess__object__message__Type__inboxDeclaredType_"><div class="section_title">SOURCE</div><div class="code">
+            if (message == null)
+            {
+                return Left&lt;string, object&gt;(&quot;Message invalid (null)&quot;);
+            }
+            var result = IsMessageValidForProcess(message.GetType(), inboxDeclaredType);
+
+            if( result.IsRight &amp;&amp; result.Lift() )
+            {
+                return result.Map(_ =&gt; message);
+            }
+            else
+            {
+                if (message is string)
+                {
+                    foreach (var type in inboxDeclaredType)
+                    {
+                        var value = Deserialise.Object((string)message, type);
+                        if( value != null)
+                        {
+                            return Right&lt;string,object&gt;(value);
+                        }
+                    }
+                    return Left&lt;string, object&gt;(&quot;Message-type (&quot; + message.GetType().FullName + &quot;) is string, but couldn&#39;t convert it to any inbox supported type: &quot; + String.Join(&quot;, &quot;, inboxDeclaredType.Map(x =&gt; x.FullName)));
+                }
+                else
+                {
+                    return Left&lt;string, object&gt;(&quot;Message-type (&quot;+message.GetType().FullName+&quot;) doesn&#39;t match inbox declared type: &quot; + String.Join(&quot;, &quot;, inboxDeclaredType.Map(x =&gt; x.FullName)));
+                }
+            }
+        </div></div></div><div class="member-title"><a name="IsMessageValidForProcess"></a>IsMessageValidForProcess(object, string[])<div class="source-link-cont"><a class="source-link" href="#" onclick="document.getElementById(&#39;code-IsMessageValidForProcess__object__message__string__inboxDeclaredType_&#39;).style.display=&#39;&#39;;">SOURCE</a></div></div><div class="section"><div class="left"><div class="section_title">PARAMETERS</div><div class="arg"><div class="arg-header"><div class="arg-name">message</div><div class="arg-type"><span class="keyword">object</span></div></div></div><div class="arg"><div class="arg-header"><div class="arg-name">inboxDeclaredType</div><div class="arg-type"><span class="keyword">string</span>[]</div></div></div></div><div class="right"><div class="section_title">DECLARATION</div><div class="code"><span class="keyword">public</span> <span class="keyword">static</span> <span class="ident">Either</span>&lt;<span class="keyword">string</span>, <span class="keyword">object</span>&gt; <span class="ident">IsMessageValidForProcess</span>(<span class="keyword">object</span> message, <span class="keyword">string</span>[] inboxDeclaredType)</div><div class="section_title">RETURNS</div><div class="code"><div class="member-title"><span class="ident">Either</span>&lt;<span class="keyword">string</span>, <span class="keyword">object</span>&gt;</div><div class="normal"></div></div></div><div style="display:none" id="code-IsMessageValidForProcess__object__message__string__inboxDeclaredType_"><div class="section_title">SOURCE</div><div class="code">
+            inboxDeclaredType == null
+                ? Left&lt;string, object&gt;(&quot;Message-type invalid (meta-data type is null)&quot;)
+                : IsMessageValidForProcess(message, inboxDeclaredType.Map(Type.GetType).ToArray())</div></div></div></div></body></html>
