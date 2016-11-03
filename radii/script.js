@@ -269,8 +269,10 @@ var setup = function() {
 
 var slices = function(n) {
 
-    strokes = [];
-    redoStrokes = [];
+    strokes1 = [];
+    redoStrokes1 = [];
+    strokes2 = [];
+    redoStrokes2 = [];
     refresh();
 
     divisions = n;
