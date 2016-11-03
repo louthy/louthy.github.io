@@ -17,8 +17,10 @@ var LineTo = function(x, y) {
     //};
 }
 
-var strokes = [];
-var redoStrokes = [];
+var strokes1 = [];
+var strokes2 = [];
+var redoStrokes1 = [];
+var redoStrokes2 = [];
 var mouseDown = false;
 var ctrlDown = false;
 
@@ -36,26 +38,44 @@ var dot = function(a, b) {
 }
 
 var refresh = function() {
-    var text = map(strokes, function(x) { return x.text; }).join(" ");
+    var text = map(strokes1, function(x) { return x.text; }).join(" ") + 
+               map(strokes2, function(x) { return x.text; }).join(" ");
+
     updatePaths(function(path) {
         path.setAttribute("d", text);
     });
 }
 
 var moveTo = function(x, y) {
-    strokes.push(MoveTo(x, y));
-    redoStrokes = [];
+    strokes1.push(MoveTo(x, y));
+
+    x = x > centre.x
+        ? x - ((x - centre.x)*2)
+        : x + ((centre.x - x)*2);
+
+    strokes2.push(MoveTo(x, y));
+
+    redoStrokes1 = [];
+    redoStrokes2 = [];
     refresh();
 }
 
 var lineTo = function(x, y) {
-    strokes.push(LineTo(x, y));
-    redoStrokes = [];
+    strokes1.push(LineTo(x, y));
+
+    x = x > centre.x
+        ? x - ((x - centre.x)*2)
+        : x + ((centre.x - x)*2);
+
+    strokes2.push(LineTo(x, y));
+
+    redoStrokes1 = [];
+    redoStrokes2 = [];
     refresh();
 }
 
 var newPoint = function(x, y) {
-    if(strokes.length == 0) {
+    if(strokes1.length == 0) {
         moveTo(x, y);
     }
     else {
@@ -65,18 +85,20 @@ var newPoint = function(x, y) {
 
 var undo = function() {
     console.log("undo");
-    if(strokes.length > 0)
+    if(strokes1.length > 0)
     {
-        redoStrokes.push(strokes.pop());
+        redoStrokes1.push(strokes1.pop());
+        redoStrokes2.push(strokes2.pop());
         refresh();
     }
 }
 
 var redo = function() {
     console.log("redo");
-    if(redoStrokes.length > 0)
+    if(redoStrokes1.length > 0)
     {
-        strokes.push(redoStrokes.pop());
+        strokes1.push(redoStrokes1.pop());
+        strokes2.push(redoStrokes2.pop());
         refresh();
     }
 }
