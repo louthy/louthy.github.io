@@ -346,6 +346,26 @@ var setup = function() {
     var as = document.getElementById("anim-step-slider");
     as.onclick = eventAnimStepSlider;
 
+    document.body.addEventListener("touchstart", function(e){
+        eventMouseDown({
+            offsetX: e.changedTouches[0].offsetX,
+            offsetY: e.changedTouches[0].offsetY
+        });
+    }, false);
+
+    document.body.addEventListener("touchend", function(e){
+        eventMouseUp({
+            offsetX: e.changedTouches[0].offsetX,
+            offsetY: e.changedTouches[0].offsetY
+        });
+    }, false);
+
+    h.addEventListener("touchmove", function(e){
+        eventMouseMove({
+            offsetX: e.changedTouches[0].offsetX,
+            offsetY: e.changedTouches[0].offsetY
+        });
+    }, false);
 }
 
 var slices = function(n) {
@@ -364,4 +384,6 @@ var resetImage = function() {
     slices(divisions);
 }
 
-setup();
+window.addEventListener("load", function() { 
+    setup();
+});
