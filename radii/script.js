@@ -25,6 +25,7 @@ var redoStrokes2 = [];
 var mouseDown = false;
 var mouseOver = false;
 var ctrlDown = false;
+var mpos = {x:0,y:0};
 
 var map = function(list, f) {
     var length = list.length;
@@ -117,9 +118,9 @@ var eventMouseUp = function(e) {
 }
 
 var eventMouseMove = function(e) {
+    mpos = mousePos(e);
     if(mouseDown && mouseOver) {
-        var m = mousePos(e);
-        newPoint(m.x, m.y);
+        newPoint(mpos.x, mpos.y);
     }
 }
 
@@ -167,6 +168,13 @@ var eventKeyDown = function(e) {
             case 89: redo(); return false;
             case 83: saveImage(); return false;
             case 65: animateToggle(); return false;
+        }
+    }
+
+    if(e.keyCode == 32) {
+        mouseDown = !mouseDown;
+        if(mouseDown && mouseOver) {
+            moveTo(mpos.x, mpos.y);    
         }
     }
 
