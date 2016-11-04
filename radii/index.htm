@@ -7,35 +7,99 @@
                 font-family: sans-serif;
                 font-size: 10pt;
                 cursor: default;
+                background-color: #333;
             }
             #panel {
-                position: absolute;
+                position: relative;
                 top:0px;
                 right:0px;
-                bottom:0px;
-                width:200px;
+                height:20px;
                 background-color:#eee;
                 padding:10px;
-            }
-            h1 {
-                font-family: sans-serif;
-                font-size: 14pt;
-            }
-            h2 {
-                font-family: sans-serif;
-                font-size: 12pt;
-            }
-            h3 {
-                font-family: sans-serif;
-                font-size: 10pt;
+                box-shadow: 5px 5px 5px #222;
+                overflow: hidden;
             }
             .info {
                 border-left: solid 4px #90DD6A;
-                padding: 2px;
-                margin-bottom:2px;
+                padding: 4px;
+                margin: 0px;
+                padding-right: 8px;
+                display: inline-block;
+                box-shadow: 2px 2px 5px #bbb;
             }
             .info:hover {
-                background-color: #ADDBB9;
+                background-color: #90DD6A;
+            }
+            a {
+                text-decoration: none
+            }
+            a:visited {
+                color: black;
+            }
+
+            .slider {
+                position:relative;
+                width: 260px;
+                border-left: solid 4px #90DD6A;
+                padding: 4px;
+                margin: 0px;
+                padding-right: 8px;
+                display: inline-block;
+                box-shadow: 2px 2px 5px #bbb;
+            }
+
+            .slider .label {
+                text-decoration: none;
+                text-overflow: ellipsis;
+                display: inline-block;
+            }
+
+            .slider .bar {
+                position: absolute; 
+                top: 0px;
+                left: 60px;
+                width: 200px;
+                height: 20px;
+                display: inline-block;
+            }
+
+            .slider .bar .rail {
+                position: relative; 
+                margin-top: 5px; 
+                width: 200px; 
+                height: 10px; 
+                background-color: #ccc; 
+                border-radius:3px;
+                box-shadow: 1px 1px 3px #aaa;
+            }
+
+            .slider .bar .handle {
+                position: absolute; 
+                top:0px; 
+                left: 50px; 
+                width: 6px; 
+                height: 20px; 
+                background-color: #90DD6A; 
+                border-radius:3px; 
+                box-shadow: 2px 2px 5px #888;
+            }
+
+            #title {
+                position: absolute;
+                top:10px;
+                right:10px;
+                font-size: 14pt;
+                font-weight: bold;
+            }
+
+            .noselect {
+              -webkit-touch-callout: none; /* iOS Safari */
+                -webkit-user-select: none; /* Chrome/Safari/Opera */
+                 -khtml-user-select: none; /* Konqueror */
+                   -moz-user-select: none; /* Firefox */
+                    -ms-user-select: none; /* Internet Explorer/Edge */
+                        user-select: none; /* Non-prefixed version, currently
+                                              not supported by any browser */
             }
         </style>
     </head>
@@ -44,8 +108,32 @@
         <div id="pngdataurl" style="display:none"></div>
         <canvas width="1024" height="1024" style="display:none" id="save-image"></canvas>
 
+        <div id="panel" class="noselect">
+            <div class="info" onclick="saveImage()">Save image [Ctrl + S]</div>
+            <div class="info" onclick="resetImage()">Reset image [Esc]</div>
+            <div class="info" onclick="undo()">Undo [Ctrl + Z]</div>
+            <div class="info" onclick="redo()">Redo [Ctrl + Y]</div>
+            <div class="info" onclick="animateToggle()">Toggle animation [Ctrl + A]</div>
+            <div class="slider" id="anim-step-slider">
+                <div class="label">Anim</div>
+                <div class="bar">
+                    <div class="rail"></div>
+                    <div class="handle" id="anim-step-slider-handle"></div>
+                </div>
+            </div>
+            <div class="slider" id="slices-slider">
+                <div class="label">Slices</div>
+                <div class="bar">
+                    <div class="rail"></div>
+                    <div class="handle" id="slices-slider-handle"></div>
+                </div>
+            </div>
+
+            <div id="title">radii - <span style="font-size:10pt">by <a href="https://twitter.com/paullouth">@paullouth</a></span></div>
+        </div>
+
         <div style="width:1024px;height:1024px;" id="holder">
-            <svg xmlns="http://www.w3.org/2000/svg" version="1.2" height="1024" width="1024" viewBox="0 0 1024 1024" viewport-fill="black" id="canvas">
+            <svg xmlns="http://www.w3.org/2000/svg" version="1.2" height="1024" shape-rendering="geometricPrecision" width="1024" viewBox="0 0 1024 1024" viewport-fill="black" id="canvas">
                 <style>
                     path { 
                         fill: none; 
@@ -127,23 +215,6 @@
                 <path id="path59" d="" transform="rotate(45)"/>
                 <path id="path60" d="" transform="rotate(45)"/>
             </svg>
-        </div>
-        <div id="panel">
-            <h1>radii - <span style="font-size:10pt">by <a href="https://twitter.com/paullouth">@paullouth</a></span><h2>
-            <h3>Keyboard</h3>
-            <div class="info">Ctrl + Z undo</div>
-            <div class="info">Ctrl + Y redo</div>
-            <div class="info"><a href="#" onclick="animateToggle()">Toggle animation</a></div>
-            <div class="info"><a href="#" onclick="saveImage()">Save image</a></div>
-            <div class="info"><a href="#" onclick="resetImage()">Reset image</a></div>
-
-            <h3>Slices</h3>
-            <div class="info"><a href="#" onclick="slices(10)">10</a></div>
-            <div class="info"><a href="#" onclick="slices(20)">20</a></div>
-            <div class="info"><a href="#" onclick="slices(30)">30</a></div>
-            <div class="info"><a href="#" onclick="slices(40)">40</a></div>
-            <div class="info"><a href="#" onclick="slices(50)">50</a></div>
-            <div class="info"><a href="#" onclick="slices(60)">60</a></div>
         </div>
         <script type="text/javascript" src="detect-zoom.min.js"></script>
         <script type="text/javascript" src="script.js"></script>

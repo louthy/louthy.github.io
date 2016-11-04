@@ -1,7 +1,8 @@
-var divisions = 60;
+var divisions = 20;
 var width = 1024;
 var height = 1024;
 var centre = { x: width / 2, y: height / 2 };
+var faderLength = 200;
 
 var MoveTo = function(x, y) {
     return { code: "M", x: x, y: y, text: "M"+Number(x)+","+Number(y) };
@@ -22,6 +23,7 @@ var strokes2 = [];
 var redoStrokes1 = [];
 var redoStrokes2 = [];
 var mouseDown = false;
+var mouseOver = false;
 var ctrlDown = false;
 
 var map = function(list, f) {
@@ -84,7 +86,6 @@ var newPoint = function(x, y) {
 }
 
 var undo = function() {
-    console.log("undo");
     if(strokes1.length > 0)
     {
         redoStrokes1.push(strokes1.pop());
@@ -94,7 +95,6 @@ var undo = function() {
 }
 
 var redo = function() {
-    console.log("redo");
     if(redoStrokes1.length > 0)
     {
         strokes1.push(redoStrokes1.pop());
@@ -117,11 +117,18 @@ var eventMouseUp = function(e) {
 }
 
 var eventMouseMove = function(e) {
-    if(mouseDown) {
-
+    if(mouseDown && mouseOver) {
         var m = mousePos(e);
         newPoint(m.x, m.y);
     }
+}
+
+var eventMouseOver = function(e) {
+    mouseOver = true;
+}
+
+var eventMouseOut = function(e) {
+    mouseOver = false;
 }
 
 var mousePos = function(e) {
@@ -154,18 +161,47 @@ var drawRadials = function(n) {
 
 var eventKeyDown = function(e) {
     if(e.keyCode == 17) ctrlDown = true;
-    if(ctrlDown && e.keyCode == 90) undo();
-    if(ctrlDown && e.keyCode == 89) redo();
+    if(ctrlDown) {
+        switch(e.keyCode) {
+            case 90: undo(); return false;
+            case 89: redo(); return false;
+            case 83: saveImage(); return false;
+            case 65: animateToggle(); return false;
+        }
+    }
+
+    if(e.keyCode == 27) {
+        resetImage(); 
+        return false;
+    }
 
     if(e.keyCode >= 49 && e.keyCode <= 57) {
         updatePaths(function(path) {
-            path.setAttribute("stroke-width", ""+((e.keyCode-48)*.5) );
+            var x = (e.keyCode-48)*.5;
+            path.setAttribute("stroke-width", x );
         });
+        return false;
     }
 }
 
 var eventKeyUp = function(e) {
     if(e.keyCode == 17) ctrlDown = false;
+}
+
+var eventSlicesSlider = function(e) {
+    var x = e.offsetX / faderLength;
+    var n = ((((60-6)*x)+6)>>1)<<1;
+    document.getElementById("slices-slider-handle").style.left = (e.offsetX-3)+"px";
+    slices(n);
+}
+
+var eventAnimStepSlider = function(e) {
+    var x = e.offsetX / faderLength;
+    var n = (((50)*x)+5)>>0;
+    dash.length = n;
+    document.getElementById("anim-step-slider-handle").style.left = (e.offsetX-3)+"px";
+    animateToggle();
+    animateToggle();
 }
 
 var updatePaths = function(f) {
@@ -210,7 +246,6 @@ var animateToggle = function() {
 var saveImage = function () {
   var html = document.getElementById("canvas").parentNode.innerHTML;
 
-  //console.log(html);
   var imgsrc = "data:image/svg+xml;base64,"+ btoa(html);
   var img = '<img src="'+imgsrc+'" style="width:2048;height:2048">'; 
 
@@ -242,8 +277,8 @@ var setup = function() {
     drawRadials();
 
     var h = document.getElementById("holder");
-    h.onmousedown = eventMouseDown;
-    h.onmouseup = eventMouseUp;
+    h.onmouseover = eventMouseOver;
+    h.onmouseout = eventMouseOut;
     h.onmousemove = eventMouseMove;
     h.style.width = width+"px";
     h.style.height = height+"px";
@@ -265,6 +300,15 @@ var setup = function() {
 
     window.onkeydown = eventKeyDown;
     window.onkeyup = eventKeyUp;
+    window.onmousedown = eventMouseDown;
+    window.onmouseup = eventMouseUp;
+
+    var ss = document.getElementById("slices-slider");
+    ss.onclick = eventSlicesSlider;
+
+    var as = document.getElementById("anim-step-slider");
+    as.onclick = eventAnimStepSlider;
+
 }
 
 var slices = function(n) {
