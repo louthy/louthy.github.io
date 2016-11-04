@@ -167,6 +167,7 @@ var eventKeyDown = function(e) {
             case 90: undo(); return false;
             case 89: redo(); return false;
             case 83: saveImage(); return false;
+            case 86: saveSVG(); return false;
             case 65: animateToggle(); return false;
         }
     }
@@ -251,11 +252,39 @@ var animateToggle = function() {
     }
 }
 
+var saveSVG = function() {
+    //get svg element.
+    var svg = document.getElementById("canvas");
+
+    //get svg source.
+    var serializer = new XMLSerializer();
+    var source = serializer.serializeToString(svg);
+
+    //add name spaces.
+    if(!source.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)){
+        source = source.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
+    }
+    if(!source.match(/^<svg[^>]+"http\:\/\/www\.w3\.org\/1999\/xlink"/)){
+        source = source.replace(/^<svg/, '<svg xmlns:xlink="http://www.w3.org/1999/xlink"');
+    }
+
+    //add xml declaration
+    source = '<?xml version="1.0" standalone="no"?>\r\n' + source;
+
+    //convert svg source to URI data scheme.
+    var url = "data:image/svg+xml;charset=utf-8,"+encodeURIComponent(source);
+
+    var a = document.createElement("a");
+    a.download = "radii.svg";
+    a.href = url;
+    a.click();
+}
+
 var saveImage = function () {
   var html = document.getElementById("canvas").parentNode.innerHTML;
 
   var imgsrc = "data:image/svg+xml;base64,"+ btoa(html);
-  var img = '<img src="'+imgsrc+'" style="width:2048;height:2048">'; 
+  var img = '<img src="'+imgsrc+'" style="width:"'+width+'";height:"'+height+'"">'; 
 
   document.getElementById("svgdataurl").innerHTML = img;
 
