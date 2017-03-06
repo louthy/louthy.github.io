@@ -1,0 +1,130 @@
+<html ><head ><link rel="stylesheet" type="text/css" href="doc.css"></link></head><body ><div class="nav-bar"><a class="nav-bar-link" href="../index.htm">API Reference</a> \ <a class="nav-bar-link" href="..//index.htm"></a> \ <span class="nav-bar-link" href="ParserExtensions_.htm">ParserExtensions</span></div><div class="nav-panel"><h3 >METHODS</h3><a class="nav-link" href="#Filter&lt;T>">Filter&lt;T&gt;(Parser&lt;T&gt;, Func&lt;T, bool&gt;)</a><a class="nav-link" href="#label&lt;T>">label&lt;T&gt;(Parser&lt;T&gt;, string)</a><a class="nav-link" href="#Map&lt;T, U>">Map&lt;T, U&gt;(Parser&lt;T&gt;, Func&lt;T, U&gt;)</a><a class="nav-link" href="#Parse&lt;T>">Parse&lt;T&gt;(Parser&lt;T&gt;, PString)</a><a class="nav-link" href="#Parse&lt;T>">Parse&lt;T&gt;(Parser&lt;T&gt;, string)</a><a class="nav-link" href="#Select&lt;T, U>">Select&lt;T, U&gt;(Parser&lt;T&gt;, Func&lt;T, U&gt;)</a><a class="nav-link" href="#SelectMany&lt;T, U, V>">SelectMany&lt;T, U, V&gt;(Parser&lt;T&gt;, Func&lt;T, Parser&lt;U&gt;&gt;, Func&lt;T, U, V&gt;)</a><a class="nav-link" href="#ToParserIO&lt;T>">ToParserIO&lt;T&gt;(Parser&lt;T&gt;)</a><a class="nav-link" href="#Where&lt;T>">Where&lt;T&gt;(Parser&lt;T&gt;, Func&lt;T, bool&gt;)</a></div><div class="content-panel"><h1 >ParserExtensions Class</h1><p ></p><div class="left"><div class="section"><div class="section_title">DECLARATION</div><div class="code"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="ident">ParserExtensions</span></div></div></div><div class="right"><div class="section"><div class="section_title">NAMESPACE</div></div></div><h2 >Methods</h2><div class="member-title"><a name="Filter&lt;T>"></a>Filter&lt;T&gt;(Parser&lt;T&gt;, Func&lt;T, bool&gt;)<div class="source-link-cont"><a class="source-link" href="#" onclick="document.getElementById(&#39;code-Filter_T_Parser_T_self__Func_T_bool_pred_&#39;).style.display=&#39;&#39;;">SOURCE</a></div></div><div class="section"><div class="left"><div class="section_title">PARAMETERS</div><div class="arg"><div class="arg-header"><div class="arg-name">self</div><div class="arg-type"><span class="ident">Parser</span>&lt;<span class="ident">T</span>&gt;</div></div></div><div class="arg"><div class="arg-header"><div class="arg-name">pred</div><div class="arg-type"><span class="ident">Func</span>&lt;<span class="ident">T</span>, <span class="keyword">bool</span>&gt;</div></div></div></div><div class="right"><div class="section_title">DECLARATION</div><div class="code"><span class="keyword">public</span> <span class="keyword">static</span> <span class="ident">Parser</span>&lt;<span class="ident">T</span>&gt; <span class="ident">Filter</span>&lt;<span class="ident">T</span>&gt;(<span class="keyword">this</span> <span class="ident">Parser</span>&lt;<span class="ident">T</span>&gt; self, <span class="ident">Func</span>&lt;<span class="ident">T</span>, <span class="keyword">bool</span>&gt; pred)</div><div class="section_title">RETURNS</div><div class="code"><div class="member-title"><span class="ident">Parser</span>&lt;<span class="ident">T</span>&gt;</div><div class="normal"></div></div></div><div style="display:none" id="code-Filter_T_Parser_T_self__Func_T_bool_pred_"><div class="section_title">SOURCE</div><div class="code">
+        self.Where(pred)</div></div></div><div class="member-title"><a name="label&lt;T>"></a>label&lt;T&gt;(Parser&lt;T&gt;, string)<div class="source-link-cont"><a class="source-link" href="#" onclick="document.getElementById(&#39;code-label_T_Parser_T_p__string__expected_&#39;).style.display=&#39;&#39;;">SOURCE</a></div></div><div class="section"><div class="left"><div class="section_title">SUMMARY</div><p ><span >A label for the parser </span></p><div class="section_title">PARAMETERS</div><div class="arg"><div class="arg-header"><div class="arg-name">p</div><div class="arg-type"><span class="ident">Parser</span>&lt;<span class="ident">T</span>&gt;</div></div></div><div class="arg"><div class="arg-header"><div class="arg-name">expected</div><div class="arg-type"><span class="keyword">string</span></div></div><div class="arg-desc">What was expected</div></div></div><div class="right"><div class="section_title">DECLARATION</div><div class="code"><span class="keyword">public</span> <span class="keyword">static</span> <span class="ident">Parser</span>&lt;<span class="ident">T</span>&gt; <span class="ident">label</span>&lt;<span class="ident">T</span>&gt;(<span class="keyword">this</span> <span class="ident">Parser</span>&lt;<span class="ident">T</span>&gt; p, <span class="keyword">string</span> expected)</div><div class="section_title">RETURNS</div><div class="code"><div class="member-title"><span class="ident">Parser</span>&lt;<span class="ident">T</span>&gt;</div><div class="normal"></div></div></div><div style="display:none" id="code-label_T_Parser_T_p__string__expected_"><div class="section_title">SOURCE</div><div class="code">
+        inp =&gt;
+        {
+            var res = p(inp);
+            if (res.Tag == ResultTag.Consumed)
+            {
+                return res;
+            }
+            if (res.Reply.Tag == ReplyTag.Error)
+            {
+                return EmptyError&lt;T&gt;(ParserError.Expect(inp.Pos, res.Reply.Error.Msg, expected));
+            }
+            if (res.Reply.Error == null || res.Reply.Error.Tag == ParserErrorTag.Unknown)
+            {
+                return res;
+            }
+            else
+            {
+                return EmptyOK(res.Reply.Result, res.Reply.State, ParserError.Expect(inp.Pos, res.Reply.Error.Msg, expected));
+            }
+        }</div></div></div><div class="member-title"><a name="Map&lt;T, U>"></a>Map&lt;T, U&gt;(Parser&lt;T&gt;, Func&lt;T, U&gt;)<div class="source-link-cont"><a class="source-link" href="#" onclick="document.getElementById(&#39;code-Map_T_U_Parser_T_self__Func_T_U_map_&#39;).style.display=&#39;&#39;;">SOURCE</a></div></div><div class="section"><div class="left"><div class="section_title">PARAMETERS</div><div class="arg"><div class="arg-header"><div class="arg-name">self</div><div class="arg-type"><span class="ident">Parser</span>&lt;<span class="ident">T</span>&gt;</div></div></div><div class="arg"><div class="arg-header"><div class="arg-name">map</div><div class="arg-type"><span class="ident">Func</span>&lt;<span class="ident">T</span>, <span class="ident">U</span>&gt;</div></div></div></div><div class="right"><div class="section_title">DECLARATION</div><div class="code"><span class="keyword">public</span> <span class="keyword">static</span> <span class="ident">Parser</span>&lt;<span class="ident">U</span>&gt; <span class="ident">Map</span>&lt;<span class="ident">T</span>, <span class="ident">U</span>&gt;(<span class="keyword">this</span> <span class="ident">Parser</span>&lt;<span class="ident">T</span>&gt; self, <span class="ident">Func</span>&lt;<span class="ident">T</span>, <span class="ident">U</span>&gt; map)</div><div class="section_title">RETURNS</div><div class="code"><div class="member-title"><span class="ident">Parser</span>&lt;<span class="ident">U</span>&gt;</div><div class="normal"></div></div></div><div style="display:none" id="code-Map_T_U_Parser_T_self__Func_T_U_map_"><div class="section_title">SOURCE</div><div class="code">
+        self.Select(map)</div></div></div><div class="member-title"><a name="Parse&lt;T>"></a>Parse&lt;T&gt;(Parser&lt;T&gt;, PString)<div class="source-link-cont"><a class="source-link" href="#" onclick="document.getElementById(&#39;code-Parse_T_Parser_T_self__PString__input_&#39;).style.display=&#39;&#39;;">SOURCE</a></div></div><div class="section"><div class="left"><div class="section_title">PARAMETERS</div><div class="arg"><div class="arg-header"><div class="arg-name">self</div><div class="arg-type"><span class="ident">Parser</span>&lt;<span class="ident">T</span>&gt;</div></div></div><div class="arg"><div class="arg-header"><div class="arg-name">input</div><div class="arg-type"><span class="ident">PString</span></div></div></div></div><div class="right"><div class="section_title">DECLARATION</div><div class="code"><span class="keyword">public</span> <span class="keyword">static</span> <span class="ident">ParserResult</span>&lt;<span class="ident">T</span>&gt; <span class="ident">Parse</span>&lt;<span class="ident">T</span>&gt;(<span class="keyword">this</span> <span class="ident">Parser</span>&lt;<span class="ident">T</span>&gt; self, <span class="ident">PString</span> input)</div><div class="section_title">RETURNS</div><div class="code"><div class="member-title"><span class="ident">ParserResult</span>&lt;<span class="ident">T</span>&gt;</div><div class="normal"></div></div></div><div style="display:none" id="code-Parse_T_Parser_T_self__PString__input_"><div class="section_title">SOURCE</div><div class="code">
+        self(input)</div></div></div><div class="member-title"><a name="Parse&lt;T>"></a>Parse&lt;T&gt;(Parser&lt;T&gt;, string)<div class="source-link-cont"><a class="source-link" href="#" onclick="document.getElementById(&#39;code-Parse_T_Parser_T_self__string__input_&#39;).style.display=&#39;&#39;;">SOURCE</a></div></div><div class="section"><div class="left"><div class="section_title">PARAMETERS</div><div class="arg"><div class="arg-header"><div class="arg-name">self</div><div class="arg-type"><span class="ident">Parser</span>&lt;<span class="ident">T</span>&gt;</div></div></div><div class="arg"><div class="arg-header"><div class="arg-name">input</div><div class="arg-type"><span class="keyword">string</span></div></div></div></div><div class="right"><div class="section_title">DECLARATION</div><div class="code"><span class="keyword">public</span> <span class="keyword">static</span> <span class="ident">ParserResult</span>&lt;<span class="ident">T</span>&gt; <span class="ident">Parse</span>&lt;<span class="ident">T</span>&gt;(<span class="keyword">this</span> <span class="ident">Parser</span>&lt;<span class="ident">T</span>&gt; self, <span class="keyword">string</span> input)</div><div class="section_title">RETURNS</div><div class="code"><div class="member-title"><span class="ident">ParserResult</span>&lt;<span class="ident">T</span>&gt;</div><div class="normal"></div></div></div><div style="display:none" id="code-Parse_T_Parser_T_self__string__input_"><div class="section_title">SOURCE</div><div class="code">
+        self(PString.Zero.SetValue(input))</div></div></div><div class="member-title"><a name="Select&lt;T, U>"></a>Select&lt;T, U&gt;(Parser&lt;T&gt;, Func&lt;T, U&gt;)<div class="source-link-cont"><a class="source-link" href="#" onclick="document.getElementById(&#39;code-Select_T_U_Parser_T_self__Func_T_U_map_&#39;).style.display=&#39;&#39;;">SOURCE</a></div></div><div class="section"><div class="left"><div class="section_title">PARAMETERS</div><div class="arg"><div class="arg-header"><div class="arg-name">self</div><div class="arg-type"><span class="ident">Parser</span>&lt;<span class="ident">T</span>&gt;</div></div></div><div class="arg"><div class="arg-header"><div class="arg-name">map</div><div class="arg-type"><span class="ident">Func</span>&lt;<span class="ident">T</span>, <span class="ident">U</span>&gt;</div></div></div></div><div class="right"><div class="section_title">DECLARATION</div><div class="code"><span class="keyword">public</span> <span class="keyword">static</span> <span class="ident">Parser</span>&lt;<span class="ident">U</span>&gt; <span class="ident">Select</span>&lt;<span class="ident">T</span>, <span class="ident">U</span>&gt;(<span class="keyword">this</span> <span class="ident">Parser</span>&lt;<span class="ident">T</span>&gt; self, <span class="ident">Func</span>&lt;<span class="ident">T</span>, <span class="ident">U</span>&gt; map)</div><div class="section_title">RETURNS</div><div class="code"><div class="member-title"><span class="ident">Parser</span>&lt;<span class="ident">U</span>&gt;</div><div class="normal"></div></div></div><div style="display:none" id="code-Select_T_U_Parser_T_self__Func_T_U_map_"><div class="section_title">SOURCE</div><div class="code">
+        inp =&gt; self(inp).Select(map)</div></div></div><div class="member-title"><a name="SelectMany&lt;T, U, V>"></a>SelectMany&lt;T, U, V&gt;(Parser&lt;T&gt;, Func&lt;T, Parser&lt;U&gt;&gt;, Func&lt;T, U, V&gt;)<div class="source-link-cont"><a class="source-link" href="#" onclick="document.getElementById(&#39;code-SelectMany_T_U_V_Parser_T_self__Func_T_Parser&lt;U>_bind__Func_T_U_V_project_&#39;).style.display=&#39;&#39;;">SOURCE</a></div></div><div class="section"><div class="left"><div class="section_title">PARAMETERS</div><div class="arg"><div class="arg-header"><div class="arg-name">self</div><div class="arg-type"><span class="ident">Parser</span>&lt;<span class="ident">T</span>&gt;</div></div></div><div class="arg"><div class="arg-header"><div class="arg-name">bind</div><div class="arg-type"><span class="ident">Func</span>&lt;<span class="ident">T</span>, <span class="ident">Parser</span>&lt;<span class="ident">U</span>&gt;&gt;</div></div></div><div class="arg"><div class="arg-header"><div class="arg-name">project</div><div class="arg-type"><span class="ident">Func</span>&lt;<span class="ident">T</span>, <span class="ident">U</span>, <span class="ident">V</span>&gt;</div></div></div></div><div class="right"><div class="section_title">DECLARATION</div><div class="code"><span class="keyword">public</span> <span class="keyword">static</span> <span class="ident">Parser</span>&lt;<span class="ident">V</span>&gt; <span class="ident">SelectMany</span>&lt;<span class="ident">T</span>, <span class="ident">U</span>, <span class="ident">V</span>&gt;(<span class="keyword">this</span> <span class="ident">Parser</span>&lt;<span class="ident">T</span>&gt; self, <span class="ident">Func</span>&lt;<span class="ident">T</span>, <span class="ident">Parser</span>&lt;<span class="ident">U</span>&gt;&gt; bind, <span class="ident">Func</span>&lt;<span class="ident">T</span>, <span class="ident">U</span>, <span class="ident">V</span>&gt; project)</div><div class="section_title">RETURNS</div><div class="code"><div class="member-title"><span class="ident">Parser</span>&lt;<span class="ident">V</span>&gt;</div><div class="normal"></div></div></div><div style="display:none" id="code-SelectMany_T_U_V_Parser_T_self__Func_T_Parser&lt;U>_bind__Func_T_U_V_project_"><div class="section_title">SOURCE</div><div class="code">
+            inp =&gt;
+            {
+                Debug.Assert(inp != null);
+
+                var t = self(inp);
+
+                // cok
+                if (t.Tag == ResultTag.Consumed &amp;&amp; t.Reply.Tag == ReplyTag.OK)
+                {
+                    var u = bind(t.Reply.Result)(t.Reply.State);
+
+                    if (u.Tag == ResultTag.Consumed &amp;&amp; u.Reply.Tag == ReplyTag.OK)
+                    {
+                        // cok, cok -&gt; cok
+                        var v = project(t.Reply.Result, u.Reply.Result);
+                        return ConsumedOK(v, u.Reply.State, u.Reply.Error);
+                    }
+
+                    if (u.Tag == ResultTag.Consumed &amp;&amp; u.Reply.Tag == ReplyTag.Error)
+                    {
+                        // cok, cerr -&gt; cerr
+                        return ConsumedError&lt;V&gt;(u.Reply.Error);
+                    }
+
+                    if (u.Tag == ResultTag.Empty &amp;&amp; u.Reply.Tag == ReplyTag.OK)
+                    {
+                        // cok, eok -&gt; cok  (not a typo, this should be -&gt; cok)
+                        var v = project(t.Reply.Result, u.Reply.Result);
+                        return ConsumedOK(v, u.Reply.State, mergeError(t.Reply.Error, u.Reply.Error));
+                    }
+
+                    // cok, eerr
+                    return ConsumedError&lt;V&gt;(mergeError(t.Reply.Error, u.Reply.Error));
+                }
+
+                // eok
+                if (t.Tag == ResultTag.Empty &amp;&amp; t.Reply.Tag == ReplyTag.OK)
+                {
+                    var u = bind(t.Reply.Result)(t.Reply.State);
+
+                    if (u.Tag == ResultTag.Consumed &amp;&amp; u.Reply.Tag == ReplyTag.OK)
+                    {
+                        // eok, cok -&gt; cok
+                        var v = project(t.Reply.Result, u.Reply.Result);
+                        return ConsumedOK(v, u.Reply.State, u.Reply.Error);
+                    }
+
+                    if (u.Tag == ResultTag.Empty &amp;&amp; u.Reply.Tag == ReplyTag.OK)
+                    {
+                        // eok, eok -&gt; eok
+                        var v = project(t.Reply.Result, u.Reply.Result);
+                        return EmptyOK(v, u.Reply.State, mergeError(t.Reply.Error, u.Reply.Error));
+                    }
+
+                    if (u.Tag == ResultTag.Consumed &amp;&amp; u.Reply.Tag == ReplyTag.Error)
+                    {
+                        // eok, cerr -&gt; cerr
+                        return ConsumedError&lt;V&gt;(u.Reply.Error);
+                    }
+
+                    // eok, eerr
+                    return EmptyError&lt;V&gt;(mergeError(t.Reply.Error, u.Reply.Error));
+                }
+
+                // cerr
+                if (t.Tag == ResultTag.Consumed &amp;&amp; t.Reply.Tag == ReplyTag.Error)
+                {
+                    return ConsumedError&lt;V&gt;(t.Reply.Error);
+                }
+
+                // eerr
+                return EmptyError&lt;V&gt;(t.Reply.Error);
+            }</div></div></div><div class="member-title"><a name="ToParserIO&lt;T>"></a>ToParserIO&lt;T&gt;(Parser&lt;T&gt;)<div class="source-link-cont"><a class="source-link" href="#" onclick="document.getElementById(&#39;code-ToParserIO_T_Parser_T_self_&#39;).style.display=&#39;&#39;;">SOURCE</a></div></div><div class="section"><div class="left"><div class="section_title">PARAMETERS</div><div class="arg"><div class="arg-header"><div class="arg-name">self</div><div class="arg-type"><span class="ident">Parser</span>&lt;<span class="ident">T</span>&gt;</div></div></div></div><div class="right"><div class="section_title">DECLARATION</div><div class="code"><span class="keyword">public</span> <span class="keyword">static</span> <span class="ident">Parser</span>&lt;<span class="keyword">char</span>, <span class="ident">T</span>&gt; <span class="ident">ToParserIO</span>&lt;<span class="ident">T</span>&gt;(<span class="keyword">this</span> <span class="ident">Parser</span>&lt;<span class="ident">T</span>&gt; self)</div><div class="section_title">RETURNS</div><div class="code"><div class="member-title"><span class="ident">Parser</span>&lt;<span class="keyword">char</span>, <span class="ident">T</span>&gt;</div><div class="normal"></div></div></div><div style="display:none" id="code-ToParserIO_T_Parser_T_self_"><div class="section_title">SOURCE</div><div class="code">
+        inp =&gt;
+        {
+            var res = self(new PString(new string(inp.Value), inp.Index, inp.EndIndex, inp.Pos, inp.DefPos, inp.Side, inp.UserState));
+
+            var state = res.Reply.State;
+
+            var pstr = new PString&lt;char&gt;(
+                        state.Value.ToCharArray(),
+                        state.Index,
+                        state.EndIndex,
+                        state.Pos,
+                        state.DefPos,
+                        state.Side,
+                        state.UserState);
+
+            var reply = res.Reply;
+
+            return new ParserResult&lt;char, T&gt;(
+                res.Tag,
+                new Reply&lt;char, T&gt;(
+                    reply.Tag,
+                    reply.Result,
+                    pstr,
+                    reply.Error));
+        }</div></div></div><div class="member-title"><a name="Where&lt;T>"></a>Where&lt;T&gt;(Parser&lt;T&gt;, Func&lt;T, bool&gt;)<div class="source-link-cont"><a class="source-link" href="#" onclick="document.getElementById(&#39;code-Where_T_Parser_T_self__Func_T_bool_pred_&#39;).style.display=&#39;&#39;;">SOURCE</a></div></div><div class="section"><div class="left"><div class="section_title">PARAMETERS</div><div class="arg"><div class="arg-header"><div class="arg-name">self</div><div class="arg-type"><span class="ident">Parser</span>&lt;<span class="ident">T</span>&gt;</div></div></div><div class="arg"><div class="arg-header"><div class="arg-name">pred</div><div class="arg-type"><span class="ident">Func</span>&lt;<span class="ident">T</span>, <span class="keyword">bool</span>&gt;</div></div></div></div><div class="right"><div class="section_title">DECLARATION</div><div class="code"><span class="keyword">public</span> <span class="keyword">static</span> <span class="ident">Parser</span>&lt;<span class="ident">T</span>&gt; <span class="ident">Where</span>&lt;<span class="ident">T</span>&gt;(<span class="keyword">this</span> <span class="ident">Parser</span>&lt;<span class="ident">T</span>&gt; self, <span class="ident">Func</span>&lt;<span class="ident">T</span>, <span class="keyword">bool</span>&gt; pred)</div><div class="section_title">RETURNS</div><div class="code"><div class="member-title"><span class="ident">Parser</span>&lt;<span class="ident">T</span>&gt;</div><div class="normal"></div></div></div><div style="display:none" id="code-Where_T_Parser_T_self__Func_T_bool_pred_"><div class="section_title">SOURCE</div><div class="code">
+        inp =&gt;
+            self(inp).Match(
+                EmptyOK: (x, rem, msg) =&gt; pred(x) ? EmptyOK(x, rem, msg) : EmptyError&lt;T&gt;(ParserError.SysUnexpect(inp.Pos, $&quot;\&quot;{x}\&quot;&quot;)),
+                EmptyError: msg =&gt; EmptyError&lt;T&gt;(msg),
+                ConsumedOK: (x, rem, msg) =&gt; pred(x) ? ConsumedOK(x, rem, msg) : EmptyError&lt;T&gt;(ParserError.SysUnexpect(inp.Pos, $&quot;\&quot;{x}\&quot;&quot;)),
+                ConsumedError: msg =&gt; ConsumedError&lt;T&gt;(msg))</div></div></div></div></body></html>
