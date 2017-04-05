@@ -655,30 +655,27 @@
             : res.Value.IsSome
                 ? await Some(res.Value.Value)
                 : await None();
-    })</div></div></div><div class="member-title"><a name="Try&lt;T>"></a>Try&lt;T&gt;(TryOptionAsync&lt;T&gt;)<div class="source-link-cont"><a class="source-link" href="#" onclick="document.getElementById(&#39;code-Try_T_TryOptionAsync_T_self_&#39;).style.display=&#39;&#39;;">SOURCE</a></div></div><div class="section"><div class="left"><div class="section_title">PARAMETERS</div><div class="arg"><div class="arg-header"><div class="arg-name">self</div><div class="arg-type"><span class="ident">TryOptionAsync</span>&lt;<span class="ident">T</span>&gt;</div></div></div></div><div class="right"><div class="section_title">DECLARATION</div><div class="code"><div class="attr">[Pure]</div><span class="keyword">public</span> <span class="keyword">static</span> <span class="ident">Task</span>&lt;<span class="ident">OptionalResult</span>&lt;<span class="ident">T</span>&gt;&gt; <span class="ident">Try</span>&lt;<span class="ident">T</span>&gt;(<span class="keyword">this</span> <span class="ident">TryOptionAsync</span>&lt;<span class="ident">T</span>&gt; self)</div><div class="section_title">RETURNS</div><div class="code"><div class="member-title"><span class="ident">Task</span>&lt;<span class="ident">OptionalResult</span>&lt;<span class="ident">T</span>&gt;&gt;</div><div class="normal"></div></div></div><div style="display:none" id="code-Try_T_TryOptionAsync_T_self_"><div class="section_title">SOURCE</div><div class="code">
+    })</div></div></div><div class="member-title"><a name="Try&lt;T>"></a>Try&lt;T&gt;(TryOptionAsync&lt;T&gt;)<div class="source-link-cont"><a class="source-link" href="#" onclick="document.getElementById(&#39;code-Try_T_TryOptionAsync_T_self_&#39;).style.display=&#39;&#39;;">SOURCE</a></div></div><div class="section"><div class="left"><div class="section_title">PARAMETERS</div><div class="arg"><div class="arg-header"><div class="arg-name">self</div><div class="arg-type"><span class="ident">TryOptionAsync</span>&lt;<span class="ident">T</span>&gt;</div></div></div></div><div class="right"><div class="section_title">DECLARATION</div><div class="code"><div class="attr">[Pure]</div><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">async</span> <span class="ident">Task</span>&lt;<span class="ident">OptionalResult</span>&lt;<span class="ident">T</span>&gt;&gt; <span class="ident">Try</span>&lt;<span class="ident">T</span>&gt;(<span class="keyword">this</span> <span class="ident">TryOptionAsync</span>&lt;<span class="ident">T</span>&gt; self)</div><div class="section_title">RETURNS</div><div class="code"><div class="member-title"><span class="ident">Task</span>&lt;<span class="ident">OptionalResult</span>&lt;<span class="ident">T</span>&gt;&gt;</div><div class="normal"></div></div></div><div style="display:none" id="code-Try_T_TryOptionAsync_T_self_"><div class="section_title">SOURCE</div><div class="code">
         try
         {
             if (self == null)
             {
                 throw new ArgumentNullException(&quot;this&quot;);
             }
-            return Task.Run(() =&gt;
+            try
             {
-                try
-                {
-                    return self();
-                }
-                catch(Exception e)
-                {
-                    TryConfig.ErrorLogger(e);
-                    return Task.FromResult(new OptionalResult&lt;T&gt;(e));
-                }
-            });
+                return await self();
+            }
+            catch(Exception e)
+            {
+                TryConfig.ErrorLogger(e);
+                return new OptionalResult&lt;T&gt;(e);
+            }
         }
         catch (Exception e)
         {
             TryConfig.ErrorLogger(e);
-            return Task.FromResult(new OptionalResult&lt;T&gt;(e));
+            return new OptionalResult&lt;T&gt;(e);
         }
     </div></div></div><div class="member-title"><a name="Use&lt;T, U>"></a>Use&lt;T, U&gt;(TryOptionAsync&lt;T&gt;, Func&lt;T, U&gt;)<div class="source-link-cont"><a class="source-link" href="#" onclick="document.getElementById(&#39;code-Use_T_U_TryOptionAsync_T_self__Func_T_U_select_&#39;).style.display=&#39;&#39;;">SOURCE</a></div></div><div class="section"><div class="left"><div class="section_title">PARAMETERS</div><div class="arg"><div class="arg-header"><div class="arg-name">self</div><div class="arg-type"><span class="ident">TryOptionAsync</span>&lt;<span class="ident">T</span>&gt;</div></div></div><div class="arg"><div class="arg-header"><div class="arg-name">select</div><div class="arg-type"><span class="ident">Func</span>&lt;<span class="ident">T</span>, <span class="ident">U</span>&gt;</div></div></div></div><div class="right"><div class="section_title">DECLARATION</div><div class="code"><div class="attr">[Pure]</div><span class="keyword">public</span> <span class="keyword">static</span> <span class="ident">TryOptionAsync</span>&lt;<span class="ident">U</span>&gt; <span class="ident">Use</span>&lt;<span class="ident">T</span>, <span class="ident">U</span>&gt;(<span class="keyword">this</span> <span class="ident">TryOptionAsync</span>&lt;<span class="ident">T</span>&gt; self, <span class="ident">Func</span>&lt;<span class="ident">T</span>, <span class="ident">U</span>&gt; select)</div><div class="section_title">RETURNS</div><div class="code"><div class="member-title"><span class="ident">TryOptionAsync</span>&lt;<span class="ident">U</span>&gt;</div><div class="normal"></div></div><div class="section_title">CONSTRAINTS</div><div class="code"><span class="keyword">where</span> <span class="ident">T</span> : <span class="ident">IDisposable</span></div></div><div style="display:none" id="code-Use_T_U_TryOptionAsync_T_self__Func_T_U_select_"><div class="section_title">SOURCE</div><div class="code"> async () =&gt;
             {
