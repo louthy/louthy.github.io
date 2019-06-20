@@ -1,6 +1,6 @@
 [Response to twitter thread](https://twitter.com/korifey_ad/status/1141257997886337024)
 
-> 'Typical foreach looks are no different'
+> 'Typical foreach looks no different'
 
 well, they are, they are full of unecessary boilerplate for many operations.  If you have a first-class function for the ForEach handler then:
 ```c#
@@ -21,7 +21,7 @@ This can be dismissed away from general advice, not everybody uses ReSharper.
 
 > Support for continue and break
 
-Most people writing code functionally would avoid this approach, and it's lack of availability for ForEach would therefore be considered a good thing.  In [language-ext](https://github.com/louthy/language-ext) you would use `things.FoldWhile` or `things.FoldUntil` 
+Most people writing code functionally would avoid this approach, and it's lack of availability for ForEach would therefore be considered a good thing.  In [language-ext](https://github.com/louthy/language-ext) you would use `things.Where(...)` or `things.Filter(...)` for `continue` and `things.FoldWhile(...)` or `things.FoldUntil(...)` for `break`
 
 > You can't do ForEach over all things
 
