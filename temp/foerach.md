@@ -1,3 +1,5 @@
+[Response to twitter thread](https://twitter.com/korifey_ad/status/1141257997886337024)
+
 > 'Typical foreach looks are no different'
 
 well, they are, they are full of unecessary boilerplate for many operations.  If you have a first-class function for the ForEach handler then:
