@@ -23,7 +23,7 @@ Most people writing code functionally would avoid this approach, and it's lack o
 
 > You can't do ForEach over all things
 
-Not true.  If the type is an IEnumerable<T> it can, if not then you can provide your own `Select` and `SelectMany` implementations.  
+Not true.  Anyone can build an extension method for any type that provides a `ForEach` implementation.
 
 > ForEach generates unnecessary closures
 
