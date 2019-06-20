@@ -39,4 +39,6 @@ Erm, usually `ForEach` is implemented as a `foreach`.  Seems an odd statement.  
 
 The `ForEach` could be implemented for each type - It can do more with each type directly rather than the default `IEnumerable` implementation.  That would be a better approach to optimising, I think. 
 
-Most of this seems to focus on getting the last few nanoseconds out of an iteration.  Which is laudable, but I think it's mostly terrible general advice.  As code bases get larger, most teams value reliability, maintainability, and readability over outright performance. 
+Most of this seems to focus on getting the last few nanoseconds out of an iteration.  Which is laudable, but I think it's mostly terrible general advice.  As code bases get larger, most teams value reliability, maintainability, and readability over outright performance.  
+
+That's why I wrote [language-ext](https://github.com/louthy/language-ext) - because super large applications need better tools to help the weak programmer brain.  In language-ext `ForEach` is called `Iter`, by the way :) 
