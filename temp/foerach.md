@@ -21,7 +21,7 @@ This can be dismissed away from general advice, not everybody uses ReSharper.
 
 > Support for continue and break
 
-Most people writing code functionally would avoid this approach, and it's lack of availability for ForEach would therefore be considered a good thing.  In [language-ext](https://github.com/louthy/language-ext) you would use `things.Where(...)` or `things.Filter(...)` for `continue` and `things.FoldWhile(...)` or `things.FoldUntil(...)` for `break`.  They're not exactly the same, because of the imperative nature of `break` and `continue` (essentially `goto` in disguise); but anybody trying to write more reliable code would want to break their code into declarative stages of `Where\Filter`, `Select\Map`, `Aggregate\Fold`, etc.
+Most people writing code functionally would avoid this approach, and its lack of availability for `ForEach` would therefore be considered a good thing.  In [language-ext](https://github.com/louthy/language-ext) you would use `things.Where(...)` or `things.Filter(...)` for `continue` and `things.FoldWhile(...)` or `things.FoldUntil(...)` for `break`.  They're not exactly the same, because of the imperative nature of `break` and `continue` (essentially `goto` in disguise); but anybody trying to write more reliable code would want to break their code into declarative stages of `Where\Filter`, `Select\Map`, `Aggregate\Fold`, etc.
 
 > You can't do ForEach over all things
 
@@ -29,7 +29,7 @@ Not true.  Anyone can build an extension method for any type that provides a `Fo
 
 > ForEach generates unnecessary closures
 
-They're clearly necessary ;)  But it's true closures do allocate.  However they will be shortlived and in GC gen 0, so cleaned up with the minimal of fuss.  This argument is one to never use lambdas, or memory allocation.  Which for the vast majority of cases is overzealous.  I agree that you don't want unnecessary allocations for performance sensitive code, but mostly this is bad general advice.  Code should be written to survive until tomorrow - with optimisations happening later on.  It's an amatuerish mistake to optimise too early.  I learned that mistake very early in my career.
+They're clearly necessary ;)  But it's true closures do allocate.  However they will be shortlived and in GC gen 0, so cleaned up with the minimal of fuss.  This argument is one to never use lambdas, or memory allocation (or any LINQ operator).  Which for the vast majority of cases is overzealous.  I agree that you don't want unnecessary allocations for performance sensitive code, but mostly this is bad general advice.  Code should be written to survive until tomorrow - with optimisations happening later on.  It's an amatuerish mistake to optimise too early.  I learned that mistake very early in my career.
 
 > With foreach you're throwing away all of the optimisations that foreach can do
 
