@@ -12,6 +12,1166 @@
 <a href="../index.html" class="link">Alternative Value Monads</a>
 <span> ► </span>
 <a href="index.html" class="link">Validation</a></p></div>
+<div id="table-of-contents"><p class="caption">Contents</p>
+<ul><li><a href="#LanguageExt_0_Validation_3" class="link"><div class="nowrap">Validation
+<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#Validation_3_Validation_0" class="link"><div class="nowrap">Validation
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>ValidationData<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span><span class='generics'>&gt;</span> validationData<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_GetObjectData_0" class="link"><div class="nowrap">GetObjectData
+
+<span class='parens'>(</span>SerializationInfo info<span class='comma'>, </span>StreamingContext context<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_IsFail_0" class="link"><div class="nowrap">IsFail</div></a></li>
+<li><a href="#Validation_3_IsSuccess_0" class="link"><div class="nowrap">IsSuccess</div></a></li>
+<li><a href="#Validation_3_GetEnumerator_0" class="link"><div class="nowrap">GetEnumerator
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_Case_0" class="link"><div class="nowrap">Case</div></a></li>
+<li><a href="#Validation_3_Success_0" class="link"><div class="nowrap">Success
+
+<span class='parens'>(</span>SUCCESS success<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_Fail_0" class="link"><div class="nowrap">Fail
+
+<span class='parens'>(</span>FAIL fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_Disjunction_1" class="link"><div class="nowrap">Disjunction
+<span class='generics'>&lt;</span>SUCCESSB<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>SUCCESSB<span class='generics'>&gt;</span> other<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_Succ_1" class="link"><div class="nowrap">Succ
+<span class='generics'>&lt;</span>Ret<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>SUCCESS<span class='comma'>, </span>Ret<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_Succ_1" class="link"><div class="nowrap">Succ
+<span class='generics'>&lt;</span>Ret<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span>SUCCESS<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_Match_1" class="link"><div class="nowrap">Match
+<span class='generics'>&lt;</span>Ret<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>SUCCESS<span class='comma'>, </span>Ret<span class='generics'>&gt;</span> Succ<span class='comma'>, </span>Func<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>Ret<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_Match_1" class="link"><div class="nowrap">Match
+<span class='generics'>&lt;</span>Ret<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Ret Succ<span class='comma'>, </span>Func<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>Ret<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_MatchUnsafe_1" class="link"><div class="nowrap">MatchUnsafe
+<span class='generics'>&lt;</span>Ret<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>SUCCESS<span class='comma'>, </span>Ret<span class='generics'>&gt;</span> Succ<span class='comma'>, </span>Func<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>Ret<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_Match_0" class="link"><div class="nowrap">Match
+
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span>SUCCESS<span class='generics'>&gt;</span> Succ<span class='comma'>, </span>Action<span class='generics'>&lt;</span>FAIL<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_MatchAsync_1" class="link"><div class="nowrap">MatchAsync
+<span class='generics'>&lt;</span>R2<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>SUCCESS<span class='comma'>, </span>Task<span class='generics'>&lt;</span>R2<span class='generics'>&gt;</span><span class='generics'>&gt;</span> SuccAsync<span class='comma'>, </span>Func<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>R2<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_MatchAsync_1" class="link"><div class="nowrap">MatchAsync
+<span class='generics'>&lt;</span>R2<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>SUCCESS<span class='comma'>, </span>Task<span class='generics'>&lt;</span>R2<span class='generics'>&gt;</span><span class='generics'>&gt;</span> SuccAsync<span class='comma'>, </span>Func<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>Task<span class='generics'>&lt;</span>R2<span class='generics'>&gt;</span><span class='generics'>&gt;</span> FailAsync<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_IfFail_0" class="link"><div class="nowrap">IfFail
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>SUCCESS<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_IfFail_0" class="link"><div class="nowrap">IfFail
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span> FailMap<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_IfFail_0" class="link"><div class="nowrap">IfFail
+
+<span class='parens'>(</span>SUCCESS SuccessValue<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_IfFail_0" class="link"><div class="nowrap">IfFail
+
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span>FAIL<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_IfSuccess_0" class="link"><div class="nowrap">IfSuccess
+
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span>SUCCESS<span class='generics'>&gt;</span> Success<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_IfSuccess_0" class="link"><div class="nowrap">IfSuccess
+
+<span class='parens'>(</span>FAIL FailValue<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_IfSuccess_0" class="link"><div class="nowrap">IfSuccess
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>FAIL<span class='generics'>&gt;</span> Success<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_IfSuccess_0" class="link"><div class="nowrap">IfSuccess
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>SUCCESS<span class='comma'>, </span>FAIL<span class='generics'>&gt;</span> SuccessMap<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_ToString_0" class="link"><div class="nowrap">ToString
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_GetHashCode_0" class="link"><div class="nowrap">GetHashCode
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_CompareTo_0" class="link"><div class="nowrap">CompareTo
+
+<span class='parens'>(</span>object obj<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_Equals_0" class="link"><div class="nowrap">Equals
+
+<span class='parens'>(</span>object obj<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_SuccessToList_0" class="link"><div class="nowrap">SuccessToList
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_SuccessToArray_0" class="link"><div class="nowrap">SuccessToArray
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_FailToList_0" class="link"><div class="nowrap">FailToList
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_FailToArray_0" class="link"><div class="nowrap">FailToArray
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_ToSeq_0" class="link"><div class="nowrap">ToSeq
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_SuccessToSeq_0" class="link"><div class="nowrap">SuccessToSeq
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_FailToSeq_0" class="link"><div class="nowrap">FailToSeq
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_SuccessAsEnumerable_0" class="link"><div class="nowrap">SuccessAsEnumerable
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_FailAsEnumerable_0" class="link"><div class="nowrap">FailAsEnumerable
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_ToEff_0" class="link"><div class="nowrap">ToEff
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>Error<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_ToAff_0" class="link"><div class="nowrap">ToAff
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>Error<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_ToOption_0" class="link"><div class="nowrap">ToOption
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_ToEither_0" class="link"><div class="nowrap">ToEither
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_ToEitherUnsafe_0" class="link"><div class="nowrap">ToEitherUnsafe
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_ToTryOption_0" class="link"><div class="nowrap">ToTryOption
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_<_0" class="link"><div class="nowrap">&lt;
+<span class='parens'>(</span>Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span> rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_<=_0" class="link"><div class="nowrap">&lt;=
+<span class='parens'>(</span>Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span> rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_>_0" class="link"><div class="nowrap">&gt;
+<span class='parens'>(</span>Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span> rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_>=_0" class="link"><div class="nowrap">&gt;=
+<span class='parens'>(</span>Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span> rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_==_0" class="link"><div class="nowrap">==
+<span class='parens'>(</span>Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span> rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_!=_0" class="link"><div class="nowrap">!=
+<span class='parens'>(</span>Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span> rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span> rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_true_0" class="link"><div class="nowrap">true
+<span class='parens'>(</span>Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span> value<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_false_0" class="link"><div class="nowrap">false
+<span class='parens'>(</span>Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span> value<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_CompareTo_0" class="link"><div class="nowrap">CompareTo
+
+<span class='parens'>(</span>Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span> other<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_CompareTo_0" class="link"><div class="nowrap">CompareTo
+
+<span class='parens'>(</span>SUCCESS success<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_CompareTo_0" class="link"><div class="nowrap">CompareTo
+
+<span class='parens'>(</span>FAIL fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_Equals_0" class="link"><div class="nowrap">Equals
+
+<span class='parens'>(</span>SUCCESS success<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_Equals_0" class="link"><div class="nowrap">Equals
+
+<span class='parens'>(</span>FAIL fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_Equals_0" class="link"><div class="nowrap">Equals
+
+<span class='parens'>(</span>Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span> other<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_Count_0" class="link"><div class="nowrap">Count
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_Iter_0" class="link"><div class="nowrap">Iter
+
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span>SUCCESS<span class='generics'>&gt;</span> Success<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_BiIter_0" class="link"><div class="nowrap">BiIter
+
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span>SUCCESS<span class='generics'>&gt;</span> Success<span class='comma'>, </span>Action<span class='generics'>&lt;</span>FAIL<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_ForAll_0" class="link"><div class="nowrap">ForAll
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>SUCCESS<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Success<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_BiForAll_0" class="link"><div class="nowrap">BiForAll
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>SUCCESS<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Success<span class='comma'>, </span>Func<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_Fold_1" class="link"><div class="nowrap">Fold
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>S state<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>SUCCESS<span class='comma'>, </span>S<span class='generics'>&gt;</span> Success<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_BiFold_1" class="link"><div class="nowrap">BiFold
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>S state<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>SUCCESS<span class='comma'>, </span>S<span class='generics'>&gt;</span> Success<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>FAIL<span class='comma'>, </span>S<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_Exists_0" class="link"><div class="nowrap">Exists
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>SUCCESS<span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_BiExists_0" class="link"><div class="nowrap">BiExists
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>SUCCESS<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Success<span class='comma'>, </span>Func<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_Do_0" class="link"><div class="nowrap">Do
+
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span>SUCCESS<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_Map_1" class="link"><div class="nowrap">Map
+<span class='generics'>&lt;</span>Ret<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>SUCCESS<span class='comma'>, </span>Ret<span class='generics'>&gt;</span> mapper<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_BiMap_1" class="link"><div class="nowrap">BiMap
+<span class='generics'>&lt;</span>Ret<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>SUCCESS<span class='comma'>, </span>Ret<span class='generics'>&gt;</span> Success<span class='comma'>, </span>Func<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>Ret<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_MapFail_2" class="link"><div class="nowrap">MapFail
+<span class='generics'>&lt;</span>MonoidRet<span class='comma'>, </span>Ret<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>Ret<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_BiMap_3" class="link"><div class="nowrap">BiMap
+<span class='generics'>&lt;</span>MonoidFail2<span class='comma'>, </span>FAIL2<span class='comma'>, </span>SUCCESS2<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>SUCCESS<span class='comma'>, </span>SUCCESS2<span class='generics'>&gt;</span> Success<span class='comma'>, </span>Func<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>FAIL2<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_Select_1" class="link"><div class="nowrap">Select
+<span class='generics'>&lt;</span>U<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>SUCCESS<span class='comma'>, </span>U<span class='generics'>&gt;</span> map<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_Bind_1" class="link"><div class="nowrap">Bind
+<span class='generics'>&lt;</span>U<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>SUCCESS<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>U<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_BiBind_1" class="link"><div class="nowrap">BiBind
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>SUCCESS<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> Succ<span class='comma'>, </span>Func<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_3_SelectMany_2" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>U<span class='comma'>, </span>V<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>SUCCESS<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>U<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>SUCCESS<span class='comma'>, </span>U<span class='comma'>, </span>V<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#LanguageExt_0_ValidationContext_4" class="link"><div class="nowrap">ValidationContext
+<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>SUCCESS<span class='comma'>, </span>Ret<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#ValidationContext_4_Fail_0" class="link"><div class="nowrap">Fail
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>Ret<span class='generics'>&gt;</span> fail<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#LanguageExt_0_ValidationUnitContext_3" class="link"><div class="nowrap">ValidationUnitContext
+<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#ValidationUnitContext_3_Left_0" class="link"><div class="nowrap">Left
+
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span>FAIL<span class='generics'>&gt;</span> fail<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#LanguageExt_0_ValidationGuardExtensions_0" class="link"><div class="nowrap">ValidationGuardExtensions
+</div></a></li>
+<ul><li><a href="#ValidationGuardExtensions_0_ToValidation_2" class="link"><div class="nowrap">ToValidation
+<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Guard<span class='generics'>&lt;</span>FAIL<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#ValidationGuardExtensions_0_SelectMany_3" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this Guard<span class='generics'>&lt;</span>FAIL<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
+            Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#ValidationGuardExtensions_0_SelectMany_4" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this Guard<span class='generics'>&lt;</span>FAIL<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
+            Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>
+            Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#ValidationGuardExtensions_0_SelectMany_3" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Guard<span class='generics'>&lt;</span>FAIL<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#ValidationGuardExtensions_0_SelectMany_4" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Guard<span class='generics'>&lt;</span>FAIL<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Unit<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#LanguageExt_0_Prelude_0" class="link"><div class="nowrap">Prelude
+</div></a></li>
+<ul><li><a href="#Prelude_0_Success_2" class="link"><div class="nowrap">Success
+<span class='generics'>&lt;</span>ERROR<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_Success_3" class="link"><div class="nowrap">Success
+<span class='generics'>&lt;</span>MonoidError<span class='comma'>, </span>ERROR<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_Fail_2" class="link"><div class="nowrap">Fail
+<span class='generics'>&lt;</span>ERROR<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>ERROR value<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_Fail_2" class="link"><div class="nowrap">Fail
+<span class='generics'>&lt;</span>ERROR<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>ERROR<span class='generics'>&gt;</span> values<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_Fail_3" class="link"><div class="nowrap">Fail
+<span class='generics'>&lt;</span>MonoidError<span class='comma'>, </span>ERROR<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>ERROR value<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_Apply_4" class="link"><div class="nowrap">Apply
+<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this ValueTuple<span class='generics'>&lt;</span>Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> items<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>R<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_Apply_5" class="link"><div class="nowrap">Apply
+<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this ValueTuple<span class='generics'>&lt;</span>
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> items,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>R<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_Apply_6" class="link"><div class="nowrap">Apply
+<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this ValueTuple<span class='generics'>&lt;</span>
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+                <span class='generics'>&gt;</span> items,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>R<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_Apply_7" class="link"><div class="nowrap">Apply
+<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this ValueTuple<span class='generics'>&lt;</span>
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>C<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>D<span class='generics'>&gt;</span>
+                <span class='generics'>&gt;</span> items,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>R<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_Apply_8" class="link"><div class="nowrap">Apply
+<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this ValueTuple<span class='generics'>&lt;</span>
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>C<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>D<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>E<span class='generics'>&gt;</span>
+                <span class='generics'>&gt;</span> items,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>R<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_Apply_9" class="link"><div class="nowrap">Apply
+<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this ValueTuple<span class='generics'>&lt;</span>
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>C<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>D<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>E<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>F<span class='generics'>&gt;</span>
+                <span class='generics'>&gt;</span> items,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>R<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_Apply_10" class="link"><div class="nowrap">Apply
+<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this ValueTuple<span class='generics'>&lt;</span>
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>C<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>D<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>E<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>F<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>G<span class='generics'>&gt;</span>
+                <span class='generics'>&gt;</span> items,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>R<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_Apply_4" class="link"><div class="nowrap">Apply
+<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this ValueTuple<span class='generics'>&lt;</span>
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> items,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>R<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_Apply_5" class="link"><div class="nowrap">Apply
+<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this ValueTuple<span class='generics'>&lt;</span>
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+                <span class='generics'>&gt;</span> items,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>R<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_Apply_6" class="link"><div class="nowrap">Apply
+<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this ValueTuple<span class='generics'>&lt;</span>
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>C<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>D<span class='generics'>&gt;</span>
+                <span class='generics'>&gt;</span> items,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>R<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_Apply_7" class="link"><div class="nowrap">Apply
+<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this ValueTuple<span class='generics'>&lt;</span>
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>C<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>D<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>E<span class='generics'>&gt;</span>
+                <span class='generics'>&gt;</span> items,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>R<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_Apply_8" class="link"><div class="nowrap">Apply
+<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this ValueTuple<span class='generics'>&lt;</span>
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>C<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>D<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>E<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>F<span class='generics'>&gt;</span>
+                <span class='generics'>&gt;</span> items,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>R<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_Apply_9" class="link"><div class="nowrap">Apply
+<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this ValueTuple<span class='generics'>&lt;</span>
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>C<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>D<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>E<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>F<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>G<span class='generics'>&gt;</span>
+                <span class='generics'>&gt;</span> items,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>R<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_Apply_10" class="link"><div class="nowrap">Apply
+<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this <span class='parens'>(</span>
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>C<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>D<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>E<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>F<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>G<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>H<span class='generics'>&gt;</span>
+                <span class='parens'>)</span> items,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>R<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_Apply_11" class="link"><div class="nowrap">Apply
+<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this <span class='parens'>(</span>
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>C<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>D<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>E<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>F<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>G<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>H<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>I<span class='generics'>&gt;</span>
+                <span class='parens'>)</span> items,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>R<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_Apply_12" class="link"><div class="nowrap">Apply
+<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this <span class='parens'>(</span>
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>C<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>D<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>E<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>F<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>G<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>H<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>I<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>J<span class='generics'>&gt;</span>
+                <span class='parens'>)</span> items,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='comma'>, </span>R<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_Apply_13" class="link"><div class="nowrap">Apply
+<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='comma'>, </span>K<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this <span class='parens'>(</span>
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>C<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>D<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>E<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>F<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>G<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>H<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>I<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>J<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>K<span class='generics'>&gt;</span>
+                <span class='parens'>)</span> items,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='comma'>, </span>K<span class='comma'>, </span>R<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_Apply_14" class="link"><div class="nowrap">Apply
+<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='comma'>, </span>K<span class='comma'>, </span>L<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this <span class='parens'>(</span>
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>C<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>D<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>E<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>F<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>G<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>H<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>I<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>J<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>K<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>L<span class='generics'>&gt;</span>
+                <span class='parens'>)</span> items,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='comma'>, </span>K<span class='comma'>, </span>L<span class='comma'>, </span>R<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_Apply_15" class="link"><div class="nowrap">Apply
+<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='comma'>, </span>K<span class='comma'>, </span>L<span class='comma'>, </span>M<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this <span class='parens'>(</span>
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>C<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>D<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>E<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>F<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>G<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>H<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>I<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>J<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>K<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>L<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>M<span class='generics'>&gt;</span>
+                <span class='parens'>)</span> items,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='comma'>, </span>K<span class='comma'>, </span>L<span class='comma'>, </span>M<span class='comma'>, </span>R<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_Apply_16" class="link"><div class="nowrap">Apply
+<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='comma'>, </span>K<span class='comma'>, </span>L<span class='comma'>, </span>M<span class='comma'>, </span>N<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this <span class='parens'>(</span>
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>C<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>D<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>E<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>F<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>G<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>H<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>I<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>J<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>K<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>L<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>M<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>N<span class='generics'>&gt;</span>
+                <span class='parens'>)</span> items,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='comma'>, </span>K<span class='comma'>, </span>L<span class='comma'>, </span>M<span class='comma'>, </span>N<span class='comma'>, </span>R<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_Apply_17" class="link"><div class="nowrap">Apply
+<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='comma'>, </span>K<span class='comma'>, </span>L<span class='comma'>, </span>M<span class='comma'>, </span>N<span class='comma'>, </span>O<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this <span class='parens'>(</span>
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>C<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>D<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>E<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>F<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>G<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>H<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>I<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>J<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>K<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>L<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>M<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>N<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+                <span class='parens'>)</span> items,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='comma'>, </span>K<span class='comma'>, </span>L<span class='comma'>, </span>M<span class='comma'>, </span>N<span class='comma'>, </span>O<span class='comma'>, </span>R<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_Apply_18" class="link"><div class="nowrap">Apply
+<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='comma'>, </span>K<span class='comma'>, </span>L<span class='comma'>, </span>M<span class='comma'>, </span>N<span class='comma'>, </span>O<span class='comma'>, </span>P<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this <span class='parens'>(</span>
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>C<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>D<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>E<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>F<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>G<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>H<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>I<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>J<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>K<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>L<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>M<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>N<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>O<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>P<span class='generics'>&gt;</span>
+                <span class='parens'>)</span> items,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='comma'>, </span>K<span class='comma'>, </span>L<span class='comma'>, </span>M<span class='comma'>, </span>N<span class='comma'>, </span>O<span class='comma'>, </span>P<span class='comma'>, </span>R<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_ApplyM_4" class="link"><div class="nowrap">ApplyM
+<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this ValueTuple<span class='generics'>&lt;</span>Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> items<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>R<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_ApplyM_5" class="link"><div class="nowrap">ApplyM
+<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this ValueTuple<span class='generics'>&lt;</span>
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> items,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>R<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_ApplyM_6" class="link"><div class="nowrap">ApplyM
+<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this ValueTuple<span class='generics'>&lt;</span>
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+                <span class='generics'>&gt;</span> items,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>R<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_ApplyM_7" class="link"><div class="nowrap">ApplyM
+<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this ValueTuple<span class='generics'>&lt;</span>
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>C<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>D<span class='generics'>&gt;</span>
+                <span class='generics'>&gt;</span> items,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>R<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_ApplyM_8" class="link"><div class="nowrap">ApplyM
+<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this ValueTuple<span class='generics'>&lt;</span>
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>C<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>D<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>E<span class='generics'>&gt;</span>
+                <span class='generics'>&gt;</span> items,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>R<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_ApplyM_9" class="link"><div class="nowrap">ApplyM
+<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this ValueTuple<span class='generics'>&lt;</span>
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>C<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>D<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>E<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>F<span class='generics'>&gt;</span>
+                <span class='generics'>&gt;</span> items,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>R<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_ApplyM_10" class="link"><div class="nowrap">ApplyM
+<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this ValueTuple<span class='generics'>&lt;</span>
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>C<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>D<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>E<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>F<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>G<span class='generics'>&gt;</span>
+                <span class='generics'>&gt;</span> items,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>R<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_ApplyM_4" class="link"><div class="nowrap">ApplyM
+<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this ValueTuple<span class='generics'>&lt;</span>
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> items,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>R<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_ApplyM_5" class="link"><div class="nowrap">ApplyM
+<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this ValueTuple<span class='generics'>&lt;</span>
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+                <span class='generics'>&gt;</span> items,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>R<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_ApplyM_6" class="link"><div class="nowrap">ApplyM
+<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this ValueTuple<span class='generics'>&lt;</span>
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>C<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>D<span class='generics'>&gt;</span>
+                <span class='generics'>&gt;</span> items,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>R<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_ApplyM_7" class="link"><div class="nowrap">ApplyM
+<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this ValueTuple<span class='generics'>&lt;</span>
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>C<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>D<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>E<span class='generics'>&gt;</span>
+                <span class='generics'>&gt;</span> items,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>R<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_ApplyM_8" class="link"><div class="nowrap">ApplyM
+<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this ValueTuple<span class='generics'>&lt;</span>
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>C<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>D<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>E<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>F<span class='generics'>&gt;</span>
+                <span class='generics'>&gt;</span> items,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>R<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_ApplyM_9" class="link"><div class="nowrap">ApplyM
+<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this ValueTuple<span class='generics'>&lt;</span>
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>C<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>D<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>E<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>F<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>G<span class='generics'>&gt;</span>
+                <span class='generics'>&gt;</span> items,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>R<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_ApplyM_10" class="link"><div class="nowrap">ApplyM
+<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this <span class='parens'>(</span>
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>C<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>D<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>E<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>F<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>G<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>H<span class='generics'>&gt;</span>
+                <span class='parens'>)</span> items,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>R<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_ApplyM_11" class="link"><div class="nowrap">ApplyM
+<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this <span class='parens'>(</span>
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>C<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>D<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>E<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>F<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>G<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>H<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>I<span class='generics'>&gt;</span>
+                <span class='parens'>)</span> items,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>R<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_ApplyM_12" class="link"><div class="nowrap">ApplyM
+<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this <span class='parens'>(</span>
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>C<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>D<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>E<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>F<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>G<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>H<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>I<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>J<span class='generics'>&gt;</span>
+                <span class='parens'>)</span> items,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>R<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_ApplyM_13" class="link"><div class="nowrap">ApplyM
+<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='comma'>, </span>K<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this <span class='parens'>(</span>
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>C<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>D<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>E<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>F<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>G<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>H<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>I<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>J<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>K<span class='generics'>&gt;</span>
+                <span class='parens'>)</span> items,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='comma'>, </span>K<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>R<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_ApplyM_14" class="link"><div class="nowrap">ApplyM
+<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='comma'>, </span>K<span class='comma'>, </span>L<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this <span class='parens'>(</span>
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>C<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>D<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>E<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>F<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>G<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>H<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>I<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>J<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>K<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>L<span class='generics'>&gt;</span>
+                <span class='parens'>)</span> items,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='comma'>, </span>K<span class='comma'>, </span>L<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>R<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_ApplyM_15" class="link"><div class="nowrap">ApplyM
+<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='comma'>, </span>K<span class='comma'>, </span>L<span class='comma'>, </span>M<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this <span class='parens'>(</span>
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>C<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>D<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>E<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>F<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>G<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>H<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>I<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>J<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>K<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>L<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>M<span class='generics'>&gt;</span>
+                <span class='parens'>)</span> items,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='comma'>, </span>K<span class='comma'>, </span>L<span class='comma'>, </span>M<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>R<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_ApplyM_16" class="link"><div class="nowrap">ApplyM
+<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='comma'>, </span>K<span class='comma'>, </span>L<span class='comma'>, </span>M<span class='comma'>, </span>N<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this <span class='parens'>(</span>
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>C<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>D<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>E<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>F<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>G<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>H<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>I<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>J<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>K<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>L<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>M<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>N<span class='generics'>&gt;</span>
+                <span class='parens'>)</span> items,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='comma'>, </span>K<span class='comma'>, </span>L<span class='comma'>, </span>M<span class='comma'>, </span>N<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>R<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_ApplyM_17" class="link"><div class="nowrap">ApplyM
+<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='comma'>, </span>K<span class='comma'>, </span>L<span class='comma'>, </span>M<span class='comma'>, </span>N<span class='comma'>, </span>O<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this <span class='parens'>(</span>
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>C<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>D<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>E<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>F<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>G<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>H<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>I<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>J<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>K<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>L<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>M<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>N<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+                <span class='parens'>)</span> items,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='comma'>, </span>K<span class='comma'>, </span>L<span class='comma'>, </span>M<span class='comma'>, </span>N<span class='comma'>, </span>O<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>R<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_ApplyM_18" class="link"><div class="nowrap">ApplyM
+<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='comma'>, </span>K<span class='comma'>, </span>L<span class='comma'>, </span>M<span class='comma'>, </span>N<span class='comma'>, </span>O<span class='comma'>, </span>P<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this <span class='parens'>(</span>
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>C<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>D<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>E<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>F<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>G<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>H<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>I<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>J<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>K<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>L<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>M<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>N<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>O<span class='generics'>&gt;</span>,
+                Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>P<span class='generics'>&gt;</span>
+                <span class='parens'>)</span> items,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='comma'>, </span>K<span class='comma'>, </span>L<span class='comma'>, </span>M<span class='comma'>, </span>N<span class='comma'>, </span>O<span class='comma'>, </span>P<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>R<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#LanguageExt.DataTypes.Serialisation_0_ValidationData_3" class="link"><div class="nowrap">ValidationData
+<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#ValidationData_3_State_0" class="link"><div class="nowrap">State</div></a></li>
+<li><a href="#ValidationData_3_Success_0" class="link"><div class="nowrap">Success</div></a></li>
+<li><a href="#ValidationData_3_Fail_0" class="link"><div class="nowrap">Fail</div></a></li>
+<li><a href="#ValidationData_3_ValidationData_0" class="link"><div class="nowrap">ValidationData
+<span class='parens'>(</span>Validation.StateType state<span class='comma'>, </span>SUCCESS success<span class='comma'>, </span>FAIL fail<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#LanguageExt.DataTypes.Serialisation_0_ValidationData_2" class="link"><div class="nowrap">ValidationData
+<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#ValidationData_2_State_0" class="link"><div class="nowrap">State</div></a></li>
+<li><a href="#ValidationData_2_Success_0" class="link"><div class="nowrap">Success</div></a></li>
+<li><a href="#ValidationData_2_Fail_0" class="link"><div class="nowrap">Fail</div></a></li>
+<li><a href="#ValidationData_2_ValidationData_0" class="link"><div class="nowrap">ValidationData
+<span class='parens'>(</span>Validation.StateType state<span class='comma'>, </span>SUCCESS success<span class='comma'>, </span>Lst<span class='generics'>&lt;</span>FAIL<span class='generics'>&gt;</span> fail<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#LanguageExt_0_Validation_2" class="link"><div class="nowrap">Validation
+<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#Validation_2_Validation_0" class="link"><div class="nowrap">Validation
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>ValidationData<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span><span class='generics'>&gt;</span> validationData<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_GetObjectData_0" class="link"><div class="nowrap">GetObjectData
+
+<span class='parens'>(</span>SerializationInfo info<span class='comma'>, </span>StreamingContext context<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_Case_0" class="link"><div class="nowrap">Case</div></a></li>
+<li><a href="#Validation_2_IsFail_0" class="link"><div class="nowrap">IsFail</div></a></li>
+<li><a href="#Validation_2_IsSuccess_0" class="link"><div class="nowrap">IsSuccess</div></a></li>
+<li><a href="#Validation_2_GetEnumerator_0" class="link"><div class="nowrap">GetEnumerator
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_Disjunction_1" class="link"><div class="nowrap">Disjunction
+<span class='generics'>&lt;</span>SUCCESSB<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>SUCCESSB<span class='generics'>&gt;</span> other<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_Success_0" class="link"><div class="nowrap">Success
+
+<span class='parens'>(</span>SUCCESS success<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_Fail_0" class="link"><div class="nowrap">Fail
+
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>FAIL<span class='generics'>&gt;</span> fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_Succ_1" class="link"><div class="nowrap">Succ
+<span class='generics'>&lt;</span>Ret<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>SUCCESS<span class='comma'>, </span>Ret<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_Succ_1" class="link"><div class="nowrap">Succ
+<span class='generics'>&lt;</span>Ret<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span>SUCCESS<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_Match_1" class="link"><div class="nowrap">Match
+<span class='generics'>&lt;</span>Ret<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>SUCCESS<span class='comma'>, </span>Ret<span class='generics'>&gt;</span> Succ<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Seq<span class='generics'>&lt;</span>FAIL<span class='generics'>&gt;</span><span class='comma'>, </span>Ret<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_MatchUnsafe_1" class="link"><div class="nowrap">MatchUnsafe
+<span class='generics'>&lt;</span>Ret<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>SUCCESS<span class='comma'>, </span>Ret<span class='generics'>&gt;</span> Succ<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Seq<span class='generics'>&lt;</span>FAIL<span class='generics'>&gt;</span><span class='comma'>, </span>Ret<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_Match_0" class="link"><div class="nowrap">Match
+
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span>SUCCESS<span class='generics'>&gt;</span> Succ<span class='comma'>, </span>Action<span class='generics'>&lt;</span>Seq<span class='generics'>&lt;</span>FAIL<span class='generics'>&gt;</span><span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_MatchAsync_1" class="link"><div class="nowrap">MatchAsync
+<span class='generics'>&lt;</span>R2<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>SUCCESS<span class='comma'>, </span>Task<span class='generics'>&lt;</span>R2<span class='generics'>&gt;</span><span class='generics'>&gt;</span> SuccAsync<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Seq<span class='generics'>&lt;</span>FAIL<span class='generics'>&gt;</span><span class='comma'>, </span>R2<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_MatchAsync_1" class="link"><div class="nowrap">MatchAsync
+<span class='generics'>&lt;</span>R2<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>SUCCESS<span class='comma'>, </span>Task<span class='generics'>&lt;</span>R2<span class='generics'>&gt;</span><span class='generics'>&gt;</span> SuccAsync<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Seq<span class='generics'>&lt;</span>FAIL<span class='generics'>&gt;</span><span class='comma'>, </span>Task<span class='generics'>&lt;</span>R2<span class='generics'>&gt;</span><span class='generics'>&gt;</span> FailAsync<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_IfFail_0" class="link"><div class="nowrap">IfFail
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>SUCCESS<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_IfFail_0" class="link"><div class="nowrap">IfFail
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Seq<span class='generics'>&lt;</span>FAIL<span class='generics'>&gt;</span><span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span> FailMap<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_IfFail_0" class="link"><div class="nowrap">IfFail
+
+<span class='parens'>(</span>SUCCESS SuccessValue<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_IfFail_0" class="link"><div class="nowrap">IfFail
+
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span>Seq<span class='generics'>&lt;</span>FAIL<span class='generics'>&gt;</span><span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_IfSuccess_0" class="link"><div class="nowrap">IfSuccess
+
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span>SUCCESS<span class='generics'>&gt;</span> Success<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_IfSuccess_0" class="link"><div class="nowrap">IfSuccess
+
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>FAIL<span class='generics'>&gt;</span> FailValue<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_IfSuccess_0" class="link"><div class="nowrap">IfSuccess
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Seq<span class='generics'>&lt;</span>FAIL<span class='generics'>&gt;</span><span class='generics'>&gt;</span> Success<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_IfSuccess_0" class="link"><div class="nowrap">IfSuccess
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>SUCCESS<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>FAIL<span class='generics'>&gt;</span><span class='generics'>&gt;</span> SuccessMap<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_ToString_0" class="link"><div class="nowrap">ToString
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_GetHashCode_0" class="link"><div class="nowrap">GetHashCode
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_CompareTo_0" class="link"><div class="nowrap">CompareTo
+
+<span class='parens'>(</span>object obj<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_Equals_0" class="link"><div class="nowrap">Equals
+
+<span class='parens'>(</span>object obj<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_SuccessToList_0" class="link"><div class="nowrap">SuccessToList
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_SuccessToArray_0" class="link"><div class="nowrap">SuccessToArray
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_FailToList_0" class="link"><div class="nowrap">FailToList
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_FailToArray_0" class="link"><div class="nowrap">FailToArray
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_ToSeq_0" class="link"><div class="nowrap">ToSeq
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_SuccessToSeq_0" class="link"><div class="nowrap">SuccessToSeq
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_FailToSeq_0" class="link"><div class="nowrap">FailToSeq
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_SuccessAsEnumerable_0" class="link"><div class="nowrap">SuccessAsEnumerable
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_FailAsEnumerable_0" class="link"><div class="nowrap">FailAsEnumerable
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_ToEff_0" class="link"><div class="nowrap">ToEff
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Seq<span class='generics'>&lt;</span>FAIL<span class='generics'>&gt;</span><span class='comma'>, </span>Error<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_ToAff_0" class="link"><div class="nowrap">ToAff
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Seq<span class='generics'>&lt;</span>FAIL<span class='generics'>&gt;</span><span class='comma'>, </span>Error<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_ToOption_0" class="link"><div class="nowrap">ToOption
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_ToEither_0" class="link"><div class="nowrap">ToEither
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_ToEitherUnsafe_0" class="link"><div class="nowrap">ToEitherUnsafe
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_ToTryOption_0" class="link"><div class="nowrap">ToTryOption
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_<_0" class="link"><div class="nowrap">&lt;
+<span class='parens'>(</span>Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span> rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_<=_0" class="link"><div class="nowrap">&lt;=
+<span class='parens'>(</span>Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span> rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_>_0" class="link"><div class="nowrap">&gt;
+<span class='parens'>(</span>Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span> rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_>=_0" class="link"><div class="nowrap">&gt;=
+<span class='parens'>(</span>Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span> rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_==_0" class="link"><div class="nowrap">==
+<span class='parens'>(</span>Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span> rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_!=_0" class="link"><div class="nowrap">!=
+<span class='parens'>(</span>Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span> rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span> rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_true_0" class="link"><div class="nowrap">true
+<span class='parens'>(</span>Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span> value<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_false_0" class="link"><div class="nowrap">false
+<span class='parens'>(</span>Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span> value<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_CompareTo_0" class="link"><div class="nowrap">CompareTo
+
+<span class='parens'>(</span>Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span> other<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_CompareTo_0" class="link"><div class="nowrap">CompareTo
+
+<span class='parens'>(</span>SUCCESS success<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_CompareTo_0" class="link"><div class="nowrap">CompareTo
+
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>FAIL<span class='generics'>&gt;</span> fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_Equals_0" class="link"><div class="nowrap">Equals
+
+<span class='parens'>(</span>SUCCESS success<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_Equals_0" class="link"><div class="nowrap">Equals
+
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>FAIL<span class='generics'>&gt;</span> fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_Equals_0" class="link"><div class="nowrap">Equals
+
+<span class='parens'>(</span>Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span> other<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_Count_0" class="link"><div class="nowrap">Count
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_Iter_0" class="link"><div class="nowrap">Iter
+
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span>SUCCESS<span class='generics'>&gt;</span> Success<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_BiIter_0" class="link"><div class="nowrap">BiIter
+
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span>SUCCESS<span class='generics'>&gt;</span> Success<span class='comma'>, </span>Action<span class='generics'>&lt;</span>FAIL<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_ForAll_0" class="link"><div class="nowrap">ForAll
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>SUCCESS<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Success<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_BiForAll_0" class="link"><div class="nowrap">BiForAll
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>SUCCESS<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Success<span class='comma'>, </span>Func<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_Fold_1" class="link"><div class="nowrap">Fold
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>S state<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>SUCCESS<span class='comma'>, </span>S<span class='generics'>&gt;</span> Success<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_BiFold_1" class="link"><div class="nowrap">BiFold
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>S state<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>SUCCESS<span class='comma'>, </span>S<span class='generics'>&gt;</span> Success<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>FAIL<span class='comma'>, </span>S<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_Exists_0" class="link"><div class="nowrap">Exists
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>SUCCESS<span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_BiExists_0" class="link"><div class="nowrap">BiExists
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>SUCCESS<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Success<span class='comma'>, </span>Func<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_Do_0" class="link"><div class="nowrap">Do
+
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span>SUCCESS<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_Map_1" class="link"><div class="nowrap">Map
+<span class='generics'>&lt;</span>Ret<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>SUCCESS<span class='comma'>, </span>Ret<span class='generics'>&gt;</span> mapper<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_BiMap_1" class="link"><div class="nowrap">BiMap
+<span class='generics'>&lt;</span>Ret<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>SUCCESS<span class='comma'>, </span>Ret<span class='generics'>&gt;</span> Success<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Seq<span class='generics'>&lt;</span>FAIL<span class='generics'>&gt;</span><span class='comma'>, </span>Ret<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_MapFail_1" class="link"><div class="nowrap">MapFail
+<span class='generics'>&lt;</span>Ret<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>Ret<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_BiMap_2" class="link"><div class="nowrap">BiMap
+<span class='generics'>&lt;</span>FAIL2<span class='comma'>, </span>SUCCESS2<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>SUCCESS<span class='comma'>, </span>SUCCESS2<span class='generics'>&gt;</span> Success<span class='comma'>, </span>Func<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>FAIL2<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_Select_1" class="link"><div class="nowrap">Select
+<span class='generics'>&lt;</span>U<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>SUCCESS<span class='comma'>, </span>U<span class='generics'>&gt;</span> map<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_Bind_1" class="link"><div class="nowrap">Bind
+<span class='generics'>&lt;</span>U<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>SUCCESS<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>U<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_SelectMany_2" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>U<span class='comma'>, </span>V<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>SUCCESS<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>U<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>SUCCESS<span class='comma'>, </span>U<span class='comma'>, </span>V<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_Filter_0" class="link"><div class="nowrap">Filter
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>SUCCESS<span class='comma'>, </span>bool<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Validation_2_Where_0" class="link"><div class="nowrap">Where
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>SUCCESS<span class='comma'>, </span>bool<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#LanguageExt_0_ValidationContext_3" class="link"><div class="nowrap">ValidationContext
+<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>SUCCESS<span class='comma'>, </span>Ret<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#ValidationContext_3_Fail_0" class="link"><div class="nowrap">Fail
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Seq<span class='generics'>&lt;</span>FAIL<span class='generics'>&gt;</span><span class='comma'>, </span>Ret<span class='generics'>&gt;</span> fail<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#LanguageExt_0_ValidationUnitContext_2" class="link"><div class="nowrap">ValidationUnitContext
+<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#ValidationUnitContext_2_Left_0" class="link"><div class="nowrap">Left
+
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span>Seq<span class='generics'>&lt;</span>FAIL<span class='generics'>&gt;</span><span class='generics'>&gt;</span> fail<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#LanguageExt_0_ValidationSeqExtensions_0" class="link"><div class="nowrap">ValidationSeqExtensions
+</div></a></li>
+<ul><li><a href="#ValidationSeqExtensions_0_Flatten_2" class="link"><div class="nowrap">Flatten
+<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span><span class='generics'>&gt;</span> self<span class='parens'>)</span></div></a></li>
+<li><a href="#ValidationSeqExtensions_0_Flatten_3" class="link"><div class="nowrap">Flatten
+<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span><span class='generics'>&gt;</span> self<span class='parens'>)</span></div></a></li>
+<li><a href="#ValidationSeqExtensions_0_Successes_2" class="link"><div class="nowrap">Successes
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this IEnumerable<span class='generics'>&lt;</span>Validation<span class='generics'>&lt;</span>F<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> vs<span class='parens'>)</span></div></a></li>
+<li><a href="#ValidationSeqExtensions_0_Fails_2" class="link"><div class="nowrap">Fails
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this IEnumerable<span class='generics'>&lt;</span>Validation<span class='generics'>&lt;</span>F<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> vs<span class='parens'>)</span></div></a></li>
+<li><a href="#ValidationSeqExtensions_0_Successes_2" class="link"><div class="nowrap">Successes
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Seq<span class='generics'>&lt;</span>Validation<span class='generics'>&lt;</span>F<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> vs<span class='parens'>)</span></div></a></li>
+<li><a href="#ValidationSeqExtensions_0_Fails_2" class="link"><div class="nowrap">Fails
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Seq<span class='generics'>&lt;</span>Validation<span class='generics'>&lt;</span>F<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> vs<span class='parens'>)</span></div></a></li>
+<li><a href="#ValidationSeqExtensions_0_Successes_3" class="link"><div class="nowrap">Successes
+<span class='generics'>&lt;</span>MonoidF<span class='comma'>, </span>F<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this IEnumerable<span class='generics'>&lt;</span>Validation<span class='generics'>&lt;</span>MonoidF<span class='comma'>, </span>F<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> vs<span class='parens'>)</span></div></a></li>
+<li><a href="#ValidationSeqExtensions_0_Fails_3" class="link"><div class="nowrap">Fails
+<span class='generics'>&lt;</span>MonoidF<span class='comma'>, </span>F<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this IEnumerable<span class='generics'>&lt;</span>Validation<span class='generics'>&lt;</span>MonoidF<span class='comma'>, </span>F<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> vs<span class='parens'>)</span></div></a></li>
+<li><a href="#ValidationSeqExtensions_0_Successes_3" class="link"><div class="nowrap">Successes
+<span class='generics'>&lt;</span>MonoidF<span class='comma'>, </span>F<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Seq<span class='generics'>&lt;</span>Validation<span class='generics'>&lt;</span>MonoidF<span class='comma'>, </span>F<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> vs<span class='parens'>)</span></div></a></li>
+<li><a href="#ValidationSeqExtensions_0_Fails_3" class="link"><div class="nowrap">Fails
+<span class='generics'>&lt;</span>MonoidF<span class='comma'>, </span>F<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Seq<span class='generics'>&lt;</span>Validation<span class='generics'>&lt;</span>MonoidF<span class='comma'>, </span>F<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> vs<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#LanguageExt_0_ValidationSeqGuardExtensions_0" class="link"><div class="nowrap">ValidationSeqGuardExtensions
+</div></a></li>
+<ul><li><a href="#ValidationSeqGuardExtensions_0_ToValidation_1" class="link"><div class="nowrap">ToValidation
+<span class='generics'>&lt;</span>FAIL<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Guard<span class='generics'>&lt;</span>FAIL<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#ValidationSeqGuardExtensions_0_SelectMany_2" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this Guard<span class='generics'>&lt;</span>FAIL<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
+            Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#ValidationSeqGuardExtensions_0_SelectMany_3" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this Guard<span class='generics'>&lt;</span>FAIL<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
+            Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>
+            Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#ValidationSeqGuardExtensions_0_SelectMany_2" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Guard<span class='generics'>&lt;</span>FAIL<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#ValidationSeqGuardExtensions_0_SelectMany_3" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            this Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Guard<span class='generics'>&lt;</span>FAIL<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Unit<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#LanguageExt_0_Prelude_0" class="link"><div class="nowrap">Prelude
+</div></a></li>
+<ul><li><a href="#Prelude_0_flatten_2" class="link"><div class="nowrap">flatten
+<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>SUCCESS<span class='generics'>&gt;</span><span class='generics'>&gt;</span> self<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#Validation_0_StateType_0" class="link"><div class="nowrap">StateType</div></a></li>
+<ul></ul>
+<li><a href="#LanguageExt_0_Validation_0" class="link"><div class="nowrap">Validation
+</div></a></li>
+<ul></ul></ul></div>
 <div class="interface">
 <div class="top"><p class="src"><span class="keyword">struct</span>
 <a id="LanguageExt_0_Validation_3" class="def">Validation</a>
@@ -24,13 +1184,13 @@
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">MonoidFail</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"></span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">FAIL</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"></span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">SUCCESS</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
 </div>
@@ -331,7 +1491,7 @@ Ret
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">Ret</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Return type</p>
 </span></td></tr>
@@ -372,7 +1532,7 @@ Ret
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">Ret</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Return type</p>
 </span></td></tr>
@@ -413,7 +1573,7 @@ Ret
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">Ret</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Return type</p>
 </span></td></tr>
@@ -1566,11 +2726,11 @@ bool
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">L</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Fail</p>
 </span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">R</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Success</p>
 </span></td></tr>
@@ -1613,11 +2773,11 @@ bool
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">L</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Fail</p>
 </span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">R</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Success</p>
 </span></td></tr>
@@ -1669,7 +2829,7 @@ Success:</p>
 </p></div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Aggregate state type</p>
 </span></td></tr>
@@ -1717,7 +2877,7 @@ Success:</p>
 </p></div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Aggregate state type</p>
 </span></td></tr>
@@ -1762,11 +2922,11 @@ bool
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">L</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Fail</p>
 </span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">R</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Success</p>
 </span></td></tr>
@@ -1807,11 +2967,11 @@ bool
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">L</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Fail</p>
 </span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">R</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Success</p>
 </span></td></tr>
@@ -1882,15 +3042,15 @@ Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </sp
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">L</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Fail</p>
 </span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">R</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Success</p>
 </span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">Ret</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Mapped Validation type</p>
 </span></td></tr>
@@ -1931,15 +3091,15 @@ Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </sp
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">L</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Fail</p>
 </span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">R</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Success</p>
 </span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">RRet</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Success return</p>
 </span></td></tr>
@@ -1985,11 +3145,11 @@ Validation<span class='generics'>&lt;</span>MonoidRet<span class='comma'>, </spa
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">MonoidRet</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Monad of Fail</p>
 </span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">Ret</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Fail return</p>
 </span></td></tr>
@@ -2027,15 +3187,15 @@ Validation<span class='generics'>&lt;</span>MonoidFail2<span class='comma'>, </s
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">MonoidFail2</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Monad of Fail</p>
 </span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">FAIL2</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Fail return</p>
 </span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">SUCCESS2</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Success return</p>
 </span></td></tr>
@@ -2076,15 +3236,15 @@ Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </sp
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">L</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Fail</p>
 </span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">TR</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Success</p>
 </span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">UR</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Mapped Validation type</p>
 </span></td></tr>
@@ -2754,11 +3914,11 @@ Validation<span class='generics'>&lt;</span>ERROR<span class='comma'>, </span>A<
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">ERROR</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Error type</p>
 </span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Value type</p>
 </span></td></tr>
@@ -2796,15 +3956,15 @@ Validation<span class='generics'>&lt;</span>MonoidError<span class='comma'>, </s
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">MonoidError</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Monoid for collecting the errors</p>
 </span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">ERROR</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Error type</p>
 </span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Value type</p>
 </span></td></tr>
@@ -2841,11 +4001,11 @@ Validation<span class='generics'>&lt;</span>ERROR<span class='comma'>, </span>A<
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">ERROR</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Error type</p>
 </span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Value type</p>
 </span></td></tr>
@@ -2882,11 +4042,11 @@ Validation<span class='generics'>&lt;</span>ERROR<span class='comma'>, </span>A<
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">ERROR</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Error type</p>
 </span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Value type</p>
 </span></td></tr>
@@ -2924,15 +4084,15 @@ Validation<span class='generics'>&lt;</span>MonoidError<span class='comma'>, </s
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">MonoidError</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Monoid for collecting the errors</p>
 </span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">ERROR</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Error type</p>
 </span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Value type</p>
 </span></td></tr>
@@ -4763,10 +5923,10 @@ Lst<span class='generics'>&lt;</span>FAIL<span class='generics'>&gt;</span>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">FAIL</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"></span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">SUCCESS</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
 </div>
@@ -5067,7 +6227,7 @@ Ret
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">Ret</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Return type</p>
 </span></td></tr>
@@ -5108,7 +6268,7 @@ Ret
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">Ret</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Return type</p>
 </span></td></tr>
@@ -6261,11 +7421,11 @@ bool
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">L</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Fail</p>
 </span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">R</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Success</p>
 </span></td></tr>
@@ -6308,11 +7468,11 @@ bool
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">L</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Fail</p>
 </span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">R</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Success</p>
 </span></td></tr>
@@ -6364,7 +7524,7 @@ Success:</p>
 </p></div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Aggregate state type</p>
 </span></td></tr>
@@ -6412,7 +7572,7 @@ Success:</p>
 </p></div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Aggregate state type</p>
 </span></td></tr>
@@ -6457,11 +7617,11 @@ bool
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">L</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Fail</p>
 </span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">R</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Success</p>
 </span></td></tr>
@@ -6502,11 +7662,11 @@ bool
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">L</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Fail</p>
 </span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">R</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Success</p>
 </span></td></tr>
@@ -6580,15 +7740,15 @@ Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>Ret
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">L</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Fail</p>
 </span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">R</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Success</p>
 </span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">Ret</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Mapped Validation type</p>
 </span></td></tr>
@@ -6629,15 +7789,15 @@ Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>Ret
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">L</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Fail</p>
 </span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">R</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Success</p>
 </span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">RRet</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Success return</p>
 </span></td></tr>
@@ -6682,7 +7842,7 @@ Validation<span class='generics'>&lt;</span>Ret<span class='comma'>, </span>SUCC
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">Ret</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Fail return</p>
 </span></td></tr>
@@ -6719,11 +7879,11 @@ Validation<span class='generics'>&lt;</span>FAIL2<span class='comma'>, </span>SU
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">FAIL2</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Fail return</p>
 </span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">SUCCESS2</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Success return</p>
 </span></td></tr>
@@ -6764,15 +7924,15 @@ Validation<span class='generics'>&lt;</span>FAIL<span class='comma'>, </span>U<s
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">L</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Fail</p>
 </span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">TR</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Success</p>
 </span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">UR</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Mapped Validation type</p>
 </span></td></tr>
@@ -7354,11 +8514,11 @@ IEnumerable<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">F</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Fail type</p>
 </span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Success type</p>
 </span></td></tr>
@@ -7395,11 +8555,11 @@ IEnumerable<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">F</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Fail type</p>
 </span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Success type</p>
 </span></td></tr>
@@ -7436,11 +8596,11 @@ Seq<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">F</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Fail type</p>
 </span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Success type</p>
 </span></td></tr>
@@ -7477,11 +8637,11 @@ Seq<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">F</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Fail type</p>
 </span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Success type</p>
 </span></td></tr>
@@ -7519,11 +8679,11 @@ IEnumerable<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">F</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Fail type</p>
 </span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Success type</p>
 </span></td></tr>
@@ -7561,11 +8721,11 @@ IEnumerable<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">F</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Fail type</p>
 </span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Success type</p>
 </span></td></tr>
@@ -7603,11 +8763,11 @@ Seq<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">F</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Fail type</p>
 </span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Success type</p>
 </span></td></tr>
@@ -7645,11 +8805,11 @@ Seq<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">F</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Fail type</p>
 </span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Success type</p>
 </span></td></tr>

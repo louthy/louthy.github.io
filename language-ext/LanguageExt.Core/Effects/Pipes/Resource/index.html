@@ -1,0 +1,1084 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>LanguageExt.Core\Effects\Pipes\Resource</title>
+<link href="style.css" rel="stylesheet" type="text/css"/></head>
+<body class="js-enabled"><div id="package-header"><ul class="links" id="page-menu"><li><a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Resource" class="link">Source</a></li>
+<li><a href="../index.html" class="link">Contents</a></li>
+<li><a href="/LanguageExt.Core/index.html" class="link">Index</a></li></ul>
+<p class="caption">LanguageExt.Core</p></div>
+<div id="content"><div id="module-header"><p class="caption"><a href="../../../index.html" class="link">LanguageExt.Core</a>
+<span> ► </span>
+<a href="../../index.html" class="link">Effects</a>
+<span> ► </span>
+<a href="../index.html" class="link">Pipes</a>
+<span> ► </span>
+<a href="index.html" class="link">Resource</a></p></div>
+<div id="table-of-contents"><p class="caption">Contents</p>
+<ul><li><a href="#LanguageExt.Pipes_0_Use_6" class="link"><div class="nowrap">Use
+<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>A<span class='generics'>&gt;</span></div></a></li>
+<ul></ul>
+<li><a href="#LanguageExt.Pipes_0_Use_7" class="link"><div class="nowrap">Use
+<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>X<span class='comma'>, </span>A<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#Use_7_Acquire_0" class="link"><div class="nowrap">Acquire</div></a></li>
+<li><a href="#Use_7_Release_0" class="link"><div class="nowrap">Release</div></a></li>
+<li><a href="#Use_7_Next_0" class="link"><div class="nowrap">Next</div></a></li>
+<li><a href="#Use_7_Use_0" class="link"><div class="nowrap">Use
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Aff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>X<span class='generics'>&gt;</span><span class='generics'>&gt;</span> acquire<span class='comma'>, </span>Func<span class='generics'>&lt;</span>X<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> release<span class='comma'>, </span>Func<span class='generics'>&lt;</span>X<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> next<span class='parens'>)</span></div></a></li>
+<li><a href="#Use_7_ToProxy_0" class="link"><div class="nowrap">ToProxy
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Use_7_Bind_1" class="link"><div class="nowrap">Bind
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Use_7_Map_1" class="link"><div class="nowrap">Map
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Use_7_For_2" class="link"><div class="nowrap">For
+<span class='generics'>&lt;</span>C1<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>DOut<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>C1<span class='comma'>, </span>C<span class='comma'>, </span>DIn<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Use_7_Action_1" class="link"><div class="nowrap">Action
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>B<span class='generics'>&gt;</span> rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#Use_7_ComposeRight_2" class="link"><div class="nowrap">ComposeRight
+<span class='generics'>&lt;</span>UOutA<span class='comma'>, </span>AUInA<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>UOut<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOutA<span class='comma'>, </span>AUInA<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> lhs<span class='parens'>)</span></div></a></li>
+<li><a href="#Use_7_ComposeRight_2" class="link"><div class="nowrap">ComposeRight
+<span class='generics'>&lt;</span>UOutA<span class='comma'>, </span>AUInA<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>UOut<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOutA<span class='comma'>, </span>AUInA<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>UIn<span class='generics'>&gt;</span><span class='generics'>&gt;</span> lhs<span class='parens'>)</span></div></a></li>
+<li><a href="#Use_7_ComposeLeft_2" class="link"><div class="nowrap">ComposeLeft
+<span class='generics'>&lt;</span>DInC<span class='comma'>, </span>DOutC<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>DOut<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>DInC<span class='comma'>, </span>DOutC<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#Use_7_ComposeLeft_2" class="link"><div class="nowrap">ComposeLeft
+<span class='generics'>&lt;</span>DInC<span class='comma'>, </span>DOutC<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>DOut<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DInC<span class='comma'>, </span>DOutC<span class='comma'>, </span>DIn<span class='generics'>&gt;</span><span class='generics'>&gt;</span> rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#Use_7_Reflect_0" class="link"><div class="nowrap">Reflect
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Use_7_Observe_0" class="link"><div class="nowrap">Observe
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Use_7_Deconstruct_0" class="link"><div class="nowrap">Deconstruct
+
+<span class='parens'>(</span>out Func<span class='generics'>&lt;</span>Aff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>X<span class='generics'>&gt;</span><span class='generics'>&gt;</span> acquire<span class='comma'>, </span>out Func<span class='generics'>&lt;</span>X<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> release<span class='comma'>, </span>out Func<span class='generics'>&lt;</span>X<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> next<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#LanguageExt.Pipes_0_Release_6" class="link"><div class="nowrap">Release
+<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>A<span class='generics'>&gt;</span></div></a></li>
+<ul></ul>
+<li><a href="#LanguageExt.Pipes_0_Release_7" class="link"><div class="nowrap">Release
+<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>X<span class='comma'>, </span>A<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#Release_7_Value_0" class="link"><div class="nowrap">Value</div></a></li>
+<li><a href="#Release_7_Next_0" class="link"><div class="nowrap">Next</div></a></li>
+<li><a href="#Release_7_Release_0" class="link"><div class="nowrap">Release
+<span class='parens'>(</span>X value<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> next<span class='parens'>)</span></div></a></li>
+<li><a href="#Release_7_ToProxy_0" class="link"><div class="nowrap">ToProxy
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Release_7_Bind_1" class="link"><div class="nowrap">Bind
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Release_7_Map_1" class="link"><div class="nowrap">Map
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Release_7_For_2" class="link"><div class="nowrap">For
+<span class='generics'>&lt;</span>C1<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>DOut<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>C1<span class='comma'>, </span>C<span class='comma'>, </span>DIn<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Release_7_Action_1" class="link"><div class="nowrap">Action
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>B<span class='generics'>&gt;</span> rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#Release_7_ComposeRight_2" class="link"><div class="nowrap">ComposeRight
+<span class='generics'>&lt;</span>UOutA<span class='comma'>, </span>AUInA<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>UOut<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOutA<span class='comma'>, </span>AUInA<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> lhs<span class='parens'>)</span></div></a></li>
+<li><a href="#Release_7_ComposeRight_2" class="link"><div class="nowrap">ComposeRight
+<span class='generics'>&lt;</span>UOutA<span class='comma'>, </span>AUInA<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>UOut<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOutA<span class='comma'>, </span>AUInA<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>UIn<span class='generics'>&gt;</span><span class='generics'>&gt;</span> lhs<span class='parens'>)</span></div></a></li>
+<li><a href="#Release_7_ComposeLeft_2" class="link"><div class="nowrap">ComposeLeft
+<span class='generics'>&lt;</span>DInC<span class='comma'>, </span>DOutC<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>DOut<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>DInC<span class='comma'>, </span>DOutC<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#Release_7_ComposeLeft_2" class="link"><div class="nowrap">ComposeLeft
+<span class='generics'>&lt;</span>DInC<span class='comma'>, </span>DOutC<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>DOut<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DInC<span class='comma'>, </span>DOutC<span class='comma'>, </span>DIn<span class='generics'>&gt;</span><span class='generics'>&gt;</span> rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#Release_7_Reflect_0" class="link"><div class="nowrap">Reflect
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Release_7_Observe_0" class="link"><div class="nowrap">Observe
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Release_7_Deconstruct_0" class="link"><div class="nowrap">Deconstruct
+
+<span class='parens'>(</span>out X value<span class='comma'>, </span>out Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> next<span class='parens'>)</span></div></a></li></ul></ul></div>
+<div class="interface">
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="LanguageExt.Pipes_0_Use_6" class="def">Use</a>
+<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Resource/CoreTypes.cs#L29" class="link">Source</a>
+<a href="#LanguageExt.Pipes_0_Use_6" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
+<div class="doc"><div><p>One of the algebraic cases of the <code>Proxy</code> type.  This type represents a resource using computation.  It is
+useful for tidying up resources explicitly (if required).</p>
+</div>
+<div><p>The <code>Proxy</code> system will tidy up resources automatically, however you must wait until the end of the
+computation.  This case allows earlier clean up.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">RT</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Aff system runtime</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">UOut</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Upstream out type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">UIn</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Upstream in type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">DIn</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Downstream in type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">DOut</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Downstream uut type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>The monadic bound variable - it doesn't flow up or down stream, it works just like any bound
+monadic variable.  If the effect represented by the <code>Proxy</code> ends, then this will be the result value.</p>
+<p>When composing <code>Proxy</code> sub-types (like <code>Producer</code>, <code>Pipe</code>, <code>Consumer</code>, etc.)</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="LanguageExt.Pipes_0_Use_7" class="def">Use</a>
+<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>X<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Resource/CoreTypes.cs#L51" class="link">Source</a>
+<a href="#LanguageExt.Pipes_0_Use_7" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
+<div class="doc"><div><p>One of the algebraic cases of the <code>Proxy</code> type.  This type represents a resource using computation.  It is
+useful for tidying up resources explicitly (if required).</p>
+</div>
+<div><p>The <code>Proxy</code> system will tidy up resources automatically, however you must wait until the end of the
+computation.  This case allows earlier clean up.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">RT</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Aff system runtime</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">UOut</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Upstream out type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">UIn</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Upstream in type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">DIn</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Downstream in type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">DOut</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Downstream uut type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>The monadic bound variable - it doesn't flow up or down stream, it works just like any bound
+monadic variable.  If the effect represented by the <code>Proxy</code> ends, then this will be the result value.</p>
+<p>When composing <code>Proxy</code> sub-types (like <code>Producer</code>, <code>Pipe</code>, <code>Consumer</code>, etc.)</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+<div class="subs methods"><p class="caption">Fields</p>
+<div class="top"><p class="src"><span class="keyword">field</span>
+Func<span class='generics'>&lt;</span>Aff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>X<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Use_7_Acquire_0" class="def">Acquire</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Resource/CoreTypes.cs#L54" class="link">Source</a>
+<a href="#Use_7_Acquire_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">field</span>
+Func<span class='generics'>&lt;</span>X<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="Use_7_Release_0" class="def">Release</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Resource/CoreTypes.cs#L55" class="link">Source</a>
+<a href="#Use_7_Release_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">field</span>
+Func<span class='generics'>&lt;</span>X<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Use_7_Next_0" class="def">Next</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Resource/CoreTypes.cs#L56" class="link">Source</a>
+<a href="#Use_7_Next_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+<div class="subs methods"><p class="caption">Constructors</p>
+<div class="top"><p class="src"><span class="keyword">constructor</span>
+<a id="Use_7_Use_0" class="def">Use</a>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Aff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>X<span class='generics'>&gt;</span><span class='generics'>&gt;</span> acquire<span class='comma'>, </span>Func<span class='generics'>&lt;</span>X<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> release<span class='comma'>, </span>Func<span class='generics'>&lt;</span>X<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> next<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Resource/CoreTypes.cs#L58" class="link">Source</a>
+<a href="#Use_7_Use_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Use_7_ToProxy_0" class="def">ToProxy</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Resource/CoreTypes.cs#L61" class="link">Source</a>
+<a href="#Use_7_ToProxy_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Use_7_Bind_1" class="def">Bind</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Resource/CoreTypes.cs#L64" class="link">Source</a>
+<a href="#Use_7_Bind_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Use_7_Map_1" class="def">Map</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Resource/CoreTypes.cs#L68" class="link">Source</a>
+<a href="#Use_7_Map_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>C1<span class='comma'>, </span>C<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Use_7_For_2" class="def">For</a>
+<span class='generics'>&lt;</span>C1<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>DOut<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>C1<span class='comma'>, </span>C<span class='comma'>, </span>DIn<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Resource/CoreTypes.cs#L72" class="link">Source</a>
+<a href="#Use_7_For_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Use_7_Action_1" class="def">Action</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>B<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Resource/CoreTypes.cs#L76" class="link">Source</a>
+<a href="#Use_7_Action_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOutA<span class='comma'>, </span>AUInA<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Use_7_ComposeRight_2" class="def">ComposeRight</a>
+<span class='generics'>&lt;</span>UOutA<span class='comma'>, </span>AUInA<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>UOut<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOutA<span class='comma'>, </span>AUInA<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> lhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Resource/CoreTypes.cs#L80" class="link">Source</a>
+<a href="#Use_7_ComposeRight_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOutA<span class='comma'>, </span>AUInA<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Use_7_ComposeRight_2" class="def">ComposeRight</a>
+<span class='generics'>&lt;</span>UOutA<span class='comma'>, </span>AUInA<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>UOut<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOutA<span class='comma'>, </span>AUInA<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>UIn<span class='generics'>&gt;</span><span class='generics'>&gt;</span> lhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Resource/CoreTypes.cs#L84" class="link">Source</a>
+<a href="#Use_7_ComposeRight_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DInC<span class='comma'>, </span>DOutC<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Use_7_ComposeLeft_2" class="def">ComposeLeft</a>
+<span class='generics'>&lt;</span>DInC<span class='comma'>, </span>DOutC<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>DOut<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>DInC<span class='comma'>, </span>DOutC<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Resource/CoreTypes.cs#L88" class="link">Source</a>
+<a href="#Use_7_ComposeLeft_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DInC<span class='comma'>, </span>DOutC<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Use_7_ComposeLeft_2" class="def">ComposeLeft</a>
+<span class='generics'>&lt;</span>DInC<span class='comma'>, </span>DOutC<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>DOut<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DInC<span class='comma'>, </span>DOutC<span class='comma'>, </span>DIn<span class='generics'>&gt;</span><span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Resource/CoreTypes.cs#L92" class="link">Source</a>
+<a href="#Use_7_ComposeLeft_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>DOut<span class='comma'>, </span>DIn<span class='comma'>, </span>UIn<span class='comma'>, </span>UOut<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Use_7_Reflect_0" class="def">Reflect</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Resource/CoreTypes.cs#L96" class="link">Source</a>
+<a href="#Use_7_Reflect_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Use_7_Observe_0" class="def">Observe</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Resource/CoreTypes.cs#L101" class="link">Source</a>
+<a href="#Use_7_Observe_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+void
+<a id="Use_7_Deconstruct_0" class="def">Deconstruct</a>
+
+<span class='parens'>(</span>out Func<span class='generics'>&lt;</span>Aff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>X<span class='generics'>&gt;</span><span class='generics'>&gt;</span> acquire<span class='comma'>, </span>out Func<span class='generics'>&lt;</span>X<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> release<span class='comma'>, </span>out Func<span class='generics'>&lt;</span>X<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> next<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Resource/CoreTypes.cs#L105" class="link">Source</a>
+<a href="#Use_7_Deconstruct_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="LanguageExt.Pipes_0_Release_6" class="def">Release</a>
+<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Resource/CoreTypes.cs#L153" class="link">Source</a>
+<a href="#LanguageExt.Pipes_0_Release_6" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
+<div class="doc"><div><p>One of the algebraic cases of the <code>Proxy</code> type.  This type represents a resource releasing computation.  It is
+useful for tidying up resources that have been used (explicitly).</p>
+</div>
+<div><p>The <code>Proxy</code> system will tidy up resources automatically, however you must wait until the end of the
+computation.  This case allows earlier clean up.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">RT</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Aff system runtime</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">UOut</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Upstream out type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">UIn</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Upstream in type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">DIn</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Downstream in type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">DOut</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Downstream uut type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>The monadic bound variable - it doesn't flow up or down stream, it works just like any bound
+monadic variable.  If the effect represented by the <code>Proxy</code> ends, then this will be the result value.</p>
+<p>When composing <code>Proxy</code> sub-types (like <code>Producer</code>, <code>Pipe</code>, <code>Consumer</code>, etc.)</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="LanguageExt.Pipes_0_Release_7" class="def">Release</a>
+<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>X<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Resource/CoreTypes.cs#L175" class="link">Source</a>
+<a href="#LanguageExt.Pipes_0_Release_7" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
+<div class="doc"><div><p>One of the algebraic cases of the <code>Proxy</code> type.  This type represents a resource releasing computation.  It is
+useful for tidying up resources that have been used (explicitly).</p>
+</div>
+<div><p>The <code>Proxy</code> system will tidy up resources automatically, however you must wait until the end of the
+computation.  This case allows earlier clean up.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">RT</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Aff system runtime</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">UOut</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Upstream out type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">UIn</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Upstream in type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">DIn</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Downstream in type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">DOut</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Downstream uut type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>The monadic bound variable - it doesn't flow up or down stream, it works just like any bound
+monadic variable.  If the effect represented by the <code>Proxy</code> ends, then this will be the result value.</p>
+<p>When composing <code>Proxy</code> sub-types (like <code>Producer</code>, <code>Pipe</code>, <code>Consumer</code>, etc.)</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+<div class="subs methods"><p class="caption">Fields</p>
+<div class="top"><p class="src"><span class="keyword">field</span>
+X
+<a id="Release_7_Value_0" class="def">Value</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Resource/CoreTypes.cs#L177" class="link">Source</a>
+<a href="#Release_7_Value_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">field</span>
+Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Release_7_Next_0" class="def">Next</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Resource/CoreTypes.cs#L178" class="link">Source</a>
+<a href="#Release_7_Next_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+<div class="subs methods"><p class="caption">Constructors</p>
+<div class="top"><p class="src"><span class="keyword">constructor</span>
+<a id="Release_7_Release_0" class="def">Release</a>
+<span class='parens'>(</span>X value<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> next<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Resource/CoreTypes.cs#L180" class="link">Source</a>
+<a href="#Release_7_Release_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Release_7_ToProxy_0" class="def">ToProxy</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Resource/CoreTypes.cs#L183" class="link">Source</a>
+<a href="#Release_7_ToProxy_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Release_7_Bind_1" class="def">Bind</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Resource/CoreTypes.cs#L186" class="link">Source</a>
+<a href="#Release_7_Bind_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Release_7_Map_1" class="def">Map</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Resource/CoreTypes.cs#L190" class="link">Source</a>
+<a href="#Release_7_Map_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>C1<span class='comma'>, </span>C<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Release_7_For_2" class="def">For</a>
+<span class='generics'>&lt;</span>C1<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>DOut<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>C1<span class='comma'>, </span>C<span class='comma'>, </span>DIn<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Resource/CoreTypes.cs#L194" class="link">Source</a>
+<a href="#Release_7_For_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Release_7_Action_1" class="def">Action</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>B<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Resource/CoreTypes.cs#L198" class="link">Source</a>
+<a href="#Release_7_Action_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOutA<span class='comma'>, </span>AUInA<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Release_7_ComposeRight_2" class="def">ComposeRight</a>
+<span class='generics'>&lt;</span>UOutA<span class='comma'>, </span>AUInA<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>UOut<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOutA<span class='comma'>, </span>AUInA<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> lhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Resource/CoreTypes.cs#L202" class="link">Source</a>
+<a href="#Release_7_ComposeRight_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOutA<span class='comma'>, </span>AUInA<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Release_7_ComposeRight_2" class="def">ComposeRight</a>
+<span class='generics'>&lt;</span>UOutA<span class='comma'>, </span>AUInA<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>UOut<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOutA<span class='comma'>, </span>AUInA<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>UIn<span class='generics'>&gt;</span><span class='generics'>&gt;</span> lhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Resource/CoreTypes.cs#L206" class="link">Source</a>
+<a href="#Release_7_ComposeRight_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DInC<span class='comma'>, </span>DOutC<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Release_7_ComposeLeft_2" class="def">ComposeLeft</a>
+<span class='generics'>&lt;</span>DInC<span class='comma'>, </span>DOutC<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>DOut<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>DInC<span class='comma'>, </span>DOutC<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Resource/CoreTypes.cs#L210" class="link">Source</a>
+<a href="#Release_7_ComposeLeft_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DInC<span class='comma'>, </span>DOutC<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Release_7_ComposeLeft_2" class="def">ComposeLeft</a>
+<span class='generics'>&lt;</span>DInC<span class='comma'>, </span>DOutC<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>DOut<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DInC<span class='comma'>, </span>DOutC<span class='comma'>, </span>DIn<span class='generics'>&gt;</span><span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Resource/CoreTypes.cs#L214" class="link">Source</a>
+<a href="#Release_7_ComposeLeft_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>DOut<span class='comma'>, </span>DIn<span class='comma'>, </span>UIn<span class='comma'>, </span>UOut<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Release_7_Reflect_0" class="def">Reflect</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Resource/CoreTypes.cs#L218" class="link">Source</a>
+<a href="#Release_7_Reflect_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Release_7_Observe_0" class="def">Observe</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Resource/CoreTypes.cs#L223" class="link">Source</a>
+<a href="#Release_7_Observe_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+void
+<a id="Release_7_Deconstruct_0" class="def">Deconstruct</a>
+
+<span class='parens'>(</span>out X value<span class='comma'>, </span>out Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOut<span class='comma'>, </span>UIn<span class='comma'>, </span>DIn<span class='comma'>, </span>DOut<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> next<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Resource/CoreTypes.cs#L227" class="link">Source</a>
+<a href="#Release_7_Deconstruct_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div></div></div></body></html>

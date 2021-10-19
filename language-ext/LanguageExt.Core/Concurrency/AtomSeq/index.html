@@ -1,0 +1,2848 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>LanguageExt.Core\Concurrency\AtomSeq</title>
+<link href="style.css" rel="stylesheet" type="text/css"/></head>
+<body class="js-enabled"><div id="package-header"><ul class="links" id="page-menu"><li><a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq" class="link">Source</a></li>
+<li><a href="../index.html" class="link">Contents</a></li>
+<li><a href="/LanguageExt.Core/index.html" class="link">Index</a></li></ul>
+<p class="caption">LanguageExt.Core</p></div>
+<div id="content"><div id="module-header"><p class="caption"><a href="../../index.html" class="link">LanguageExt.Core</a>
+<span> ► </span>
+<a href="../index.html" class="link">Concurrency</a>
+<span> ► </span>
+<a href="index.html" class="link">AtomSeq</a></p></div>
+<div id="table-of-contents"><p class="caption">Contents</p>
+<ul><li><a href="#LanguageExt_0_AtomSeq_1" class="link"><div class="nowrap">AtomSeq
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#AtomSeq_1_Empty = new Seq<A>(SeqEmptyInternal<A>.Default)_0" class="link"><div class="nowrap">Empty = new Seq&lt;A&gt;(SeqEmptyInternal&lt;A&gt;.Default)</div></a></li>
+<li><a href="#AtomSeq_1_AtomSeq_0" class="link"><div class="nowrap">AtomSeq
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_ToSeq_0" class="link"><div class="nowrap">ToSeq
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_Case_0" class="link"><div class="nowrap">Case</div></a></li>
+<li><a href="#AtomSeq_1_Deconstruct_0" class="link"><div class="nowrap">Deconstruct
+
+<span class='parens'>(</span>out A head<span class='comma'>, </span>out Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> tail<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_this_0" class="link"><div class="nowrap">this []</div></a></li>
+<li><a href="#AtomSeq_1_Swap_0" class="link"><div class="nowrap">Swap
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> swap<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_Add_0" class="link"><div class="nowrap">Add
+
+<span class='parens'>(</span>A value<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_Concat_0" class="link"><div class="nowrap">Concat
+
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> items<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_Concat_0" class="link"><div class="nowrap">Concat
+
+<span class='parens'>(</span>Lst<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> items<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_Concat_0" class="link"><div class="nowrap">Concat
+
+<span class='parens'>(</span>Set<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> items<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_Concat_0" class="link"><div class="nowrap">Concat
+
+<span class='parens'>(</span>HashSet<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> items<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_Concat_0" class="link"><div class="nowrap">Concat
+
+<span class='parens'>(</span>Arr<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> items<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_Concat_0" class="link"><div class="nowrap">Concat
+
+<span class='parens'>(</span>Stck<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> items<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_Concat_0" class="link"><div class="nowrap">Concat
+
+<span class='parens'>(</span>IReadOnlyCollection<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> items<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_Concat_0" class="link"><div class="nowrap">Concat
+
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_Head_0" class="link"><div class="nowrap">Head</div></a></li>
+<li><a href="#AtomSeq_1_Tail_0" class="link"><div class="nowrap">Tail</div></a></li>
+<li><a href="#AtomSeq_1_Init_0" class="link"><div class="nowrap">Init</div></a></li>
+<li><a href="#AtomSeq_1_HeadOrNone_0" class="link"><div class="nowrap">HeadOrNone
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_Last_0" class="link"><div class="nowrap">Last</div></a></li>
+<li><a href="#AtomSeq_1_LastOrNone_0" class="link"><div class="nowrap">LastOrNone
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_LastOrLeft_1" class="link"><div class="nowrap">LastOrLeft
+<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span>
+<span class='parens'>(</span>L Left<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_LastOrLeft_1" class="link"><div class="nowrap">LastOrLeft
+<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span> Left<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_LastOrInvalid_1" class="link"><div class="nowrap">LastOrInvalid
+<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span>
+<span class='parens'>(</span>F Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_LastOrInvalid_1" class="link"><div class="nowrap">LastOrInvalid
+<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_LastOrInvalid_2" class="link"><div class="nowrap">LastOrInvalid
+<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>F<span class='generics'>&gt;</span>
+<span class='parens'>(</span>F Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_LastOrInvalid_2" class="link"><div class="nowrap">LastOrInvalid
+<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>F<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_HeadOrInvalid_1" class="link"><div class="nowrap">HeadOrInvalid
+<span class='generics'>&lt;</span>Fail<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Fail fail<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_HeadOrInvalid_2" class="link"><div class="nowrap">HeadOrInvalid
+<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>Fail<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Fail fail<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_HeadOrLeft_1" class="link"><div class="nowrap">HeadOrLeft
+<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span>
+<span class='parens'>(</span>L left<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_HeadOrLeft_1" class="link"><div class="nowrap">HeadOrLeft
+<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span> Left<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_IsEmpty_0" class="link"><div class="nowrap">IsEmpty</div></a></li>
+<li><a href="#AtomSeq_1_Count_0" class="link"><div class="nowrap">Count</div></a></li>
+<li><a href="#AtomSeq_1_Length_0" class="link"><div class="nowrap">Length</div></a></li>
+<li><a href="#AtomSeq_1_AsEnumerable_0" class="link"><div class="nowrap">AsEnumerable
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_Match_1" class="link"><div class="nowrap">Match
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span> Empty<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> Tail<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_Match_1" class="link"><div class="nowrap">Match
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            Func<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span> Empty,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> Head,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> Tail<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_Match_1" class="link"><div class="nowrap">Match
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            Func<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span> Empty,
+            Func<span class='generics'>&lt;</span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> Seq<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_Match_1" class="link"><div class="nowrap">Match
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            Func<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span> Empty,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> Head,
+            Func<span class='generics'>&lt;</span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> Tail<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_Iter_0" class="link"><div class="nowrap">Iter
+
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_Map_1" class="link"><div class="nowrap">Map
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_MapInPlace_0" class="link"><div class="nowrap">MapInPlace
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_Select_1" class="link"><div class="nowrap">Select
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_Bind_1" class="link"><div class="nowrap">Bind
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_BindInPlace_1" class="link"><div class="nowrap">BindInPlace
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_SelectMany_2" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_Filter_0" class="link"><div class="nowrap">Filter
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_FilterInPlace_0" class="link"><div class="nowrap">FilterInPlace
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_Where_0" class="link"><div class="nowrap">Where
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_Fold_1" class="link"><div class="nowrap">Fold
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>S state<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_FoldBack_1" class="link"><div class="nowrap">FoldBack
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>S state<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_Exists_0" class="link"><div class="nowrap">Exists
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_ForAll_0" class="link"><div class="nowrap">ForAll
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_Any_0" class="link"><div class="nowrap">Any
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_Intersperse_0" class="link"><div class="nowrap">Intersperse
+
+<span class='parens'>(</span>A value<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_GetHashCode_0" class="link"><div class="nowrap">GetHashCode
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_CompareTo_0" class="link"><div class="nowrap">CompareTo
+
+<span class='parens'>(</span>object obj<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_ToString_0" class="link"><div class="nowrap">ToString
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_ToFullString_0" class="link"><div class="nowrap">ToFullString
+
+<span class='parens'>(</span>string separator = &quot;<span class='comma'>, </span>&quot;<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_ToFullArrayString_0" class="link"><div class="nowrap">ToFullArrayString
+
+<span class='parens'>(</span>string separator = &quot;<span class='comma'>, </span>&quot;<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_>_0" class="link"><div class="nowrap">&gt;
+<span class='parens'>(</span>AtomSeq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> x<span class='comma'>, </span>AtomSeq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> y<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_>=_0" class="link"><div class="nowrap">&gt;=
+<span class='parens'>(</span>AtomSeq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> x<span class='comma'>, </span>AtomSeq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> y<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_<_0" class="link"><div class="nowrap">&lt;
+<span class='parens'>(</span>AtomSeq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> x<span class='comma'>, </span>AtomSeq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> y<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_<=_0" class="link"><div class="nowrap">&lt;=
+<span class='parens'>(</span>AtomSeq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> x<span class='comma'>, </span>AtomSeq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> y<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_==_0" class="link"><div class="nowrap">==
+<span class='parens'>(</span>AtomSeq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> x<span class='comma'>, </span>AtomSeq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> y<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_!=_0" class="link"><div class="nowrap">!=
+<span class='parens'>(</span>AtomSeq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> x<span class='comma'>, </span>AtomSeq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> y<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_Equals_0" class="link"><div class="nowrap">Equals
+
+<span class='parens'>(</span>object obj<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_Equals_0" class="link"><div class="nowrap">Equals
+
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_Equals_0" class="link"><div class="nowrap">Equals
+
+<span class='parens'>(</span>AtomSeq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_Equals_1" class="link"><div class="nowrap">Equals
+<span class='generics'>&lt;</span>EqA<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_Equals_1" class="link"><div class="nowrap">Equals
+<span class='generics'>&lt;</span>EqA<span class='generics'>&gt;</span>
+<span class='parens'>(</span>AtomSeq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_Skip_0" class="link"><div class="nowrap">Skip
+
+<span class='parens'>(</span>int amount<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_Take_0" class="link"><div class="nowrap">Take
+
+<span class='parens'>(</span>int amount<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_TakeWhile_0" class="link"><div class="nowrap">TakeWhile
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_TakeWhile_0" class="link"><div class="nowrap">TakeWhile
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>int<span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_Inits_0" class="link"><div class="nowrap">Inits</div></a></li>
+<li><a href="#AtomSeq_1_NonEmptyInits_0" class="link"><div class="nowrap">NonEmptyInits</div></a></li>
+<li><a href="#AtomSeq_1_Tails_0" class="link"><div class="nowrap">Tails</div></a></li>
+<li><a href="#AtomSeq_1_NonEmptyTails_0" class="link"><div class="nowrap">NonEmptyTails</div></a></li>
+<li><a href="#AtomSeq_1_CompareTo_0" class="link"><div class="nowrap">CompareTo
+
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_CompareTo_0" class="link"><div class="nowrap">CompareTo
+
+<span class='parens'>(</span>AtomSeq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_CompareTo_1" class="link"><div class="nowrap">CompareTo
+<span class='generics'>&lt;</span>OrdA<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_CompareTo_1" class="link"><div class="nowrap">CompareTo
+<span class='generics'>&lt;</span>OrdA<span class='generics'>&gt;</span>
+<span class='parens'>(</span>AtomSeq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_Strict_0" class="link"><div class="nowrap">Strict
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_GetEnumerator_0" class="link"><div class="nowrap">GetEnumerator
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#AtomSeq_1_Cast_1" class="link"><div class="nowrap">Cast
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li></ul></ul></div>
+<div class="interface">
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="LanguageExt_0_AtomSeq_1" class="def">AtomSeq</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L19" class="link">Source</a>
+<a href="#LanguageExt_0_AtomSeq_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atoms provide a way to manage shared, synchronous, independent state without
+locks.  AtomSeq wraps the language-ext Seq, and makes sure all operations are atomic and thread-safe
+without resorting to locking</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+<div class="subs methods"><p class="caption">Fields</p>
+<div class="top"><p class="src"><span class="keyword">field</span>
+Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="AtomSeq_1_Empty = new Seq<A>(SeqEmptyInternal<A>.Default)_0" class="def">Empty = new Seq&lt;A&gt;(SeqEmptyInternal&lt;A&gt;.Default)</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L30" class="link">Source</a>
+<a href="#AtomSeq_1_Empty = new Seq<A>(SeqEmptyInternal<A>.Default)_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Empty sequence</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+<div class="subs methods"><p class="caption">Indexers</p>
+<div class="top"><p class="src"><span class="keyword">this</span>
+[
+A
+]
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L85" class="link">Source</a>
+<a href="#AtomSeq_1_this_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Indexer</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+<div class="subs methods"><p class="caption">Properties</p>
+<div class="top"><p class="src"><span class="keyword">property</span>
+object?
+<a id="AtomSeq_1_Case_0" class="def">Case</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L61" class="link">Source</a>
+<a href="#AtomSeq_1_Case_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Reference version for use in pattern-matching</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+A
+<a id="AtomSeq_1_Head_0" class="def">Head</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L449" class="link">Source</a>
+<a href="#AtomSeq_1_Head_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Head item in the sequence.  NOTE:  If <code>IsEmpty</code> is true then Head
+is undefined.  Call HeadOrNone() if for maximum safety.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="AtomSeq_1_Tail_0" class="def">Tail</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L458" class="link">Source</a>
+<a href="#AtomSeq_1_Tail_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Tail of the sequence</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="AtomSeq_1_Init_0" class="def">Init</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L467" class="link">Source</a>
+<a href="#AtomSeq_1_Init_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Get all items except the last one</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+A
+<a id="AtomSeq_1_Last_0" class="def">Last</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L489" class="link">Source</a>
+<a href="#AtomSeq_1_Last_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Last item in sequence.  Throws if no items in sequence</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+bool
+<a id="AtomSeq_1_IsEmpty_0" class="def">IsEmpty</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L650" class="link">Source</a>
+<a href="#AtomSeq_1_IsEmpty_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns true if the sequence is empty</p>
+</div>
+<div><p>For lazy streams this will have to peek at the first
+item.  So, the first item will be consumed.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+int
+<a id="AtomSeq_1_Count_0" class="def">Count</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L660" class="link">Source</a>
+<a href="#AtomSeq_1_Count_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns the number of items in the sequence</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Number of items in the sequence</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+int
+<a id="AtomSeq_1_Length_0" class="def">Length</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L670" class="link">Source</a>
+<a href="#AtomSeq_1_Length_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Alias of <code>Count</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Number of items in the sequence</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+Seq<span class='generics'>&lt;</span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="AtomSeq_1_Inits_0" class="def">Inits</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L1370" class="link">Source</a>
+<a href="#AtomSeq_1_Inits_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns all initial segments of the sequence, shortest first</p>
+</div>
+<div><p>Including the empty sequence</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Initial segments of the sequence</p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<pre><code> Seq(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;).Inits
+
+ &gt; Seq(Seq(), Seq(&quot;a&quot;), Seq(&quot;a&quot;, &quot;b&quot;), Seq(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;))
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+Seq<span class='generics'>&lt;</span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="AtomSeq_1_NonEmptyInits_0" class="def">NonEmptyInits</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L1387" class="link">Source</a>
+<a href="#AtomSeq_1_NonEmptyInits_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns all initial segments of the sequence, shortest first.</p>
+</div>
+<div><p>Not including the empty sequence</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Initial segments of the sequence</p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<pre><code> Seq(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;).Inits
+
+ &gt; Seq(Seq(&quot;a&quot;), Seq(&quot;a&quot;, &quot;b&quot;), Seq(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;))
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+Seq<span class='generics'>&lt;</span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="AtomSeq_1_Tails_0" class="def">Tails</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L1404" class="link">Source</a>
+<a href="#AtomSeq_1_Tails_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns all final segments of the argument, longest first.</p>
+</div>
+<div><p>Including the empty sequence</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Initial segments of the sequence</p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<pre><code> Seq(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;).Tails
+
+ &gt; Seq(Seq(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;), Seq(&quot;a&quot;, &quot;b&quot;), Seq(&quot;a&quot;), Seq())
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+Seq<span class='generics'>&lt;</span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="AtomSeq_1_NonEmptyTails_0" class="def">NonEmptyTails</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L1421" class="link">Source</a>
+<a href="#AtomSeq_1_NonEmptyTails_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns all final segments of the argument, longest first.</p>
+</div>
+<div><p>Not including the empty sequence</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Initial segments of the sequence</p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<pre><code> Seq(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;).Tails
+
+ &gt; Seq(Seq(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;), Seq(&quot;a&quot;, &quot;b&quot;), Seq(&quot;a&quot;))
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+<div class="subs methods"><p class="caption">Constructors</p>
+<div class="top"><p class="src"><span class="keyword">constructor</span>
+<a id="AtomSeq_1_AtomSeq_0" class="def">AtomSeq</a>
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L40" class="link">Source</a>
+<a href="#AtomSeq_1_AtomSeq_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Constructor from lazy sequence</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="AtomSeq_1_ToSeq_0" class="def">ToSeq</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L54" class="link">Source</a>
+<a href="#AtomSeq_1_ToSeq_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Convert to an immutable sequence</p>
+</div>
+<div><p>This is effectively a zero cost operation, not even a single allocation</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+void
+<a id="AtomSeq_1_Deconstruct_0" class="def">Deconstruct</a>
+
+<span class='parens'>(</span>out A head<span class='comma'>, </span>out Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> tail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L75" class="link">Source</a>
+<a href="#AtomSeq_1_Deconstruct_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<a id="AtomSeq_1_Swap_0" class="def">Swap</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> swap<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L99" class="link">Source</a>
+<a href="#AtomSeq_1_Swap_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically swap the underlying Seq.  Allows for multiple operations on the Seq in an entirely
+transactional and atomic way.</p>
+</div>
+<div><p>Any functions passed as arguments may be run multiple times if there are multiple threads competing
+to update this data structure.  Therefore the functions must be idempotent and it's advised that you spend
+as little time performing the injected behaviours as possible to avoid repeated attempts</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">swap</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Swap function, maps the current state of the AtomSeq to a new state</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<a id="AtomSeq_1_Add_0" class="def">Add</a>
+
+<span class='parens'>(</span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L160" class="link">Source</a>
+<a href="#AtomSeq_1_Add_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Add an item to the end of the sequence</p>
+</div>
+<div><p>Forces evaluation of the entire lazy sequence so the item
+can be appended</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<a id="AtomSeq_1_Concat_0" class="def">Concat</a>
+
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> items<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L186" class="link">Source</a>
+<a href="#AtomSeq_1_Concat_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Add a range of items to the end of the sequence</p>
+</div>
+<div><p>Forces evaluation of the entire lazy sequence so the items
+can be appended.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<a id="AtomSeq_1_Concat_0" class="def">Concat</a>
+
+<span class='parens'>(</span>Lst<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> items<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L206" class="link">Source</a>
+<a href="#AtomSeq_1_Concat_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Add a range of items to the end of the sequence</p>
+</div>
+<div><p>Forces evaluation of the entire lazy sequence so the items
+can be appended.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<a id="AtomSeq_1_Concat_0" class="def">Concat</a>
+
+<span class='parens'>(</span>Set<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> items<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L225" class="link">Source</a>
+<a href="#AtomSeq_1_Concat_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Add a range of items to the end of the sequence</p>
+</div>
+<div><p>Forces evaluation of the entire lazy sequence so the items
+can be appended.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<a id="AtomSeq_1_Concat_0" class="def">Concat</a>
+
+<span class='parens'>(</span>HashSet<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> items<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L244" class="link">Source</a>
+<a href="#AtomSeq_1_Concat_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Add a range of items to the end of the sequence</p>
+</div>
+<div><p>Forces evaluation of the entire lazy sequence so the items
+can be appended.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<a id="AtomSeq_1_Concat_0" class="def">Concat</a>
+
+<span class='parens'>(</span>Arr<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> items<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L263" class="link">Source</a>
+<a href="#AtomSeq_1_Concat_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Add a range of items to the end of the sequence</p>
+</div>
+<div><p>Forces evaluation of the entire lazy sequence so the items
+can be appended.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<a id="AtomSeq_1_Concat_0" class="def">Concat</a>
+
+<span class='parens'>(</span>Stck<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> items<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L280" class="link">Source</a>
+<a href="#AtomSeq_1_Concat_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Add a range of items to the end of the sequence</p>
+</div>
+<div><p>Forces evaluation of the entire lazy sequence so the items
+can be appended.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<a id="AtomSeq_1_Concat_0" class="def">Concat</a>
+
+<span class='parens'>(</span>IReadOnlyCollection<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> items<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L298" class="link">Source</a>
+<a href="#AtomSeq_1_Concat_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Add a range of items to the end of the sequence</p>
+</div>
+<div><p>Forces evaluation of the entire lazy sequence so the items
+can be appended.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<a id="AtomSeq_1_Concat_0" class="def">Concat</a>
+
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L317" class="link">Source</a>
+<a href="#AtomSeq_1_Concat_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Add a range of items to the end of the sequence</p>
+</div>
+<div><p>Forces evaluation of the entire lazy sequence so the items
+can be appended.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Option<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="AtomSeq_1_HeadOrNone_0" class="def">HeadOrNone</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L476" class="link">Source</a>
+<a href="#AtomSeq_1_HeadOrNone_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Head of the sequence if this node isn't the empty node</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Option<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="AtomSeq_1_LastOrNone_0" class="def">LastOrNone</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L498" class="link">Source</a>
+<a href="#AtomSeq_1_LastOrNone_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Last item in sequence.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Either<span class='generics'>&lt;</span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="AtomSeq_1_LastOrLeft_1" class="def">LastOrLeft</a>
+<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span>
+<span class='parens'>(</span>L Left<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L511" class="link">Source</a>
+<a href="#AtomSeq_1_LastOrLeft_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Last item in sequence.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Either<span class='generics'>&lt;</span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="AtomSeq_1_LastOrLeft_1" class="def">LastOrLeft</a>
+<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span> Left<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L524" class="link">Source</a>
+<a href="#AtomSeq_1_LastOrLeft_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Last item in sequence.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Validation<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="AtomSeq_1_LastOrInvalid_1" class="def">LastOrInvalid</a>
+<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span>
+<span class='parens'>(</span>F Fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L537" class="link">Source</a>
+<a href="#AtomSeq_1_LastOrInvalid_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Last item in sequence.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Validation<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="AtomSeq_1_LastOrInvalid_1" class="def">LastOrInvalid</a>
+<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span> Fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L550" class="link">Source</a>
+<a href="#AtomSeq_1_LastOrInvalid_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Last item in sequence.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="AtomSeq_1_LastOrInvalid_2" class="def">LastOrInvalid</a>
+<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>F<span class='generics'>&gt;</span>
+<span class='parens'>(</span>F Fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L563" class="link">Source</a>
+<a href="#AtomSeq_1_LastOrInvalid_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> MonoidFail : struct, Monoid&lt;F&gt;, Eq&lt;F&gt;</span></div></div></p>
+<div class="doc"><div><p>Last item in sequence.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="AtomSeq_1_LastOrInvalid_2" class="def">LastOrInvalid</a>
+<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>F<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span> Fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L576" class="link">Source</a>
+<a href="#AtomSeq_1_LastOrInvalid_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> MonoidFail : struct, Monoid&lt;F&gt;, Eq&lt;F&gt;</span></div></div></p>
+<div class="doc"><div><p>Last item in sequence.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Validation<span class='generics'>&lt;</span>Fail<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="AtomSeq_1_HeadOrInvalid_1" class="def">HeadOrInvalid</a>
+<span class='generics'>&lt;</span>Fail<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Fail fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L592" class="link">Source</a>
+<a href="#AtomSeq_1_HeadOrInvalid_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Head of the sequence if this node isn't the empty node or fail</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Fail</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"></span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">fail</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Fail case</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Head of the sequence or fail</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Validation<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>Fail<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="AtomSeq_1_HeadOrInvalid_2" class="def">HeadOrInvalid</a>
+<span class='generics'>&lt;</span>MonoidFail<span class='comma'>, </span>Fail<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Fail fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L605" class="link">Source</a>
+<a href="#AtomSeq_1_HeadOrInvalid_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> MonoidFail : struct, Monoid&lt;Fail&gt;, Eq&lt;Fail&gt;</span></div></div></p>
+<div class="doc"><div><p>Head of the sequence</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Either<span class='generics'>&lt;</span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="AtomSeq_1_HeadOrLeft_1" class="def">HeadOrLeft</a>
+<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span>
+<span class='parens'>(</span>L left<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L621" class="link">Source</a>
+<a href="#AtomSeq_1_HeadOrLeft_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Head of the sequence if this node isn't the empty node or left</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">L</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"></span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">left</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Left case</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Head of the sequence or left</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Either<span class='generics'>&lt;</span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="AtomSeq_1_HeadOrLeft_1" class="def">HeadOrLeft</a>
+<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span> Left<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L633" class="link">Source</a>
+<a href="#AtomSeq_1_HeadOrLeft_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Head of the sequence if this node isn't the empty node</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IEnumerable<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="AtomSeq_1_AsEnumerable_0" class="def">AsEnumerable</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L679" class="link">Source</a>
+<a href="#AtomSeq_1_AsEnumerable_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Stream as an enumerable</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+B
+<a id="AtomSeq_1_Match_1" class="def">Match</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span> Empty<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> Tail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L691" class="link">Source</a>
+<a href="#AtomSeq_1_Match_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Match empty sequence, or multi-item sequence</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Return value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Empty</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Match for an empty list</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Tail</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Match for a non-empty</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Result of match function invoked</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+B
+<a id="AtomSeq_1_Match_1" class="def">Match</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            Func<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span> Empty,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> Head,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> Tail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L708" class="link">Source</a>
+<a href="#AtomSeq_1_Match_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Match empty sequence, or one item sequence, or multi-item sequence</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Return value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Empty</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Match for an empty list</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Tail</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Match for a non-empty</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Result of match function invoked</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+B
+<a id="AtomSeq_1_Match_1" class="def">Match</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            Func<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span> Empty,
+            Func<span class='generics'>&lt;</span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> Seq<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L730" class="link">Source</a>
+<a href="#AtomSeq_1_Match_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Match empty sequence, or multi-item sequence</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Return value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Empty</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Match for an empty list</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Sequence</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Match for a non-empty</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Result of match function invoked</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+B
+<a id="AtomSeq_1_Match_1" class="def">Match</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            Func<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span> Empty,
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> Head,
+            Func<span class='generics'>&lt;</span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> Tail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L749" class="link">Source</a>
+<a href="#AtomSeq_1_Match_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Match empty sequence, or one item sequence, or multi-item sequence</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Return value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Empty</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Match for an empty list</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Tail</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Match for a non-empty</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Result of match function invoked</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<a id="AtomSeq_1_Iter_0" class="def">Iter</a>
+
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L770" class="link">Source</a>
+<a href="#AtomSeq_1_Iter_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Impure iteration of the bound values in the structure</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Returns the original unmodified structure</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Seq<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<a id="AtomSeq_1_Map_1" class="def">Map</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L780" class="link">Source</a>
+<a href="#AtomSeq_1_Map_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Map the sequence using the function provided</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"></span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Mapped sequence</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<a id="AtomSeq_1_MapInPlace_0" class="def">MapInPlace</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L802" class="link">Source</a>
+<a href="#AtomSeq_1_MapInPlace_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Map the sequence using the function provided</p>
+</div>
+<div><p>Any functions passed as arguments may be run multiple times if there are multiple threads competing
+to update this data structure.  Therefore the functions must be idempotent and it's advised that you spend
+as little time performing the injected behaviours as possible to avoid repeated attempts</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"></span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Mapped sequence</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Seq<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<a id="AtomSeq_1_Select_1" class="def">Select</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L827" class="link">Source</a>
+<a href="#AtomSeq_1_Select_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Map the sequence using the function provided</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"></span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Mapped sequence</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Seq<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<a id="AtomSeq_1_Bind_1" class="def">Bind</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L838" class="link">Source</a>
+<a href="#AtomSeq_1_Bind_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monadic bind (flatmap) of the sequence</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound return value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bind function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Flatmapped sequence</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<a id="AtomSeq_1_BindInPlace_1" class="def">BindInPlace</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L863" class="link">Source</a>
+<a href="#AtomSeq_1_BindInPlace_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monadic bind (flatmap) of the sequence</p>
+</div>
+<div><p>Any functions passed as arguments may be run multiple times if there are multiple threads competing
+to update this data structure.  Therefore the functions must be idempotent and it's advised that you spend
+as little time performing the injected behaviours as possible to avoid repeated attempts</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound return value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bind function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Flat-mapped sequence</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Seq<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<a id="AtomSeq_1_SelectMany_2" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L887" class="link">Source</a>
+<a href="#AtomSeq_1_SelectMany_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monadic bind (flatmap) of the sequence</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound return value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">bind</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bind function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Flatmapped sequence</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="AtomSeq_1_Filter_0" class="def">Filter</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L908" class="link">Source</a>
+<a href="#AtomSeq_1_Filter_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Filter the items in the sequence</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate to apply to the items</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Filtered sequence</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<a id="AtomSeq_1_FilterInPlace_0" class="def">FilterInPlace</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L932" class="link">Source</a>
+<a href="#AtomSeq_1_FilterInPlace_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Filter the items in the sequence</p>
+</div>
+<div><p>Any functions passed as arguments may be run multiple times if there are multiple threads competing
+to update this data structure.  Therefore the functions must be idempotent and it's advised that you spend
+as little time performing the injected behaviours as possible to avoid repeated attempts</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate to apply to the items</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Filtered sequence</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="AtomSeq_1_Where_0" class="def">Where</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L960" class="link">Source</a>
+<a href="#AtomSeq_1_Where_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Filter the items in the sequence</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate to apply to the items</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Filtered sequence</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+S
+<a id="AtomSeq_1_Fold_1" class="def">Fold</a>
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>S state<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L972" class="link">Source</a>
+<a href="#AtomSeq_1_Fold_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Fold the sequence from the first item to the last</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>State type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">state</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Initial state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Fold function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Aggregated state</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+S
+<a id="AtomSeq_1_FoldBack_1" class="def">FoldBack</a>
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>S state<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L986" class="link">Source</a>
+<a href="#AtomSeq_1_FoldBack_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Fold the sequence from the last item to the first.  For
+sequences that are not lazy and are less than 5000 items
+long, FoldBackRec is called instead, because it is faster.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>State type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">state</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Initial state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Fold function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Aggregated state</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="AtomSeq_1_Exists_0" class="def">Exists</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L998" class="link">Source</a>
+<a href="#AtomSeq_1_Exists_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns true if the supplied predicate returns true for any
+item in the sequence.  False otherwise.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate to apply</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if the supplied predicate returns true for any
+item in the sequence.  False otherwise.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="AtomSeq_1_ForAll_0" class="def">ForAll</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L1012" class="link">Source</a>
+<a href="#AtomSeq_1_ForAll_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns true if the supplied predicate returns true for all
+items in the sequence.  False otherwise.  If there is an
+empty sequence then true is returned.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate to apply</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if the supplied predicate returns true for all
+items in the sequence.  False otherwise.  If there is an
+empty sequence then true is returned.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="AtomSeq_1_Any_0" class="def">Any</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L1021" class="link">Source</a>
+<a href="#AtomSeq_1_Any_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns true if the sequence has items in it</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if the sequence has items in it</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<a id="AtomSeq_1_Intersperse_0" class="def">Intersperse</a>
+
+<span class='parens'>(</span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L1033" class="link">Source</a>
+<a href="#AtomSeq_1_Intersperse_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Inject a value in between each item in the sequence</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Sequence to inject values into</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">value</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Item to inject</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A sequence with the values injected</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+int
+<a id="AtomSeq_1_GetHashCode_0" class="def">GetHashCode</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L1062" class="link">Source</a>
+<a href="#AtomSeq_1_GetHashCode_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Get the hash code for all of the items in the sequence, or 0 if empty</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+int
+<a id="AtomSeq_1_CompareTo_0" class="def">CompareTo</a>
+
+<span class='parens'>(</span>object obj<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L1067" class="link">Source</a>
+<a href="#AtomSeq_1_CompareTo_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+string
+<a id="AtomSeq_1_ToString_0" class="def">ToString</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L1083" class="link">Source</a>
+<a href="#AtomSeq_1_ToString_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Format the collection as <code>[a, b, c, ...]</code>
+The elipsis is used for collections over 50 items
+To get a formatted string with all the items, use <code>ToFullString</code>
+or <code>ToFullArrayString</code>.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+string
+<a id="AtomSeq_1_ToFullString_0" class="def">ToFullString</a>
+
+<span class='parens'>(</span>string separator = &quot;<span class='comma'>, </span>&quot;<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L1092" class="link">Source</a>
+<a href="#AtomSeq_1_ToFullString_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Format the collection as <code>a, b, c, ...</code></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+string
+<a id="AtomSeq_1_ToFullArrayString_0" class="def">ToFullArrayString</a>
+
+<span class='parens'>(</span>string separator = &quot;<span class='comma'>, </span>&quot;<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L1099" class="link">Source</a>
+<a href="#AtomSeq_1_ToFullArrayString_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Format the collection as <code>[a, b, c, ...]</code></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="AtomSeq_1_Equals_0" class="def">Equals</a>
+
+<span class='parens'>(</span>object obj<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L1148" class="link">Source</a>
+<a href="#AtomSeq_1_Equals_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Equality test</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="AtomSeq_1_Equals_0" class="def">Equals</a>
+
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L1160" class="link">Source</a>
+<a href="#AtomSeq_1_Equals_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Equality test</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="AtomSeq_1_Equals_0" class="def">Equals</a>
+
+<span class='parens'>(</span>AtomSeq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L1168" class="link">Source</a>
+<a href="#AtomSeq_1_Equals_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Equality test</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="AtomSeq_1_Equals_1" class="def">Equals</a>
+<span class='generics'>&lt;</span>EqA<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L1176" class="link">Source</a>
+<a href="#AtomSeq_1_Equals_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> EqA : struct, Eq&lt;A&gt;</span></div></div></p>
+<div class="doc"><div><p>Equality test</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="AtomSeq_1_Equals_1" class="def">Equals</a>
+<span class='generics'>&lt;</span>EqA<span class='generics'>&gt;</span>
+<span class='parens'>(</span>AtomSeq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L1208" class="link">Source</a>
+<a href="#AtomSeq_1_Equals_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> EqA : struct, Eq&lt;A&gt;</span></div></div></p>
+<div class="doc"><div><p>Equality test</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<a id="AtomSeq_1_Skip_0" class="def">Skip</a>
+
+<span class='parens'>(</span>int amount<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L1240" class="link">Source</a>
+<a href="#AtomSeq_1_Skip_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Skip count items</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<a id="AtomSeq_1_Take_0" class="def">Take</a>
+
+<span class='parens'>(</span>int amount<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L1267" class="link">Source</a>
+<a href="#AtomSeq_1_Take_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Take count items</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<a id="AtomSeq_1_TakeWhile_0" class="def">TakeWhile</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L1300" class="link">Source</a>
+<a href="#AtomSeq_1_TakeWhile_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Iterate the sequence, yielding items if they match the predicate
+provided, and stopping as soon as one doesn't</p>
+</div>
+<div><p>Any functions passed as arguments may be run multiple times if there are multiple threads competing
+to update this data structure.  Therefore the functions must be idempotent and it's advised that you spend
+as little time performing the injected behaviours as possible to avoid repeated attempts</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A new sequence with the first items that match the
+predicate</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<a id="AtomSeq_1_TakeWhile_0" class="def">TakeWhile</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>int<span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L1333" class="link">Source</a>
+<a href="#AtomSeq_1_TakeWhile_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Iterate the sequence, yielding items if they match the predicate
+provided, and stopping as soon as one doesn't.  An index value is
+also provided to the predicate function.</p>
+</div>
+<div><p>Any functions passed as arguments may be run multiple times if there are multiple threads competing
+to update this data structure.  Therefore the functions must be idempotent and it's advised that you spend
+as little time performing the injected behaviours as possible to avoid repeated attempts</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A new sequence with the first items that match the
+predicate</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+int
+<a id="AtomSeq_1_CompareTo_0" class="def">CompareTo</a>
+
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L1427" class="link">Source</a>
+<a href="#AtomSeq_1_CompareTo_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Compare to another sequence</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+int
+<a id="AtomSeq_1_CompareTo_0" class="def">CompareTo</a>
+
+<span class='parens'>(</span>AtomSeq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L1434" class="link">Source</a>
+<a href="#AtomSeq_1_CompareTo_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Compare to another sequence</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+int
+<a id="AtomSeq_1_CompareTo_1" class="def">CompareTo</a>
+<span class='generics'>&lt;</span>OrdA<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L1441" class="link">Source</a>
+<a href="#AtomSeq_1_CompareTo_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> OrdA : struct, Ord&lt;A&gt;</span></div></div></p>
+<div class="doc"><div><p>Compare to another sequence</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+int
+<a id="AtomSeq_1_CompareTo_1" class="def">CompareTo</a>
+<span class='generics'>&lt;</span>OrdA<span class='generics'>&gt;</span>
+<span class='parens'>(</span>AtomSeq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L1466" class="link">Source</a>
+<a href="#AtomSeq_1_CompareTo_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> OrdA : struct, Ord&lt;A&gt;</span></div></div></p>
+<div class="doc"><div><p>Compare to another sequence</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<a id="AtomSeq_1_Strict_0" class="def">Strict</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L1490" class="link">Source</a>
+<a href="#AtomSeq_1_Strict_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Force all items lazy to stream</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IEnumerator<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="AtomSeq_1_GetEnumerator_0" class="def">GetEnumerator</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L1494" class="link">Source</a>
+<a href="#AtomSeq_1_GetEnumerator_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Seq<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<a id="AtomSeq_1_Cast_1" class="def">Cast</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L1504" class="link">Source</a>
+<a href="#AtomSeq_1_Cast_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+<div class="subs methods"><p class="caption">Operators</p>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="AtomSeq_1_>_0" class="def">&gt;</a>
+<span class='parens'>(</span>AtomSeq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> x<span class='comma'>, </span>AtomSeq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> y<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L1106" class="link">Source</a>
+<a href="#AtomSeq_1_>_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Ordering operator</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="AtomSeq_1_>=_0" class="def">&gt;=</a>
+<span class='parens'>(</span>AtomSeq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> x<span class='comma'>, </span>AtomSeq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> y<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L1113" class="link">Source</a>
+<a href="#AtomSeq_1_>=_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Ordering operator</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="AtomSeq_1_<_0" class="def">&lt;</a>
+<span class='parens'>(</span>AtomSeq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> x<span class='comma'>, </span>AtomSeq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> y<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L1120" class="link">Source</a>
+<a href="#AtomSeq_1_<_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Ordering  operator</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="AtomSeq_1_<=_0" class="def">&lt;=</a>
+<span class='parens'>(</span>AtomSeq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> x<span class='comma'>, </span>AtomSeq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> y<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L1127" class="link">Source</a>
+<a href="#AtomSeq_1_<=_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Ordering  operator</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="AtomSeq_1_==_0" class="def">==</a>
+<span class='parens'>(</span>AtomSeq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> x<span class='comma'>, </span>AtomSeq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> y<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L1134" class="link">Source</a>
+<a href="#AtomSeq_1_==_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Equality operator</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="AtomSeq_1_!=_0" class="def">!=</a>
+<span class='parens'>(</span>AtomSeq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> x<span class='comma'>, </span>AtomSeq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> y<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/AtomSeq/AtomSeq.cs#L1141" class="link">Source</a>
+<a href="#AtomSeq_1_!=_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Non-equality operator</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+</div></div></div></body></html>

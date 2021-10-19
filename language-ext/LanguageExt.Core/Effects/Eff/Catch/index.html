@@ -1,0 +1,548 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>LanguageExt.Core\Effects\Eff\Catch</title>
+<link href="style.css" rel="stylesheet" type="text/css"/></head>
+<body class="js-enabled"><div id="package-header"><ul class="links" id="page-menu"><li><a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Eff/Catch" class="link">Source</a></li>
+<li><a href="../index.html" class="link">Contents</a></li>
+<li><a href="/LanguageExt.Core/index.html" class="link">Index</a></li></ul>
+<p class="caption">LanguageExt.Core</p></div>
+<div id="content"><div id="module-header"><p class="caption"><a href="../../../index.html" class="link">LanguageExt.Core</a>
+<span> ► </span>
+<a href="../../index.html" class="link">Effects</a>
+<span> ► </span>
+<a href="../index.html" class="link">Eff</a>
+<span> ► </span>
+<a href="index.html" class="link">Catch</a></p></div>
+<div id="table-of-contents"><p class="caption">Contents</p>
+<ul><li><a href="#LanguageExt_0_EffCatch_1" class="link"><div class="nowrap">EffCatch
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#EffCatch_1_EffCatch_0" class="link"><div class="nowrap">EffCatch
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> fail<span class='parens'>)</span></div></a></li>
+<li><a href="#EffCatch_1_EffCatch_0" class="link"><div class="nowrap">EffCatch
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> fail<span class='parens'>)</span></div></a></li>
+<li><a href="#EffCatch_1_Run_0" class="link"><div class="nowrap">Run
+
+<span class='parens'>(</span>Error error<span class='parens'>)</span></div></a></li>
+<li><a href="#EffCatch_1_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>EffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>EffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#EffCatch_1_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>CatchValue<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>EffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#EffCatch_1_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>CatchError ma<span class='comma'>, </span>EffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#EffCatch_1_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>EffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>CatchValue<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#EffCatch_1_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>EffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>CatchError mb<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#LanguageExt_0_EffCatch_2" class="link"><div class="nowrap">EffCatch
+<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#EffCatch_2_EffCatch_0" class="link"><div class="nowrap">EffCatch
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> fail<span class='parens'>)</span></div></a></li>
+<li><a href="#EffCatch_2_EffCatch_0" class="link"><div class="nowrap">EffCatch
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> fail<span class='parens'>)</span></div></a></li>
+<li><a href="#EffCatch_2_Run_0" class="link"><div class="nowrap">Run
+
+<span class='parens'>(</span>RT env<span class='comma'>, </span>Error error<span class='parens'>)</span></div></a></li>
+<li><a href="#EffCatch_2_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>CatchValue<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>EffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#EffCatch_2_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>CatchError ma<span class='comma'>, </span>EffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#EffCatch_2_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>EffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>CatchValue<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#EffCatch_2_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>EffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>CatchError mb<span class='parens'>)</span></div></a></li>
+<li><a href="#EffCatch_2_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>EffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>EffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#EffCatch_2_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>EffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>EffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#EffCatch_2_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>EffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>EffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#EffCatch_2_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>EffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li></ul></ul></div>
+<div class="interface">
+<div class="top"><p class="src"><span class="keyword">struct</span>
+<a id="LanguageExt_0_EffCatch_1" class="def">EffCatch</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Eff/Catch/EffCatch.cs#L7" class="link">Source</a>
+<a href="#LanguageExt_0_EffCatch_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Constructors</p>
+<div class="top"><p class="src"><span class="keyword">constructor</span>
+<a id="EffCatch_1_EffCatch_0" class="def">EffCatch</a>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Eff/Catch/EffCatch.cs#L11" class="link">Source</a>
+<a href="#EffCatch_1_EffCatch_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">constructor</span>
+<a id="EffCatch_1_EffCatch_0" class="def">EffCatch</a>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Eff/Catch/EffCatch.cs#L14" class="link">Source</a>
+<a href="#EffCatch_1_EffCatch_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Fin<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="EffCatch_1_Run_0" class="def">Run</a>
+
+<span class='parens'>(</span>Error error<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Eff/Catch/EffCatch.cs#L18" class="link">Source</a>
+<a href="#EffCatch_1_Run_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+<div class="subs methods"><p class="caption">Operators</p>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="EffCatch_1_|_0" class="def">|</a>
+<span class='parens'>(</span>EffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>EffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Eff/Catch/EffCatch.cs#L21" class="link">Source</a>
+<a href="#EffCatch_1_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="EffCatch_1_|_0" class="def">|</a>
+<span class='parens'>(</span>CatchValue<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>EffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Eff/Catch/EffCatch.cs#L24" class="link">Source</a>
+<a href="#EffCatch_1_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="EffCatch_1_|_0" class="def">|</a>
+<span class='parens'>(</span>CatchError ma<span class='comma'>, </span>EffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Eff/Catch/EffCatch.cs#L27" class="link">Source</a>
+<a href="#EffCatch_1_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="EffCatch_1_|_0" class="def">|</a>
+<span class='parens'>(</span>EffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>CatchValue<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Eff/Catch/EffCatch.cs#L30" class="link">Source</a>
+<a href="#EffCatch_1_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="EffCatch_1_|_0" class="def">|</a>
+<span class='parens'>(</span>EffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>CatchError mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Eff/Catch/EffCatch.cs#L36" class="link">Source</a>
+<a href="#EffCatch_1_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">struct</span>
+<a id="LanguageExt_0_EffCatch_2" class="def">EffCatch</a>
+<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Eff/Catch/EffCatch.cs#L43" class="link">Source</a>
+<a href="#LanguageExt_0_EffCatch_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> RT : struct</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Constructors</p>
+<div class="top"><p class="src"><span class="keyword">constructor</span>
+<a id="EffCatch_2_EffCatch_0" class="def">EffCatch</a>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Eff/Catch/EffCatch.cs#L47" class="link">Source</a>
+<a href="#EffCatch_2_EffCatch_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">constructor</span>
+<a id="EffCatch_2_EffCatch_0" class="def">EffCatch</a>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Eff/Catch/EffCatch.cs#L50" class="link">Source</a>
+<a href="#EffCatch_2_EffCatch_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Fin<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="EffCatch_2_Run_0" class="def">Run</a>
+
+<span class='parens'>(</span>RT env<span class='comma'>, </span>Error error<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Eff/Catch/EffCatch.cs#L54" class="link">Source</a>
+<a href="#EffCatch_2_Run_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+<div class="subs methods"><p class="caption">Operators</p>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="EffCatch_2_|_0" class="def">|</a>
+<span class='parens'>(</span>CatchValue<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>EffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Eff/Catch/EffCatch.cs#L57" class="link">Source</a>
+<a href="#EffCatch_2_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="EffCatch_2_|_0" class="def">|</a>
+<span class='parens'>(</span>CatchError ma<span class='comma'>, </span>EffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Eff/Catch/EffCatch.cs#L60" class="link">Source</a>
+<a href="#EffCatch_2_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="EffCatch_2_|_0" class="def">|</a>
+<span class='parens'>(</span>EffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>CatchValue<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Eff/Catch/EffCatch.cs#L63" class="link">Source</a>
+<a href="#EffCatch_2_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="EffCatch_2_|_0" class="def">|</a>
+<span class='parens'>(</span>EffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>CatchError mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Eff/Catch/EffCatch.cs#L69" class="link">Source</a>
+<a href="#EffCatch_2_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="EffCatch_2_|_0" class="def">|</a>
+<span class='parens'>(</span>EffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>EffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Eff/Catch/EffCatch.cs#L75" class="link">Source</a>
+<a href="#EffCatch_2_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="EffCatch_2_|_0" class="def">|</a>
+<span class='parens'>(</span>EffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>EffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Eff/Catch/EffCatch.cs#L78" class="link">Source</a>
+<a href="#EffCatch_2_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="EffCatch_2_|_0" class="def">|</a>
+<span class='parens'>(</span>EffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>EffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Eff/Catch/EffCatch.cs#L81" class="link">Source</a>
+<a href="#EffCatch_2_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="EffCatch_2_|_0" class="def">|</a>
+<span class='parens'>(</span>Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>EffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Eff/Catch/EffCatch.cs#L84" class="link">Source</a>
+<a href="#EffCatch_2_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+</div></div></div></body></html>
