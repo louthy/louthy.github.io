@@ -1,0 +1,1920 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>LanguageExt.Core\Concurrency\VectorClock</title>
+<link href="style.css" rel="stylesheet" type="text/css"/></head>
+<body class="js-enabled"><div id="package-header"><ul class="links" id="page-menu"><li><a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock" class="link">Source</a></li>
+<li><a href="../index.html" class="link">Contents</a></li>
+<li><a href="/LanguageExt.Core/index.html" class="link">Index</a></li></ul>
+<p class="caption">LanguageExt.Core</p></div>
+<div id="content"><div id="module-header"><p class="caption"><a href="../../index.html" class="link">LanguageExt.Core</a>
+<span> ► </span>
+<a href="../index.html" class="link">Concurrency</a>
+<span> ► </span>
+<a href="index.html" class="link">VectorClock</a></p></div>
+<div class="interface">
+<div class="top"><p class="src"><span class="keyword">enum</span>
+<span><span class="def">Relation</span></span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/Relation.cs#L5" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>The relations two vector clocks may find themselves in.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">record</span>
+<span><span class="def">VectorClock</span>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span><span class='parens'>(</span>A<span class='comma'>, </span>long<span class='parens'>)</span><span class='generics'>&gt;</span> Entries<span class='parens'>)</span></span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.A.cs#L63" class="link">Source</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> A : IComparable&lt;A&gt;</span></div></div></p>
+<div class="doc"><div>
+<p><p>To create a vector clock, start from <code>Empty</code> or <code>Single</code> and <code>Insert</code>
+elements into it.  As a shortcut, <code>fromList</code> just inserts all the
+elements in a list, in order.</p>
+</p>
+<code><pre><code>var vc = VectorClock&lt;char&gt;.Empty;
+vc = vc.Insert('a', 1);
+vc = vc.Insert('b', 2);
+vc == VectorClock&lt;char&gt;.fromList(Seq(('a', 1), ('b', 2)))
+</code></pre>
+</code>
+<p><p>Note that, for different keys, the order of insertion does not
+matter:</p>
+</p>
+<code><pre><code>fromList(Seq(('a', 1), ('b', 2)) == fromList(Seq(('b', 2), ('a', 1))
+</code></pre>
+</code>
+<p><p>Once you have a given vector clock, you can 'lookup' its fields,
+check that keys are 'member's, or convert it back 'toList' form.</p>
+</p>
+<code><pre><code>vc.Lookup('a') == Some(1)
+vc.Lookup('c') == None
+</code></pre>
+</code>
+<p><p>The main operations that you would do with a vector clock are to
+increment the entry corresponding to the current process and to
+update the process's vector clock with the 'max' of its and the
+received message's clocks.</p>
+</p>
+<code><pre><code>vc.Inc('a') == Some [('a', 2), ('b', 2)]
+VectorClock.max( [('a', 1), ('b', 2)], [('c', 3), ('b', 1)] ) == [('a', 1), ('b', 2), ('c' 3)]
+</code></pre>
+</code>
+<p><p>Finally, upon receiving different messages, you may wish to
+discover the relationship, if any, between them.  This
+information could be useful in determining the correct order to
+process the messages.</p>
+</p>
+<code><pre><code>VectorClock.relation (fromList [('a', 1), ('b', 2)], fromList [('a', 2), ('b', 2)]) == Causes
+VectorClock.relation (fromList [('a', 2), ('b', 2)], fromList [('a', 1), ('b', 2)]) == CausedBy
+VectorClock.relation (fromList [('a', 2), ('b', 2)], fromList [('a', 1), ('b', 3)]) == Concurrent
+</code></pre>
+</code>
+<p><p>A vector clock is, conceptually, an associative list sorted by the
+value of the key, where each key appears only once.</p>
+</p></div>
+<div></div>
+
+</div>
+
+
+
+<div class="subs methods"><p class="caption">Fields</p>
+<div class="top"><p class="src"><span class="keyword">field</span>
+VectorClock<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class="def">Empty = new(Seq&lt;(A, long)&gt;())</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.A.cs#L66" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+<div class="subs methods"><p class="caption">Properties</p>
+<div class="top"><p class="src"><span class="keyword">property</span>
+bool
+<span class="def">IsEmpty</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.A.cs#L99" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Is the vector clock empty?</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+int
+<span class="def">Count</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.A.cs#L105" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>The number of entries in the vector clock.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+bool
+<span class="def">Valid</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.A.cs#L337" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">Equals</span>
+
+<span class='parens'>(</span>VectorClock<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>? rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.A.cs#L68" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+int
+<span class="def">GetHashCode</span>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.A.cs#L75" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+VectorClock<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class="def">Single</span>
+
+<span class='parens'>(</span>A x<span class='comma'>, </span>long y<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.A.cs#L81" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>A vector clock with a single element</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+VectorClock<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class="def">fromList</span>
+
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span><span class='parens'>(</span>A x<span class='comma'>, </span>long y<span class='parens'>)</span><span class='generics'>&gt;</span> list<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.A.cs#L87" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Insert each entry in the list one at a time.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Seq<span class='generics'>&lt;</span>(A x<span class='comma'>, </span>long y)<span class='generics'>&gt;</span>
+<span class="def">ToSeq</span>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.A.cs#L93" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>All the entries in the vector clock.  Note that this is /not/ the inverse of 'fromList'</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+(Option<span class='generics'>&lt;</span>long<span class='generics'>&gt;</span> Value<span class='comma'>, </span>VectorClock<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> Clock)
+<span class="def">Extract</span>
+
+<span class='parens'>(</span>A index<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.A.cs#L111" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Lookup the value for a key in the vector clock and remove the corresponding entry</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Option<span class='generics'>&lt;</span>long<span class='generics'>&gt;</span>
+<span class="def">Lookup</span>
+
+<span class='parens'>(</span>A index<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.A.cs#L135" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Lookup the value for a key in the vector clock.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">Contains</span>
+
+<span class='parens'>(</span>A index<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.A.cs#L148" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Is a member?</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+VectorClock<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class="def">Remove</span>
+
+<span class='parens'>(</span>A index<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.A.cs#L154" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Delete</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+VectorClock<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class="def">Insert</span>
+
+<span class='parens'>(</span>A index<span class='comma'>, </span>long value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.A.cs#L160" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Insert or replace the entry for a key.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Option<span class='generics'>&lt;</span>VectorClock<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<span class="def">Inc</span>
+
+<span class='parens'>(</span>A index<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.A.cs#L178" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Increment the entry for a key by 1</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+VectorClock<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class="def">Inc</span>
+
+<span class='parens'>(</span>A index<span class='comma'>, </span>long defaultValue<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.A.cs#L184" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Increment the entry for a key by 1</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+VectorClock<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class="def">combine</span>
+
+<span class='parens'>(</span>
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Option<span class='generics'>&lt;</span>long<span class='generics'>&gt;</span><span class='comma'>, </span>Option<span class='generics'>&lt;</span>long<span class='generics'>&gt;</span><span class='comma'>, </span>Option<span class='generics'>&lt;</span>long<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+            VectorClock<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> vc1,
+            VectorClock<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> vc2<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.A.cs#L202" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Combine two vector clocks entry-by-entry</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>a function that takes the /key/, the value of the entry in
+the left hand vector clock, if it exists, the value in the
+right hand vector clock, if it exists, and, if it wishes to
+keep a value for this /key/ in the resulting vector clock,
+returns it.</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">vc1</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>the left hand vector clock</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">vc2</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>he right hand vector clock</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+VectorClock<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class="def">Max</span>
+
+<span class='parens'>(</span>VectorClock<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> vc2<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.A.cs#L229" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>The maximum of the two vector clocks.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+VectorClock<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class="def">max</span>
+
+<span class='parens'>(</span>VectorClock<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> vc1<span class='comma'>, </span>VectorClock<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> vc2<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.A.cs#L235" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>The maximum of the two vector clocks.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Relation
+<span class="def">Relation</span>
+
+<span class='parens'>(</span>VectorClock<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> vc2<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.A.cs#L253" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>The relation between the two vector clocks.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Relation
+<span class="def">relation</span>
+
+<span class='parens'>(</span>VectorClock<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> vc1<span class='comma'>, </span>VectorClock<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> vc2<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.A.cs#L259" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>The relation between the two vector clocks.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">Causes</span>
+
+<span class='parens'>(</span>VectorClock<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> vc2<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.A.cs#L297" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Short-hand for relation(vc1, vc2) == Relation.Causes</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">causes</span>
+
+<span class='parens'>(</span>VectorClock<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> vc1<span class='comma'>, </span>VectorClock<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> vc2<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.A.cs#L303" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Short-hand for relation(vc1, vc2) == Relation.Causes</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Option<span class='generics'>&lt;</span>VectorClock<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<span class="def">Diff</span>
+
+<span class='parens'>(</span>VectorClock<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> vc2<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.A.cs#L310" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>If vc2 causes vc1, compute the smallest vc3</p>
+</div>
+<div><p>Note that the /first/ parameter is the newer vector clock.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Option<span class='generics'>&lt;</span>VectorClock<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<span class="def">diff</span>
+
+<span class='parens'>(</span>VectorClock<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> vc1<span class='comma'>, </span>VectorClock<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> vc2<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.A.cs#L317" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>If vc2 causes vc1, compute the smallest vc3</p>
+</div>
+<div><p>Note that the /first/ parameter is the newer vector clock.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<span><span class="def">VectorClock</span>
+</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.cs#L63" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div>
+<p><p>To create a vector clock, start from <code>Empty</code> or <code>Single</code> and <code>Insert</code>
+elements into it.  As a shortcut, <code>fromList</code> just inserts all the
+elements in a list, in order.</p>
+</p>
+<code><pre><code>var vc = VectorClock&lt;char&gt;.Empty;
+vc = vc.Insert('a', 1);
+vc = vc.Insert('b', 2);
+vc == VectorClock&lt;char&gt;.fromList(Seq(('a', 1), ('b', 2)))
+</code></pre>
+</code>
+<p><p>Note that, for different keys, the order of insertion does not
+matter:</p>
+</p>
+<code><pre><code>fromList(Seq(('a', 1), ('b', 2)) == fromList(Seq(('b', 2), ('a', 1))
+</code></pre>
+</code>
+<p><p>Once you have a given vector clock, you can 'lookup' its fields,
+check that keys are 'member's, or convert it back 'toList' form.</p>
+</p>
+<code><pre><code>vc.Lookup('a') == Some(1)
+vc.Lookup('c') == None
+</code></pre>
+</code>
+<p><p>The main operations that you would do with a vector clock are to
+increment the entry corresponding to the current process and to
+update the process's vector clock with the 'max' of its and the
+received message's clocks.</p>
+</p>
+<code><pre><code>vc.Inc('a') == Some [('a', 2), ('b', 2)]
+VectorClock.max( [('a', 1), ('b', 2)], [('c', 3), ('b', 1)] ) == [('a', 1), ('b', 2), ('c' 3)]
+</code></pre>
+</code>
+<p><p>Finally, upon receiving different messages, you may wish to
+discover the relationship, if any, between them.  This
+information could be useful in determining the correct order to
+process the messages.</p>
+</p>
+<code><pre><code>VectorClock.relation (fromList [('a', 1), ('b', 2)], fromList [('a', 2), ('b', 2)]) == Causes
+VectorClock.relation (fromList [('a', 2), ('b', 2)], fromList [('a', 1), ('b', 2)]) == CausedBy
+VectorClock.relation (fromList [('a', 2), ('b', 2)], fromList [('a', 1), ('b', 3)]) == Concurrent
+</code></pre>
+</code>
+<p><p>A vector clock is, conceptually, an associative list sorted by the
+value of the key, where each key appears only once.</p>
+</p></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+VectorClock<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class="def">Single</span>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A x<span class='comma'>, </span>long y<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.cs#L68" class="link">Source</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> A : IComparable&lt;A&gt;</span></div></div></p>
+<div class="doc"><div><p>A vector clock with a single element</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+VectorClock<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class="def">Single</span>
+<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A x<span class='comma'>, </span>B y<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.cs#L74" class="link">Source</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> OrdA : struct, Ord&lt;A&gt;
+            </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> NumB : struct, Num&lt;B&gt;</span></div></div></p>
+<div class="doc"><div><p>A vector clock with a single element</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+VectorClock<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class="def">fromList</span>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span><span class='parens'>(</span>A x<span class='comma'>, </span>long y<span class='parens'>)</span><span class='generics'>&gt;</span> list<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.cs#L82" class="link">Source</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> A : IComparable&lt;A&gt;</span></div></div></p>
+<div class="doc"><div><p>Insert each entry in the list one at a time.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+VectorClock<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class="def">fromList</span>
+<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span><span class='parens'>(</span>A x<span class='comma'>, </span>B y<span class='parens'>)</span><span class='generics'>&gt;</span> list<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.cs#L88" class="link">Source</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> OrdA : struct, Ord&lt;A&gt;
+            </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> NumB : struct, Num&lt;B&gt;</span></div></div></p>
+<div class="doc"><div><p>Insert each entry in the list one at a time.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+VectorClock<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class="def">combine</span>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Option<span class='generics'>&lt;</span>long<span class='generics'>&gt;</span><span class='comma'>, </span>Option<span class='generics'>&lt;</span>long<span class='generics'>&gt;</span><span class='comma'>, </span>Option<span class='generics'>&lt;</span>long<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+            VectorClock<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> vc1,
+            VectorClock<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> vc2<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.cs#L104" class="link">Source</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> A : IComparable&lt;A&gt;</span></div></div></p>
+<div class="doc"><div><p>Combine two vector clocks entry-by-entry</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>a function that takes the /key/, the value of the entry in
+the left hand vector clock, if it exists, the value in the
+right hand vector clock, if it exists, and, if it wishes to
+keep a value for this /key/ in the resulting vector clock,
+returns it.</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">vc1</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>the left hand vector clock</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">vc2</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>he right hand vector clock</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+VectorClock<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class="def">combine</span>
+<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Option<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='comma'>, </span>Option<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='comma'>, </span>Option<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+            VectorClock<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> vc1,
+            VectorClock<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> vc2<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.cs#L121" class="link">Source</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> OrdA : struct, Ord&lt;A&gt;
+            </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> NumB : struct, Num&lt;B&gt;</span></div></div></p>
+<div class="doc"><div><p>Combine two vector clocks entry-by-entry</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>a function that takes the /key/, the value of the entry in
+the left hand vector clock, if it exists, the value in the
+right hand vector clock, if it exists, and, if it wishes to
+keep a value for this /key/ in the resulting vector clock,
+returns it.</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">vc1</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>the left hand vector clock</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">vc2</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>he right hand vector clock</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+VectorClock<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class="def">max</span>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>VectorClock<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> vc1<span class='comma'>, </span>VectorClock<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> vc2<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.cs#L132" class="link">Source</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> A : IComparable&lt;A&gt;</span></div></div></p>
+<div class="doc"><div><p>The maximum of the two vector clocks.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+VectorClock<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class="def">max</span>
+<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>VectorClock<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> vc1<span class='comma'>, </span>VectorClock<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> vc2<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.cs#L139" class="link">Source</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> OrdA : struct, Ord&lt;A&gt;
+            </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> NumB : struct, Num&lt;B&gt;</span></div></div></p>
+<div class="doc"><div><p>The maximum of the two vector clocks.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Relation
+<span class="def">relation</span>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>VectorClock<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> vc1<span class='comma'>, </span>VectorClock<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> vc2<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.cs#L147" class="link">Source</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> A : IComparable&lt;A&gt;</span></div></div></p>
+<div class="doc"><div><p>The relation between the two vector clocks.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Relation
+<span class="def">relation</span>
+<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>VectorClock<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> vc1<span class='comma'>, </span>VectorClock<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> vc2<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.cs#L154" class="link">Source</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> OrdA : struct, Ord&lt;A&gt;
+            </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> NumB : struct, Num&lt;B&gt;</span></div></div></p>
+<div class="doc"><div><p>The relation between the two vector clocks.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">causes</span>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>VectorClock<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> vc1<span class='comma'>, </span>VectorClock<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> vc2<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.cs#L162" class="link">Source</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> A : IComparable&lt;A&gt;</span></div></div></p>
+<div class="doc"><div><p>Short-hand for relation(vc1, vc2) == Relation.Causes</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">causes</span>
+<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>VectorClock<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>vc1<span class='comma'>, </span>VectorClock<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> vc2<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.cs#L169" class="link">Source</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> OrdA : struct, Ord&lt;A&gt;
+            </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> NumB : struct, Num&lt;B&gt;</span></div></div></p>
+<div class="doc"><div><p>Short-hand for relation(vc1, vc2) == Relation.Causes</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Option<span class='generics'>&lt;</span>VectorClock<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<span class="def">diff</span>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>VectorClock<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> vc1<span class='comma'>, </span>VectorClock<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> vc2<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.cs#L178" class="link">Source</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> A : IComparable&lt;A&gt;</span></div></div></p>
+<div class="doc"><div><p>If vc2 causes vc1, compute the smallest vc3</p>
+</div>
+<div><p>Note that the /first/ parameter is the newer vector clock.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Option<span class='generics'>&lt;</span>VectorClock<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<span class="def">diff</span>
+<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>VectorClock<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> vc1<span class='comma'>, </span>VectorClock<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> vc2<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.cs#L186" class="link">Source</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> OrdA : struct, Ord&lt;A&gt;
+            </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> NumB : struct, Num&lt;B&gt;</span></div></div></p>
+<div class="doc"><div><p>If vc2 causes vc1, compute the smallest vc3</p>
+</div>
+<div><p>Note that the /first/ parameter is the newer vector clock.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">record</span>
+<span><span class="def">VectorClock</span>
+<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span><span class='parens'>(</span>A<span class='comma'>, </span>B<span class='parens'>)</span><span class='generics'>&gt;</span> Entries<span class='parens'>)</span></span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.OrdA.NumB.A.B.cs#L63" class="link">Source</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> OrdA : struct, Ord&lt;A&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> NumB : struct, Num&lt;B&gt;</span></div></div></p>
+<div class="doc"><div>
+<p><p>To create a vector clock, start from <code>Empty</code> or <code>Single</code> and <code>Insert</code>
+elements into it.  As a shortcut, <code>fromList</code> just inserts all the
+elements in a list, in order.</p>
+</p>
+<code><pre><code>var vc = VectorClock&lt;char&gt;.Empty;
+vc = vc.Insert('a', 1);
+vc = vc.Insert('b', 2);
+vc == VectorClock&lt;char&gt;.fromList(Seq(('a', 1), ('b', 2)))
+</code></pre>
+</code>
+<p><p>Note that, for different keys, the order of insertion does not
+matter:</p>
+</p>
+<code><pre><code>fromList(Seq(('a', 1), ('b', 2)) == fromList(Seq(('b', 2), ('a', 1))
+</code></pre>
+</code>
+<p><p>Once you have a given vector clock, you can 'lookup' its fields,
+check that keys are 'member's, or convert it back 'toList' form.</p>
+</p>
+<code><pre><code>vc.Lookup('a') == Some(1)
+vc.Lookup('c') == None
+</code></pre>
+</code>
+<p><p>The main operations that you would do with a vector clock are to
+increment the entry corresponding to the current process and to
+update the process's vector clock with the 'max' of its and the
+received message's clocks.</p>
+</p>
+<code><pre><code>vc.Inc('a') == Some [('a', 2), ('b', 2)]
+VectorClock.max( [('a', 1), ('b', 2)], [('c', 3), ('b', 1)] ) == [('a', 1), ('b', 2), ('c' 3)]
+</code></pre>
+</code>
+<p><p>Finally, upon receiving different messages, you may wish to
+discover the relationship, if any, between them.  This
+information could be useful in determining the correct order to
+process the messages.</p>
+</p>
+<code><pre><code>VectorClock.relation (fromList [('a', 1), ('b', 2)], fromList [('a', 2), ('b', 2)]) == Causes
+VectorClock.relation (fromList [('a', 2), ('b', 2)], fromList [('a', 1), ('b', 2)]) == CausedBy
+VectorClock.relation (fromList [('a', 2), ('b', 2)], fromList [('a', 1), ('b', 3)]) == Concurrent
+</code></pre>
+</code>
+<p><p>A vector clock is, conceptually, an associative list sorted by the
+value of the key, where each key appears only once.</p>
+</p></div>
+<div></div>
+
+</div>
+
+
+
+<div class="subs methods"><p class="caption">Fields</p>
+<div class="top"><p class="src"><span class="keyword">field</span>
+VectorClock<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class="def">Empty = new(Seq&lt;(A, B)&gt;())</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.OrdA.NumB.A.B.cs#L70" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Empty vector clock</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+<div class="subs methods"><p class="caption">Properties</p>
+<div class="top"><p class="src"><span class="keyword">property</span>
+bool
+<span class="def">IsEmpty</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.OrdA.NumB.A.B.cs#L103" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Is the vector clock empty?</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+int
+<span class="def">Count</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.OrdA.NumB.A.B.cs#L109" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>The number of entries in the vector clock.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+bool
+<span class="def">Valid</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.OrdA.NumB.A.B.cs#L336" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">Equals</span>
+
+<span class='parens'>(</span>VectorClock<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>? rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.OrdA.NumB.A.B.cs#L72" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+int
+<span class="def">GetHashCode</span>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.OrdA.NumB.A.B.cs#L79" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+VectorClock<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class="def">Single</span>
+
+<span class='parens'>(</span>A x<span class='comma'>, </span>B y<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.OrdA.NumB.A.B.cs#L85" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>A vector clock with a single element</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+VectorClock<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class="def">fromList</span>
+
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span><span class='parens'>(</span>A x<span class='comma'>, </span>B y<span class='parens'>)</span><span class='generics'>&gt;</span> list<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.OrdA.NumB.A.B.cs#L91" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Insert each entry in the list one at a time.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Seq<span class='generics'>&lt;</span>(A x<span class='comma'>, </span>B y)<span class='generics'>&gt;</span>
+<span class="def">ToList</span>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.OrdA.NumB.A.B.cs#L97" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>All the entries in the vector clock.  Note that this is /not/ the inverse of 'fromList'</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+(Option<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span> Value<span class='comma'>, </span>VectorClock<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> Clock)
+<span class="def">Extract</span>
+
+<span class='parens'>(</span>A index<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.OrdA.NumB.A.B.cs#L115" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Lookup the value for a key in the vector clock and remove the corresponding entry</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Option<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class="def">Lookup</span>
+
+<span class='parens'>(</span>A index<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.OrdA.NumB.A.B.cs#L139" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Lookup the value for a key in the vector clock.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">Contains</span>
+
+<span class='parens'>(</span>A index<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.OrdA.NumB.A.B.cs#L152" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Is a member?</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+VectorClock<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class="def">Remove</span>
+
+<span class='parens'>(</span>A index<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.OrdA.NumB.A.B.cs#L158" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Delete</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+VectorClock<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class="def">Insert</span>
+
+<span class='parens'>(</span>A index<span class='comma'>, </span>B value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.OrdA.NumB.A.B.cs#L165" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Insert or replace the entry for a key.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Option<span class='generics'>&lt;</span>VectorClock<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<span class="def">Inc</span>
+
+<span class='parens'>(</span>A index<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.OrdA.NumB.A.B.cs#L183" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Increment the entry for a key by 1</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+VectorClock<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class="def">Inc</span>
+
+<span class='parens'>(</span>A index<span class='comma'>, </span>B defaultValue<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.OrdA.NumB.A.B.cs#L189" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Increment the entry for a key by 1</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+VectorClock<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class="def">combine</span>
+
+<span class='parens'>(</span>
+            Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Option<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='comma'>, </span>Option<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='comma'>, </span>Option<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+            VectorClock<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> vc1,
+            VectorClock<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> vc2<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.OrdA.NumB.A.B.cs#L207" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Combine two vector clocks entry-by-entry</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>a function that takes the /key/, the value of the entry in
+the left hand vector clock, if it exists, the value in the
+right hand vector clock, if it exists, and, if it wishes to
+keep a value for this /key/ in the resulting vector clock,
+returns it.</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">vc1</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>the left hand vector clock</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">vc2</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>he right hand vector clock</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+VectorClock<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class="def">max</span>
+
+<span class='parens'>(</span>VectorClock<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> vc1<span class='comma'>, </span>VectorClock<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> vc2<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.OrdA.NumB.A.B.cs#L234" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>The maximum of the two vector clocks.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Relation
+<span class="def">Relation</span>
+
+<span class='parens'>(</span>VectorClock<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> vc1<span class='comma'>, </span>VectorClock<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> vc2<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.OrdA.NumB.A.B.cs#L252" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>The relation between the two vector clocks.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Relation
+<span class="def">relation</span>
+
+<span class='parens'>(</span>VectorClock<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> vc1<span class='comma'>, </span>VectorClock<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> vc2<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.OrdA.NumB.A.B.cs#L258" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>The relation between the two vector clocks.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">Causes</span>
+
+<span class='parens'>(</span>VectorClock<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> vc2<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.OrdA.NumB.A.B.cs#L296" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Short-hand for relation(vc1, vc2) == Relation.Causes</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">causes</span>
+
+<span class='parens'>(</span>VectorClock<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> vc1<span class='comma'>, </span>VectorClock<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> vc2<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.OrdA.NumB.A.B.cs#L302" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Short-hand for relation(vc1, vc2) == Relation.Causes</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Option<span class='generics'>&lt;</span>VectorClock<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<span class="def">Diff</span>
+
+<span class='parens'>(</span>VectorClock<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> vc2<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.OrdA.NumB.A.B.cs#L309" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>If vc2 causes vc1, compute the smallest vc3</p>
+</div>
+<div><p>Note that the /first/ parameter is the newer vector clock.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Option<span class='generics'>&lt;</span>VectorClock<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<span class="def">diff</span>
+
+<span class='parens'>(</span>VectorClock<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> vc1<span class='comma'>, </span>VectorClock<span class='generics'>&lt;</span>OrdA<span class='comma'>, </span>NumB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> vc2<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VectorClock/VectorClock.OrdA.NumB.A.B.cs#L316" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>If vc2 causes vc1, compute the smallest vc3</p>
+</div>
+<div><p>Note that the /first/ parameter is the newer vector clock.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div></div></div></body></html>

@@ -1,0 +1,1346 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>LanguageExt.Core\Common\Result</title>
+<link href="style.css" rel="stylesheet" type="text/css"/></head>
+<body class="js-enabled"><div id="package-header"><ul class="links" id="page-menu"><li><a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result" class="link">Source</a></li>
+<li><a href="../index.html" class="link">Contents</a></li>
+<li><a href="/LanguageExt.Core/index.html" class="link">Index</a></li></ul>
+<p class="caption">LanguageExt.Core</p></div>
+<div id="content"><div id="module-header"><p class="caption"><a href="../../index.html" class="link">LanguageExt.Core</a>
+<span> ► </span>
+<a href="../index.html" class="link">Common</a>
+<span> ► </span>
+<a href="index.html" class="link">Result</a></p></div>
+<div class="interface">
+<div class="top"><p class="src"><span class="keyword">struct</span>
+<span><span class="def">OptionalResult</span>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span></span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/OptionalResult.cs#L40" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Represents the result of an operation:</p>
+<pre><code>Some(A) | None | Exception
+</code></pre>
+</div>
+<div><p><code>Result&lt;A&gt;</code> (and <code>OptionalResult&lt;A&gt;</code>) is purely there to represent a concrete result value of a invoked lazy operation
+(like <code>Try&lt;A&gt;</code>).  You're not really meant to consume it directly.</p>
+<p>For example:</p>
+<pre><code>var ma = Try(...);
+var ra = ma(); // This will produce a `Result&lt;A&gt;` because that's what the `Try` delegate returns
+</code></pre>
+<p>But you should be matching on the result, or using any of the other convenient extension methods to get a concrete value:</p>
+<pre><code>var ma = Try(...);
+var ra1 = ma.IfFail(0);
+var ra1 = ma.Match(Succ: x =&gt; x + 10, Fail: 0);
+// ... etc ...
+</code></pre>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+<div class="subs methods"><p class="caption">Properties</p>
+<div class="top"><p class="src"><span class="keyword">property</span>
+bool
+<span class="def">IsBottom</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/OptionalResult.cs#L106" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>True if the result is in a bottom state</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+bool
+<span class="def">IsFaulted</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/OptionalResult.cs#L113" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>True if the result is faulted</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+bool
+<span class="def">IsNone</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/OptionalResult.cs#L120" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>True if the result is valid, but None</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+bool
+<span class="def">IsSome</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/OptionalResult.cs#L127" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>True if the result is valid and Some</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+bool
+<span class="def">IsFaultedOrNone</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/OptionalResult.cs#L134" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>True if the result is faulted</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+<div class="subs methods"><p class="caption">Constructors</p>
+<div class="top"><p class="src"><span class="keyword">constructor</span>
+<span class="def">OptionalResult</span>
+<span class='parens'>(</span>Option<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/OptionalResult.cs#L55" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Constructor of a concrete value</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">value</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">constructor</span>
+<span class="def">OptionalResult</span>
+<span class='parens'>(</span>Exception e<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/OptionalResult.cs#L66" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Constructor of an error value</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">e</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionalResult<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class="def">Some</span>
+
+<span class='parens'>(</span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/OptionalResult.cs#L73" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionalResult<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class="def">Optional</span>
+
+<span class='parens'>(</span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/OptionalResult.cs#L76" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+string
+<span class="def">ToString</span>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/OptionalResult.cs#L142" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Convert the value to a showable string</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">Equals</span>
+
+<span class='parens'>(</span>OptionalResult<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> other<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/OptionalResult.cs#L151" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Equality check</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">Equals</span>
+
+<span class='parens'>(</span>object obj<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/OptionalResult.cs#L158" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Equality check</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+int
+<span class="def">GetHashCode</span>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/OptionalResult.cs#L165" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Get hash code for bound value</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+A
+<span class="def">IfFailOrNone</span>
+
+<span class='parens'>(</span>A defaultValue<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/OptionalResult.cs#L177" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Option<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class="def">IfFail</span>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Exception<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/OptionalResult.cs#L183" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">IfFailOrNone</span>
+
+<span class='parens'>(</span>Action f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/OptionalResult.cs#L189" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">IfFail</span>
+
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span>Exception<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/OptionalResult.cs#L195" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">IfSucc</span>
+
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/OptionalResult.cs#L201" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+R
+<span class="def">Match</span>
+<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>R<span class='generics'>&gt;</span> Some<span class='comma'>, </span>Func<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span> None<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Exception<span class='comma'>, </span>R<span class='generics'>&gt;</span> Fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/OptionalResult.cs#L207" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionalResult<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class="def">Map</span>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/OptionalResult.cs#L220" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Task<span class='generics'>&lt;</span>OptionalResult<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<span class="def">MapAsync</span>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Task<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/OptionalResult.cs#L228" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+int
+<span class="def">CompareTo</span>
+
+<span class='parens'>(</span>OptionalResult<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> other<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/OptionalResult.cs#L236" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+<div class="subs methods"><p class="caption">Operators</p>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<span class="def">==</span>
+<span class='parens'>(</span>OptionalResult<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> a<span class='comma'>, </span>OptionalResult<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> b<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/OptionalResult.cs#L169" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<span class="def">!=</span>
+<span class='parens'>(</span>OptionalResult<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> a<span class='comma'>, </span>OptionalResult<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> b<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/OptionalResult.cs#L173" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<span class="def">&lt;</span>
+<span class='parens'>(</span>OptionalResult<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> a<span class='comma'>, </span>OptionalResult<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> b<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/OptionalResult.cs#L240" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<span class="def">&lt;=</span>
+<span class='parens'>(</span>OptionalResult<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> a<span class='comma'>, </span>OptionalResult<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> b<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/OptionalResult.cs#L244" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<span class="def">&gt;</span>
+<span class='parens'>(</span>OptionalResult<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> a<span class='comma'>, </span>OptionalResult<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> b<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/OptionalResult.cs#L248" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<span class="def">&gt;=</span>
+<span class='parens'>(</span>OptionalResult<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> a<span class='comma'>, </span>OptionalResult<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> b<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/OptionalResult.cs#L252" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">enum</span>
+<span><span class="def">ResultState</span></span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/Result.cs#L9" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">struct</span>
+<span><span class="def">Result</span>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span></span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/Result.cs#L38" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Represents the result of an operation:</p>
+<pre><code>A | Exception
+</code></pre>
+</div>
+<div><p><code>Result&lt;A&gt;</code> (and <code>OptionalResult&lt;A&gt;</code>) is purely there to represent a concrete result value of a invoked lazy operation
+(like <code>Try&lt;A&gt;</code>).  You're not really meant to consume it directly.</p>
+<p>For example:</p>
+<pre><code>var ma = Try(...);
+var ra = ma(); // This will produce a `Result&lt;A&gt;` because that's what the `Try` delegate returns
+</code></pre>
+<p>But you should be matching on the result, or using any of the other convenient extension methods to get a concrete value:</p>
+<pre><code>var ma = Try(...);
+var ra1 = ma.IfFail(0);
+var ra1 = ma.Match(Succ: x =&gt; x + 10, Fail: 0);
+// ... etc ...
+</code></pre>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+<div class="subs methods"><p class="caption">Fields</p>
+<div class="top"><p class="src"><span class="keyword">field</span>
+Result<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class="def">Bottom = default(Result&lt;A&gt;)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/Result.cs#L40" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+<div class="subs methods"><p class="caption">Properties</p>
+<div class="top"><p class="src"><span class="keyword">property</span>
+bool
+<span class="def">IsFaulted</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/Result.cs#L81" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>True if the result is faulted</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+bool
+<span class="def">IsBottom</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/Result.cs#L88" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>True if the struct is in an invalid state</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+bool
+<span class="def">IsSuccess</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/Result.cs#L95" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>True if the struct is in an success</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+<div class="subs methods"><p class="caption">Constructors</p>
+<div class="top"><p class="src"><span class="keyword">constructor</span>
+<span class="def">Result</span>
+<span class='parens'>(</span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/Result.cs#L52" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Constructor of a concrete value</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">value</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">constructor</span>
+<span class="def">Result</span>
+<span class='parens'>(</span>Exception e<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/Result.cs#L63" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Constructor of an error value</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">e</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+string
+<span class="def">ToString</span>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/Result.cs#L102" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Convert the value to a showable string</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">Equals</span>
+
+<span class='parens'>(</span>Result<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> other<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/Result.cs#L111" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Equality check</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">Equals</span>
+
+<span class='parens'>(</span>object obj<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/Result.cs#L118" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Equality check</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+int
+<span class="def">GetHashCode</span>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/Result.cs#L125" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Get hash code for bound value</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+A
+<span class="def">IfFail</span>
+
+<span class='parens'>(</span>A defaultValue<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/Result.cs#L137" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+A
+<span class="def">IfFail</span>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Exception<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/Result.cs#L143" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">IfFail</span>
+
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span>Exception<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/Result.cs#L149" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">IfSucc</span>
+
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/Result.cs#L155" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+R
+<span class="def">Match</span>
+<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>R<span class='generics'>&gt;</span> Succ<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Exception<span class='comma'>, </span>R<span class='generics'>&gt;</span> Fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/Result.cs#L161" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Result<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class="def">Map</span>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/Result.cs#L173" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Task<span class='generics'>&lt;</span>Result<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<span class="def">MapAsync</span>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Task<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/Result.cs#L179" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+int
+<span class="def">CompareTo</span>
+
+<span class='parens'>(</span>Result<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> other<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/Result.cs#L185" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+<div class="subs methods"><p class="caption">Operators</p>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<span class="def">==</span>
+<span class='parens'>(</span>Result<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> a<span class='comma'>, </span>Result<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> b<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/Result.cs#L129" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<span class="def">!=</span>
+<span class='parens'>(</span>Result<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> a<span class='comma'>, </span>Result<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> b<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/Result.cs#L133" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<span class="def">&lt;</span>
+<span class='parens'>(</span>Result<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> a<span class='comma'>, </span>Result<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> b<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/Result.cs#L189" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<span class="def">&lt;=</span>
+<span class='parens'>(</span>Result<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> a<span class='comma'>, </span>Result<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> b<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/Result.cs#L193" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<span class="def">&gt;</span>
+<span class='parens'>(</span>Result<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> a<span class='comma'>, </span>Result<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> b<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/Result.cs#L197" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<span class="def">&gt;=</span>
+<span class='parens'>(</span>Result<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> a<span class='comma'>, </span>Result<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> b<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Result/Result.cs#L201" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+</div></div></div></body></html>

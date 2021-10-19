@@ -1,0 +1,5070 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>LanguageExt.Core\Concurrency\VersionHashMap</title>
+<link href="style.css" rel="stylesheet" type="text/css"/></head>
+<body class="js-enabled"><div id="package-header"><ul class="links" id="page-menu"><li><a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap" class="link">Source</a></li>
+<li><a href="../index.html" class="link">Contents</a></li>
+<li><a href="/LanguageExt.Core/index.html" class="link">Index</a></li></ul>
+<p class="caption">LanguageExt.Core</p></div>
+<div id="content"><div id="module-header"><p class="caption"><a href="../../index.html" class="link">LanguageExt.Core</a>
+<span> ► </span>
+<a href="../index.html" class="link">Concurrency</a>
+<span> ► </span>
+<a href="index.html" class="link">VersionHashMap</a></p></div>
+<div class="interface">
+<div class="top"><p class="src"><span class="keyword">class</span>
+<span><span class="def">VersionHashMap</span>
+<span class='generics'>&lt;</span>ConflictV<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span></span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L31" class="link">Source</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> ConflictV : struct, Conflict&lt;V&gt;</span></div></div></p>
+<div class="doc"><div>
+<p><p>Versioned hash-map.  Each value has a vector-clock attached to it which understands the causality of updates
+from multiple actors.  Actors are just unique keys that represent individual contributors.  They could be client
+connections, nodes in a network, users, or whatever is appropriate to discriminate between commits.</p>
+</p>
+<p><p>Deleted items are not removed from the hash-map, they are merely marked as deleted.  This allows conflicts between
+writes and deletes to be resolved.</p>
+</p>
+<p><p>Run <code>RemoveDeletedItemsOlderThan</code> to clean up items that have been deleted and are now just hanging around.  Use
+a big enough delay that it won't conflict with other commits (this could be seconds, minutes, or longer:
+depending on the expected latency of writes to the hash-map).</p>
+</p></div>
+<div></div>
+
+</div>
+
+
+
+
+<div class="subs methods"><p class="caption">Indexers</p>
+<div class="top"><p class="src"><span class="keyword">this</span>
+[
+Version<span class='generics'>&lt;</span>string<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
+]
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L60" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>'this' accessor</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">key</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Key</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Version - this may be in a state of never existing, but won't ever fail</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+<div class="subs methods"><p class="caption">Properties</p>
+<div class="top"><p class="src"><span class="keyword">property</span>
+VersionHashMap<span class='generics'>&lt;</span>ConflictV<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
+<span class="def">Empty</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L41" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Empty version map</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+bool
+<span class="def">IsEmpty</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L70" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Is the map empty</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+int
+<span class="def">Count</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L80" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Number of items in the map</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+int
+<span class="def">Length</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L90" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Alias of Count</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+IEnumerable<span class='generics'>&lt;</span>K<span class='generics'>&gt;</span>
+<span class="def">Keys</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L181" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Enumerable of keys</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+IEnumerable<span class='generics'>&lt;</span>V<span class='generics'>&gt;</span>
+<span class="def">Values</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L191" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Enumerable of value</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">SwapKey</span>
+
+<span class='parens'>(</span>K key<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Version<span class='generics'>&lt;</span>string<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span><span class='comma'>, </span>Version<span class='generics'>&lt;</span>string<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span><span class='generics'>&gt;</span> swap<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L105" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically swap a key in the map.  Allows for multiple operations on the hash-map in an entirely
+transactional and atomic way.</p>
+</div>
+<div><p>Any functions passed as arguments may be run multiple times if there are multiple threads competing
+to update this data structure.  Therefore the functions must be idempotent and it's advised that you spend
+as little time performing the injected behaviours as possible to avoid repeated attempts</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">swap</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Swap function, maps the current state of the value associated with the key to a new state</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">Update</span>
+
+<span class='parens'>(</span>Version<span class='generics'>&lt;</span>string<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span> version<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L122" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically updates a new item in the map.  If the key already exists, then the vector clocks, within the version
+vector, are compared to ascertain if the proposed version was caused-by, causes, or conflicts with the current
+version:</p>
+<pre><code>* If the proposed version was caused-by the current version, then it is ignored.
+* If the proposed version causes the current version, then it is accepted and updated as the latest version
+* If the proposed version is in conflict with the current version, then values from both versions are
+  passed to ConflictV.Append(v1, v2) for value resolution, and the pairwise-maximum of the two vector-clocks
+  is taken to be the new 'time.
+</code></pre>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">version</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Version to update</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">RemoveOlderThan</span>
+
+<span class='parens'>(</span>DateTime cutoff<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L130" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Remove items that are older than the specified time-stamp</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">cutoff</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Cut off time-stamp</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">RemoveOlderThan</span>
+
+<span class='parens'>(</span>long timeStamp<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L138" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Remove items that are older than the specified time-stamp</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">timeStamp</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Cut off time-stamp</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">RemoveDeletedItemsOlderThan</span>
+
+<span class='parens'>(</span>DateTime cutoff<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L146" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Remove deleted items that are older than the specified time-stamp</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">cutoff</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Cut off time-stamp</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">RemoveDeletedItemsOlderThan</span>
+
+<span class='parens'>(</span>long timeStamp<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L154" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Remove deleted items that are older than the specified time-stamp</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">timeStamp</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Cut off time-stamp</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Option<span class='generics'>&lt;</span>V<span class='generics'>&gt;</span>
+<span class="def">Find</span>
+
+<span class='parens'>(</span>K value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L163" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Retrieve a value from the map by key</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">key</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Key to find</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Found value</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Version<span class='generics'>&lt;</span>string<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
+<span class="def">FindVersion</span>
+
+<span class='parens'>(</span>K value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L173" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Retrieve a value from the map by key</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">key</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Key to find</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Found value</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+HashMap<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
+<span class="def">ToHashMap</span>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L201" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Convert to a HashMap</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IEnumerator<span class='generics'>&lt;</span>(K Key<span class='comma'>, </span>V Value)<span class='generics'>&gt;</span>
+<span class="def">GetEnumerator</span>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L209" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>GetEnumerator - IEnumerable interface</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Seq<span class='generics'>&lt;</span>(K Key<span class='comma'>, </span>V Value)<span class='generics'>&gt;</span>
+<span class="def">ToSeq</span>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L220" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+string
+<span class="def">ToString</span>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L231" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Format the collection as <code>[(key: value), (key: value), (key: value), ...]</code>
+The ellipsis is used for collections over 50 items
+To get a formatted string with all the items, use <code>ToFullString</code>
+or <code>ToFullArrayString</code>.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+string
+<span class="def">ToFullString</span>
+
+<span class='parens'>(</span>string separator = &quot;<span class='comma'>, </span>&quot;<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L239" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Format the collection as <code>(key: value), (key: value), (key: value), ...</code></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+string
+<span class="def">ToFullArrayString</span>
+
+<span class='parens'>(</span>string separator = &quot;<span class='comma'>, </span>&quot;<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L247" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Format the collection as <code>[(key: value), (key: value), (key: value), ...]</code></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IEnumerable<span class='generics'>&lt;</span>(K Key<span class='comma'>, </span>V Value)<span class='generics'>&gt;</span>
+<span class="def">AsEnumerable</span>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L252" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">IsProperSubsetOf</span>
+
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span><span class='parens'>(</span>K Key<span class='comma'>, </span>V Value<span class='parens'>)</span><span class='generics'>&gt;</span> other<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L261" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns True if 'other' is a proper subset of this set</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if 'other' is a proper subset of this set</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">IsProperSubsetOf</span>
+
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>K<span class='generics'>&gt;</span> other<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L270" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns True if 'other' is a proper subset of this set</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if 'other' is a proper subset of this set</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">IsProperSupersetOf</span>
+
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span><span class='parens'>(</span>K Key<span class='comma'>, </span>V Value<span class='parens'>)</span><span class='generics'>&gt;</span> other<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L279" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns True if 'other' is a proper superset of this set</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if 'other' is a proper superset of this set</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">IsProperSupersetOf</span>
+
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>K<span class='generics'>&gt;</span> other<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L288" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns True if 'other' is a proper superset of this set</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if 'other' is a proper superset of this set</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">IsSubsetOf</span>
+
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span><span class='parens'>(</span>K Key<span class='comma'>, </span>V Value<span class='parens'>)</span><span class='generics'>&gt;</span> other<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L297" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns True if 'other' is a superset of this set</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if 'other' is a superset of this set</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">IsSubsetOf</span>
+
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>K<span class='generics'>&gt;</span> other<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L306" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns True if 'other' is a superset of this set</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if 'other' is a superset of this set</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">IsSubsetOf</span>
+
+<span class='parens'>(</span>HashMap<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span> other<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L315" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns True if 'other' is a superset of this set</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if 'other' is a superset of this set</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">IsSupersetOf</span>
+
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span><span class='parens'>(</span>K Key<span class='comma'>, </span>V Value<span class='parens'>)</span><span class='generics'>&gt;</span> other<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L324" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns True if 'other' is a superset of this set</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if 'other' is a superset of this set</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">IsSupersetOf</span>
+
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>K<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L333" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns True if 'other' is a superset of this set</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if 'other' is a superset of this set</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">Intersect</span>
+
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>K<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L341" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns the elements that are in both this and other</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">Overlaps</span>
+
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span><span class='parens'>(</span>K Key<span class='comma'>, </span>V Value<span class='parens'>)</span><span class='generics'>&gt;</span> other<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L348" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns True if other overlaps this set</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">Overlaps</span>
+
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>K<span class='generics'>&gt;</span> other<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L356" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns True if other overlaps this set</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">Except</span>
+
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>K<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L365" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns this - rhs.  Only the items in this that are not in
+rhs will be returned.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">Equals</span>
+
+<span class='parens'>(</span>object obj<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L372" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Equality of keys and values with <code>EqDefault&lt;V&gt;</code> used for values</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">Equals</span>
+
+<span class='parens'>(</span>VersionHashMap<span class='generics'>&lt;</span>ConflictV<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span> other<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L380" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Equality of keys and values with <code>EqDefault&lt;V&gt;</code> used for values</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+int
+<span class="def">GetHashCode</span>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L385" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+VersionHashMap<span class='generics'>&lt;</span>ConflictV<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
+<span class="def">Where</span>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>long<span class='comma'>, </span>Option<span class='generics'>&lt;</span>V<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L395" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically filter out items that return false when a predicate is applied</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>New map with items filtered</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+VersionHashMap<span class='generics'>&lt;</span>ConflictV<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
+<span class="def">Where</span>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='comma'>, </span>long<span class='comma'>, </span>Option<span class='generics'>&lt;</span>V<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L405" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically filter out items that return false when a predicate is applied</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>New map with items filtered</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+VersionHashMap<span class='generics'>&lt;</span>ConflictV<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
+<span class="def">Filter</span>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>long<span class='comma'>, </span>Option<span class='generics'>&lt;</span>V<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L415" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically filter out items that return false when a predicate is applied</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>New map with items filtered</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+VersionHashMap<span class='generics'>&lt;</span>ConflictV<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
+<span class="def">Filter</span>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='comma'>, </span>long<span class='comma'>, </span>Option<span class='generics'>&lt;</span>V<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L425" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically filter out items that return false when a predicate is applied</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>New map with items filtered</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">FilterInPlace</span>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>long<span class='comma'>, </span>Option<span class='generics'>&lt;</span>V<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L435" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically filter out items that return false when a predicate is applied</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>New map with items filtered</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">FilterInPlace</span>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='comma'>, </span>long<span class='comma'>, </span>Option<span class='generics'>&lt;</span>V<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L444" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically filter out items that return false when a predicate is applied</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>New map with items filtered</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">ForAll</span>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L453" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Return true if all items in the map return true when the predicate is applied</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if all items in the map return true when the predicate is applied</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">ForAll</span>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span><span class='parens'>(</span>K Key<span class='comma'>, </span>V Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L463" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Return true if all items in the map return true when the predicate is applied</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if all items in the map return true when the predicate is applied</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">ForAll</span>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>KeyValuePair<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L473" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Return true if <em>all</em> items in the map return true when the predicate is applied</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if all items in the map return true when the predicate is applied</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">ForAll</span>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>V<span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L483" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Return true if all items in the map return true when the predicate is applied</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if all items in the map return true when the predicate is applied</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">Exists</span>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L493" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Return true if <em>any</em> items in the map return true when the predicate is applied</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if all items in the map return true when the predicate is applied</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">Exists</span>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span><span class='parens'>(</span>K Key<span class='comma'>, </span>V Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L503" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Return true if <em>any</em> items in the map return true when the predicate is applied</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if all items in the map return true when the predicate is applied</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">Exists</span>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>V<span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L513" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Return true if <em>any</em> items in the map return true when the predicate is applied</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if all items in the map return true when the predicate is applied</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">Iter</span>
+
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span> action<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L524" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically iterate through all key/value pairs in the map (in order) and execute an
+action on each</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">action</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Action to execute</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Unit</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">Iter</span>
+
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span>V<span class='generics'>&gt;</span> action<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L534" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically iterate through all values in the map (in order) and execute an
+action on each</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">action</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Action to execute</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Unit</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">Iter</span>
+
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span><span class='parens'>(</span>K Key<span class='comma'>, </span>V Value<span class='parens'>)</span><span class='generics'>&gt;</span> action<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L544" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically iterate through all key/value pairs (as tuples) in the map (in order)
+and execute an action on each</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">action</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Action to execute</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Unit</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">Iter</span>
+
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span>KeyValuePair<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span><span class='generics'>&gt;</span> action<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L554" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically iterate through all key/value pairs in the map (in order) and execute an
+action on each</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">action</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Action to execute</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Unit</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+S
+<span class="def">Fold</span>
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>S state<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='comma'>, </span>S<span class='generics'>&gt;</span> folder<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L565" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically folds all items in the map (in order) using the folder function provided.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>State type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">state</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Initial state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">folder</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Fold function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Folded state</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+S
+<span class="def">Fold</span>
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>S state<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>V<span class='comma'>, </span>S<span class='generics'>&gt;</span> folder<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.K.V.cs#L577" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically folds all items in the map (in order) using the folder function provided.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>State type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">state</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Initial state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">folder</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Fold function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Folded state</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<span><span class="def">VersionHashMap</span>
+<span class='generics'>&lt;</span>ConflictV<span class='comma'>, </span>OrdActor<span class='comma'>, </span>EqK<span class='comma'>, </span>Actor<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span></span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L31" class="link">Source</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> OrdActor  : struct, Ord&lt;Actor&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> EqK       : struct, Eq&lt;K&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> ConflictV : struct, Conflict&lt;V&gt;</span></div></div></p>
+<div class="doc"><div>
+<p><p>Versioned hash-map.  Each value has a vector-clock attached to it which understands the causality of updates
+from multiple actors.  Actors are just unique keys that represent individual contributors.  They could be client
+connections, nodes in a network, users, or whatever is appropriate to discriminate between commits.</p>
+</p>
+<p><p>Deleted items are not removed from the hash-map, they are merely marked as deleted.  This allows conflicts between
+writes and deletes to be resolved.</p>
+</p>
+<p><p>Run <code>RemoveDeletedItemsOlderThan</code> to clean up items that have been deleted and are now just hanging around.  Use
+a big enough delay that it won't conflict with other commits (this could be seconds, minutes, or longer:
+depending on the expected latency of writes to the hash-map).</p>
+</p></div>
+<div></div>
+
+</div>
+
+
+
+
+<div class="subs methods"><p class="caption">Indexers</p>
+<div class="top"><p class="src"><span class="keyword">this</span>
+[
+Version<span class='generics'>&lt;</span>Actor<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
+]
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L62" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>'this' accessor</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">key</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Key</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Version - this may be in a state of never existing, but won't ever fail</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+<div class="subs methods"><p class="caption">Properties</p>
+<div class="top"><p class="src"><span class="keyword">property</span>
+VersionHashMap<span class='generics'>&lt;</span>ConflictV<span class='comma'>, </span>OrdActor<span class='comma'>, </span>EqK<span class='comma'>, </span>Actor<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
+<span class="def">Empty</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L43" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Empty version map</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+bool
+<span class="def">IsEmpty</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L72" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Is the map empty</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+int
+<span class="def">Count</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L82" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Number of items in the map</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+int
+<span class="def">Length</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L92" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Alias of Count</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+IEnumerable<span class='generics'>&lt;</span>K<span class='generics'>&gt;</span>
+<span class="def">Keys</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L239" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Enumerable of keys</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+IEnumerable<span class='generics'>&lt;</span>V<span class='generics'>&gt;</span>
+<span class="def">Values</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L249" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Enumerable of value</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">SwapKey</span>
+
+<span class='parens'>(</span>K key<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Version<span class='generics'>&lt;</span>Actor<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span><span class='comma'>, </span>Version<span class='generics'>&lt;</span>Actor<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span><span class='generics'>&gt;</span> swap<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L107" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically swap a key in the map.  Allows for multiple operations on the hash-map in an entirely
+transactional and atomic way.</p>
+</div>
+<div><p>Any functions passed as arguments may be run multiple times if there are multiple threads competing
+to update this data structure.  Therefore the functions must be idempotent and it's advised that you spend
+as little time performing the injected behaviours as possible to avoid repeated attempts</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">swap</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Swap function, maps the current state of the value associated with the key to a new state</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">Update</span>
+
+<span class='parens'>(</span>Version<span class='generics'>&lt;</span>Actor<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span> nversion<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L154" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically updates a new item in the map.  If the key already exists, then the vector clocks, within the version
+vector, are compared to ascertain if the proposed version was caused-by, causes, or conflicts with the current
+version:</p>
+<pre><code>* If the proposed version was caused-by the current version, then it is ignored.
+* If the proposed version causes the current version, then it is accepted and updated as the latest version
+* If the proposed version is in conflict with the current version, then values from both versions are
+  passed to ConflictV.Append(v1, v2) for value resolution, and the pairwise-maximum of the two vector-clocks
+  is taken to be the new 'time.
+</code></pre>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">version</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Version to update</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">RemoveOlderThan</span>
+
+<span class='parens'>(</span>DateTime cutoff<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L186" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Remove items that are older than the specified time-stamp</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">cutoff</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Cut off time-stamp</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">RemoveOlderThan</span>
+
+<span class='parens'>(</span>long timeStamp<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L194" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Remove items that are older than the specified time-stamp</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">timeStamp</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Cut off time-stamp</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">RemoveDeletedItemsOlderThan</span>
+
+<span class='parens'>(</span>DateTime cutoff<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L202" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Remove deleted items that are older than the specified time-stamp</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">cutoff</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Cut off time-stamp</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">RemoveDeletedItemsOlderThan</span>
+
+<span class='parens'>(</span>long timeStamp<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L210" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Remove deleted items that are older than the specified time-stamp</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">timeStamp</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Cut off time-stamp</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Option<span class='generics'>&lt;</span>V<span class='generics'>&gt;</span>
+<span class="def">Find</span>
+
+<span class='parens'>(</span>K value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L219" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Retrieve a value from the map by key</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">key</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Key to find</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Found value</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Version<span class='generics'>&lt;</span>Actor<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
+<span class="def">FindVersion</span>
+
+<span class='parens'>(</span>K key<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L229" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Retrieve a value from the map by key</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">key</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Key to find</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Found value</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+HashMap<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
+<span class="def">ToHashMap</span>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L259" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Convert to a HashMap</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IEnumerator<span class='generics'>&lt;</span>(K Key<span class='comma'>, </span>V Value)<span class='generics'>&gt;</span>
+<span class="def">GetEnumerator</span>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L267" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>GetEnumerator - IEnumerable interface</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Seq<span class='generics'>&lt;</span>(K Key<span class='comma'>, </span>V Value)<span class='generics'>&gt;</span>
+<span class="def">ToSeq</span>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L278" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+string
+<span class="def">ToString</span>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L289" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Format the collection as <code>[(key: value), (key: value), (key: value), ...]</code>
+The ellipsis is used for collections over 50 items
+To get a formatted string with all the items, use <code>ToFullString</code>
+or <code>ToFullArrayString</code>.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+string
+<span class="def">ToFullString</span>
+
+<span class='parens'>(</span>string separator = &quot;<span class='comma'>, </span>&quot;<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L297" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Format the collection as <code>(key: value), (key: value), (key: value), ...</code></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+string
+<span class="def">ToFullArrayString</span>
+
+<span class='parens'>(</span>string separator = &quot;<span class='comma'>, </span>&quot;<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L305" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Format the collection as <code>[(key: value), (key: value), (key: value), ...]</code></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IEnumerable<span class='generics'>&lt;</span>(K Key<span class='comma'>, </span>V Value)<span class='generics'>&gt;</span>
+<span class="def">AsEnumerable</span>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L310" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">IsProperSubsetOf</span>
+
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span><span class='parens'>(</span>K Key<span class='comma'>, </span>V Value<span class='parens'>)</span><span class='generics'>&gt;</span> other<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L319" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns True if 'other' is a proper subset of this set</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if 'other' is a proper subset of this set</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">IsProperSubsetOf</span>
+
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>K<span class='generics'>&gt;</span> other<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L328" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns True if 'other' is a proper subset of this set</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if 'other' is a proper subset of this set</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">IsProperSupersetOf</span>
+
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span><span class='parens'>(</span>K Key<span class='comma'>, </span>V Value<span class='parens'>)</span><span class='generics'>&gt;</span> other<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L337" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns True if 'other' is a proper superset of this set</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if 'other' is a proper superset of this set</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">IsProperSupersetOf</span>
+
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>K<span class='generics'>&gt;</span> other<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L346" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns True if 'other' is a proper superset of this set</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if 'other' is a proper superset of this set</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">IsSubsetOf</span>
+
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span><span class='parens'>(</span>K Key<span class='comma'>, </span>V Value<span class='parens'>)</span><span class='generics'>&gt;</span> other<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L355" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns True if 'other' is a superset of this set</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if 'other' is a superset of this set</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">IsSubsetOf</span>
+
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>K<span class='generics'>&gt;</span> other<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L364" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns True if 'other' is a superset of this set</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if 'other' is a superset of this set</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">IsSubsetOf</span>
+
+<span class='parens'>(</span>HashMap<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span> other<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L373" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns True if 'other' is a superset of this set</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if 'other' is a superset of this set</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">IsSupersetOf</span>
+
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span><span class='parens'>(</span>K Key<span class='comma'>, </span>V Value<span class='parens'>)</span><span class='generics'>&gt;</span> other<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L382" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns True if 'other' is a superset of this set</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if 'other' is a superset of this set</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">IsSupersetOf</span>
+
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>K<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L391" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns True if 'other' is a superset of this set</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if 'other' is a superset of this set</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">Intersect</span>
+
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>K<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L399" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns the elements that are in both this and other</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">Overlaps</span>
+
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span><span class='parens'>(</span>K Key<span class='comma'>, </span>V Value<span class='parens'>)</span><span class='generics'>&gt;</span> other<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L421" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns True if other overlaps this set</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">Overlaps</span>
+
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>K<span class='generics'>&gt;</span> other<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L429" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns True if other overlaps this set</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">Except</span>
+
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>K<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L438" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns this - rhs.  Only the items in this that are not in
+rhs will be returned.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">Equals</span>
+
+<span class='parens'>(</span>object obj<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L460" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Equality of keys and values with <code>EqDefault&lt;V&gt;</code> used for values</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">Equals</span>
+
+<span class='parens'>(</span>VersionHashMap<span class='generics'>&lt;</span>ConflictV<span class='comma'>, </span>OrdActor<span class='comma'>, </span>EqK<span class='comma'>, </span>Actor<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span> other<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L468" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Equality of keys and values with <code>EqDefault&lt;V&gt;</code> used for values</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+int
+<span class="def">GetHashCode</span>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L473" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+VersionHashMap<span class='generics'>&lt;</span>ConflictV<span class='comma'>, </span>OrdActor<span class='comma'>, </span>EqK<span class='comma'>, </span>Actor<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
+<span class="def">Where</span>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>long<span class='comma'>, </span>Option<span class='generics'>&lt;</span>V<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L483" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically filter out items that return false when a predicate is applied</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>New map with items filtered</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+VersionHashMap<span class='generics'>&lt;</span>ConflictV<span class='comma'>, </span>OrdActor<span class='comma'>, </span>EqK<span class='comma'>, </span>Actor<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
+<span class="def">Where</span>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='comma'>, </span>long<span class='comma'>, </span>Option<span class='generics'>&lt;</span>V<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L493" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically filter out items that return false when a predicate is applied</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>New map with items filtered</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+VersionHashMap<span class='generics'>&lt;</span>ConflictV<span class='comma'>, </span>OrdActor<span class='comma'>, </span>EqK<span class='comma'>, </span>Actor<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
+<span class="def">Filter</span>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>long<span class='comma'>, </span>Option<span class='generics'>&lt;</span>V<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L503" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically filter out items that return false when a predicate is applied</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>New map with items filtered</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+VersionHashMap<span class='generics'>&lt;</span>ConflictV<span class='comma'>, </span>OrdActor<span class='comma'>, </span>EqK<span class='comma'>, </span>Actor<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
+<span class="def">Filter</span>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='comma'>, </span>long<span class='comma'>, </span>Option<span class='generics'>&lt;</span>V<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L513" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically filter out items that return false when a predicate is applied</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>New map with items filtered</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">FilterInPlace</span>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>long<span class='comma'>, </span>Option<span class='generics'>&lt;</span>V<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L523" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically filter out items that return false when a predicate is applied</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>New map with items filtered</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">FilterInPlace</span>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='comma'>, </span>long<span class='comma'>, </span>Option<span class='generics'>&lt;</span>V<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L553" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically filter out items that return false when a predicate is applied</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>New map with items filtered</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">ForAll</span>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L583" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Return true if all items in the map return true when the predicate is applied</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if all items in the map return true when the predicate is applied</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">ForAll</span>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span><span class='parens'>(</span>K Key<span class='comma'>, </span>V Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L599" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Return true if all items in the map return true when the predicate is applied</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if all items in the map return true when the predicate is applied</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">ForAll</span>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>KeyValuePair<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L609" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Return true if <em>all</em> items in the map return true when the predicate is applied</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if all items in the map return true when the predicate is applied</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">ForAll</span>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>V<span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L619" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Return true if all items in the map return true when the predicate is applied</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if all items in the map return true when the predicate is applied</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">Exists</span>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L629" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Return true if <em>any</em> items in the map return true when the predicate is applied</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if all items in the map return true when the predicate is applied</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">Exists</span>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span><span class='parens'>(</span>K Key<span class='comma'>, </span>V Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L645" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Return true if <em>any</em> items in the map return true when the predicate is applied</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if all items in the map return true when the predicate is applied</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">Exists</span>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>V<span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L655" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Return true if <em>any</em> items in the map return true when the predicate is applied</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if all items in the map return true when the predicate is applied</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">Iter</span>
+
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span> action<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L666" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically iterate through all key/value pairs in the map (in order) and execute an
+action on each</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">action</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Action to execute</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Unit</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">Iter</span>
+
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span>V<span class='generics'>&gt;</span> action<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L682" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically iterate through all values in the map (in order) and execute an
+action on each</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">action</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Action to execute</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Unit</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">Iter</span>
+
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span><span class='parens'>(</span>K Key<span class='comma'>, </span>V Value<span class='parens'>)</span><span class='generics'>&gt;</span> action<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L698" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically iterate through all key/value pairs (as tuples) in the map (in order)
+and execute an action on each</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">action</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Action to execute</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Unit</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">Iter</span>
+
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span>KeyValuePair<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span><span class='generics'>&gt;</span> action<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L714" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically iterate through all key/value pairs in the map (in order) and execute an
+action on each</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">action</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Action to execute</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Unit</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+S
+<span class="def">Fold</span>
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>S state<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='comma'>, </span>S<span class='generics'>&gt;</span> folder<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L731" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically folds all items in the map (in order) using the folder function provided.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>State type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">state</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Initial state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">folder</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Fold function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Folded state</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+S
+<span class="def">Fold</span>
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>S state<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>V<span class='comma'>, </span>S<span class='generics'>&gt;</span> folder<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.ConflictV.OrdActor.EqK.Actor.K.V.cs#L743" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically folds all items in the map (in order) using the folder function provided.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>State type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">state</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Initial state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">folder</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Fold function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Folded state</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<span><span class="def">VersionHashMap</span>
+<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span></span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L31" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div>
+<p><p>Versioned hash-map.  Each value has a vector-clock attached to it which understands the causality of updates
+from multiple actors.  Actors are just unique keys that represent individual contributors.  They could be client
+connections, nodes in a network, users, or whatever is appropriate to discriminate between commits.</p>
+</p>
+<p><p>Deleted items are not removed from the hash-map, they are merely marked as deleted.  This allows conflicts between
+writes and deletes to be resolved.</p>
+</p>
+<p><p>Run <code>RemoveDeletedItemsOlderThan</code> to clean up items that have been deleted and are now just hanging around.  Use
+a big enough delay that it won't conflict with other commits (this could be seconds, minutes, or longer:
+depending on the expected latency of writes to the hash-map).</p>
+</p></div>
+<div></div>
+
+</div>
+
+
+
+
+<div class="subs methods"><p class="caption">Indexers</p>
+<div class="top"><p class="src"><span class="keyword">this</span>
+[
+Version<span class='generics'>&lt;</span>string<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
+]
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L59" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>'this' accessor</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">key</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Key</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Version - this may be in a state of never existing, but won't ever fail</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+<div class="subs methods"><p class="caption">Properties</p>
+<div class="top"><p class="src"><span class="keyword">property</span>
+VersionHashMap<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
+<span class="def">Empty</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L40" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Empty version map</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+bool
+<span class="def">IsEmpty</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L69" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Is the map empty</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+int
+<span class="def">Count</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L79" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Number of items in the map</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+int
+<span class="def">Length</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L89" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Alias of Count</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+IEnumerable<span class='generics'>&lt;</span>K<span class='generics'>&gt;</span>
+<span class="def">Keys</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L180" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Enumerable of keys</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+IEnumerable<span class='generics'>&lt;</span>V<span class='generics'>&gt;</span>
+<span class="def">Values</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L190" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Enumerable of value</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">SwapKey</span>
+
+<span class='parens'>(</span>K key<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Version<span class='generics'>&lt;</span>string<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span><span class='comma'>, </span>Version<span class='generics'>&lt;</span>string<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span><span class='generics'>&gt;</span> swap<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L104" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically swap a key in the map.  Allows for multiple operations on the hash-map in an entirely
+transactional and atomic way.</p>
+</div>
+<div><p>Any functions passed as arguments may be run multiple times if there are multiple threads competing
+to update this data structure.  Therefore the functions must be idempotent and it's advised that you spend
+as little time performing the injected behaviours as possible to avoid repeated attempts</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">swap</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Swap function, maps the current state of the value associated with the key to a new state</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">Update</span>
+
+<span class='parens'>(</span>Version<span class='generics'>&lt;</span>string<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span> version<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L121" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically updates a new item in the map.  If the key already exists, then the vector clocks, within the version
+vector, are compared to ascertain if the proposed version was caused-by, causes, or conflicts with the current
+version:</p>
+<pre><code>* If the proposed version was caused-by the current version, then it is ignored.
+* If the proposed version causes the current version, then it is accepted and updated as the latest version
+* If the proposed version is in conflict with the current version, then values from both versions are
+  passed to ConflictV.Append(v1, v2) for value resolution, and the pairwise-maximum of the two vector-clocks
+  is taken to be the new 'time.
+</code></pre>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">version</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Version to update</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">RemoveOlderThan</span>
+
+<span class='parens'>(</span>DateTime cutoff<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L129" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Remove items that are older than the specified time-stamp</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">cutoff</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Cut off time-stamp</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">RemoveOlderThan</span>
+
+<span class='parens'>(</span>long timeStamp<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L137" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Remove items that are older than the specified time-stamp</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">timeStamp</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Cut off time-stamp</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">RemoveDeletedItemsOlderThan</span>
+
+<span class='parens'>(</span>DateTime cutoff<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L145" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Remove deleted items that are older than the specified time-stamp</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">cutoff</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Cut off time-stamp</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">RemoveDeletedItemsOlderThan</span>
+
+<span class='parens'>(</span>long timeStamp<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L153" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Remove deleted items that are older than the specified time-stamp</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">timeStamp</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Cut off time-stamp</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Option<span class='generics'>&lt;</span>V<span class='generics'>&gt;</span>
+<span class="def">Find</span>
+
+<span class='parens'>(</span>K value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L162" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Retrieve a value from the map by key</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">key</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Key to find</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Found value</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Version<span class='generics'>&lt;</span>string<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
+<span class="def">FindVersion</span>
+
+<span class='parens'>(</span>K value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L172" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Retrieve a value from the map by key</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">key</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Key to find</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Found value</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+HashMap<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
+<span class="def">ToHashMap</span>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L200" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Convert to a HashMap</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IEnumerator<span class='generics'>&lt;</span>(K Key<span class='comma'>, </span>V Value)<span class='generics'>&gt;</span>
+<span class="def">GetEnumerator</span>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L208" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>GetEnumerator - IEnumerable interface</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Seq<span class='generics'>&lt;</span>(K Key<span class='comma'>, </span>V Value)<span class='generics'>&gt;</span>
+<span class="def">ToSeq</span>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L219" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+string
+<span class="def">ToString</span>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L230" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Format the collection as <code>[(key: value), (key: value), (key: value), ...]</code>
+The ellipsis is used for collections over 50 items
+To get a formatted string with all the items, use <code>ToFullString</code>
+or <code>ToFullArrayString</code>.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+string
+<span class="def">ToFullString</span>
+
+<span class='parens'>(</span>string separator = &quot;<span class='comma'>, </span>&quot;<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L238" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Format the collection as <code>(key: value), (key: value), (key: value), ...</code></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+string
+<span class="def">ToFullArrayString</span>
+
+<span class='parens'>(</span>string separator = &quot;<span class='comma'>, </span>&quot;<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L246" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Format the collection as <code>[(key: value), (key: value), (key: value), ...]</code></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IEnumerable<span class='generics'>&lt;</span>(K Key<span class='comma'>, </span>V Value)<span class='generics'>&gt;</span>
+<span class="def">AsEnumerable</span>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L251" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">IsProperSubsetOf</span>
+
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span><span class='parens'>(</span>K Key<span class='comma'>, </span>V Value<span class='parens'>)</span><span class='generics'>&gt;</span> other<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L260" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns True if 'other' is a proper subset of this set</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if 'other' is a proper subset of this set</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">IsProperSubsetOf</span>
+
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>K<span class='generics'>&gt;</span> other<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L269" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns True if 'other' is a proper subset of this set</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if 'other' is a proper subset of this set</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">IsProperSupersetOf</span>
+
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span><span class='parens'>(</span>K Key<span class='comma'>, </span>V Value<span class='parens'>)</span><span class='generics'>&gt;</span> other<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L278" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns True if 'other' is a proper superset of this set</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if 'other' is a proper superset of this set</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">IsProperSupersetOf</span>
+
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>K<span class='generics'>&gt;</span> other<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L287" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns True if 'other' is a proper superset of this set</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if 'other' is a proper superset of this set</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">IsSubsetOf</span>
+
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span><span class='parens'>(</span>K Key<span class='comma'>, </span>V Value<span class='parens'>)</span><span class='generics'>&gt;</span> other<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L296" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns True if 'other' is a superset of this set</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if 'other' is a superset of this set</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">IsSubsetOf</span>
+
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>K<span class='generics'>&gt;</span> other<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L305" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns True if 'other' is a superset of this set</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if 'other' is a superset of this set</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">IsSubsetOf</span>
+
+<span class='parens'>(</span>HashMap<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span> other<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L314" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns True if 'other' is a superset of this set</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if 'other' is a superset of this set</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">IsSupersetOf</span>
+
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span><span class='parens'>(</span>K Key<span class='comma'>, </span>V Value<span class='parens'>)</span><span class='generics'>&gt;</span> other<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L323" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns True if 'other' is a superset of this set</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if 'other' is a superset of this set</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">IsSupersetOf</span>
+
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>K<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L332" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns True if 'other' is a superset of this set</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if 'other' is a superset of this set</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">Intersect</span>
+
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>K<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L340" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns the elements that are in both this and other</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">Overlaps</span>
+
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span><span class='parens'>(</span>K Key<span class='comma'>, </span>V Value<span class='parens'>)</span><span class='generics'>&gt;</span> other<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L347" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns True if other overlaps this set</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">Overlaps</span>
+
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>K<span class='generics'>&gt;</span> other<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L355" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns True if other overlaps this set</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">Except</span>
+
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>K<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L364" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns this - rhs.  Only the items in this that are not in
+rhs will be returned.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">Equals</span>
+
+<span class='parens'>(</span>object obj<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L371" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Equality of keys and values with <code>EqDefault&lt;V&gt;</code> used for values</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">Equals</span>
+
+<span class='parens'>(</span>VersionHashMap<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span> other<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L379" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Equality of keys and values with <code>EqDefault&lt;V&gt;</code> used for values</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+int
+<span class="def">GetHashCode</span>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L384" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+VersionHashMap<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
+<span class="def">Where</span>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>long<span class='comma'>, </span>Option<span class='generics'>&lt;</span>V<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L394" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically filter out items that return false when a predicate is applied</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>New map with items filtered</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+VersionHashMap<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
+<span class="def">Where</span>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='comma'>, </span>long<span class='comma'>, </span>Option<span class='generics'>&lt;</span>V<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L404" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically filter out items that return false when a predicate is applied</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>New map with items filtered</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+VersionHashMap<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
+<span class="def">Filter</span>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>long<span class='comma'>, </span>Option<span class='generics'>&lt;</span>V<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L414" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically filter out items that return false when a predicate is applied</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>New map with items filtered</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+VersionHashMap<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
+<span class="def">Filter</span>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='comma'>, </span>long<span class='comma'>, </span>Option<span class='generics'>&lt;</span>V<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L424" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically filter out items that return false when a predicate is applied</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>New map with items filtered</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">FilterInPlace</span>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>long<span class='comma'>, </span>Option<span class='generics'>&lt;</span>V<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L434" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically filter out items that return false when a predicate is applied</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>New map with items filtered</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">FilterInPlace</span>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='comma'>, </span>long<span class='comma'>, </span>Option<span class='generics'>&lt;</span>V<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L443" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically filter out items that return false when a predicate is applied</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>New map with items filtered</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">ForAll</span>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L452" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Return true if all items in the map return true when the predicate is applied</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if all items in the map return true when the predicate is applied</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">ForAll</span>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span><span class='parens'>(</span>K Key<span class='comma'>, </span>V Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L462" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Return true if all items in the map return true when the predicate is applied</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if all items in the map return true when the predicate is applied</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">ForAll</span>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>KeyValuePair<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L472" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Return true if <em>all</em> items in the map return true when the predicate is applied</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if all items in the map return true when the predicate is applied</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">ForAll</span>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>V<span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L482" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Return true if all items in the map return true when the predicate is applied</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if all items in the map return true when the predicate is applied</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">Exists</span>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L492" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Return true if <em>any</em> items in the map return true when the predicate is applied</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if all items in the map return true when the predicate is applied</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">Exists</span>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span><span class='parens'>(</span>K Key<span class='comma'>, </span>V Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L502" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Return true if <em>any</em> items in the map return true when the predicate is applied</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if all items in the map return true when the predicate is applied</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">Exists</span>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>V<span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L512" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Return true if <em>any</em> items in the map return true when the predicate is applied</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if all items in the map return true when the predicate is applied</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">Iter</span>
+
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span> action<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L523" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically iterate through all key/value pairs in the map (in order) and execute an
+action on each</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">action</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Action to execute</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Unit</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">Iter</span>
+
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span>V<span class='generics'>&gt;</span> action<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L533" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically iterate through all values in the map (in order) and execute an
+action on each</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">action</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Action to execute</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Unit</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">Iter</span>
+
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span><span class='parens'>(</span>K Key<span class='comma'>, </span>V Value<span class='parens'>)</span><span class='generics'>&gt;</span> action<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L543" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically iterate through all key/value pairs (as tuples) in the map (in order)
+and execute an action on each</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">action</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Action to execute</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Unit</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<span class="def">Iter</span>
+
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span>KeyValuePair<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span><span class='generics'>&gt;</span> action<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L553" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically iterate through all key/value pairs in the map (in order) and execute an
+action on each</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">action</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Action to execute</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Unit</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+S
+<span class="def">Fold</span>
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>S state<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='comma'>, </span>S<span class='generics'>&gt;</span> folder<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L564" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically folds all items in the map (in order) using the folder function provided.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>State type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">state</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Initial state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">folder</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Fold function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Folded state</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+S
+<span class="def">Fold</span>
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>S state<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>V<span class='comma'>, </span>S<span class='generics'>&gt;</span> folder<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/VersionHashMap/VersionHashMap.K.V.cs#L576" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically folds all items in the map (in order) using the folder function provided.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>State type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">state</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Initial state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">folder</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Fold function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Folded state</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div></div></div></body></html>

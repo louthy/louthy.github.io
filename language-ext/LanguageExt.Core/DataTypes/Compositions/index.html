@@ -1,0 +1,963 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>LanguageExt.Core\DataTypes\Compositions</title>
+<link href="style.css" rel="stylesheet" type="text/css"/></head>
+<body class="js-enabled"><div id="package-header"><ul class="links" id="page-menu"><li><a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Compositions" class="link">Source</a></li>
+<li><a href="../index.html" class="link">Contents</a></li>
+<li><a href="/LanguageExt.Core/index.html" class="link">Index</a></li></ul>
+<p class="caption">LanguageExt.Core</p></div>
+<div id="content"><div id="module-header"><p class="caption"><a href="../../index.html" class="link">LanguageExt.Core</a>
+<span> ► </span>
+<a href="../index.html" class="link">DataTypes</a>
+<span> ► </span>
+<a href="index.html" class="link">Compositions</a></p></div>
+<div class="interface">
+<div class="top"><p class="src"><span class="keyword">struct</span>
+<span><span class="def">Compositions</span>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span></span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Compositions/Compositions.cs#L25" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>A <em>compositions list</em> or <em>composition tree</em> is a list data type where the elements are monoids,
+and the 'mconcat' of any contiguous sublist can be computed in logarithmic time.</p>
+<p>A common use case of this type is in a wiki, version control system, or collaborative editor, where
+each change or delta would be stored in a list, and it is sometimes necessary to compute the composed
+delta between any two versions.</p>
+<p>This version of a composition list is strictly biased to right-associativity, in that we only support
+efficient consing to the front of the list. This also means that the 'take' operation can be inefficient.</p>
+<p>The append operation <code>append(a, b)</code> performs <code>O(a log (a + b))</code> element compositions, so you want
+the left-hand list <code>a</code> to be as small as possible.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+<div class="subs methods"><p class="caption">Fields</p>
+<div class="top"><p class="src"><span class="keyword">field</span>
+Compositions<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class="def">Empty = new Compositions&lt;A&gt;(Seq&lt;Node&gt;())</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Compositions/Compositions.cs#L27" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">field</span>
+Seq<span class='generics'>&lt;</span>Node<span class='generics'>&gt;</span>
+<span class="def">Tree</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Compositions/Compositions.cs#L29" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">WellFormed</span>
+<span class='generics'>&lt;</span>MonoidEqA<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Compositions/Compositions.cs#L41" class="link">Source</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> MonoidEqA : struct, Monoid&lt;A&gt;, Eq&lt;A&gt;</span></div></div></p>
+<div class="doc"><div><p>Returns true if the given tree is appropriately right-biased.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Compositions<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class="def">Skip</span>
+
+<span class='parens'>(</span>int amount<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Compositions/Compositions.cs#L47" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Return the compositions list with the first <code>k</code> elements removed, in <code>O(log k)</code> time.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Compositions<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class="def">Take</span>
+<span class='generics'>&lt;</span>MonoidA<span class='generics'>&gt;</span>
+<span class='parens'>(</span>int amount<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Compositions/Compositions.cs#L56" class="link">Source</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> MonoidA : struct, Monoid&lt;A&gt;</span></div></div></p>
+<div class="doc"><div><p>Return the compositions list containing only the first <code>k</code> elements
+of the input.  In the worst case, performs <code>O(k log k)</code> element compositions,
+in order to maintain the right-associative bias.  If you wish to run <code>composed</code>
+on the result of <code>take</code>, use <code>takeComposed</code> for better performance.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+A
+<span class="def">TakeComposed</span>
+<span class='generics'>&lt;</span>MonoidA<span class='generics'>&gt;</span>
+<span class='parens'>(</span>int amount<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Compositions/Compositions.cs#L63" class="link">Source</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> MonoidA : struct, Monoid&lt;A&gt;</span></div></div></p>
+<div class="doc"><div><p>Returns the composition of the first <code>k</code> elements of the compositions list, doing only <code>O(log k)</code> compositions.
+Faster than simply using <code>take</code> and then <code>composed</code> separately.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+(Compositions<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> taken<span class='comma'>, </span>Compositions<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> skipped)
+<span class="def">SplitAt</span>
+<span class='generics'>&lt;</span>MonoidA<span class='generics'>&gt;</span>
+<span class='parens'>(</span>int i<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Compositions/Compositions.cs#L69" class="link">Source</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> MonoidA : struct, Monoid&lt;A&gt;</span></div></div></p>
+<div class="doc"><div><p>A convenience alias for 'take' and 'skip'</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+A
+<span class="def">Composed</span>
+<span class='generics'>&lt;</span>MonoidA<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Compositions/Compositions.cs#L76" class="link">Source</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> MonoidA : struct, Monoid&lt;A&gt;</span></div></div></p>
+<div class="doc"><div><p>Compose every element in the compositions list. Performs only <code>O(log n)</code> compositions.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Compositions<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class="def">Singleton</span>
+
+<span class='parens'>(</span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Compositions/Compositions.cs#L83" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Construct a compositions list containing just one element.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+int
+<span class="def">Count</span>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Compositions/Compositions.cs#L89" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Get the number of elements in the compositions list, in <code>O(log n)</code> time.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Compositions<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class="def">FromList</span>
+<span class='generics'>&lt;</span>MonoidA<span class='generics'>&gt;</span>
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Compositions/Compositions.cs#L96" class="link">Source</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> MonoidA : struct, Monoid&lt;A&gt;</span></div></div></p>
+<div class="doc"><div><p>Convert a compositions list into a list of elements. The other direction
+is provided in the 'Data.Foldable.Foldable' instance.This will perform O(n log n) element compositions.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">Equals</span>
+
+<span class='parens'>(</span>Compositions<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> b<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Compositions/Compositions.cs#L103" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Equality operator</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">Equals</span>
+
+<span class='parens'>(</span>object obj<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Compositions/Compositions.cs#L109" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Equality operator</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+int
+<span class="def">GetHashCode</span>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Compositions/Compositions.cs#L128" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Get hash code</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class="def">ToSeq</span>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Compositions/Compositions.cs#L134" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Convert to a sequence</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IEnumerable<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class="def">AsEnumerable</span>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Compositions/Compositions.cs#L140" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Convert to an enumerable</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IEnumerator<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class="def">GetEnumerator</span>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Compositions/Compositions.cs#L146" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Get enumerator</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+<div class="subs methods"><p class="caption">Operators</p>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<span class="def">==</span>
+<span class='parens'>(</span>Compositions<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> a<span class='comma'>, </span>Compositions<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> b<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Compositions/Compositions.cs#L115" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Equality operator</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<span class="def">!=</span>
+<span class='parens'>(</span>Compositions<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> a<span class='comma'>, </span>Compositions<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> b<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Compositions/Compositions.cs#L121" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Equality operator</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<span><span class="def">Node</span>
+</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Compositions/Compositions.cs#L155" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+<div class="subs methods"><p class="caption">Fields</p>
+<div class="top"><p class="src"><span class="keyword">field</span>
+int
+<span class="def">Size</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Compositions/Compositions.cs#L157" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">field</span>
+Option<span class='generics'>&lt;</span>(Node<span class='comma'>, </span>Node)<span class='generics'>&gt;</span>
+<span class="def">Children</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Compositions/Compositions.cs#L158" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">field</span>
+A
+<span class="def">Value</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Compositions/Compositions.cs#L159" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+<div class="subs methods"><p class="caption">Constructors</p>
+<div class="top"><p class="src"><span class="keyword">constructor</span>
+<span class="def">Node</span>
+<span class='parens'>(</span>int size<span class='comma'>, </span>Option<span class='generics'>&lt;</span><span class='parens'>(</span>Node<span class='comma'>, </span>Node<span class='parens'>)</span><span class='generics'>&gt;</span> children<span class='comma'>, </span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Compositions/Compositions.cs#L161" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<span><span class="def">CompositionsExt</span>
+</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Compositions/Compositions.Extensions.cs#L3" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Compositions<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class="def">Cons</span>
+<span class='generics'>&lt;</span>MonoidA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this A a<span class='comma'>, </span>Compositions<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Compositions/Compositions.Extensions.cs#L5" class="link">Source</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> MonoidA : struct, Monoid&lt;A&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<span><span class="def">Compositions</span>
+</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Compositions/Compositions.Module.cs#L9" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<span class="def">wellFormed</span>
+<span class='generics'>&lt;</span>MonoidEqA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Compositions<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ca<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Compositions/Compositions.Module.cs#L14" class="link">Source</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> MonoidEqA : struct, Monoid&lt;A&gt;, Eq&lt;A&gt;</span></div></div></p>
+<div class="doc"><div><p>Returns true if the given tree is appropriately right-biased.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Compositions<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class="def">skip</span>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>int amount<span class='comma'>, </span>Compositions<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> compositions<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Compositions/Compositions.Module.cs#L48" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Return the compositions list with the first <code>k</code> elements removed, in <code>O(log k)</code> time.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Compositions<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class="def">take</span>
+<span class='generics'>&lt;</span>MonoidA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>int amount<span class='comma'>, </span>Compositions<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> compositions<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Compositions/Compositions.Module.cs#L77" class="link">Source</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> MonoidA : struct, Monoid&lt;A&gt;</span></div></div></p>
+<div class="doc"><div><p>Return the compositions list containing only the first <code>k</code> elements
+of the input.  In the worst case, performs <code>O(k log k)</code> element compositions,
+in order to maintain the right-associative bias.  If you wish to run <code>composed</code>
+on the result of <code>take</code>, use <code>takeComposed</code> for better performance.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+A
+<span class="def">takeComposed</span>
+<span class='generics'>&lt;</span>MonoidA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>int amount<span class='comma'>, </span>Compositions<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> compositions<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Compositions/Compositions.Module.cs#L107" class="link">Source</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> MonoidA : struct, Monoid&lt;A&gt;</span></div></div></p>
+<div class="doc"><div><p>Returns the composition of the first <code>k</code> elements of the compositions list, doing only <code>O(log k)</code> compositions.
+Faster than simply using <code>take</code> and then <code>composed</code> separately.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+(Compositions<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> taken<span class='comma'>, </span>Compositions<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> skipped)
+<span class="def">splitAt</span>
+<span class='generics'>&lt;</span>MonoidA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>int i<span class='comma'>, </span>Compositions<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> c<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Compositions/Compositions.Module.cs#L135" class="link">Source</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> MonoidA : struct, Monoid&lt;A&gt;</span></div></div></p>
+<div class="doc"><div><p>A convenience alias for 'take' and 'drop'</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+A
+<span class="def">composed</span>
+<span class='generics'>&lt;</span>MonoidA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Compositions<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> compositions<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Compositions/Compositions.Module.cs#L142" class="link">Source</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> MonoidA : struct, Monoid&lt;A&gt;</span></div></div></p>
+<div class="doc"><div><p>Compose every element in the compositions list. Performs only <code>O(log n)</code> compositions.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Compositions<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class="def">singleton</span>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Compositions/Compositions.Module.cs#L149" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Construct a compositions list containing just one element.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+int
+<span class="def">count</span>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Compositions<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> compositions<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Compositions/Compositions.Module.cs#L155" class="link">Source</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Get the number of elements in the compositions list, in <code>O(log n)</code> time.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Compositions<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class="def">cons</span>
+<span class='generics'>&lt;</span>MonoidA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A x<span class='comma'>, </span>Compositions<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> xs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Compositions/Compositions.Module.cs#L161" class="link">Source</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> MonoidA : struct, Monoid&lt;A&gt;</span></div></div></p>
+<div class="doc"><div><p>Add a new element to the front of a compositions list. Performs <code>O(log n)</code> element compositions.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Compositions<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class="def">fromList</span>
+<span class='generics'>&lt;</span>MonoidA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Compositions/Compositions.Module.cs#L169" class="link">Source</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> MonoidA : struct, Monoid&lt;A&gt;</span></div></div></p>
+<div class="doc"><div><p>Convert a compositions list into a list of elements. The other direction
+is provided in the 'Data.Foldable.Foldable' instance.This will perform O(n log n) element compositions.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div></div></div></body></html>
