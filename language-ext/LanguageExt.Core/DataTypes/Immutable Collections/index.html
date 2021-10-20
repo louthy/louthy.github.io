@@ -10,6 +10,18 @@
 <a href="../index.html" class="link">DataTypes</a>
 <span> ► </span>
 <a href="index.html" class="link">Immutable Collections</a></p></div>
+<div class="doc noleftpad"><p>This a suite of <a href="https://github.com/louthy/language-ext/blob/master/Performance.md">very high-performance immutable-collections</a></p>
+<ul>
+<li class='markdown-bullet'>For lists you should always prefer to use <code>Seq&lt;A&gt;</code> - it is about 10x faster than <code>Lst&lt;A&gt;</code>.  The only reason you'd pick
+<code>Lst&lt;A&gt;</code> is if you needed to do inserts into the middle of the list: <code>Seq&lt;A&gt;</code> doesn't allow this (it only allows prepending or
+appending), as it would be a performance hit.
+<code>Seq&lt;A&gt;</code> is backed by an array, and so it has exceptional memory locality, <code>Lst&lt;A&gt;</code> is an AVL tree to allow for efficient<br />
+insertion, but suffers from poorer memory locality.</li>
+<li class='markdown-bullet'>For 'dictionaries' or maps as we prefer to call them, then <code>HashMap</code> is the fastest implemention you'll find in .NET-land.  It is
+unsorted.  If you need a sorted dictionary, use <code>Map</code>.  <code>HashMap</code> uses the CHAMP data-structure, <code>Map</code> uses an AVL tree.</li>
+<li class='markdown-bullet'>The same goes for sets, prefer <code>HashSet</code> over <code>Set</code>, unless you need the set to be sorted.</li>
+</ul>
+</div>
 <div id="table-of-contents"><p class="caption">Contents</p>
 <ul></ul></div>
 <div class="interface"><H1>Sub modules</H1>
