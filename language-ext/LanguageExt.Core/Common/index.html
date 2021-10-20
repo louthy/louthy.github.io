@@ -12,6 +12,20 @@
 of <code>Eff&lt;A&gt;</code>, <code>Eff&lt;RT, A&gt;</code>, <code>Aff&lt;A&gt;</code>, <code>Aff&lt;RT, A&gt;</code> and the compositional streaming Pipe's feature.</p>
 <p>The reason they're buried in the <code>Common</code> namespace, is because, well, <code>Error</code> is a common type name.  And so, this gives
 the programmer a chance to not include it when they include <code>LanguageExt.Core</code>.</p>
+<p><code>Error</code> exists because <code>Exceptions</code> are really only meant for <em>exceptional</em> errors. However, in C#-land we've been trained
+to throw them even for expected errors.  The <code>Error</code> type can be constructed to be exceptional or expected.  For example:</p>
+<pre><code>Error.New(&quot;This error was expected&quot;)
+
+try
+{
+    // This wraps up the exceptional error
+}
+catch(Exception e)
+{
+    return Error.New(e);
+}
+</code></pre>
+<p><code>Error</code> also supports error-codes, and giving an extra textual message for caught exceptions.</p>
 </div>
 <div id="table-of-contents"><p class="caption">Contents</p>
 <ul><li><a href="#LanguageExt.Common_0_Error_0" class="link"><div class="nowrap">Error

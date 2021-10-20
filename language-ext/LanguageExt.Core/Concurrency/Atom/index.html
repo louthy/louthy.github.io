@@ -10,7 +10,24 @@
 <a href="../index.html" class="link">Concurrency</a>
 <span> ► </span>
 <a href="index.html" class="link">Atom</a></p></div>
+<div class="doc noleftpad"><p>Atoms provide a way to manage shared, synchronous, independent state without locks.  You can use them to wrap up immutable data structures
+and then atomically update them using the various <code>Swap</code> methods, or read them by calling the <code>Value</code> property.</p>
+<p>If a conflict is encountered during a <code>Swap</code> operation, the operation is re-run using the latest state, and so you should minimise the time
+spent in the <code>Swap</code> function, as well as make sure there are no side-effects, otherwise all bets are off.</p>
+<p>See the <a href="https://github.com/louthy/language-ext/wiki/Concurrency">concurrency section</a> of the wiki for more info.</p>
+<h3>Usage</h3>
+<pre><code>record Person(string Name, string Surname);
 
+// Create a new atom
+var person = Atom(new Person(&quot;Paul&quot;, &quot;Louth&quot;));
+
+// Modify it atomically
+person.Swap(p =&gt; p with { Surname = $&quot;{p.Name}y&quot; });
+
+// Take a snapshot of the state of the atom 
+var snapshot = p.Value;
+</code></pre>
+</div>
 <div id="table-of-contents"><p class="caption">Contents</p>
 <ul><li><a href="#LanguageExt_0_Atom_1" class="link"><div class="nowrap">Atom
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span></div></a></li>
@@ -157,13 +174,13 @@
 <div class="top"><p class="src"><span class="keyword">class</span>
 <a id="LanguageExt_0_Atom_1" class="def">Atom</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L30" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L33" class="link">Source</a>
 <a href="#LanguageExt_0_Atom_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Atoms provide a way to manage shared, synchronous, independent state without
 locks.</p>
 </div>
-<div><p>The intended use of atom is to hold one an immutable data structure. You change
+<div><p>The intended use of atom is to hold an immutable data structure. You change
 the value by applying a function to the old value. This is done in an atomic
 manner by <code>Swap</code>.</p>
 <p>Internally, <code>Swap</code> reads the current value, applies the function to it, and
@@ -174,6 +191,8 @@ of the supplied function to a current value, atomically. However, because the
 function might be called multiple times, it must be free of side effects.</p>
 <p>Atoms are an efficient way to represent some state that will never need to be
 coordinated with any other, and for which you wish to make synchronous changes.</p>
+
+<p>See the <a href="https://github.com/louthy/language-ext/wiki/Concurrency">concurrency section</a> of the wiki for more info.</p>
 </div>
 
 </div>
@@ -186,7 +205,7 @@ coordinated with any other, and for which you wish to make synchronous changes.<
 <div class="top"><p class="src"><span class="keyword">property</span>
 A
 <a id="Atom_1_Value_0" class="def">Value</a>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L854" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L857" class="link">Source</a>
 <a href="#Atom_1_Value_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Current state</p>
@@ -214,7 +233,7 @@ Option<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Atom_1_Swap_0" class="def">Swap</a>
 
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L77" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L80" class="link">Source</a>
 <a href="#Atom_1_Swap_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
@@ -250,7 +269,7 @@ Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Atom_1_SwapEff_0" class="def">SwapEff</a>
 
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L109" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L112" class="link">Source</a>
 <a href="#Atom_1_SwapEff_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
@@ -290,7 +309,7 @@ Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class
 <a id="Atom_1_SwapEff_1" class="def">SwapEff</a>
 <span class='generics'>&lt;</span>RT<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L147" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L150" class="link">Source</a>
 <a href="#Atom_1_SwapEff_1" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct</span></div></div></p>
@@ -327,7 +346,7 @@ ValueTask<span class='generics'>&lt;</span>Option<span class='generics'>&lt;</sp
 <a id="Atom_1_SwapAsync_0" class="def">SwapAsync</a>
 
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L185" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L188" class="link">Source</a>
 <a href="#Atom_1_SwapAsync_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
@@ -363,7 +382,7 @@ Aff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Atom_1_SwapAff_0" class="def">SwapAff</a>
 
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Aff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L217" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L220" class="link">Source</a>
 <a href="#Atom_1_SwapAff_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
@@ -399,7 +418,7 @@ Aff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Atom_1_SwapAff_0" class="def">SwapAff</a>
 
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L256" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L259" class="link">Source</a>
 <a href="#Atom_1_SwapAff_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
@@ -435,7 +454,7 @@ Aff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class
 <a id="Atom_1_SwapAff_1" class="def">SwapAff</a>
 <span class='generics'>&lt;</span>RT<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Aff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L290" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L293" class="link">Source</a>
 <a href="#Atom_1_SwapAff_1" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
@@ -472,7 +491,7 @@ Option<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Atom_1_Swap_1" class="def">Swap</a>
 <span class='generics'>&lt;</span>X<span class='generics'>&gt;</span>
 <span class='parens'>(</span>X x<span class='comma'>, </span>Func<span class='generics'>&lt;</span>X<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L333" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L336" class="link">Source</a>
 <a href="#Atom_1_Swap_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
@@ -512,7 +531,7 @@ Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Atom_1_SwapEff_1" class="def">SwapEff</a>
 <span class='generics'>&lt;</span>X<span class='generics'>&gt;</span>
 <span class='parens'>(</span>X x<span class='comma'>, </span>Func<span class='generics'>&lt;</span>X<span class='comma'>, </span>A<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L365" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L368" class="link">Source</a>
 <a href="#Atom_1_SwapEff_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
@@ -552,7 +571,7 @@ Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class
 <a id="Atom_1_SwapEff_2" class="def">SwapEff</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>X<span class='generics'>&gt;</span>
 <span class='parens'>(</span>X x<span class='comma'>, </span>Func<span class='generics'>&lt;</span>X<span class='comma'>, </span>A<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L404" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L407" class="link">Source</a>
 <a href="#Atom_1_SwapEff_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct</span></div></div></p>
@@ -593,7 +612,7 @@ ValueTask<span class='generics'>&lt;</span>Option<span class='generics'>&lt;</sp
 <a id="Atom_1_SwapAsync_1" class="def">SwapAsync</a>
 <span class='generics'>&lt;</span>X<span class='generics'>&gt;</span>
 <span class='parens'>(</span>X x<span class='comma'>, </span>Func<span class='generics'>&lt;</span>X<span class='comma'>, </span>A<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L443" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L446" class="link">Source</a>
 <a href="#Atom_1_SwapAsync_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
@@ -633,7 +652,7 @@ Aff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Atom_1_SwapAff_1" class="def">SwapAff</a>
 <span class='generics'>&lt;</span>X<span class='generics'>&gt;</span>
 <span class='parens'>(</span>X x<span class='comma'>, </span>Func<span class='generics'>&lt;</span>X<span class='comma'>, </span>A<span class='comma'>, </span>Aff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L475" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L478" class="link">Source</a>
 <a href="#Atom_1_SwapAff_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
@@ -673,7 +692,7 @@ Aff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Atom_1_SwapAff_1" class="def">SwapAff</a>
 <span class='generics'>&lt;</span>X<span class='generics'>&gt;</span>
 <span class='parens'>(</span>X x<span class='comma'>, </span>Func<span class='generics'>&lt;</span>X<span class='comma'>, </span>A<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L515" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L518" class="link">Source</a>
 <a href="#Atom_1_SwapAff_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
@@ -713,7 +732,7 @@ Aff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class
 <a id="Atom_1_SwapAff_2" class="def">SwapAff</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>X<span class='generics'>&gt;</span>
 <span class='parens'>(</span>X x<span class='comma'>, </span>Func<span class='generics'>&lt;</span>X<span class='comma'>, </span>A<span class='comma'>, </span>Aff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L550" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L553" class="link">Source</a>
 <a href="#Atom_1_SwapAff_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
@@ -754,7 +773,7 @@ Option<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Atom_1_Swap_2" class="def">Swap</a>
 <span class='generics'>&lt;</span>X<span class='comma'>, </span>Y<span class='generics'>&gt;</span>
 <span class='parens'>(</span>X x<span class='comma'>, </span>Y y<span class='comma'>, </span>Func<span class='generics'>&lt;</span>X<span class='comma'>, </span>Y<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L593" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L596" class="link">Source</a>
 <a href="#Atom_1_Swap_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
@@ -798,7 +817,7 @@ Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Atom_1_SwapEff_2" class="def">SwapEff</a>
 <span class='generics'>&lt;</span>X<span class='comma'>, </span>Y<span class='generics'>&gt;</span>
 <span class='parens'>(</span>X x<span class='comma'>, </span>Y y<span class='comma'>, </span>Func<span class='generics'>&lt;</span>X<span class='comma'>, </span>Y<span class='comma'>, </span>A<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L626" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L629" class="link">Source</a>
 <a href="#Atom_1_SwapEff_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
@@ -842,7 +861,7 @@ Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class
 <a id="Atom_1_SwapEff_3" class="def">SwapEff</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>X<span class='comma'>, </span>Y<span class='generics'>&gt;</span>
 <span class='parens'>(</span>X x<span class='comma'>, </span>Y y<span class='comma'>, </span>Func<span class='generics'>&lt;</span>X<span class='comma'>, </span>Y<span class='comma'>, </span>A<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L666" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L669" class="link">Source</a>
 <a href="#Atom_1_SwapEff_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct</span></div></div></p>
@@ -887,7 +906,7 @@ ValueTask<span class='generics'>&lt;</span>Option<span class='generics'>&lt;</sp
 <a id="Atom_1_SwapAsync_2" class="def">SwapAsync</a>
 <span class='generics'>&lt;</span>X<span class='comma'>, </span>Y<span class='generics'>&gt;</span>
 <span class='parens'>(</span>X x<span class='comma'>, </span>Y y<span class='comma'>, </span>Func<span class='generics'>&lt;</span>X<span class='comma'>, </span>Y<span class='comma'>, </span>A<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L706" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L709" class="link">Source</a>
 <a href="#Atom_1_SwapAsync_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
@@ -931,7 +950,7 @@ Aff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Atom_1_SwapAff_2" class="def">SwapAff</a>
 <span class='generics'>&lt;</span>X<span class='comma'>, </span>Y<span class='generics'>&gt;</span>
 <span class='parens'>(</span>X x<span class='comma'>, </span>Y y<span class='comma'>, </span>Func<span class='generics'>&lt;</span>X<span class='comma'>, </span>Y<span class='comma'>, </span>A<span class='comma'>, </span>Aff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L739" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L742" class="link">Source</a>
 <a href="#Atom_1_SwapAff_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
@@ -975,7 +994,7 @@ Aff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Atom_1_SwapAff_2" class="def">SwapAff</a>
 <span class='generics'>&lt;</span>X<span class='comma'>, </span>Y<span class='generics'>&gt;</span>
 <span class='parens'>(</span>X x<span class='comma'>, </span>Y y<span class='comma'>, </span>Func<span class='generics'>&lt;</span>X<span class='comma'>, </span>Y<span class='comma'>, </span>A<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L781" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L784" class="link">Source</a>
 <a href="#Atom_1_SwapAff_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
@@ -1019,7 +1038,7 @@ Aff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class
 <a id="Atom_1_SwapAff_3" class="def">SwapAff</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>X<span class='comma'>, </span>Y<span class='generics'>&gt;</span>
 <span class='parens'>(</span>X x<span class='comma'>, </span>Y y<span class='comma'>, </span>Func<span class='generics'>&lt;</span>X<span class='comma'>, </span>Y<span class='comma'>, </span>A<span class='comma'>, </span>Aff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L817" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L820" class="link">Source</a>
 <a href="#Atom_1_SwapAff_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
@@ -1064,7 +1083,7 @@ string
 <a id="Atom_1_ToString_0" class="def">ToString</a>
 
 <span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L875" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L878" class="link">Source</a>
 <a href="#Atom_1_ToString_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -1092,13 +1111,13 @@ string
 <div class="top"><p class="src"><span class="keyword">class</span>
 <a id="LanguageExt_0_Atom_2" class="def">Atom</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L30" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L33" class="link">Source</a>
 <a href="#LanguageExt_0_Atom_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Atoms provide a way to manage shared, synchronous, independent state without
 locks.</p>
 </div>
-<div><p>The intended use of atom is to hold one an immutable data structure. You change
+<div><p>The intended use of atom is to hold an immutable data structure. You change
 the value by applying a function to the old value. This is done in an atomic
 manner by <code>Swap</code>.</p>
 <p>Internally, <code>Swap</code> reads the current value, applies the function to it, and
@@ -1109,6 +1128,8 @@ of the supplied function to a current value, atomically. However, because the
 function might be called multiple times, it must be free of side effects.</p>
 <p>Atoms are an efficient way to represent some state that will never need to be
 coordinated with any other, and for which you wish to make synchronous changes.</p>
+
+<p>See the <a href="https://github.com/louthy/language-ext/wiki/Concurrency">concurrency section</a> of the wiki for more info.</p>
 </div>
 
 </div>
@@ -1121,7 +1142,7 @@ coordinated with any other, and for which you wish to make synchronous changes.<
 <div class="top"><p class="src"><span class="keyword">property</span>
 A
 <a id="Atom_2_Value_0" class="def">Value</a>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L862" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L865" class="link">Source</a>
 <a href="#Atom_2_Value_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Current state</p>
@@ -1149,7 +1170,7 @@ Option<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Atom_2_Swap_0" class="def">Swap</a>
 
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L79" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L82" class="link">Source</a>
 <a href="#Atom_2_Swap_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
@@ -1185,7 +1206,7 @@ Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Atom_2_SwapEff_0" class="def">SwapEff</a>
 
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L111" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L114" class="link">Source</a>
 <a href="#Atom_2_SwapEff_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
@@ -1221,7 +1242,7 @@ Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class
 <a id="Atom_2_SwapEff_1" class="def">SwapEff</a>
 <span class='generics'>&lt;</span>RT<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L149" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L152" class="link">Source</a>
 <a href="#Atom_2_SwapEff_1" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct</span></div></div></p>
@@ -1258,7 +1279,7 @@ ValueTask<span class='generics'>&lt;</span>Option<span class='generics'>&lt;</sp
 <a id="Atom_2_SwapAsync_0" class="def">SwapAsync</a>
 
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L187" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L190" class="link">Source</a>
 <a href="#Atom_2_SwapAsync_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
@@ -1294,7 +1315,7 @@ Aff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Atom_2_SwapAff_0" class="def">SwapAff</a>
 
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>Aff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L218" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L221" class="link">Source</a>
 <a href="#Atom_2_SwapAff_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
@@ -1330,7 +1351,7 @@ Aff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Atom_2_SwapAff_0" class="def">SwapAff</a>
 
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L258" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L261" class="link">Source</a>
 <a href="#Atom_2_SwapAff_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
@@ -1366,7 +1387,7 @@ Aff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class
 <a id="Atom_2_SwapAff_1" class="def">SwapAff</a>
 <span class='generics'>&lt;</span>RT<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>Aff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L292" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L295" class="link">Source</a>
 <a href="#Atom_2_SwapAff_1" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
@@ -1403,7 +1424,7 @@ Option<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Atom_2_Swap_1" class="def">Swap</a>
 <span class='generics'>&lt;</span>X<span class='generics'>&gt;</span>
 <span class='parens'>(</span>X x<span class='comma'>, </span>Func<span class='generics'>&lt;</span>M<span class='comma'>, </span>X<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L336" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L339" class="link">Source</a>
 <a href="#Atom_2_Swap_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
@@ -1443,7 +1464,7 @@ Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Atom_2_SwapEff_1" class="def">SwapEff</a>
 <span class='generics'>&lt;</span>X<span class='generics'>&gt;</span>
 <span class='parens'>(</span>X x<span class='comma'>, </span>Func<span class='generics'>&lt;</span>M<span class='comma'>, </span>X<span class='comma'>, </span>A<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L368" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L371" class="link">Source</a>
 <a href="#Atom_2_SwapEff_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
@@ -1483,7 +1504,7 @@ Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class
 <a id="Atom_2_SwapEff_2" class="def">SwapEff</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>X<span class='generics'>&gt;</span>
 <span class='parens'>(</span>X x<span class='comma'>, </span>Func<span class='generics'>&lt;</span>M<span class='comma'>, </span>X<span class='comma'>, </span>A<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L407" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L410" class="link">Source</a>
 <a href="#Atom_2_SwapEff_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct</span></div></div></p>
@@ -1524,7 +1545,7 @@ ValueTask<span class='generics'>&lt;</span>Option<span class='generics'>&lt;</sp
 <a id="Atom_2_SwapAsync_1" class="def">SwapAsync</a>
 <span class='generics'>&lt;</span>X<span class='generics'>&gt;</span>
 <span class='parens'>(</span>X x<span class='comma'>, </span>Func<span class='generics'>&lt;</span>M<span class='comma'>, </span>X<span class='comma'>, </span>A<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L446" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L449" class="link">Source</a>
 <a href="#Atom_2_SwapAsync_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
@@ -1564,7 +1585,7 @@ Aff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Atom_2_SwapAff_1" class="def">SwapAff</a>
 <span class='generics'>&lt;</span>X<span class='generics'>&gt;</span>
 <span class='parens'>(</span>X x<span class='comma'>, </span>Func<span class='generics'>&lt;</span>M<span class='comma'>, </span>X<span class='comma'>, </span>A<span class='comma'>, </span>Aff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L478" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L481" class="link">Source</a>
 <a href="#Atom_2_SwapAff_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
@@ -1604,7 +1625,7 @@ Aff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Atom_2_SwapAff_1" class="def">SwapAff</a>
 <span class='generics'>&lt;</span>X<span class='generics'>&gt;</span>
 <span class='parens'>(</span>X x<span class='comma'>, </span>Func<span class='generics'>&lt;</span>M<span class='comma'>, </span>X<span class='comma'>, </span>A<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L518" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L521" class="link">Source</a>
 <a href="#Atom_2_SwapAff_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
@@ -1644,7 +1665,7 @@ Aff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class
 <a id="Atom_2_SwapAff_2" class="def">SwapAff</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>X<span class='generics'>&gt;</span>
 <span class='parens'>(</span>X x<span class='comma'>, </span>Func<span class='generics'>&lt;</span>M<span class='comma'>, </span>X<span class='comma'>, </span>A<span class='comma'>, </span>Aff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L554" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L557" class="link">Source</a>
 <a href="#Atom_2_SwapAff_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
@@ -1685,7 +1706,7 @@ Option<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Atom_2_Swap_2" class="def">Swap</a>
 <span class='generics'>&lt;</span>X<span class='comma'>, </span>Y<span class='generics'>&gt;</span>
 <span class='parens'>(</span>X x<span class='comma'>, </span>Y y<span class='comma'>, </span>Func<span class='generics'>&lt;</span>M<span class='comma'>, </span>X<span class='comma'>, </span>Y<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L599" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L602" class="link">Source</a>
 <a href="#Atom_2_Swap_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
@@ -1729,7 +1750,7 @@ Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Atom_2_SwapEff_2" class="def">SwapEff</a>
 <span class='generics'>&lt;</span>X<span class='comma'>, </span>Y<span class='generics'>&gt;</span>
 <span class='parens'>(</span>X x<span class='comma'>, </span>Y y<span class='comma'>, </span>Func<span class='generics'>&lt;</span>M<span class='comma'>, </span>X<span class='comma'>, </span>Y<span class='comma'>, </span>A<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L632" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L635" class="link">Source</a>
 <a href="#Atom_2_SwapEff_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
@@ -1773,7 +1794,7 @@ Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class
 <a id="Atom_2_SwapEff_3" class="def">SwapEff</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>X<span class='comma'>, </span>Y<span class='generics'>&gt;</span>
 <span class='parens'>(</span>X x<span class='comma'>, </span>Y y<span class='comma'>, </span>Func<span class='generics'>&lt;</span>M<span class='comma'>, </span>X<span class='comma'>, </span>Y<span class='comma'>, </span>A<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L672" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L675" class="link">Source</a>
 <a href="#Atom_2_SwapEff_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct</span></div></div></p>
@@ -1818,7 +1839,7 @@ ValueTask<span class='generics'>&lt;</span>Option<span class='generics'>&lt;</sp
 <a id="Atom_2_SwapAsync_2" class="def">SwapAsync</a>
 <span class='generics'>&lt;</span>X<span class='comma'>, </span>Y<span class='generics'>&gt;</span>
 <span class='parens'>(</span>X x<span class='comma'>, </span>Y y<span class='comma'>, </span>Func<span class='generics'>&lt;</span>M<span class='comma'>, </span>X<span class='comma'>, </span>Y<span class='comma'>, </span>A<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L712" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L715" class="link">Source</a>
 <a href="#Atom_2_SwapAsync_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
@@ -1862,7 +1883,7 @@ Aff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Atom_2_SwapAff_2" class="def">SwapAff</a>
 <span class='generics'>&lt;</span>X<span class='comma'>, </span>Y<span class='generics'>&gt;</span>
 <span class='parens'>(</span>X x<span class='comma'>, </span>Y y<span class='comma'>, </span>Func<span class='generics'>&lt;</span>M<span class='comma'>, </span>X<span class='comma'>, </span>Y<span class='comma'>, </span>A<span class='comma'>, </span>Aff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L745" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L748" class="link">Source</a>
 <a href="#Atom_2_SwapAff_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
@@ -1906,7 +1927,7 @@ Aff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Atom_2_SwapAff_2" class="def">SwapAff</a>
 <span class='generics'>&lt;</span>X<span class='comma'>, </span>Y<span class='generics'>&gt;</span>
 <span class='parens'>(</span>X x<span class='comma'>, </span>Y y<span class='comma'>, </span>Func<span class='generics'>&lt;</span>M<span class='comma'>, </span>X<span class='comma'>, </span>Y<span class='comma'>, </span>A<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L787" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L790" class="link">Source</a>
 <a href="#Atom_2_SwapAff_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
@@ -1950,7 +1971,7 @@ Aff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class
 <a id="Atom_2_SwapAff_3" class="def">SwapAff</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>X<span class='comma'>, </span>Y<span class='generics'>&gt;</span>
 <span class='parens'>(</span>X x<span class='comma'>, </span>Y y<span class='comma'>, </span>Func<span class='generics'>&lt;</span>M<span class='comma'>, </span>X<span class='comma'>, </span>Y<span class='comma'>, </span>A<span class='comma'>, </span>Aff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L824" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L827" class="link">Source</a>
 <a href="#Atom_2_SwapAff_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
@@ -1995,7 +2016,7 @@ string
 <a id="Atom_2_ToString_0" class="def">ToString</a>
 
 <span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L868" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L871" class="link">Source</a>
 <a href="#Atom_2_ToString_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -2023,12 +2044,13 @@ string
 <div class="top"><p class="src"><span class="keyword">delegate</span>
 <a id="LanguageExt_0_AtomChangedEvent_1" class="def">AtomChangedEvent</a>
 <span class='generics'>&lt;</span>in A<span class='generics'>&gt;</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/AtomChangedEvent.cs#L7" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/AtomChangedEvent.cs#L10" class="link">Source</a>
 <a href="#LanguageExt_0_AtomChangedEvent_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Announces Atom change events</p>
 </div>
-<div></div>
+<div><p>See the <a href="https://github.com/louthy/language-ext/wiki/Concurrency">concurrency section</a> of the wiki for more info.</p>
+</div>
 
 </div>
 
