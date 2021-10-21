@@ -12,7 +12,6 @@
 <a href="../index.html" class="link">Pipes</a>
 <span> ► </span>
 <a href="index.html" class="link">Effect</a></p></div>
-
 <div id="table-of-contents"><p class="caption">Contents</p>
 <ul><li><a href="#LanguageExt.Pipes_0_Effect_2" class="link"><div class="nowrap">Effect
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span></div></a></li>
@@ -88,17 +87,29 @@
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>R<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>R<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li></ul></ul></div>
 <div class="interface">
+
 <div class="top"><p class="src"><span class="keyword">class</span>
 <a id="LanguageExt.Pipes_0_Effect_2" class="def">Effect</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/CoreTypes.cs#L16" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/CoreTypes.cs#L29" class="link">Source</a>
 <a href="#LanguageExt.Pipes_0_Effect_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
-<div class="doc"><div><p>Effects represent a 'fused' set of producer, pipes, and consumer into one type
-It neither yields nor awaits, but represents an entire effect system</p>
+<div class="doc"><div><p>Effects represent a 'fused' set of producer, pipes, and consumer into one type.</p>
+<p>It neither can neither <code>yield</code> nor be <code>awaiting</code>, it represents an entirely closed effect system.</p>
 </div>
-<div></div>
+<div><pre><code>  Upstream | Downstream
+      +---------+
+      |         |
+Void &lt;==       &lt;== Unit
+      |         |
+Unit ==&gt;       ==&gt; Void
+      |    |    |
+      +----|----+
+           |
+           A
+</code></pre>
+</div>
 
 </div>
 
@@ -108,7 +119,7 @@ It neither yields nor awaits, but represents an entire effect system</p>
 <div class="top"><p class="src"><span class="keyword">field</span>
 Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Void<span class='comma'>, </span>Unit<span class='comma'>, </span>Unit<span class='comma'>, </span>Void<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <a id="Effect_2_Value_0" class="def">Value</a>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/CoreTypes.cs#L18" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/CoreTypes.cs#L31" class="link">Source</a>
 <a href="#Effect_2_Value_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -134,7 +145,7 @@ Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Void<span 
 <div class="top"><p class="src"><span class="keyword">constructor</span>
 <a id="Effect_2_Effect_0" class="def">Effect</a>
 <span class='parens'>(</span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Void<span class='comma'>, </span>Unit<span class='comma'>, </span>Unit<span class='comma'>, </span>Void<span class='comma'>, </span>A<span class='generics'>&gt;</span> value<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/CoreTypes.cs#L20" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/CoreTypes.cs#L33" class="link">Source</a>
 <a href="#Effect_2_Effect_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -160,7 +171,7 @@ Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Void<span 
 <a id="Effect_2_ToProxy_0" class="def">ToProxy</a>
 
 <span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/CoreTypes.cs#L23" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/CoreTypes.cs#L36" class="link">Source</a>
 <a href="#Effect_2_ToProxy_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -185,7 +196,7 @@ Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Void<span 
 <a id="Effect_2_Bind_1" class="def">Bind</a>
 <span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Void<span class='comma'>, </span>Unit<span class='comma'>, </span>Unit<span class='comma'>, </span>Void<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/CoreTypes.cs#L26" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/CoreTypes.cs#L39" class="link">Source</a>
 <a href="#Effect_2_Bind_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -210,7 +221,7 @@ Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Void<span 
 <a id="Effect_2_Map_1" class="def">Map</a>
 <span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/CoreTypes.cs#L31" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/CoreTypes.cs#L44" class="link">Source</a>
 <a href="#Effect_2_Map_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -235,7 +246,7 @@ Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Void<span 
 <a id="Effect_2_For_2" class="def">For</a>
 <span class='generics'>&lt;</span>C1<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>Void<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Void<span class='comma'>, </span>Unit<span class='comma'>, </span>C1<span class='comma'>, </span>C<span class='comma'>, </span>Unit<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/CoreTypes.cs#L35" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/CoreTypes.cs#L48" class="link">Source</a>
 <a href="#Effect_2_For_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -260,7 +271,7 @@ Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Void<span 
 <a id="Effect_2_Action_1" class="def">Action</a>
 <span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Void<span class='comma'>, </span>Unit<span class='comma'>, </span>Unit<span class='comma'>, </span>Void<span class='comma'>, </span>S<span class='generics'>&gt;</span> r<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/CoreTypes.cs#L39" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/CoreTypes.cs#L52" class="link">Source</a>
 <a href="#Effect_2_Action_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -285,7 +296,7 @@ Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOutA<span
 <a id="Effect_2_ComposeRight_2" class="def">ComposeRight</a>
 <span class='generics'>&lt;</span>UOutA<span class='comma'>, </span>AUInA<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>Void<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOutA<span class='comma'>, </span>AUInA<span class='comma'>, </span>Void<span class='comma'>, </span>Unit<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> lhs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/CoreTypes.cs#L43" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/CoreTypes.cs#L56" class="link">Source</a>
 <a href="#Effect_2_ComposeRight_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -310,7 +321,7 @@ Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOutA<span
 <a id="Effect_2_ComposeRight_2" class="def">ComposeRight</a>
 <span class='generics'>&lt;</span>UOutA<span class='comma'>, </span>AUInA<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>Void<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOutA<span class='comma'>, </span>AUInA<span class='comma'>, </span>Unit<span class='comma'>, </span>Void<span class='comma'>, </span>Unit<span class='generics'>&gt;</span><span class='generics'>&gt;</span> lhs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/CoreTypes.cs#L47" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/CoreTypes.cs#L60" class="link">Source</a>
 <a href="#Effect_2_ComposeRight_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -335,7 +346,7 @@ Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Void<span 
 <a id="Effect_2_ComposeLeft_2" class="def">ComposeLeft</a>
 <span class='generics'>&lt;</span>DInC<span class='comma'>, </span>DOutC<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>Void<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Unit<span class='comma'>, </span>Void<span class='comma'>, </span>DInC<span class='comma'>, </span>DOutC<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/CoreTypes.cs#L51" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/CoreTypes.cs#L64" class="link">Source</a>
 <a href="#Effect_2_ComposeLeft_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -360,7 +371,7 @@ Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Void<span 
 <a id="Effect_2_ComposeLeft_2" class="def">ComposeLeft</a>
 <span class='generics'>&lt;</span>DInC<span class='comma'>, </span>DOutC<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>Void<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Void<span class='comma'>, </span>Unit<span class='comma'>, </span>DInC<span class='comma'>, </span>DOutC<span class='comma'>, </span>Unit<span class='generics'>&gt;</span><span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/CoreTypes.cs#L55" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/CoreTypes.cs#L68" class="link">Source</a>
 <a href="#Effect_2_ComposeLeft_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -385,7 +396,7 @@ Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Void<span 
 <a id="Effect_2_Reflect_0" class="def">Reflect</a>
 
 <span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/CoreTypes.cs#L59" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/CoreTypes.cs#L72" class="link">Source</a>
 <a href="#Effect_2_Reflect_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -410,7 +421,7 @@ Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Void<span 
 <a id="Effect_2_Observe_0" class="def">Observe</a>
 
 <span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/CoreTypes.cs#L63" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/CoreTypes.cs#L76" class="link">Source</a>
 <a href="#Effect_2_Observe_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -435,7 +446,7 @@ void
 <a id="Effect_2_Deconstruct_0" class="def">Deconstruct</a>
 
 <span class='parens'>(</span>out Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Void<span class='comma'>, </span>Unit<span class='comma'>, </span>Unit<span class='comma'>, </span>Void<span class='comma'>, </span>A<span class='generics'>&gt;</span> value<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/CoreTypes.cs#L67" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/CoreTypes.cs#L80" class="link">Source</a>
 <a href="#Effect_2_Deconstruct_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -460,7 +471,7 @@ Aff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>C<span class
 <a id="Effect_2_SelectMany_2" class="def">SelectMany</a>
 <span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Aff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/CoreTypes.cs#L71" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/CoreTypes.cs#L84" class="link">Source</a>
 <a href="#Effect_2_SelectMany_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -485,7 +496,7 @@ Aff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>C<span class
 <a id="Effect_2_SelectMany_2" class="def">SelectMany</a>
 <span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Aff<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/CoreTypes.cs#L75" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/CoreTypes.cs#L88" class="link">Source</a>
 <a href="#Effect_2_SelectMany_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -510,7 +521,7 @@ Aff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>C<span class
 <a id="Effect_2_SelectMany_2" class="def">SelectMany</a>
 <span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/CoreTypes.cs#L79" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/CoreTypes.cs#L92" class="link">Source</a>
 <a href="#Effect_2_SelectMany_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -535,7 +546,7 @@ Aff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>C<span class
 <a id="Effect_2_SelectMany_2" class="def">SelectMany</a>
 <span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/CoreTypes.cs#L83" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/CoreTypes.cs#L96" class="link">Source</a>
 <a href="#Effect_2_SelectMany_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -563,11 +574,24 @@ Aff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>C<span class
 <div class="top"><p class="src"><span class="keyword">class</span>
 <a id="LanguageExt.Pipes_0_Effect_0" class="def">Effect</a>
 
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/Effect.cs#L14" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/Effect.cs#L31" class="link">Source</a>
 <a href="#LanguageExt.Pipes_0_Effect_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div></div>
-<div></div>
+<div class="doc"><div><p>Effects represent a 'fused' set of producer, pipes, and consumer into one type.</p>
+<p>It neither can neither <code>yield</code> nor be <code>awaiting</code>, it represents an entirely closed effect system.</p>
+</div>
+<div><pre><code>  Upstream | Downstream
+      +---------+
+      |         |
+Void &lt;==       &lt;== Unit
+      |         |
+Unit ==&gt;       ==&gt; Void
+      |    |    |
+      +----|----+
+           |
+           A
+</code></pre>
+</div>
 
 </div>
 
@@ -583,7 +607,7 @@ Aff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Unit<span cl
 <a id="Effect_0_RunEffectUnit_1" class="def">RunEffectUnit</a>
 <span class='generics'>&lt;</span>RT<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Void<span class='comma'>, </span>Unit<span class='comma'>, </span>Unit<span class='comma'>, </span>Void<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/Effect.cs#L31" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/Effect.cs#L48" class="link">Source</a>
 <a href="#Effect_0_RunEffectUnit_1" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
@@ -609,7 +633,7 @@ Aff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>R<span class
 <a id="Effect_0_RunEffect_2" class="def">RunEffect</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>R<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Void<span class='comma'>, </span>Unit<span class='comma'>, </span>Unit<span class='comma'>, </span>Void<span class='comma'>, </span>R<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/Effect.cs#L35" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/Effect.cs#L52" class="link">Source</a>
 <a href="#Effect_0_RunEffect_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
@@ -635,7 +659,7 @@ Effect<span class='generics'>&lt;</span>RT<span class='comma'>, </span>R<span cl
 <a id="Effect_0_lift_2" class="def">lift</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>R<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Aff<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/Effect.cs#L152" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/Effect.cs#L169" class="link">Source</a>
 <a href="#Effect_0_lift_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
@@ -661,7 +685,7 @@ Effect<span class='generics'>&lt;</span>RT<span class='comma'>, </span>R<span cl
 <a id="Effect_0_lift_2" class="def">lift</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>R<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Eff<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/Effect.cs#L156" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/Effect.cs#L173" class="link">Source</a>
 <a href="#Effect_0_lift_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
@@ -687,7 +711,7 @@ Effect<span class='generics'>&lt;</span>RT<span class='comma'>, </span>R<span cl
 <a id="Effect_0_lift_2" class="def">lift</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>R<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Aff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>R<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/Effect.cs#L160" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/Effect.cs#L177" class="link">Source</a>
 <a href="#Effect_0_lift_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
@@ -713,7 +737,7 @@ Effect<span class='generics'>&lt;</span>RT<span class='comma'>, </span>R<span cl
 <a id="Effect_0_lift_2" class="def">lift</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>R<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>R<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/Effect.cs#L164" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Effect/Effect.cs#L181" class="link">Source</a>
 <a href="#Effect_0_lift_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>

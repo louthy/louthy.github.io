@@ -12,7 +12,6 @@
 <a href="../index.html" class="link">Pipes</a>
 <span> ► </span>
 <a href="index.html" class="link">Pipe</a></p></div>
-
 <div id="table-of-contents"><p class="caption">Contents</p>
 <ul><li><a href="#LanguageExt.Pipes_0_Pipe_4" class="link"><div class="nowrap">Pipe
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>A<span class='generics'>&gt;</span></div></a></li>
@@ -206,24 +205,26 @@
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>S<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>IN<span class='comma'>, </span>S<span class='generics'>&gt;</span> Step<span class='comma'>, </span>S Begin<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>OUT<span class='generics'>&gt;</span> Done<span class='parens'>)</span></div></a></li></ul></ul></div>
 <div class="interface">
+
 <div class="top"><p class="src"><span class="keyword">class</span>
 <a id="LanguageExt.Pipes_0_Pipe_4" class="def">Pipe</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>A<span class='generics'>&gt;</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L26" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L27" class="link">Source</a>
 <a href="#LanguageExt.Pipes_0_Pipe_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
-<div class="doc"><div><p>Pipes both await and yield</p>
+<div class="doc"><div><p>Pipes both can both be <code>await</code> and can <code>yield</code></p>
 </div>
-<div><pre><code>Upstream | Downstream
-    +---------+
-    |         |
-() &lt;==       &lt;== ()
-    |         |
-A  ==&gt;       ==&gt; B
-    |    |    |
-    +----|----+
-         R
+<div><pre><code>  Upstream | Downstream
+      +---------+
+      |         |
+Unit &lt;==       &lt;== Unit
+      |         |
+ IN  ==&gt;       ==&gt; OUT
+      |    |    |
+      +----|----+
+           |
+           A
 </code></pre>
 </div>
 
@@ -235,7 +236,7 @@ A  ==&gt;       ==&gt; B
 <div class="top"><p class="src"><span class="keyword">field</span>
 Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Unit<span class='comma'>, </span>IN<span class='comma'>, </span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <a id="Pipe_4_Value_0" class="def">Value</a>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L28" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L29" class="link">Source</a>
 <a href="#Pipe_4_Value_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -261,7 +262,7 @@ Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Unit<span 
 <div class="top"><p class="src"><span class="keyword">constructor</span>
 <a id="Pipe_4_Pipe_0" class="def">Pipe</a>
 <span class='parens'>(</span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Unit<span class='comma'>, </span>IN<span class='comma'>, </span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>A<span class='generics'>&gt;</span> value<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L30" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L31" class="link">Source</a>
 <a href="#Pipe_4_Pipe_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -287,7 +288,7 @@ Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Unit<span 
 <a id="Pipe_4_ToProxy_0" class="def">ToProxy</a>
 
 <span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L33" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L34" class="link">Source</a>
 <a href="#Pipe_4_ToProxy_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -312,7 +313,7 @@ Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Unit<span 
 <a id="Pipe_4_Bind_1" class="def">Bind</a>
 <span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Unit<span class='comma'>, </span>IN<span class='comma'>, </span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L37" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L38" class="link">Source</a>
 <a href="#Pipe_4_Bind_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -337,7 +338,7 @@ Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Unit<span 
 <a id="Pipe_4_Map_1" class="def">Map</a>
 <span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L41" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L42" class="link">Source</a>
 <a href="#Pipe_4_Map_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -362,7 +363,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span cla
 <a id="Pipe_4_Bind_1" class="def">Bind</a>
 <span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L45" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L46" class="link">Source</a>
 <a href="#Pipe_4_Bind_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -387,7 +388,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span cla
 <a id="Pipe_4_SelectMany_1" class="def">SelectMany</a>
 <span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L49" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L50" class="link">Source</a>
 <a href="#Pipe_4_SelectMany_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -412,7 +413,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span cla
 <a id="Pipe_4_SelectMany_2" class="def">SelectMany</a>
 <span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L53" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L54" class="link">Source</a>
 <a href="#Pipe_4_SelectMany_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -437,7 +438,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span cla
 <a id="Pipe_4_Select_1" class="def">Select</a>
 <span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L57" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L58" class="link">Source</a>
 <a href="#Pipe_4_Select_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -462,7 +463,7 @@ Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Unit<span 
 <a id="Pipe_4_For_2" class="def">For</a>
 <span class='generics'>&lt;</span>C1<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Unit<span class='comma'>, </span>IN<span class='comma'>, </span>C1<span class='comma'>, </span>C<span class='comma'>, </span>Unit<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L61" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L62" class="link">Source</a>
 <a href="#Pipe_4_For_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -487,7 +488,7 @@ Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Unit<span 
 <a id="Pipe_4_Action_1" class="def">Action</a>
 <span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Unit<span class='comma'>, </span>IN<span class='comma'>, </span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>S<span class='generics'>&gt;</span> r<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L65" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L66" class="link">Source</a>
 <a href="#Pipe_4_Action_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -512,7 +513,7 @@ Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOutA<span
 <a id="Pipe_4_ComposeRight_2" class="def">ComposeRight</a>
 <span class='generics'>&lt;</span>UOutA<span class='comma'>, </span>AUInA<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOutA<span class='comma'>, </span>AUInA<span class='comma'>, </span>Unit<span class='comma'>, </span>IN<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> lhs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L69" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L70" class="link">Source</a>
 <a href="#Pipe_4_ComposeRight_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -537,7 +538,7 @@ Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOutA<span
 <a id="Pipe_4_ComposeRight_2" class="def">ComposeRight</a>
 <span class='generics'>&lt;</span>UOutA<span class='comma'>, </span>AUInA<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOutA<span class='comma'>, </span>AUInA<span class='comma'>, </span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>IN<span class='generics'>&gt;</span><span class='generics'>&gt;</span> lhs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L73" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L74" class="link">Source</a>
 <a href="#Pipe_4_ComposeRight_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -562,7 +563,7 @@ Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Unit<span 
 <a id="Pipe_4_ComposeLeft_2" class="def">ComposeLeft</a>
 <span class='generics'>&lt;</span>DInC<span class='comma'>, </span>DOutC<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>DInC<span class='comma'>, </span>DOutC<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L77" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L78" class="link">Source</a>
 <a href="#Pipe_4_ComposeLeft_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -587,7 +588,7 @@ Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Unit<span 
 <a id="Pipe_4_ComposeLeft_2" class="def">ComposeLeft</a>
 <span class='generics'>&lt;</span>DInC<span class='comma'>, </span>DOutC<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Unit<span class='comma'>, </span>IN<span class='comma'>, </span>DInC<span class='comma'>, </span>DOutC<span class='comma'>, </span>Unit<span class='generics'>&gt;</span><span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L81" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L82" class="link">Source</a>
 <a href="#Pipe_4_ComposeLeft_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -612,7 +613,7 @@ Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>OUT<span c
 <a id="Pipe_4_Reflect_0" class="def">Reflect</a>
 
 <span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L85" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L86" class="link">Source</a>
 <a href="#Pipe_4_Reflect_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -637,7 +638,7 @@ Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Unit<span 
 <a id="Pipe_4_Observe_0" class="def">Observe</a>
 
 <span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L89" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L90" class="link">Source</a>
 <a href="#Pipe_4_Observe_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -662,7 +663,7 @@ void
 <a id="Pipe_4_Deconstruct_0" class="def">Deconstruct</a>
 
 <span class='parens'>(</span>out Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Unit<span class='comma'>, </span>IN<span class='comma'>, </span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>A<span class='generics'>&gt;</span> value<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L93" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L94" class="link">Source</a>
 <a href="#Pipe_4_Deconstruct_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -687,7 +688,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span cla
 <a id="Pipe_4_Then_1" class="def">Then</a>
 <span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>OUT<span class='comma'>, </span>C<span class='comma'>, </span>A<span class='generics'>&gt;</span> p2<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L117" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L118" class="link">Source</a>
 <a href="#Pipe_4_Then_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -712,7 +713,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span cla
 <a id="Pipe_4_SelectMany_1" class="def">SelectMany</a>
 <span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Release<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L129" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L130" class="link">Source</a>
 <a href="#Pipe_4_SelectMany_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -737,7 +738,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span cla
 <a id="Pipe_4_SelectMany_2" class="def">SelectMany</a>
 <span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Release<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L133" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L134" class="link">Source</a>
 <a href="#Pipe_4_SelectMany_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -762,7 +763,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span cla
 <a id="Pipe_4_SelectMany_1" class="def">SelectMany</a>
 <span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L137" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L138" class="link">Source</a>
 <a href="#Pipe_4_SelectMany_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -787,7 +788,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span cla
 <a id="Pipe_4_SelectMany_2" class="def">SelectMany</a>
 <span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L141" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L142" class="link">Source</a>
 <a href="#Pipe_4_SelectMany_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -811,7 +812,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span cla
 <div class="top"><p class="src"><span class="keyword">operator</span>
 <a id="Pipe_4_|_0" class="def">|</a>
 <span class='parens'>(</span>Producer<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span class='comma'>, </span>A<span class='generics'>&gt;</span> p1<span class='comma'>, </span>Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>A<span class='generics'>&gt;</span> p2<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L97" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L98" class="link">Source</a>
 <a href="#Pipe_4_|_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -834,7 +835,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span cla
 <div class="top"><p class="src"><span class="keyword">operator</span>
 <a id="Pipe_4_|_0" class="def">|</a>
 <span class='parens'>(</span>Producer<span class='generics'>&lt;</span>IN<span class='comma'>, </span>A<span class='generics'>&gt;</span> p1<span class='comma'>, </span>Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>A<span class='generics'>&gt;</span> p2<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L101" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L102" class="link">Source</a>
 <a href="#Pipe_4_|_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -857,7 +858,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span cla
 <div class="top"><p class="src"><span class="keyword">operator</span>
 <a id="Pipe_4_|_0" class="def">|</a>
 <span class='parens'>(</span>Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>A<span class='generics'>&gt;</span> p1<span class='comma'>, </span>Consumer<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>A<span class='generics'>&gt;</span> p2<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L105" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L106" class="link">Source</a>
 <a href="#Pipe_4_|_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -880,7 +881,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span cla
 <div class="top"><p class="src"><span class="keyword">operator</span>
 <a id="Pipe_4_|_0" class="def">|</a>
 <span class='parens'>(</span>Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>A<span class='generics'>&gt;</span> p1<span class='comma'>, </span>Consumer<span class='generics'>&lt;</span>RT<span class='comma'>, </span>OUT<span class='comma'>, </span>A<span class='generics'>&gt;</span> p2<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L109" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L110" class="link">Source</a>
 <a href="#Pipe_4_|_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -903,7 +904,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span cla
 <div class="top"><p class="src"><span class="keyword">operator</span>
 <a id="Pipe_4_|_0" class="def">|</a>
 <span class='parens'>(</span>Producer<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>IN<span class='generics'>&gt;</span> p1<span class='comma'>, </span>Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>A<span class='generics'>&gt;</span> p2<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L113" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/CoreTypes.cs#L114" class="link">Source</a>
 <a href="#Pipe_4_|_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -930,11 +931,23 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span cla
 <div class="top"><p class="src"><span class="keyword">class</span>
 <a id="LanguageExt.Pipes_0_Pipe_0" class="def">Pipe</a>
 
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L11" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L26" class="link">Source</a>
 <a href="#LanguageExt.Pipes_0_Pipe_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div></div>
-<div></div>
+<div class="doc"><div><p>Pipes both can both be <code>await</code> and can <code>yield</code></p>
+</div>
+<div><pre><code>  Upstream | Downstream
+      +---------+
+      |         |
+Unit &lt;==       &lt;== Unit
+      |         |
+ IN  ==&gt;       ==&gt; OUT
+      |    |    |
+      +----|----+
+           |
+           A
+</code></pre>
+</div>
 
 </div>
 
@@ -950,7 +963,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span clas
 <a id="Pipe_0_Pure_4" class="def">Pure</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>R<span class='generics'>&gt;</span>
 <span class='parens'>(</span>R value<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L16" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L31" class="link">Source</a>
 <a href="#Pipe_0_Pure_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
@@ -977,7 +990,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span clas
 <a id="Pipe_0_awaiting_3" class="def">awaiting</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='comma'>, </span>Y<span class='generics'>&gt;</span>
 <span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L26" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L41" class="link">Source</a>
 <a href="#Pipe_0_awaiting_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
@@ -1005,7 +1018,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>X<span clas
 <a id="Pipe_0_yield_3" class="def">yield</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>X<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>A value<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L36" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L51" class="link">Source</a>
 <a href="#Pipe_0_yield_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
@@ -1033,7 +1046,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span cla
 <a id="Pipe_0_enumerate_3" class="def">enumerate</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span class='comma'>, </span>X<span class='generics'>&gt;</span>
 <span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>X<span class='generics'>&gt;</span> xs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L45" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L60" class="link">Source</a>
 <a href="#Pipe_0_enumerate_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
@@ -1059,7 +1072,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span cla
 <a id="Pipe_0_enumerate_4" class="def">enumerate</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>X<span class='generics'>&gt;</span>
 <span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>X<span class='generics'>&gt;</span> xs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L50" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L65" class="link">Source</a>
 <a href="#Pipe_0_enumerate_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
@@ -1085,7 +1098,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span cla
 <a id="Pipe_0_enumerate_3" class="def">enumerate</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span class='comma'>, </span>X<span class='generics'>&gt;</span>
 <span class='parens'>(</span>IAsyncEnumerable<span class='generics'>&lt;</span>X<span class='generics'>&gt;</span> xs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L55" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L70" class="link">Source</a>
 <a href="#Pipe_0_enumerate_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
@@ -1111,7 +1124,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span cla
 <a id="Pipe_0_enumerate_4" class="def">enumerate</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>X<span class='generics'>&gt;</span>
 <span class='parens'>(</span>IAsyncEnumerable<span class='generics'>&lt;</span>X<span class='generics'>&gt;</span> xs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L60" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L75" class="link">Source</a>
 <a href="#Pipe_0_enumerate_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
@@ -1137,7 +1150,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span cla
 <a id="Pipe_0_observe_3" class="def">observe</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span class='comma'>, </span>X<span class='generics'>&gt;</span>
 <span class='parens'>(</span>IObservable<span class='generics'>&lt;</span>X<span class='generics'>&gt;</span> xs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L65" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L80" class="link">Source</a>
 <a href="#Pipe_0_observe_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
@@ -1163,7 +1176,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span cla
 <a id="Pipe_0_observe_4" class="def">observe</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>X<span class='generics'>&gt;</span>
 <span class='parens'>(</span>IObservable<span class='generics'>&lt;</span>X<span class='generics'>&gt;</span> xs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L70" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L85" class="link">Source</a>
 <a href="#Pipe_0_observe_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
@@ -1189,7 +1202,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span clas
 <a id="Pipe_0_filter_2" class="def">filter</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L78" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L93" class="link">Source</a>
 <a href="#Pipe_0_filter_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
@@ -1216,7 +1229,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span clas
 <a id="Pipe_0_map_4" class="def">map</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>R<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L87" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L102" class="link">Source</a>
 <a href="#Pipe_0_map_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
@@ -1243,7 +1256,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span clas
 <a id="Pipe_0_map_3" class="def">map</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L93" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L108" class="link">Source</a>
 <a href="#Pipe_0_map_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
@@ -1270,7 +1283,7 @@ Pipe<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class
 <a id="Pipe_0_map_2" class="def">map</a>
 <span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L99" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L114" class="link">Source</a>
 <a href="#Pipe_0_map_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Map the output of the pipe (not the bound value as is usual with Map)</p>
@@ -1296,7 +1309,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span clas
 <a id="Pipe_0_mapM_4" class="def">mapM</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>R<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Aff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L105" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L120" class="link">Source</a>
 <a href="#Pipe_0_mapM_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
@@ -1323,7 +1336,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span clas
 <a id="Pipe_0_mapM_2" class="def">mapM</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Aff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L115" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L130" class="link">Source</a>
 <a href="#Pipe_0_mapM_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
@@ -1350,7 +1363,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span clas
 <a id="Pipe_0_mapM_4" class="def">mapM</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>R<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Aff<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L125" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L140" class="link">Source</a>
 <a href="#Pipe_0_mapM_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
@@ -1377,7 +1390,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span clas
 <a id="Pipe_0_mapM_4" class="def">mapM</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>R<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L135" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L150" class="link">Source</a>
 <a href="#Pipe_0_mapM_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
@@ -1404,7 +1417,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span clas
 <a id="Pipe_0_mapM_2" class="def">mapM</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L145" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L160" class="link">Source</a>
 <a href="#Pipe_0_mapM_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
@@ -1431,7 +1444,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span clas
 <a id="Pipe_0_mapM_4" class="def">mapM</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>R<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L155" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L170" class="link">Source</a>
 <a href="#Pipe_0_mapM_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
@@ -1458,7 +1471,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span clas
 <a id="Pipe_0_lift_4" class="def">lift</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>R<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Aff<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L165" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L180" class="link">Source</a>
 <a href="#Pipe_0_lift_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
@@ -1485,7 +1498,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span clas
 <a id="Pipe_0_lift_4" class="def">lift</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>R<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Eff<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L172" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L187" class="link">Source</a>
 <a href="#Pipe_0_lift_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
@@ -1512,7 +1525,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span clas
 <a id="Pipe_0_lift_4" class="def">lift</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>R<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Aff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>R<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L179" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L194" class="link">Source</a>
 <a href="#Pipe_0_lift_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
@@ -1539,7 +1552,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span clas
 <a id="Pipe_0_lift_4" class="def">lift</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>R<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>R<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L186" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L201" class="link">Source</a>
 <a href="#Pipe_0_lift_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
@@ -1566,7 +1579,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span cla
 <a id="Pipe_0_use_4" class="def">use</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>R<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Aff<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L193" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L208" class="link">Source</a>
 <a href="#Pipe_0_use_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;
@@ -1596,7 +1609,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span cla
 <a id="Pipe_0_use_4" class="def">use</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>R<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Eff<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L202" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L217" class="link">Source</a>
 <a href="#Pipe_0_use_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;
@@ -1626,7 +1639,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span cla
 <a id="Pipe_0_use_4" class="def">use</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>R<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Aff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>R<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L211" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L226" class="link">Source</a>
 <a href="#Pipe_0_use_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt; 
@@ -1656,7 +1669,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span cla
 <a id="Pipe_0_use_4" class="def">use</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>R<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>R<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L220" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L235" class="link">Source</a>
 <a href="#Pipe_0_use_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt; 
@@ -1686,7 +1699,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span cla
 <a id="Pipe_0_use_4" class="def">use</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>R<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Aff<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>R<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> dispose<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L230" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L245" class="link">Source</a>
 <a href="#Pipe_0_use_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
@@ -1713,7 +1726,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span cla
 <a id="Pipe_0_use_4" class="def">use</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>R<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Eff<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>R<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> dispose<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L238" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L253" class="link">Source</a>
 <a href="#Pipe_0_use_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
@@ -1740,7 +1753,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span cla
 <a id="Pipe_0_use_4" class="def">use</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>R<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Aff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>R<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>R<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> dispose<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L246" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L261" class="link">Source</a>
 <a href="#Pipe_0_use_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
@@ -1767,7 +1780,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span cla
 <a id="Pipe_0_use_4" class="def">use</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>R<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>R<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>R<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> dispose<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L254" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L269" class="link">Source</a>
 <a href="#Pipe_0_use_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
@@ -1794,7 +1807,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span cla
 <a id="Pipe_0_release_4" class="def">release</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>R<span class='generics'>&gt;</span>
 <span class='parens'>(</span>R dispose<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L262" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L277" class="link">Source</a>
 <a href="#Pipe_0_release_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
@@ -1821,7 +1834,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span cla
 <a id="Pipe_0_foldWhile_3" class="def">foldWhile</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span class='comma'>, </span>OUT<span class='generics'>&gt;</span>
 <span class='parens'>(</span>OUT Initial<span class='comma'>, </span>Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>IN<span class='comma'>, </span>OUT<span class='generics'>&gt;</span> Fold<span class='comma'>, </span>Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>bool<span class='generics'>&gt;</span> WhileState<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L274" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L289" class="link">Source</a>
 <a href="#Pipe_0_foldWhile_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
@@ -1863,7 +1876,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span cla
 <a id="Pipe_0_foldUntil_3" class="def">foldUntil</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span class='comma'>, </span>OUT<span class='generics'>&gt;</span>
 <span class='parens'>(</span>OUT Initial<span class='comma'>, </span>Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>IN<span class='comma'>, </span>OUT<span class='generics'>&gt;</span> Fold<span class='comma'>, </span>Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>bool<span class='generics'>&gt;</span> UntilState<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L286" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L301" class="link">Source</a>
 <a href="#Pipe_0_foldUntil_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
@@ -1905,7 +1918,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span cla
 <a id="Pipe_0_foldWhile_3" class="def">foldWhile</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span class='comma'>, </span>OUT<span class='generics'>&gt;</span>
 <span class='parens'>(</span>OUT Initial<span class='comma'>, </span>Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>IN<span class='comma'>, </span>OUT<span class='generics'>&gt;</span> Fold<span class='comma'>, </span>Func<span class='generics'>&lt;</span>IN<span class='comma'>, </span>bool<span class='generics'>&gt;</span> WhileValue<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L315" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L330" class="link">Source</a>
 <a href="#Pipe_0_foldWhile_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
@@ -1947,7 +1960,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span cla
 <a id="Pipe_0_foldUntil_3" class="def">foldUntil</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span class='comma'>, </span>OUT<span class='generics'>&gt;</span>
 <span class='parens'>(</span>OUT Initial<span class='comma'>, </span>Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>IN<span class='comma'>, </span>OUT<span class='generics'>&gt;</span> Fold<span class='comma'>, </span>Func<span class='generics'>&lt;</span>IN<span class='comma'>, </span>bool<span class='generics'>&gt;</span> UntilValue<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L327" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L342" class="link">Source</a>
 <a href="#Pipe_0_foldUntil_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
@@ -1989,7 +2002,7 @@ Pipe<span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span cla
 <a id="Pipe_0_scan_4" class="def">scan</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>S<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>IN<span class='comma'>, </span>S<span class='generics'>&gt;</span> Step<span class='comma'>, </span>S Begin<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>OUT<span class='generics'>&gt;</span> Done<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L353" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Pipe/Pipe.cs#L368" class="link">Source</a>
 <a href="#Pipe_0_scan_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
