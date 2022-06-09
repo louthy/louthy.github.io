@@ -516,7 +516,7 @@ Ref<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 memory (STM) system. <code>Refs</code> are bound to a single storage location for their lifetime,
 and only allow mutation of that location to occur within a transaction.</p>
 </div>
-<div><p>Transactions (within a <code>sync</code>) should be easy to understand if you’ve ever used database
+<div><p>Transactions (within a <code>sync(() =&gt; ...)</code>) should be easy to understand if you’ve ever used database
 transactions - they ensure that all actions on Refs are atomic, consistent, and isolated.</p>
 <ul>
 <li class='markdown-bullet'>Atomic - means that every change to Refs made within a transaction occurs or none do.</li>
@@ -526,30 +526,34 @@ the transaction to commit.</li>
 running.</li>
 </ul>
 <p>Another feature common to STMs is that, should a transaction have a conflict while running,
-it is automatically retried.  The language-ext STM uses multiversion concurrency control for
+it is automatically retried.  The language-ext STM uses multi-version concurrency control for
 snapshot and serialisable isolation.</p>
 <p>In practice, this means:</p>
-<p>All reads of Refs will see a consistent snapshot of the 'Ref world' as of the starting point
+<p>All reads of Refs will see a consistent snapshot of the <em>Ref world</em> as of the starting point
 of the transaction (its 'read point'). The transaction will see any changes it has made.
 This is called the in-transaction-value.</p>
 <p>All changes made to Refs during a transaction will appear to occur at a single point in the
-'Ref world' timeline (its 'write point').</p>
+<em>Ref world</em> timeline (its 'write point').</p>
 <p>No changes will have been made by any other transactions to any Refs that have been modified
 by this transaction.</p>
-<p>Readers will never block writers, or other readers.</p>
-<p>Writers will never block readers.</p>
+<ul>
+<li class='markdown-bullet'><p>Readers will never block writers, or other readers.</p>
+</li>
+<li class='markdown-bullet'><p>Writers will never block readers.</p>
+</li>
+</ul>
 <p>I/O and other activities with side-effects should be avoided in transactions, since transactions
 will be retried.</p>
 <p>If a constraint on the validity of a value of a Ref that is being changed depends upon the
 simultaneous value of a Ref that is not being changed, that second Ref can be protected from
-modification by running the <code>sync</code> transaction with Isolation.Serialisable.</p>
+modification by running the <code>sync</code> transaction with <code>Isolation.Serialisable</code>.</p>
 <p>The language-ext STM is designed to work with the persistent collections (<code>Map</code>, <code>HashMap</code>,
 <code>Seq</code>, <code>Lst</code>, <code>Set, </code>HashSet` etc.), and it is strongly recommended that you use the language-ext
 collections as the values of your Refs. Since all work done in an STM transaction is speculative,
 it is imperative that there be a low cost to making copies and modifications. Persistent collections
 have free copies (just use the original, it can’t be changed), and 'modifications' share structure
 efficiently. In any case:</p>
-<p>The values placed in Refs must be, or be considered, <strong>immutable</strong> Otherwise, Clojure can’t help you.</p>
+<p>The values placed in Refs must be, or be considered, <strong>immutable</strong>. Otherwise, this library can’t help you.</p>
 
 <p>See the <a href="https://github.com/louthy/language-ext/wiki/Concurrency">concurrency section</a> of the wiki for more info.</p>
 </div>
