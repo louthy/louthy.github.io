@@ -8,18 +8,28 @@
 <div id="content"><div id="module-header"><p class="caption"><a href="../index.html" class="link">LanguageExt.Core</a>
 <span> ► </span>
 <a href="index.html" class="link">Concurrency</a></p></div>
-<div id="table-of-contents"><p class="caption">Sub-sections</p>
-<ul><li><a href="Atom\index.html" class="link"><div class="nowrap">Atom</div></a></li>
-<li><a href="AtomHashMap\index.html" class="link"><div class="nowrap">AtomHashMap</div></a></li>
-<li><a href="AtomQue\index.html" class="link"><div class="nowrap">AtomQue</div></a></li>
-<li><a href="AtomSeq\index.html" class="link"><div class="nowrap">AtomSeq</div></a></li>
-<li><a href="STM\index.html" class="link"><div class="nowrap">STM</div></a></li>
-<li><a href="Task\index.html" class="link"><div class="nowrap">Task</div></a></li>
-<li><a href="ValueTask\index.html" class="link"><div class="nowrap">ValueTask</div></a></li>
-<li><a href="VectorClock\index.html" class="link"><div class="nowrap">VectorClock</div></a></li>
-<li><a href="VersionHashMap\index.html" class="link"><div class="nowrap">VersionHashMap</div></a></li>
-<li><a href="VersionVector\index.html" class="link"><div class="nowrap">VersionVector</div></a></li></ul>
-<p class="caption">Contents</p>
+<p>We prefer to work with immutable types in functional-programming.  However, it's not always possible, and sometimes we
+need some shared mutable state.  With the immutable types in this library you'd need to protect the updates with locks:</p>
+<pre><code>// Some global
+static HashSet&lt;int&gt; set = HashSet(1, 2, 3);
+static object sync = new();
+
+lock(sync)
+{
+    set = set.Add(4);
+}
+</code></pre>
+<p>This in unsatisfactory, and so this module is all about lock-free atomic operations.  <code>Atom</code> allows you to protect any
+value.  <code>AtomHashMap</code> and <code>AtomSeq</code> are <code>HashMap</code> and <code>Seq</code> wrapped up into a lock-free mutable structure.  Snapshots
+of those are free!  The above code can be written:</p>
+<pre><code>static AtomHashSet&lt;int&gt; set = AtomHashSet(1, 2, 3);
+set.Add(4);
+</code></pre>
+<p>Finally, there's the Software Transactional Memory (STM) system.  Which allows for transactional changes to multiple
+<code>Ref</code> values.  <code>Ref</code> just wrap up access to a value, and allows the state changes to be tracked by the <code>STM</code>.</p>
+<p>See the <a href="https://github.com/louthy/language-ext/wiki/Concurrency">concurrency section</a> of the wiki for more info.</p>
+
+<div id="table-of-contents"><p class="caption">Contents</p>
 <ul><li><a href="#LanguageExt_0_LastWriteWins_1" class="link"><div class="nowrap">LastWriteWins
 <span class='generics'>&lt;</span>V<span class='generics'>&gt;</span></div></a></li>
 <ul><li><a href="#LastWriteWins_1_Resolve_0" class="link"><div class="nowrap">Resolve
@@ -329,28 +339,7 @@
 <li><a href="#Prelude_0_swapAff_5" class="link"><div class="nowrap">swapAff
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>M<span class='comma'>, </span>X<span class='comma'>, </span>Y<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Atom<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>X x<span class='comma'>, </span>Y y<span class='comma'>, </span>Func<span class='generics'>&lt;</span>M<span class='comma'>, </span>X<span class='comma'>, </span>Y<span class='comma'>, </span>A<span class='comma'>, </span>Aff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li></ul></ul></div>
-<div class="interface"><div class="doc noleftpad"><p>We prefer to work with immutable types in functional-programming.  However, it's not always possible, and sometimes we
-need some shared mutable state.  With the immutable types in this library you'd need to protect the updates with locks:</p>
-<pre><code>// Some global
-static HashSet&lt;int&gt; set = HashSet(1, 2, 3);
-static object sync = new();
-
-lock(sync)
-{
-    set = set.Add(4);
-}
-</code></pre>
-<p>This in unsatisfactory, and so this module is all about lock-free atomic operations.  <code>Atom</code> allows you to protect any
-value.  <code>AtomHashMap</code> and <code>AtomSeq</code> are <code>HashMap</code> and <code>Seq</code> wrapped up into a lock-free mutable structure.  Snapshots
-of those are free!  The above code can be written:</p>
-<pre><code>static AtomHashSet&lt;int&gt; set = AtomHashSet(1, 2, 3);
-set.Add(4);
-</code></pre>
-<p>Finally, there's the Software Transactional Memory (STM) system.  Which allows for transactional changes to multiple
-<code>Ref</code> values.  <code>Ref</code> just wrap up access to a value, and allows the state changes to be tracked by the <code>STM</code>.</p>
-<p>See the <a href="https://github.com/louthy/language-ext/wiki/Concurrency">concurrency section</a> of the wiki for more info.</p>
-</div>
-<H1>Sub sections</H1>
+<div class="interface"><H1>Sub modules</H1>
 <table><tbody><tr><td class="src clearfix"><span class="inst-left"><a href="Atom\index.html" class="link">Atom</a></span></td></tr>
 <tr><td class="src clearfix"><span class="inst-left"><a href="AtomHashMap\index.html" class="link">AtomHashMap</a></span></td></tr>
 <tr><td class="src clearfix"><span class="inst-left"><a href="AtomQue\index.html" class="link">AtomQue</a></span></td></tr>

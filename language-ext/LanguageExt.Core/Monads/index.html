@@ -8,11 +8,10 @@
 <div id="content"><div id="module-header"><p class="caption"><a href="../index.html" class="link">LanguageExt.Core</a>
 <span> ► </span>
 <a href="index.html" class="link">Monads</a></p></div>
-<div id="table-of-contents"><p class="caption">Sub-sections</p>
-<ul><li><a href="Alternative Value Monads\index.html" class="link"><div class="nowrap">Alternative Value Monads</div></a></li>
-<li><a href="Monadic conditionals\index.html" class="link"><div class="nowrap">Monadic conditionals</div></a></li>
-<li><a href="State and Environment Monads\index.html" class="link"><div class="nowrap">State and Environment Monads</div></a></li></ul>
-<p class="caption">Contents</p>
+<p>Not all of the monadic types are in this section, but most of them are.  The other monadic types are
+<a href="../Immutable%20Collections/index.html">the collections</a>, and the <a href="../Effects/index.html">effect-system monads of <code>Aff</code>, <code>Eff</code>, and <code>Proxy</code></a>.</p>
+
+<div id="table-of-contents"><p class="caption">Contents</p>
 <ul><li><a href="#LanguageExt_0_Identity_1" class="link"><div class="nowrap">Identity
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span></div></a></li>
 <ul><li><a href="#Identity_1_Bottom = default(Identity<A>)_0" class="link"><div class="nowrap">Bottom = default(Identity&lt;A&gt;)</div></a></li>
@@ -51,18 +50,24 @@
 <li><a href="#Identity_1_Map_1" class="link"><div class="nowrap">Map
 <span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Identity_1_Select_1" class="link"><div class="nowrap">Select
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
 <li><a href="#Identity_1_Bind_1" class="link"><div class="nowrap">Bind
 <span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
-<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Identity<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li></ul>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Identity<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Identity_1_SelectMany_1" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Identity<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Identity_1_SelectMany_2" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Identity<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li></ul>
 <li><a href="#LanguageExt_0_Prelude_0" class="link"><div class="nowrap">Prelude
 </div></a></li>
 <ul><li><a href="#Prelude_0_Id_1" class="link"><div class="nowrap">Id
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>A value<span class='parens'>)</span></div></a></li></ul></ul></div>
-<div class="interface"><div class="doc noleftpad"><p>Not all of the monadic types are in this section, but most of them are.  The other monadic types are
-<a href="../Immutable%20Collections/index.html">the collections</a>, and the <a href="../Effects/index.html">effect-system monads of <code>Aff</code>, <code>Eff</code>, and <code>Proxy</code></a>.</p>
-</div>
-<H1>Sub sections</H1>
+<div class="interface"><H1>Sub modules</H1>
 <table><tbody><tr><td class="src clearfix"><span class="inst-left"><a href="Alternative Value Monads\index.html" class="link">Alternative Value Monads</a></span></td></tr>
 <tr><td class="src clearfix"><span class="inst-left"><a href="Monadic conditionals\index.html" class="link">Monadic conditionals</a></span></td></tr>
 <tr><td class="src clearfix"><span class="inst-left"><a href="State and Environment Monads\index.html" class="link">State and Environment Monads</a></span></td></tr></tbody></table>
@@ -360,11 +365,86 @@ Identity<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 </div>
 <div class="top"><p class="src"><span class="keyword">method</span>
 Identity<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<a id="Identity_1_Select_1" class="def">Select</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Identity.cs#L89" class="link">Source</a>
+<a href="#Identity_1_Select_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Identity<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <a id="Identity_1_Bind_1" class="def">Bind</a>
 <span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Identity<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Identity.cs#L93" class="link">Source</a>
 <a href="#Identity_1_Bind_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Identity<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<a id="Identity_1_SelectMany_1" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Identity<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Identity.cs#L97" class="link">Source</a>
+<a href="#Identity_1_SelectMany_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Identity<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<a id="Identity_1_SelectMany_2" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Identity<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Identity.cs#L101" class="link">Source</a>
+<a href="#Identity_1_SelectMany_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
 <div></div>
