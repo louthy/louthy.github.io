@@ -8,27 +8,21 @@
 <div id="content"><div id="module-header"><p class="caption"><a href="../index.html" class="link">LanguageExt.Core</a>
 <span> ► </span>
 <a href="index.html" class="link">Immutable Collections</a></p></div>
-<p>This a suite of <a href="https://github.com/louthy/language-ext/blob/master/Performance.md">very high-performance immutable-collections</a>.</p>
-<ul>
-<li class='markdown-bullet'>For lists you should always prefer to use <code>Seq&lt;A&gt;</code> - it is about 10x faster than <code>Lst&lt;A&gt;</code>.  The only reason you'd pick
-<code>Lst&lt;A&gt;</code> is if you needed to do inserts into the middle of the list: <code>Seq&lt;A&gt;</code> doesn't allow this (it only allows prepending or
-appending), as it would be a performance hit.
-<code>Seq&lt;A&gt;</code> is backed by an array, and so it has exceptional memory locality, <code>Lst&lt;A&gt;</code> is an AVL tree to allow for efficient<br />
-insertion, but suffers from poorer memory locality.</li>
-<li class='markdown-bullet'>For 'dictionaries' or maps as we prefer to call them, then <code>HashMap</code> is the fastest implemention you'll find in .NET-land.  It is
-unsorted.  If you need a sorted dictionary, use <code>Map</code>.  <code>HashMap</code> uses the CHAMP data-structure, <code>Map</code> uses an AVL tree.</li>
-<li class='markdown-bullet'>The same goes for sets, prefer <code>HashSet</code> over <code>Set</code>, unless you need the set to be sorted.</li>
-</ul>
-<p>You can construct the collection types using the constrctor functions in the <code>Prelude</code>:</p>
-<pre><code>HashMap&lt;string, int&gt; hashSet = HashMap((&quot;a&quot;, 1), (&quot;b&quot;, 2), (&quot;c&quot;, 3));
-HashSet&lt;int&gt; hashMap         = HashSet(1, 2, 3);
-Map&lt;string, int&gt; hashSet     = Map((&quot;a&quot;, 1), (&quot;b&quot;, 2), (&quot;c&quot;, 3));
-Set&lt;int&gt; hashMap             = Set(1, 2, 3);
-Seq&lt;int&gt; list                = Seq(1, 2, 3);
-Lst&lt;int&gt; list                = List(1, 2, 3);
-</code></pre>
-
-<div id="table-of-contents"><p class="caption">Contents</p>
+<div id="table-of-contents"><p class="caption">Sub-sections</p>
+<ul><li><a href="Arr\index.html" class="link"><div class="nowrap">Arr</div></a></li>
+<li><a href="BiMap\index.html" class="link"><div class="nowrap">BiMap</div></a></li>
+<li><a href="HashMap\index.html" class="link"><div class="nowrap">HashMap</div></a></li>
+<li><a href="HashSet\index.html" class="link"><div class="nowrap">HashSet</div></a></li>
+<li><a href="List\index.html" class="link"><div class="nowrap">List</div></a></li>
+<li><a href="Map\index.html" class="link"><div class="nowrap">Map</div></a></li>
+<li><a href="Queue\index.html" class="link"><div class="nowrap">Queue</div></a></li>
+<li><a href="Seq\index.html" class="link"><div class="nowrap">Seq</div></a></li>
+<li><a href="Set\index.html" class="link"><div class="nowrap">Set</div></a></li>
+<li><a href="Stack\index.html" class="link"><div class="nowrap">Stack</div></a></li>
+<li><a href="TrackingHashMap\index.html" class="link"><div class="nowrap">TrackingHashMap</div></a></li>
+<li><a href="TrieMap\index.html" class="link"><div class="nowrap">TrieMap</div></a></li>
+<li><a href="TrieSet\index.html" class="link"><div class="nowrap">TrieSet</div></a></li></ul>
+<p class="caption">Contents</p>
 <ul><li><a href="#LanguageExt_0_Prelude_0" class="link"><div class="nowrap">Prelude
 </div></a></li>
 <ul><li><a href="#Prelude_0_Empty = new SeqEmpty()_0" class="link"><div class="nowrap">Empty = new SeqEmpty()</div></a></li>
@@ -542,7 +536,27 @@ Lst&lt;int&gt; list                = List(1, 2, 3);
 <li><a href="#Prelude_0_Applicable_2" class="link"><div class="nowrap">Applicable
 <span class='generics'>&lt;</span>EqA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this IEnumerable<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> va<span class='comma'>, </span>Patch<span class='generics'>&lt;</span>EqA<span class='comma'>, </span>A<span class='generics'>&gt;</span> patch<span class='parens'>)</span></div></a></li></ul></ul></div>
-<div class="interface"><H1>Sub modules</H1>
+<div class="interface"><div class="doc noleftpad"><p>This a suite of <a href="https://github.com/louthy/language-ext/blob/master/Performance.md">very high-performance immutable-collections</a>.</p>
+<ul>
+<li class='markdown-bullet'>For lists you should always prefer to use <code>Seq&lt;A&gt;</code> - it is about 10x faster than <code>Lst&lt;A&gt;</code>.  The only reason you'd pick
+<code>Lst&lt;A&gt;</code> is if you needed to do inserts into the middle of the list: <code>Seq&lt;A&gt;</code> doesn't allow this (it only allows prepending or
+appending), as it would be a performance hit.
+<code>Seq&lt;A&gt;</code> is backed by an array, and so it has exceptional memory locality, <code>Lst&lt;A&gt;</code> is an AVL tree to allow for efficient<br />
+insertion, but suffers from poorer memory locality.</li>
+<li class='markdown-bullet'>For 'dictionaries' or maps as we prefer to call them, then <code>HashMap</code> is the fastest implemention you'll find in .NET-land.  It is
+unsorted.  If you need a sorted dictionary, use <code>Map</code>.  <code>HashMap</code> uses the CHAMP data-structure, <code>Map</code> uses an AVL tree.</li>
+<li class='markdown-bullet'>The same goes for sets, prefer <code>HashSet</code> over <code>Set</code>, unless you need the set to be sorted.</li>
+</ul>
+<p>You can construct the collection types using the constrctor functions in the <code>Prelude</code>:</p>
+<pre><code>HashMap&lt;string, int&gt; hashSet = HashMap((&quot;a&quot;, 1), (&quot;b&quot;, 2), (&quot;c&quot;, 3));
+HashSet&lt;int&gt; hashMap         = HashSet(1, 2, 3);
+Map&lt;string, int&gt; hashSet     = Map((&quot;a&quot;, 1), (&quot;b&quot;, 2), (&quot;c&quot;, 3));
+Set&lt;int&gt; hashMap             = Set(1, 2, 3);
+Seq&lt;int&gt; list                = Seq(1, 2, 3);
+Lst&lt;int&gt; list                = List(1, 2, 3);
+</code></pre>
+</div>
+<H1>Sub sections</H1>
 <table><tbody><tr><td class="src clearfix"><span class="inst-left"><a href="Arr\index.html" class="link">Arr</a></span></td></tr>
 <tr><td class="src clearfix"><span class="inst-left"><a href="BiMap\index.html" class="link">BiMap</a></span></td></tr>
 <tr><td class="src clearfix"><span class="inst-left"><a href="HashMap\index.html" class="link">HashMap</a></span></td></tr>

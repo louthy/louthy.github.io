@@ -12,14 +12,8 @@
 <a href="../index.html" class="link">Alternative Value Monads</a>
 <span> ► </span>
 <a href="index.html" class="link">Fin</a></p></div>
-<p><code>Fin</code> monads support either an <code>Error</code> or an <code>A</code> (success) value.  It is functionally exactly the same as <code>Either&lt;Error, A&gt;</code>, it is a
-convenience type to avoid the generics pain of <code>Either</code>.</p>
-<p>To construct a <code>Fin</code>:</p>
-<pre><code>Fin&lt;int&gt; ma = FinSucc(123);
-Fin&lt;int&gt; mb = FinFail(Error.New(&quot;Error!&quot;));
-</code></pre>
-
-<div id="table-of-contents"><p class="caption">Contents</p>
+<div id="table-of-contents">
+<p class="caption">Contents</p>
 <ul><li><a href="#LanguageExt_0_Fin_1" class="link"><div class="nowrap">Fin
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span></div></a></li>
 <ul><li><a href="#Fin_1_IsSucc_0" class="link"><div class="nowrap">IsSucc</div></a></li>
@@ -154,21 +148,12 @@ Fin&lt;int&gt; mb = FinFail(Error.New(&quot;Error!&quot;));
 <li><a href="#Fin_1_BiMap_1" class="link"><div class="nowrap">BiMap
 <span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> Succ<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>B<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
-<li><a href="#Fin_1_Select_1" class="link"><div class="nowrap">Select
-<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
-<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
 <li><a href="#Fin_1_Bind_1" class="link"><div class="nowrap">Bind
 <span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Fin<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
 <li><a href="#Fin_1_BiBind_1" class="link"><div class="nowrap">BiBind
 <span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Fin<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> Succ<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Fin<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
-<li><a href="#Fin_1_SelectMany_1" class="link"><div class="nowrap">SelectMany
-<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
-<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Fin<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
-<li><a href="#Fin_1_SelectMany_2" class="link"><div class="nowrap">SelectMany
-<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
-<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Fin<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
 <li><a href="#Fin_1_ToList_0" class="link"><div class="nowrap">ToList
 
 <span class='parens'>(</span><span class='parens'>)</span></div></a></li>
@@ -277,19 +262,7 @@ Fin&lt;int&gt; mb = FinFail(Error.New(&quot;Error!&quot;));
 </div></a></li>
 <ul><li><a href="#FinGuardExtensions_0_ToFin_0" class="link"><div class="nowrap">ToFin
 
-<span class='parens'>(</span>this Guard<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
-<li><a href="#FinGuardExtensions_0_SelectMany_1" class="link"><div class="nowrap">SelectMany
-<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
-<span class='parens'>(</span>this Guard<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>Fin<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
-<li><a href="#FinGuardExtensions_0_SelectMany_2" class="link"><div class="nowrap">SelectMany
-<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
-<span class='parens'>(</span>this Guard<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>Fin<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
-<li><a href="#FinGuardExtensions_0_SelectMany_1" class="link"><div class="nowrap">SelectMany
-<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>this Fin<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Guard<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
-<li><a href="#FinGuardExtensions_0_SelectMany_2" class="link"><div class="nowrap">SelectMany
-<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span>
-<span class='parens'>(</span>this Fin<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Guard<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Unit<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li></ul>
+<span class='parens'>(</span>this Guard<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li></ul>
 <li><a href="#LanguageExt_0_Prelude_0" class="link"><div class="nowrap">Prelude
 </div></a></li>
 <ul><li><a href="#Prelude_0_flatten_1" class="link"><div class="nowrap">flatten
@@ -409,7 +382,14 @@ Fin&lt;int&gt; mb = FinFail(Error.New(&quot;Error!&quot;));
 <li><a href="#Prelude_0_partition_1" class="link"><div class="nowrap">partition
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Seq<span class='generics'>&lt;</span>Fin<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> xs<span class='parens'>)</span></div></a></li></ul></ul></div>
-<div class="interface">
+<div class="interface"><div class="doc noleftpad"><p><code>Fin</code> monads support either an <code>Error</code> or an <code>A</code> (success) value.  It is functionally exactly the same as <code>Either&lt;Error, A&gt;</code>, it is a
+convenience type to avoid the generics pain of <code>Either</code>.</p>
+<p>To construct a <code>Fin</code>:</p>
+<pre><code>Fin&lt;int&gt; ma = FinSucc(123);
+Fin&lt;int&gt; mb = FinFail(Error.New(&quot;Error!&quot;));
+</code></pre>
+</div>
+
 <div class="top"><p class="src"><span class="keyword">struct</span>
 <a id="LanguageExt_0_Fin_1" class="def">Fin</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
@@ -1177,31 +1157,6 @@ Fin<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 </div>
 <div class="top"><p class="src"><span class="keyword">method</span>
 Fin<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
-<a id="Fin_1_Select_1" class="def">Select</a>
-<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
-<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/Fin/Fin.cs#L547" class="link">Source</a>
-<a href="#Fin_1_Select_1" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-Fin<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <a id="Fin_1_Bind_1" class="def">Bind</a>
 <span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Fin<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
@@ -1232,56 +1187,6 @@ Fin<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Fin<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> Succ<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Fin<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> Fail<span class='parens'>)</span>
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/Fin/Fin.cs#L559" class="link">Source</a>
 <a href="#Fin_1_BiBind_1" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-Fin<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
-<a id="Fin_1_SelectMany_1" class="def">SelectMany</a>
-<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
-<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Fin<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/Fin/Fin.cs#L565" class="link">Source</a>
-<a href="#Fin_1_SelectMany_1" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-Fin<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
-<a id="Fin_1_SelectMany_2" class="def">SelectMany</a>
-<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
-<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Fin<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/Fin/Fin.cs#L571" class="link">Source</a>
-<a href="#Fin_1_SelectMany_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
 <div></div>
@@ -3220,106 +3125,6 @@ Fin<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this Guard<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/Fin/Fin.Guard.cs#L9" class="link">Source</a>
 <a href="#FinGuardExtensions_0_ToFin_0" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-Fin<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
-<a id="FinGuardExtensions_0_SelectMany_1" class="def">SelectMany</a>
-<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
-<span class='parens'>(</span>this Guard<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>Fin<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/Fin/Fin.Guard.cs#L14" class="link">Source</a>
-<a href="#FinGuardExtensions_0_SelectMany_1" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-Fin<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
-<a id="FinGuardExtensions_0_SelectMany_2" class="def">SelectMany</a>
-<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
-<span class='parens'>(</span>this Guard<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>Fin<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/Fin/Fin.Guard.cs#L19" class="link">Source</a>
-<a href="#FinGuardExtensions_0_SelectMany_2" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-Fin<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
-<a id="FinGuardExtensions_0_SelectMany_1" class="def">SelectMany</a>
-<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>this Fin<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Guard<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/Fin/Fin.Guard.cs#L24" class="link">Source</a>
-<a href="#FinGuardExtensions_0_SelectMany_1" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-Fin<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
-<a id="FinGuardExtensions_0_SelectMany_2" class="def">SelectMany</a>
-<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span>
-<span class='parens'>(</span>this Fin<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Guard<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Unit<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/Fin/Fin.Guard.cs#L27" class="link">Source</a>
-<a href="#FinGuardExtensions_0_SelectMany_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
 <div></div>
