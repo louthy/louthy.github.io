@@ -10,8 +10,25 @@
 <a href="../index.html" class="link">Concurrency</a>
 <span> ► </span>
 <a href="index.html" class="link">Atom</a></p></div>
-<div id="table-of-contents">
-<p class="caption">Contents</p>
+<p>Atoms provide a way to manage shared, synchronous, independent state without locks.  You can use them to wrap up immutable data structures
+and then atomically update them using the various <code>Swap</code> methods, or read them by calling the <code>Value</code> property.</p>
+<p>If a conflict is encountered during a <code>Swap</code> operation, the operation is re-run using the latest state, and so you should minimise the time
+spent in the <code>Swap</code> function, as well as make sure there are no side-effects, otherwise all bets are off.</p>
+<p>See the <a href="https://github.com/louthy/language-ext/wiki/Concurrency">concurrency section</a> of the wiki for more info.</p>
+<h3>Usage</h3>
+<pre><code>record Person(string Name, string Surname);
+
+// Create a new atom
+var person = Atom(new Person(&quot;Paul&quot;, &quot;Louth&quot;));
+
+// Modify it atomically
+person.Swap(p =&gt; p with { Surname = $&quot;{p.Name}y&quot; });
+
+// Take a snapshot of the state of the atom 
+var snapshot = p.Value;
+</code></pre>
+
+<div id="table-of-contents"><p class="caption">Contents</p>
 <ul><li><a href="#LanguageExt_0_Atom_1" class="link"><div class="nowrap">Atom
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span></div></a></li>
 <ul><li><a href="#Atom_1_Swap_0" class="link"><div class="nowrap">Swap
@@ -153,25 +170,7 @@
 <li><a href="#LanguageExt_0_AtomChangedEvent_1" class="link"><div class="nowrap">AtomChangedEvent
 <span class='generics'>&lt;</span>in A<span class='generics'>&gt;</span></div></a></li>
 <ul></ul></ul></div>
-<div class="interface"><div class="doc noleftpad"><p>Atoms provide a way to manage shared, synchronous, independent state without locks.  You can use them to wrap up immutable data structures
-and then atomically update them using the various <code>Swap</code> methods, or read them by calling the <code>Value</code> property.</p>
-<p>If a conflict is encountered during a <code>Swap</code> operation, the operation is re-run using the latest state, and so you should minimise the time
-spent in the <code>Swap</code> function, as well as make sure there are no side-effects, otherwise all bets are off.</p>
-<p>See the <a href="https://github.com/louthy/language-ext/wiki/Concurrency">concurrency section</a> of the wiki for more info.</p>
-<h3>Usage</h3>
-<pre><code>record Person(string Name, string Surname);
-
-// Create a new atom
-var person = Atom(new Person(&quot;Paul&quot;, &quot;Louth&quot;));
-
-// Modify it atomically
-person.Swap(p =&gt; p with { Surname = $&quot;{p.Name}y&quot; });
-
-// Take a snapshot of the state of the atom 
-var snapshot = p.Value;
-</code></pre>
-</div>
-
+<div class="interface">
 <div class="top"><p class="src"><span class="keyword">class</span>
 <a id="LanguageExt_0_Atom_1" class="def">Atom</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>

@@ -8,9 +8,75 @@
 <div id="content"><div id="module-header"><p class="caption"><a href="../index.html" class="link">LanguageExt.Core</a>
 <span> ► </span>
 <a href="index.html" class="link">Common</a></p></div>
-<div id="table-of-contents"><p class="caption">Sub-sections</p>
-<ul><li><a href="Result\index.html" class="link"><div class="nowrap">Result</div></a></li></ul>
-<p class="caption">Contents</p>
+<h2><code>Error</code></h2>
+<p>The <code>Error</code> type works like a discriminated-union, it is an <code>abstract record</code> type with many sub-cases
+(which are listed below).  It is used extensively with various monadic types, like <code>Fin&lt;A&gt;</code>, the
+<em>Effect System</em> monads of <code>Eff&lt;A&gt;</code>, <code>Eff&lt;RT, A&gt;</code>, <code>Aff&lt;A&gt;</code>, <code>Aff&lt;RT, A&gt;</code> and the compositional
+streaming Pipes features.</p>
+<blockquote>
+<p>The reason they're buried in the <code>Common</code> namespace is because, <code>Error</code> is a common type name.  And so, this gives
+the programmer a chance to not include it when <code>using LanguageExt;</code></p>
+</blockquote>
+<p><code>Error</code> exists because <code>Exception</code> is really only meant for <em>exceptional</em> errors. However, in C#-land we've been trained
+to throw them even for <em>expected</em> errors.</p>
+<p>Instead we use <code>Error</code> to represent three key types of error:</p>
+<ul>
+<li class='markdown-bullet'><code>Exceptional</code> - An unexpected error</li>
+<li class='markdown-bullet'><code>Expected</code>    - An expected error</li>
+<li class='markdown-bullet'><code>ManyErrors</code>  - Many errors (possibly zero)</li>
+</ul>
+<p>These are the key base-types that indicate the <em>'flavour'</em> of the error.  For example, a 'user not found' error isn't
+something exceptional, it's something we expect <em>might</em> happen.  An <code>OutOfMemoryException</code> however, <em>is</em>
+exceptional - it should never happen, and we should treat it as such.</p>
+<p>Most of the time we want sensible handling of expected errors, and bail out completely for something exceptional.  We also want
+to protect ourselves from information leakage.  Leaking exceptional errors via public APIs is a surefire way to open up more
+information to hackers than you would like.  The <code>Error</code> derived types all try to protect against this kind of leakage without
+losing the context of the type of error thrown.</p>
+<p>Essentially an error is either created from an <code>Exception</code> or it isn't.  This allows for expected errors to be
+represented without throwing exceptions, but also it allows for more principled error handling.  We can pattern-match on the
+type, or use some of the built-in properties and methods to inspect the <code>Error</code>:</p>
+<ul>
+<li class='markdown-bullet'><code>IsExceptional</code> - <code>true</code> for exceptional errors.  For <code>ManyErrors</code> this is <code>true</code> if <em>any</em> of the errors are exceptional.</li>
+<li class='markdown-bullet'><code>IsExpected</code> - <code>true</code> for non-exceptional/expected errors.  For <code>ManyErrors</code> this is <code>true</code> if <em>all</em> of the errors are expected.</li>
+<li class='markdown-bullet'><code>Is&lt;E&gt;(E exception)</code> - <code>true</code> if the <code>Error</code> is exceptional and any of the the internal <code>Exception</code> values are of type <code>E</code>.</li>
+<li class='markdown-bullet'><code>Is(Error error)</code> - <code>true</code> if the <code>Error</code> matches the one provided.  i.e. <code>error.Is(Errors.TimedOut)</code>.</li>
+</ul>
+<p>The <code>Error</code> type can be constructed to be exceptional or expected.  For example, this is an expected error:</p>
+<pre><code>Error.New(&quot;This error was expected&quot;)
+</code></pre>
+<p>When expected errors are used with codes then equality and matching is done via the code only:</p>
+<pre><code>Error.New(404, &quot;Page not found&quot;);
+</code></pre>
+<p>And this is an exceptional error:</p>
+<pre><code>try
+{
+    // This wraps up the exceptional error
+}
+catch(Exception e)
+{
+    return Error.New(e);
+}
+</code></pre>
+<p>Finally, you can collect many errors:</p>
+<pre><code>Error.Many(Error.New(&quot;error one&quot;), Error.New(&quot;error two&quot;));
+</code></pre>
+<p>Or more simply:</p>
+<pre><code>Error.New(&quot;error one&quot;) + Error.New(&quot;error two&quot;)
+</code></pre>
+<p>You can extend the set of error types (perhaps for passing through extra data) by creating a new
+record inherits <code>Exceptional</code> or <code>Expected</code>:</p>
+<pre><code>public record BespokeError(bool MyData) 
+    : Expected(&quot;Something bespoke&quot;, 100, None); 
+</code></pre>
+<p>By default the properties of the new error-type won't be serialised.  So, if you want to pass a
+payload over the wire, add the <code>[property: DataMember]</code> attribute to each member:</p>
+<pre><code>public record BespokeError([property: DataMember] bool MyData) 
+    : Expected(&quot;Something bespoke&quot;, 100, None); 
+</code></pre>
+<p>Using this technique it's trivial to create new error-types when additional data needs to be moved
+around, but also there's a ton of built-in functionality for the most common use-cases.</p>
+
+<div id="table-of-contents"><p class="caption">Contents</p>
 <ul><li><a href="#_0_Error_0" class="link"><div class="nowrap">Error
 </div></a></li>
 <ul><li><a href="#Error_0_Code_0" class="link"><div class="nowrap">Code</div></a></li>
@@ -319,75 +385,7 @@
 
 <span class='parens'>(</span>string msg<span class='parens'>)</span></div></a></li>
 <li><a href="#Errors_0_ManyErrorsCode = -2000000006_0" class="link"><div class="nowrap">ManyErrorsCode = -2000000006</div></a></li></ul></ul></div>
-<div class="interface"><div class="doc noleftpad"><h2><code>Error</code></h2>
-<p>The <code>Error</code> type works like a discriminated-union, it is an <code>abstract record</code> type with many sub-cases
-(which are listed below).  It is used extensively with various monadic types, like <code>Fin&lt;A&gt;</code>, the
-<em>Effect System</em> monads of <code>Eff&lt;A&gt;</code>, <code>Eff&lt;RT, A&gt;</code>, <code>Aff&lt;A&gt;</code>, <code>Aff&lt;RT, A&gt;</code> and the compositional
-streaming Pipes features.</p>
-<blockquote>
-<p>The reason they're buried in the <code>Common</code> namespace is because, <code>Error</code> is a common type name.  And so, this gives
-the programmer a chance to not include it when <code>using LanguageExt;</code></p>
-</blockquote>
-<p><code>Error</code> exists because <code>Exception</code> is really only meant for <em>exceptional</em> errors. However, in C#-land we've been trained
-to throw them even for <em>expected</em> errors.</p>
-<p>Instead we use <code>Error</code> to represent three key types of error:</p>
-<ul>
-<li class='markdown-bullet'><code>Exceptional</code> - An unexpected error</li>
-<li class='markdown-bullet'><code>Expected</code>    - An expected error</li>
-<li class='markdown-bullet'><code>ManyErrors</code>  - Many errors (possibly zero)</li>
-</ul>
-<p>These are the key base-types that indicate the <em>'flavour'</em> of the error.  For example, a 'user not found' error isn't
-something exceptional, it's something we expect <em>might</em> happen.  An <code>OutOfMemoryException</code> however, <em>is</em>
-exceptional - it should never happen, and we should treat it as such.</p>
-<p>Most of the time we want sensible handling of expected errors, and bail out completely for something exceptional.  We also want
-to protect ourselves from information leakage.  Leaking exceptional errors via public APIs is a surefire way to open up more
-information to hackers than you would like.  The <code>Error</code> derived types all try to protect against this kind of leakage without
-losing the context of the type of error thrown.</p>
-<p>Essentially an error is either created from an <code>Exception</code> or it isn't.  This allows for expected errors to be
-represented without throwing exceptions, but also it allows for more principled error handling.  We can pattern-match on the
-type, or use some of the built-in properties and methods to inspect the <code>Error</code>:</p>
-<ul>
-<li class='markdown-bullet'><code>IsExceptional</code> - <code>true</code> for exceptional errors.  For <code>ManyErrors</code> this is <code>true</code> if <em>any</em> of the errors are exceptional.</li>
-<li class='markdown-bullet'><code>IsExpected</code> - <code>true</code> for non-exceptional/expected errors.  For <code>ManyErrors</code> this is <code>true</code> if <em>all</em> of the errors are expected.</li>
-<li class='markdown-bullet'><code>Is&lt;E&gt;(E exception)</code> - <code>true</code> if the <code>Error</code> is exceptional and any of the the internal <code>Exception</code> values are of type <code>E</code>.</li>
-<li class='markdown-bullet'><code>Is(Error error)</code> - <code>true</code> if the <code>Error</code> matches the one provided.  i.e. <code>error.Is(Errors.TimedOut)</code>.</li>
-</ul>
-<p>The <code>Error</code> type can be constructed to be exceptional or expected.  For example, this is an expected error:</p>
-<pre><code>Error.New(&quot;This error was expected&quot;)
-</code></pre>
-<p>When expected errors are used with codes then equality and matching is done via the code only:</p>
-<pre><code>Error.New(404, &quot;Page not found&quot;);
-</code></pre>
-<p>And this is an exceptional error:</p>
-<pre><code>try
-{
-    // This wraps up the exceptional error
-}
-catch(Exception e)
-{
-    return Error.New(e);
-}
-</code></pre>
-<p>Finally, you can collect many errors:</p>
-<pre><code>Error.Many(Error.New(&quot;error one&quot;), Error.New(&quot;error two&quot;));
-</code></pre>
-<p>Or more simply:</p>
-<pre><code>Error.New(&quot;error one&quot;) + Error.New(&quot;error two&quot;)
-</code></pre>
-<p>You can extend the set of error types (perhaps for passing through extra data) by creating a new
-record inherits <code>Exceptional</code> or <code>Expected</code>:</p>
-<pre><code>public record BespokeError(bool MyData) 
-    : Expected(&quot;Something bespoke&quot;, 100, None); 
-</code></pre>
-<p>By default the properties of the new error-type won't be serialised.  So, if you want to pass a
-payload over the wire, add the <code>[property: DataMember]</code> attribute to each member:</p>
-<pre><code>public record BespokeError([property: DataMember] bool MyData) 
-    : Expected(&quot;Something bespoke&quot;, 100, None); 
-</code></pre>
-<p>Using this technique it's trivial to create new error-types when additional data needs to be moved
-around, but also there's a ton of built-in functionality for the most common use-cases.</p>
-</div>
-<H1>Sub sections</H1>
+<div class="interface"><H1>Sub modules</H1>
 <table><tbody><tr><td class="src clearfix"><span class="inst-left"><a href="Result\index.html" class="link">Result</a></span></td></tr></tbody></table>
 <div class="top"><p class="src"><span class="keyword">record</span>
 <a id="_0_Error_0" class="def">Error</a>

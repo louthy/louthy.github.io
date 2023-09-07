@@ -12,8 +12,13 @@
 <a href="../index.html" class="link">Alternative Value Monads</a>
 <span> ► </span>
 <a href="index.html" class="link">Nullable</a></p></div>
-<div id="table-of-contents">
-<p class="caption">Contents</p>
+<p>The <code>Nullable</code> extensions turns the <code>Nullable&lt;T&gt;</code> type from .NET into a monad.  This means you can use them in LINQ expressions, just like
+the other monadic types in this library.  There are natural transformation functions to help convert from a nullable into other types, i.e.</p>
+<pre><code>int? x = ...
+Option&lt;int&gt; mx = x.ToOption();
+</code></pre>
+
+<div id="table-of-contents"><p class="caption">Contents</p>
 <ul><li><a href="#LanguageExt_0_NullableExtensions_0" class="link"><div class="nowrap">NullableExtensions
 </div></a></li>
 <ul><li><a href="#NullableExtensions_0_ToOption_1" class="link"><div class="nowrap">ToOption
@@ -130,9 +135,21 @@
 <li><a href="#NullableExtensions_0_Bind_2" class="link"><div class="nowrap">Bind
 <span class='generics'>&lt;</span>T<span class='comma'>, </span>R<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this T? self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>R?<span class='generics'>&gt;</span> Some<span class='comma'>, </span>Func<span class='generics'>&lt;</span>R?<span class='generics'>&gt;</span> None<span class='parens'>)</span></div></a></li>
+<li><a href="#NullableExtensions_0_Select_2" class="link"><div class="nowrap">Select
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>U<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this T? self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>U<span class='generics'>&gt;</span> map<span class='parens'>)</span></div></a></li>
+<li><a href="#NullableExtensions_0_Where_1" class="link"><div class="nowrap">Where
+<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this T? self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span></div></a></li>
 <li><a href="#NullableExtensions_0_Sum_0" class="link"><div class="nowrap">Sum
 
-<span class='parens'>(</span>this int? self<span class='parens'>)</span></div></a></li></ul>
+<span class='parens'>(</span>this int? self<span class='parens'>)</span></div></a></li>
+<li><a href="#NullableExtensions_0_SelectMany_3" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>U<span class='comma'>, </span>V<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this T? self,
+            Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>U?<span class='generics'>&gt;</span> bind,
+            Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>U<span class='comma'>, </span>V<span class='generics'>&gt;</span> project
+            <span class='parens'>)</span></div></a></li></ul>
 <li><a href="#LanguageExt_0_Prelude_0" class="link"><div class="nowrap">Prelude
 </div></a></li>
 <ul><li><a href="#Prelude_0_toOption_1" class="link"><div class="nowrap">toOption
@@ -240,13 +257,7 @@
 <li><a href="#Prelude_0_sum_0" class="link"><div class="nowrap">sum
 
 <span class='parens'>(</span>int? self<span class='parens'>)</span></div></a></li></ul></ul></div>
-<div class="interface"><div class="doc noleftpad"><p>The <code>Nullable</code> extensions turns the <code>Nullable&lt;T&gt;</code> type from .NET into a monad.  This means you can use them in LINQ expressions, just like
-the other monadic types in this library.  There are natural transformation functions to help convert from a nullable into other types, i.e.</p>
-<pre><code>int? x = ...
-Option&lt;int&gt; mx = x.ToOption();
-</code></pre>
-</div>
-
+<div class="interface">
 <div class="top"><p class="src"><span class="keyword">class</span>
 <a id="LanguageExt_0_NullableExtensions_0" class="def">NullableExtensions</a>
 
@@ -1549,6 +1560,61 @@ R?
 
 </div>
 <div class="top"><p class="src"><span class="keyword">method</span>
+U?
+<a id="NullableExtensions_0_Select_2" class="def">Select</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>U<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this T? self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>U<span class='generics'>&gt;</span> map<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/Nullable/Nullable.Extensions.cs#L445" class="link">Source</a>
+<a href="#NullableExtensions_0_Select_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : struct
+            </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> U : struct</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+T?
+<a id="NullableExtensions_0_Where_1" class="def">Where</a>
+<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this T? self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/Nullable/Nullable.Extensions.cs#L452" class="link">Source</a>
+<a href="#NullableExtensions_0_Where_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : struct</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
 int
 <a id="NullableExtensions_0_Sum_0" class="def">Sum</a>
 
@@ -1556,6 +1622,41 @@ int
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/Nullable/Nullable.Extensions.cs#L457" class="link">Source</a>
 <a href="#NullableExtensions_0_Sum_0" class="selflink">#</a>
 <div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+V?
+<a id="NullableExtensions_0_SelectMany_3" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>U<span class='comma'>, </span>V<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this T? self,
+            Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>U?<span class='generics'>&gt;</span> bind,
+            Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>U<span class='comma'>, </span>V<span class='generics'>&gt;</span> project
+            <span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/Nullable/Nullable.Extensions.cs#L461" class="link">Source</a>
+<a href="#NullableExtensions_0_SelectMany_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : struct
+            </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> U : struct
+            </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> V : struct</span></div></div></p>
 <div class="doc"><div></div>
 <div></div>
 

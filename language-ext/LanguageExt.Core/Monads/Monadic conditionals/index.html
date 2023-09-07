@@ -10,8 +10,34 @@
 <a href="../index.html" class="link">Monads</a>
 <span> ► </span>
 <a href="index.html" class="link">Monadic conditionals</a></p></div>
-<div id="table-of-contents">
-<p class="caption">Contents</p>
+<p><code>guard</code>, <code>when</code>, and <code>unless</code> allow for conditional operations and short-cutting in monadic expressions.</p>
+<h2>Guards</h2>
+<p>Guards are used to stop the monadic expression continuing if a flag is <code>true</code> (for <code>guard</code>) or <code>false</code> (for <code>guardnot</code>).</p>
+<p>They only work with monads that have an <em>'alternative value'</em> (which is usually used as the error condition: <code>Left</code> in
+<code>Either</code> for example).  An alternative value is provided when the guard triggers:</p>
+<pre><code>from x in ma
+from _ in guard(x == 100, Error.New(&quot;x should be 100&quot;))
+select x;
+</code></pre>
+<p>Supported monads are:</p>
+<pre><code>Either
+EitherUnsafe
+EitherAsync
+Fin
+Validation
+Aff
+Eff
+</code></pre>
+<h2>When and Unless</h2>
+<p><code>when</code> and <code>unless</code> are similar to guards, but instead of providing <em>the</em> alternative value, you provide an alternative monad
+to run.  This monad could be in a failed state, or it could run a successful <em>side effect</em> (an <code>Aff</code> calling <code>Console&lt;RT&gt;.writeLine()</code>
+for example).</p>
+<pre><code>from x in ma
+from _ in when(x == 100, Console.writeLine&lt;RT&gt;(&quot;x is 100, finally!&quot;))
+select x;
+</code></pre>
+
+<div id="table-of-contents"><p class="caption">Contents</p>
 <ul><li><a href="#LanguageExt_0_Prelude_0" class="link"><div class="nowrap">Prelude
 </div></a></li>
 <ul><li><a href="#Prelude_0_guard_1" class="link"><div class="nowrap">guard
@@ -156,34 +182,7 @@
 <li><a href="#Prelude_0_when_2" class="link"><div class="nowrap">when
 <span class='generics'>&lt;</span>MonoidL<span class='comma'>, </span>L<span class='generics'>&gt;</span>
 <span class='parens'>(</span>bool flag<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>MonoidL<span class='comma'>, </span>L<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span></div></a></li></ul></ul></div>
-<div class="interface"><div class="doc noleftpad"><p><code>guard</code>, <code>when</code>, and <code>unless</code> allow for conditional operations and short-cutting in monadic expressions.</p>
-<h2>Guards</h2>
-<p>Guards are used to stop the monadic expression continuing if a flag is <code>true</code> (for <code>guard</code>) or <code>false</code> (for <code>guardnot</code>).</p>
-<p>They only work with monads that have an <em>'alternative value'</em> (which is usually used as the error condition: <code>Left</code> in
-<code>Either</code> for example).  An alternative value is provided when the guard triggers:</p>
-<pre><code>from x in ma
-from _ in guard(x == 100, Error.New(&quot;x should be 100&quot;))
-select x;
-</code></pre>
-<p>Supported monads are:</p>
-<pre><code>Either
-EitherUnsafe
-EitherAsync
-Fin
-Validation
-Aff
-Eff
-</code></pre>
-<h2>When and Unless</h2>
-<p><code>when</code> and <code>unless</code> are similar to guards, but instead of providing <em>the</em> alternative value, you provide an alternative monad
-to run.  This monad could be in a failed state, or it could run a successful <em>side effect</em> (an <code>Aff</code> calling <code>Console&lt;RT&gt;.writeLine()</code>
-for example).</p>
-<pre><code>from x in ma
-from _ in when(x == 100, Console.writeLine&lt;RT&gt;(&quot;x is 100, finally!&quot;))
-select x;
-</code></pre>
-</div>
-
+<div class="interface">
 <div class="top"><p class="src"><span class="keyword">class</span>
 <a id="LanguageExt_0_Prelude_0" class="def">Prelude</a>
 

@@ -8,21 +8,27 @@
 <div id="content"><div id="module-header"><p class="caption"><a href="../index.html" class="link">LanguageExt.Core</a>
 <span> ► </span>
 <a href="index.html" class="link">Immutable Collections</a></p></div>
-<div id="table-of-contents"><p class="caption">Sub-sections</p>
-<ul><li><a href="Arr\index.html" class="link"><div class="nowrap">Arr</div></a></li>
-<li><a href="BiMap\index.html" class="link"><div class="nowrap">BiMap</div></a></li>
-<li><a href="HashMap\index.html" class="link"><div class="nowrap">HashMap</div></a></li>
-<li><a href="HashSet\index.html" class="link"><div class="nowrap">HashSet</div></a></li>
-<li><a href="List\index.html" class="link"><div class="nowrap">List</div></a></li>
-<li><a href="Map\index.html" class="link"><div class="nowrap">Map</div></a></li>
-<li><a href="Queue\index.html" class="link"><div class="nowrap">Queue</div></a></li>
-<li><a href="Seq\index.html" class="link"><div class="nowrap">Seq</div></a></li>
-<li><a href="Set\index.html" class="link"><div class="nowrap">Set</div></a></li>
-<li><a href="Stack\index.html" class="link"><div class="nowrap">Stack</div></a></li>
-<li><a href="TrackingHashMap\index.html" class="link"><div class="nowrap">TrackingHashMap</div></a></li>
-<li><a href="TrieMap\index.html" class="link"><div class="nowrap">TrieMap</div></a></li>
-<li><a href="TrieSet\index.html" class="link"><div class="nowrap">TrieSet</div></a></li></ul>
-<p class="caption">Contents</p>
+<p>This a suite of <a href="https://github.com/louthy/language-ext/blob/main/Performance.md">very high-performance immutable-collections</a>.</p>
+<ul>
+<li class='markdown-bullet'>For lists you should always prefer to use <code>Seq&lt;A&gt;</code> - it is about 10x faster than <code>Lst&lt;A&gt;</code>.  The only reason you'd pick
+<code>Lst&lt;A&gt;</code> is if you needed to do inserts into the middle of the list: <code>Seq&lt;A&gt;</code> doesn't allow this (it only allows prepending or
+appending), as it would be a performance hit.
+<code>Seq&lt;A&gt;</code> is backed by an array, and so it has exceptional memory locality, <code>Lst&lt;A&gt;</code> is an AVL tree to allow for efficient<br />
+insertion, but suffers from poorer memory locality.</li>
+<li class='markdown-bullet'>For 'dictionaries' or maps as we prefer to call them, then <code>HashMap</code> is the fastest implemention you'll find in .NET-land.  It is
+unsorted.  If you need a sorted dictionary, use <code>Map</code>.  <code>HashMap</code> uses the CHAMP data-structure, <code>Map</code> uses an AVL tree.</li>
+<li class='markdown-bullet'>The same goes for sets, prefer <code>HashSet</code> over <code>Set</code>, unless you need the set to be sorted.</li>
+</ul>
+<p>You can construct the collection types using the constrctor functions in the <code>Prelude</code>:</p>
+<pre><code>HashMap&lt;string, int&gt; hashSet = HashMap((&quot;a&quot;, 1), (&quot;b&quot;, 2), (&quot;c&quot;, 3));
+HashSet&lt;int&gt; hashMap         = HashSet(1, 2, 3);
+Map&lt;string, int&gt; hashSet     = Map((&quot;a&quot;, 1), (&quot;b&quot;, 2), (&quot;c&quot;, 3));
+Set&lt;int&gt; hashMap             = Set(1, 2, 3);
+Seq&lt;int&gt; list                = Seq(1, 2, 3);
+Lst&lt;int&gt; list                = List(1, 2, 3);
+</code></pre>
+
+<div id="table-of-contents"><p class="caption">Contents</p>
 <ul><li><a href="#LanguageExt_0_Prelude_0" class="link"><div class="nowrap">Prelude
 </div></a></li>
 <ul><li><a href="#Prelude_0_Empty = new SeqEmpty()_0" class="link"><div class="nowrap">Empty = new SeqEmpty()</div></a></li>
@@ -210,6 +216,9 @@
 <span class='parens'>(</span><span class='parens'>(</span>K<span class='comma'>, </span>V<span class='parens'>)</span> head<span class='comma'>, </span>params <span class='parens'>(</span>K<span class='comma'>, </span>V<span class='parens'>)</span>[] tail<span class='parens'>)</span></div></a></li>
 <li><a href="#Prelude_0_AtomHashMap_2" class="link"><div class="nowrap">AtomHashMap
 <span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
+<span class='parens'>(</span>HashMap<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span> items<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_AtomHashMap_2" class="link"><div class="nowrap">AtomHashMap
+<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
 <span class='parens'>(</span>KeyValuePair<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span> head<span class='comma'>, </span>params KeyValuePair<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>[] tail<span class='parens'>)</span></div></a></li>
 <li><a href="#Prelude_0_toAtomHashMap_2" class="link"><div class="nowrap">toAtomHashMap
 <span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
@@ -226,6 +235,9 @@
 <li><a href="#Prelude_0_AtomHashMap_3" class="link"><div class="nowrap">AtomHashMap
 <span class='generics'>&lt;</span>EqK<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
 <span class='parens'>(</span>KeyValuePair<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span> head<span class='comma'>, </span>params KeyValuePair<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>[] tail<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_AtomHashMap_3" class="link"><div class="nowrap">AtomHashMap
+<span class='generics'>&lt;</span>EqK<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
+<span class='parens'>(</span>HashMap<span class='generics'>&lt;</span>EqK<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span> items<span class='parens'>)</span></div></a></li>
 <li><a href="#Prelude_0_toAtomHashMap_3" class="link"><div class="nowrap">toAtomHashMap
 <span class='generics'>&lt;</span>EqK<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
 <span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span><span class='parens'>(</span>K<span class='comma'>, </span>V<span class='parens'>)</span><span class='generics'>&gt;</span> items<span class='parens'>)</span></div></a></li>
@@ -536,27 +548,7 @@
 <li><a href="#Prelude_0_Applicable_2" class="link"><div class="nowrap">Applicable
 <span class='generics'>&lt;</span>EqA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this IEnumerable<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> va<span class='comma'>, </span>Patch<span class='generics'>&lt;</span>EqA<span class='comma'>, </span>A<span class='generics'>&gt;</span> patch<span class='parens'>)</span></div></a></li></ul></ul></div>
-<div class="interface"><div class="doc noleftpad"><p>This a suite of <a href="https://github.com/louthy/language-ext/blob/master/Performance.md">very high-performance immutable-collections</a>.</p>
-<ul>
-<li class='markdown-bullet'>For lists you should always prefer to use <code>Seq&lt;A&gt;</code> - it is about 10x faster than <code>Lst&lt;A&gt;</code>.  The only reason you'd pick
-<code>Lst&lt;A&gt;</code> is if you needed to do inserts into the middle of the list: <code>Seq&lt;A&gt;</code> doesn't allow this (it only allows prepending or
-appending), as it would be a performance hit.
-<code>Seq&lt;A&gt;</code> is backed by an array, and so it has exceptional memory locality, <code>Lst&lt;A&gt;</code> is an AVL tree to allow for efficient<br />
-insertion, but suffers from poorer memory locality.</li>
-<li class='markdown-bullet'>For 'dictionaries' or maps as we prefer to call them, then <code>HashMap</code> is the fastest implemention you'll find in .NET-land.  It is
-unsorted.  If you need a sorted dictionary, use <code>Map</code>.  <code>HashMap</code> uses the CHAMP data-structure, <code>Map</code> uses an AVL tree.</li>
-<li class='markdown-bullet'>The same goes for sets, prefer <code>HashSet</code> over <code>Set</code>, unless you need the set to be sorted.</li>
-</ul>
-<p>You can construct the collection types using the constrctor functions in the <code>Prelude</code>:</p>
-<pre><code>HashMap&lt;string, int&gt; hashSet = HashMap((&quot;a&quot;, 1), (&quot;b&quot;, 2), (&quot;c&quot;, 3));
-HashSet&lt;int&gt; hashMap         = HashSet(1, 2, 3);
-Map&lt;string, int&gt; hashSet     = Map((&quot;a&quot;, 1), (&quot;b&quot;, 2), (&quot;c&quot;, 3));
-Set&lt;int&gt; hashMap             = Set(1, 2, 3);
-Seq&lt;int&gt; list                = Seq(1, 2, 3);
-Lst&lt;int&gt; list                = List(1, 2, 3);
-</code></pre>
-</div>
-<H1>Sub sections</H1>
+<div class="interface"><H1>Sub modules</H1>
 <table><tbody><tr><td class="src clearfix"><span class="inst-left"><a href="Arr\index.html" class="link">Arr</a></span></td></tr>
 <tr><td class="src clearfix"><span class="inst-left"><a href="BiMap\index.html" class="link">BiMap</a></span></td></tr>
 <tr><td class="src clearfix"><span class="inst-left"><a href="HashMap\index.html" class="link">HashMap</a></span></td></tr>
@@ -2347,8 +2339,34 @@ AtomHashMap<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<spa
 AtomHashMap<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
 <a id="Prelude_0_AtomHashMap_2" class="def">AtomHashMap</a>
 <span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
-<span class='parens'>(</span>KeyValuePair<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span> head<span class='comma'>, </span>params KeyValuePair<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>[] tail<span class='parens'>)</span>
+<span class='parens'>(</span>HashMap<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span> items<span class='parens'>)</span>
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L552" class="link">Source</a>
+<a href="#Prelude_0_AtomHashMap_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Create an immutable hash-map</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+AtomHashMap<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
+<a id="Prelude_0_AtomHashMap_2" class="def">AtomHashMap</a>
+<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
+<span class='parens'>(</span>KeyValuePair<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span> head<span class='comma'>, </span>params KeyValuePair<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>[] tail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L559" class="link">Source</a>
 <a href="#Prelude_0_AtomHashMap_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Create an immutable hash-map</p>
@@ -2374,7 +2392,7 @@ AtomHashMap<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<spa
 <a id="Prelude_0_toAtomHashMap_2" class="def">toAtomHashMap</a>
 <span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
 <span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span><span class='parens'>(</span>K<span class='comma'>, </span>V<span class='parens'>)</span><span class='generics'>&gt;</span> items<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L559" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L566" class="link">Source</a>
 <a href="#Prelude_0_toAtomHashMap_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Create an immutable hash-map</p>
@@ -2400,7 +2418,7 @@ AtomHashMap<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<spa
 <a id="Prelude_0_toAtomHashMap_2" class="def">toAtomHashMap</a>
 <span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
 <span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>KeyValuePair<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span><span class='generics'>&gt;</span> items<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L566" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L573" class="link">Source</a>
 <a href="#Prelude_0_toAtomHashMap_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Create an immutable hash-map</p>
@@ -2426,7 +2444,7 @@ AtomHashMap<span class='generics'>&lt;</span>EqK<span class='comma'>, </span>K<s
 <a id="Prelude_0_AtomHashMap_3" class="def">AtomHashMap</a>
 <span class='generics'>&lt;</span>EqK<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
 <span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L575" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L581" class="link">Source</a>
 <a href="#Prelude_0_AtomHashMap_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> EqK : struct, Eq&lt;K&gt;</span></div></div></p>
@@ -2453,7 +2471,7 @@ AtomHashMap<span class='generics'>&lt;</span>EqK<span class='comma'>, </span>K<s
 <a id="Prelude_0_AtomHashMap_3" class="def">AtomHashMap</a>
 <span class='generics'>&lt;</span>EqK<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
 <span class='parens'>(</span><span class='parens'>(</span>K<span class='comma'>, </span>V<span class='parens'>)</span> head<span class='comma'>, </span>params <span class='parens'>(</span>K<span class='comma'>, </span>V<span class='parens'>)</span>[] tail<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L582" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L588" class="link">Source</a>
 <a href="#Prelude_0_AtomHashMap_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> EqK : struct, Eq&lt;K&gt;</span></div></div></p>
@@ -2480,7 +2498,34 @@ AtomHashMap<span class='generics'>&lt;</span>EqK<span class='comma'>, </span>K<s
 <a id="Prelude_0_AtomHashMap_3" class="def">AtomHashMap</a>
 <span class='generics'>&lt;</span>EqK<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
 <span class='parens'>(</span>KeyValuePair<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span> head<span class='comma'>, </span>params KeyValuePair<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>[] tail<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L589" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L595" class="link">Source</a>
+<a href="#Prelude_0_AtomHashMap_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> EqK : struct, Eq&lt;K&gt;</span></div></div></p>
+<div class="doc"><div><p>Create an immutable hash-map</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+AtomHashMap<span class='generics'>&lt;</span>EqK<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
+<a id="Prelude_0_AtomHashMap_3" class="def">AtomHashMap</a>
+<span class='generics'>&lt;</span>EqK<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
+<span class='parens'>(</span>HashMap<span class='generics'>&lt;</span>EqK<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span> items<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L602" class="link">Source</a>
 <a href="#Prelude_0_AtomHashMap_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> EqK : struct, Eq&lt;K&gt;</span></div></div></p>
@@ -2507,7 +2552,7 @@ AtomHashMap<span class='generics'>&lt;</span>EqK<span class='comma'>, </span>K<s
 <a id="Prelude_0_toAtomHashMap_3" class="def">toAtomHashMap</a>
 <span class='generics'>&lt;</span>EqK<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
 <span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span><span class='parens'>(</span>K<span class='comma'>, </span>V<span class='parens'>)</span><span class='generics'>&gt;</span> items<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L596" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L609" class="link">Source</a>
 <a href="#Prelude_0_toAtomHashMap_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> EqK : struct, Eq&lt;K&gt;</span></div></div></p>
@@ -2534,7 +2579,7 @@ AtomHashMap<span class='generics'>&lt;</span>EqK<span class='comma'>, </span>K<s
 <a id="Prelude_0_toAtomHashMap_3" class="def">toAtomHashMap</a>
 <span class='generics'>&lt;</span>EqK<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
 <span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>KeyValuePair<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span><span class='generics'>&gt;</span> items<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L603" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L616" class="link">Source</a>
 <a href="#Prelude_0_toAtomHashMap_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> EqK : struct, Eq&lt;K&gt;</span></div></div></p>
@@ -2561,7 +2606,7 @@ Lst<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <a id="Prelude_0_List_1" class="def">List</a>
 <span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L612" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L623" class="link">Source</a>
 <a href="#Prelude_0_List_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Create an immutable list</p>
@@ -2587,7 +2632,7 @@ Lst<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <a id="Prelude_0_List_1" class="def">List</a>
 <span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span>T x<span class='comma'>, </span>params T[] xs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L619" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L630" class="link">Source</a>
 <a href="#Prelude_0_List_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Create an immutable list</p>
@@ -2613,7 +2658,7 @@ Lst<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <a id="Prelude_0_toList_1" class="def">toList</a>
 <span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Arr<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> items<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L637" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L648" class="link">Source</a>
 <a href="#Prelude_0_toList_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Create an immutable list</p>
@@ -2639,7 +2684,7 @@ Lst<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <a id="Prelude_0_toList_1" class="def">toList</a>
 <span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> items<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L644" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L655" class="link">Source</a>
 <a href="#Prelude_0_toList_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Create an immutable list</p>
@@ -2665,7 +2710,7 @@ Lst<span class='generics'>&lt;</span>PredList<span class='comma'>, </span>T<span
 <a id="Prelude_0_List_2" class="def">List</a>
 <span class='generics'>&lt;</span>PredList<span class='comma'>, </span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L655" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L666" class="link">Source</a>
 <a href="#Prelude_0_List_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> PredList : struct, Pred&lt;ListInfo&gt;</span></div></div></p>
@@ -2692,7 +2737,7 @@ Lst<span class='generics'>&lt;</span>PredList<span class='comma'>, </span>T<span
 <a id="Prelude_0_List_2" class="def">List</a>
 <span class='generics'>&lt;</span>PredList<span class='comma'>, </span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span>T x<span class='comma'>, </span>params T[] xs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L662" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L673" class="link">Source</a>
 <a href="#Prelude_0_List_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> PredList : struct, Pred&lt;ListInfo&gt;</span></div></div></p>
@@ -2719,7 +2764,7 @@ Lst<span class='generics'>&lt;</span>PredList<span class='comma'>, </span>T<span
 <a id="Prelude_0_toList_2" class="def">toList</a>
 <span class='generics'>&lt;</span>PredList<span class='comma'>, </span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Arr<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> items<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L669" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L680" class="link">Source</a>
 <a href="#Prelude_0_toList_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> PredList : struct, Pred&lt;ListInfo&gt;</span></div></div></p>
@@ -2746,7 +2791,7 @@ Lst<span class='generics'>&lt;</span>PredList<span class='comma'>, </span>T<span
 <a id="Prelude_0_toList_2" class="def">toList</a>
 <span class='generics'>&lt;</span>PredList<span class='comma'>, </span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> items<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L676" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L687" class="link">Source</a>
 <a href="#Prelude_0_toList_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> PredList : struct, Pred&lt;ListInfo&gt;</span></div></div></p>
@@ -2773,7 +2818,7 @@ Lst<span class='generics'>&lt;</span>PredList<span class='comma'>, </span>PredIt
 <a id="Prelude_0_List_3" class="def">List</a>
 <span class='generics'>&lt;</span>PredList<span class='comma'>, </span>PredItem<span class='comma'>, </span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L687" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L698" class="link">Source</a>
 <a href="#Prelude_0_List_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> PredItem : struct, Pred&lt;T&gt;
@@ -2803,7 +2848,7 @@ Lst<span class='generics'>&lt;</span>PredList<span class='comma'>, </span>PredIt
 <a id="Prelude_0_List_3" class="def">List</a>
 <span class='generics'>&lt;</span>PredList<span class='comma'>, </span>PredItem<span class='comma'>, </span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span>T x<span class='comma'>, </span>params T[] xs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L696" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L707" class="link">Source</a>
 <a href="#Prelude_0_List_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> PredItem : struct, Pred&lt;T&gt;
@@ -2833,7 +2878,7 @@ Lst<span class='generics'>&lt;</span>PredList<span class='comma'>, </span>PredIt
 <a id="Prelude_0_toList_3" class="def">toList</a>
 <span class='generics'>&lt;</span>PredList<span class='comma'>, </span>PredItem<span class='comma'>, </span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Arr<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> items<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L705" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L716" class="link">Source</a>
 <a href="#Prelude_0_toList_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> PredItem : struct, Pred&lt;T&gt;
@@ -2863,7 +2908,7 @@ Lst<span class='generics'>&lt;</span>PredList<span class='comma'>, </span>PredIt
 <a id="Prelude_0_toList_3" class="def">toList</a>
 <span class='generics'>&lt;</span>PredList<span class='comma'>, </span>PredItem<span class='comma'>, </span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> items<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L714" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L725" class="link">Source</a>
 <a href="#Prelude_0_toList_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> PredItem : struct, Pred&lt;T&gt;
@@ -2893,7 +2938,7 @@ Arr<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <a id="Prelude_0_Array_1" class="def">Array</a>
 <span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L728" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L739" class="link">Source</a>
 <a href="#Prelude_0_Array_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Create an immutable array</p>
@@ -2919,7 +2964,7 @@ Arr<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <a id="Prelude_0_Array_1" class="def">Array</a>
 <span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span>T x<span class='comma'>, </span>params T[] xs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L735" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L746" class="link">Source</a>
 <a href="#Prelude_0_Array_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Create an immutable array</p>
@@ -2945,7 +2990,7 @@ Arr<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <a id="Prelude_0_toArray_1" class="def">toArray</a>
 <span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> items<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L742" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L753" class="link">Source</a>
 <a href="#Prelude_0_toArray_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Create an immutable array</p>
@@ -2971,7 +3016,7 @@ Que<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <a id="Prelude_0_Queue_1" class="def">Queue</a>
 <span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L751" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L762" class="link">Source</a>
 <a href="#Prelude_0_Queue_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Create an immutable queue</p>
@@ -2997,7 +3042,7 @@ Que<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <a id="Prelude_0_Queue_1" class="def">Queue</a>
 <span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span>params T[] items<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L758" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L769" class="link">Source</a>
 <a href="#Prelude_0_Queue_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Create an immutable queue</p>
@@ -3023,7 +3068,7 @@ Que<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <a id="Prelude_0_toQueue_1" class="def">toQueue</a>
 <span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> items<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L772" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L783" class="link">Source</a>
 <a href="#Prelude_0_toQueue_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Create an immutable queue</p>
@@ -3049,7 +3094,7 @@ Stck<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <a id="Prelude_0_Stack_1" class="def">Stack</a>
 <span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L788" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L799" class="link">Source</a>
 <a href="#Prelude_0_Stack_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Create an immutable stack</p>
@@ -3075,7 +3120,7 @@ Stck<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <a id="Prelude_0_Stack_1" class="def">Stack</a>
 <span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span>params T[] items<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L795" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L806" class="link">Source</a>
 <a href="#Prelude_0_Stack_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Create an immutable stack</p>
@@ -3101,7 +3146,7 @@ Stck<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <a id="Prelude_0_toStack_1" class="def">toStack</a>
 <span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> items<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L802" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L813" class="link">Source</a>
 <a href="#Prelude_0_toStack_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Create an immutable stack</p>
@@ -3127,7 +3172,7 @@ Stck<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <a id="Prelude_0_toStackRev_1" class="def">toStackRev</a>
 <span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> items<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L811" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L822" class="link">Source</a>
 <a href="#Prelude_0_toStackRev_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Create an immutable stack</p>
@@ -3153,7 +3198,7 @@ Map<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class=
 <a id="Prelude_0_toMapUpdate_2" class="def">toMapUpdate</a>
 <span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
 <span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>Tuple<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span><span class='generics'>&gt;</span> keyValues<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L818" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L829" class="link">Source</a>
 <a href="#Prelude_0_toMapUpdate_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Create an immutable map, updating duplicates so that the final value of any key is retained</p>
@@ -3179,7 +3224,7 @@ Map<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class=
 <a id="Prelude_0_toMapUpdate_2" class="def">toMapUpdate</a>
 <span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
 <span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span><span class='parens'>(</span>K<span class='comma'>, </span>V<span class='parens'>)</span><span class='generics'>&gt;</span> keyValues<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L825" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L836" class="link">Source</a>
 <a href="#Prelude_0_toMapUpdate_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Create an immutable map, updating duplicates so that the final value of any key is retained</p>
@@ -3205,7 +3250,7 @@ Map<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class=
 <a id="Prelude_0_toMapUpdate_2" class="def">toMapUpdate</a>
 <span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
 <span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>KeyValuePair<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span><span class='generics'>&gt;</span> keyValues<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L832" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L843" class="link">Source</a>
 <a href="#Prelude_0_toMapUpdate_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Create an immutable map, updating duplicates so that the final value of any key is retained</p>
@@ -3231,7 +3276,7 @@ Map<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class=
 <a id="Prelude_0_toMapTry_2" class="def">toMapTry</a>
 <span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
 <span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>Tuple<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span><span class='generics'>&gt;</span> keyValues<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L839" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L850" class="link">Source</a>
 <a href="#Prelude_0_toMapTry_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Create an immutable map, ignoring duplicates so the first value of any key is retained</p>
@@ -3257,7 +3302,7 @@ Map<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class=
 <a id="Prelude_0_toMapTry_2" class="def">toMapTry</a>
 <span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
 <span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span><span class='parens'>(</span>K<span class='comma'>, </span>V<span class='parens'>)</span><span class='generics'>&gt;</span> keyValues<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L846" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L857" class="link">Source</a>
 <a href="#Prelude_0_toMapTry_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Create an immutable map, ignoring duplicates so the first value of any key is retained</p>
@@ -3283,7 +3328,7 @@ Map<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class=
 <a id="Prelude_0_toMapTry_2" class="def">toMapTry</a>
 <span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
 <span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>KeyValuePair<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span><span class='generics'>&gt;</span> keyValues<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L853" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L864" class="link">Source</a>
 <a href="#Prelude_0_toMapTry_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Create an immutable map, ignoring duplicates so the first value of any key is retained</p>
@@ -3309,7 +3354,7 @@ Set<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <a id="Prelude_0_Set_1" class="def">Set</a>
 <span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L863" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L874" class="link">Source</a>
 <a href="#Prelude_0_Set_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Create an immutable set</p>
@@ -3335,7 +3380,7 @@ Set<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <a id="Prelude_0_Set_1" class="def">Set</a>
 <span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span>T head<span class='comma'>, </span>params T[] tail<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L870" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L881" class="link">Source</a>
 <a href="#Prelude_0_Set_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Create an immutable set</p>
@@ -3361,7 +3406,7 @@ Set<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <a id="Prelude_0_toSet_1" class="def">toSet</a>
 <span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> items<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L877" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L888" class="link">Source</a>
 <a href="#Prelude_0_toSet_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Create an immutable set</p>
@@ -3387,7 +3432,7 @@ Set<span class='generics'>&lt;</span>OrdT<span class='comma'>, </span>T<span cla
 <a id="Prelude_0_Set_2" class="def">Set</a>
 <span class='generics'>&lt;</span>OrdT<span class='comma'>, </span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L888" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L899" class="link">Source</a>
 <a href="#Prelude_0_Set_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> OrdT : struct, Ord&lt;T&gt;</span></div></div></p>
@@ -3414,7 +3459,7 @@ Set<span class='generics'>&lt;</span>OrdT<span class='comma'>, </span>T<span cla
 <a id="Prelude_0_Set_2" class="def">Set</a>
 <span class='generics'>&lt;</span>OrdT<span class='comma'>, </span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span>T head<span class='comma'>, </span>params T[] tail<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L895" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L906" class="link">Source</a>
 <a href="#Prelude_0_Set_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> OrdT : struct, Ord&lt;T&gt;</span></div></div></p>
@@ -3441,7 +3486,7 @@ Set<span class='generics'>&lt;</span>OrdT<span class='comma'>, </span>T<span cla
 <a id="Prelude_0_toSet_2" class="def">toSet</a>
 <span class='generics'>&lt;</span>OrdT<span class='comma'>, </span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> items<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L902" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L913" class="link">Source</a>
 <a href="#Prelude_0_toSet_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> OrdT : struct, Ord&lt;T&gt;</span></div></div></p>
@@ -3468,7 +3513,7 @@ HashSet<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <a id="Prelude_0_HashSet_1" class="def">HashSet</a>
 <span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L912" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L923" class="link">Source</a>
 <a href="#Prelude_0_HashSet_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Create an immutable hash-set</p>
@@ -3494,7 +3539,7 @@ HashSet<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <a id="Prelude_0_HashSet_1" class="def">HashSet</a>
 <span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span>T head<span class='comma'>, </span>params T[] tail<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L919" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L930" class="link">Source</a>
 <a href="#Prelude_0_HashSet_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Create an immutable hash-set</p>
@@ -3520,7 +3565,7 @@ HashSet<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <a id="Prelude_0_toHashSet_1" class="def">toHashSet</a>
 <span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> items<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L926" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L937" class="link">Source</a>
 <a href="#Prelude_0_toHashSet_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Create an immutable hash-set</p>
@@ -3546,7 +3591,7 @@ HashSet<span class='generics'>&lt;</span>EqT<span class='comma'>, </span>T<span 
 <a id="Prelude_0_HashSet_2" class="def">HashSet</a>
 <span class='generics'>&lt;</span>EqT<span class='comma'>, </span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L939" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L950" class="link">Source</a>
 <a href="#Prelude_0_HashSet_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> EqT : struct, Eq&lt;T&gt;</span></div></div></p>
@@ -3573,7 +3618,7 @@ HashSet<span class='generics'>&lt;</span>EqT<span class='comma'>, </span>T<span 
 <a id="Prelude_0_HashSet_2" class="def">HashSet</a>
 <span class='generics'>&lt;</span>EqT<span class='comma'>, </span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span>T head<span class='comma'>, </span>params T[] tail<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L946" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L957" class="link">Source</a>
 <a href="#Prelude_0_HashSet_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> EqT : struct, Eq&lt;T&gt;</span></div></div></p>
@@ -3600,7 +3645,7 @@ HashSet<span class='generics'>&lt;</span>EqT<span class='comma'>, </span>T<span 
 <a id="Prelude_0_toHashSet_2" class="def">toHashSet</a>
 <span class='generics'>&lt;</span>EqT<span class='comma'>, </span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> items<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L953" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L964" class="link">Source</a>
 <a href="#Prelude_0_toHashSet_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> EqT : struct, Eq&lt;T&gt;</span></div></div></p>
@@ -3627,7 +3672,7 @@ IQueryable<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <a id="Prelude_0_Query_1" class="def">Query</a>
 <span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span>params T[] items<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L966" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L977" class="link">Source</a>
 <a href="#Prelude_0_Query_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Create a queryable</p>
@@ -3653,7 +3698,7 @@ IQueryable<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <a id="Prelude_0_toQuery_1" class="def">toQuery</a>
 <span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> items<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L973" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L984" class="link">Source</a>
 <a href="#Prelude_0_toQuery_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Convert to queryable</p>
@@ -3681,7 +3726,7 @@ B
 <span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> list,
             Func<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span> Empty,
             Func<span class='generics'>&lt;</span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> More<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L984" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L995" class="link">Source</a>
 <a href="#Prelude_0_match_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Match empty list, or multi-item list</p>
@@ -3724,7 +3769,7 @@ B
 <span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> list,
             Func<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span> Empty,
             Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> More<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L992" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1003" class="link">Source</a>
 <a href="#Prelude_0_match_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>List pattern matching</p>
@@ -3753,7 +3798,7 @@ R
             Func<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span> Empty,
             Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>R<span class='generics'>&gt;</span> One,
             Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span><span class='comma'>, </span>R<span class='generics'>&gt;</span> More<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1001" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1012" class="link">Source</a>
 <a href="#Prelude_0_match_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>List pattern matching</p>
@@ -3779,56 +3824,6 @@ R
 <a id="Prelude_0_match_3" class="def">match</a>
 <span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='comma'>, </span>R<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Map<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span> map<span class='comma'>, </span>K key<span class='comma'>, </span>Func<span class='generics'>&lt;</span>V<span class='comma'>, </span>R<span class='generics'>&gt;</span> Some<span class='comma'>, </span>Func<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span> None<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1008" class="link">Source</a>
-<a href="#Prelude_0_match_3" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-Unit
-<a id="Prelude_0_match_2" class="def">match</a>
-<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
-<span class='parens'>(</span>Map<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span> map<span class='comma'>, </span>K key<span class='comma'>, </span>Action<span class='generics'>&lt;</span>V<span class='generics'>&gt;</span> Some<span class='comma'>, </span>Action None<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1014" class="link">Source</a>
-<a href="#Prelude_0_match_2" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-R
-<a id="Prelude_0_match_3" class="def">match</a>
-<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='comma'>, </span>R<span class='generics'>&gt;</span>
-<span class='parens'>(</span>HashMap<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span> map<span class='comma'>, </span>K key<span class='comma'>, </span>Func<span class='generics'>&lt;</span>V<span class='comma'>, </span>R<span class='generics'>&gt;</span> Some<span class='comma'>, </span>Func<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span> None<span class='parens'>)</span>
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1019" class="link">Source</a>
 <a href="#Prelude_0_match_3" class="selflink">#</a>
 <div class="constraints"></div></p>
@@ -3853,8 +3848,58 @@ R
 Unit
 <a id="Prelude_0_match_2" class="def">match</a>
 <span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
-<span class='parens'>(</span>HashMap<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span> map<span class='comma'>, </span>K key<span class='comma'>, </span>Action<span class='generics'>&lt;</span>V<span class='generics'>&gt;</span> Some<span class='comma'>, </span>Action None<span class='parens'>)</span>
+<span class='parens'>(</span>Map<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span> map<span class='comma'>, </span>K key<span class='comma'>, </span>Action<span class='generics'>&lt;</span>V<span class='generics'>&gt;</span> Some<span class='comma'>, </span>Action None<span class='parens'>)</span>
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1025" class="link">Source</a>
+<a href="#Prelude_0_match_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+R
+<a id="Prelude_0_match_3" class="def">match</a>
+<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>HashMap<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span> map<span class='comma'>, </span>K key<span class='comma'>, </span>Func<span class='generics'>&lt;</span>V<span class='comma'>, </span>R<span class='generics'>&gt;</span> Some<span class='comma'>, </span>Func<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span> None<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1030" class="link">Source</a>
+<a href="#Prelude_0_match_3" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<a id="Prelude_0_match_2" class="def">match</a>
+<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
+<span class='parens'>(</span>HashMap<span class='generics'>&lt;</span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span> map<span class='comma'>, </span>K key<span class='comma'>, </span>Action<span class='generics'>&lt;</span>V<span class='generics'>&gt;</span> Some<span class='comma'>, </span>Action None<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1036" class="link">Source</a>
 <a href="#Prelude_0_match_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -3879,7 +3924,7 @@ Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_Seq_1" class="def">Seq</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1033" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1044" class="link">Source</a>
 <a href="#Prelude_0_Seq_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Construct an empty Seq</p>
@@ -3905,7 +3950,7 @@ Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_Seq1_1" class="def">Seq1</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>A value<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1052" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1063" class="link">Source</a>
 <a href="#Prelude_0_Seq1_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Construct a sequence from any value</p>
@@ -3933,7 +3978,7 @@ Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_Seq_1" class="def">Seq</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>A a<span class='comma'>, </span>A b<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1066" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1077" class="link">Source</a>
 <a href="#Prelude_0_Seq_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Construct a sequence from any value</p>
@@ -3961,7 +4006,7 @@ Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_Seq_1" class="def">Seq</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>A a<span class='comma'>, </span>A b<span class='comma'>, </span>A c<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1081" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1092" class="link">Source</a>
 <a href="#Prelude_0_Seq_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Construct a sequence from any value</p>
@@ -3989,7 +4034,7 @@ Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_Seq_1" class="def">Seq</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>A a<span class='comma'>, </span>A b<span class='comma'>, </span>A c<span class='comma'>, </span>A d<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1097" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1108" class="link">Source</a>
 <a href="#Prelude_0_Seq_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Construct a sequence from any value</p>
@@ -4017,7 +4062,7 @@ Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_Seq_1" class="def">Seq</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>A a<span class='comma'>, </span>A b<span class='comma'>, </span>A c<span class='comma'>, </span>A d<span class='comma'>, </span>A e<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1114" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1125" class="link">Source</a>
 <a href="#Prelude_0_Seq_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Construct a sequence from any value</p>
@@ -4045,7 +4090,7 @@ Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_Seq_1" class="def">Seq</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>A a<span class='comma'>, </span>A b<span class='comma'>, </span>A c<span class='comma'>, </span>A d<span class='comma'>, </span>A e<span class='comma'>, </span>A f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1132" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1143" class="link">Source</a>
 <a href="#Prelude_0_Seq_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Construct a sequence from any value</p>
@@ -4073,7 +4118,7 @@ Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_Seq_1" class="def">Seq</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>A a<span class='comma'>, </span>A b<span class='comma'>, </span>A c<span class='comma'>, </span>A d<span class='comma'>, </span>A e<span class='comma'>, </span>A f<span class='comma'>, </span>A g<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1151" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1162" class="link">Source</a>
 <a href="#Prelude_0_Seq_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Construct a sequence from any value</p>
@@ -4101,7 +4146,7 @@ Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_Seq_1" class="def">Seq</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>A a<span class='comma'>, </span>A b<span class='comma'>, </span>A c<span class='comma'>, </span>A d<span class='comma'>, </span>A e<span class='comma'>, </span>A f<span class='comma'>, </span>A g<span class='comma'>, </span>A h<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1171" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1182" class="link">Source</a>
 <a href="#Prelude_0_Seq_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Construct a sequence from any value</p>
@@ -4129,7 +4174,7 @@ Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_Seq_1" class="def">Seq</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>A a<span class='comma'>, </span>A b<span class='comma'>, </span>A c<span class='comma'>, </span>A d<span class='comma'>, </span>A e<span class='comma'>, </span>A f<span class='comma'>, </span>A g<span class='comma'>, </span>A h<span class='comma'>, </span>params A[] tail<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1192" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1203" class="link">Source</a>
 <a href="#Prelude_0_Seq_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Construct a sequence from any value</p>
@@ -4157,7 +4202,7 @@ Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_Seq_1" class="def">Seq</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> value<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1214" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1225" class="link">Source</a>
 <a href="#Prelude_0_Seq_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Construct a sequence from an Enumerable
@@ -4185,7 +4230,7 @@ Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_toSeq_1" class="def">toSeq</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> value<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1232" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1243" class="link">Source</a>
 <a href="#Prelude_0_toSeq_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Construct a sequence from an Enumerable
@@ -4213,7 +4258,7 @@ Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_toSeq_1" class="def">toSeq</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>A? value<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1250" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1261" class="link">Source</a>
 <a href="#Prelude_0_toSeq_1" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> A : struct</span></div></div></p>
@@ -4242,7 +4287,7 @@ Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_toSeq_1" class="def">toSeq</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>A[] value<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1259" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1270" class="link">Source</a>
 <a href="#Prelude_0_toSeq_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Construct a sequence from an array</p>
@@ -4268,7 +4313,7 @@ Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_toSeq_1" class="def">toSeq</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Arr<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> value<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1278" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1289" class="link">Source</a>
 <a href="#Prelude_0_toSeq_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Construct a sequence from an immutable array</p>
@@ -4294,7 +4339,7 @@ Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_toSeq_1" class="def">toSeq</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>IList<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> value<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1285" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1296" class="link">Source</a>
 <a href="#Prelude_0_toSeq_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Construct a sequence from a list</p>
@@ -4320,7 +4365,7 @@ Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_toSeq_1" class="def">toSeq</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>ICollection<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> value<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1292" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1303" class="link">Source</a>
 <a href="#Prelude_0_toSeq_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Construct a sequence from a list</p>
@@ -4346,7 +4391,7 @@ Seq<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span>
 <a id="Prelude_0_toSeq_2" class="def">toSeq</a>
 <span class='generics'>&lt;</span>L<span class='comma'>, </span>R<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Either<span class='generics'>&lt;</span>L<span class='comma'>, </span>R<span class='generics'>&gt;</span> value<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1301" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1312" class="link">Source</a>
 <a href="#Prelude_0_toSeq_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Construct a sequence from an either
@@ -4374,7 +4419,7 @@ Seq<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span>
 <a id="Prelude_0_toSeq_2" class="def">toSeq</a>
 <span class='generics'>&lt;</span>L<span class='comma'>, </span>R<span class='generics'>&gt;</span>
 <span class='parens'>(</span>EitherUnsafe<span class='generics'>&lt;</span>L<span class='comma'>, </span>R<span class='generics'>&gt;</span> value<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1312" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1323" class="link">Source</a>
 <a href="#Prelude_0_toSeq_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Construct a sequence from an either
@@ -4402,7 +4447,7 @@ Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_toSeq_1" class="def">toSeq</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Try<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> value<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1324" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1335" class="link">Source</a>
 <a href="#Prelude_0_toSeq_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Construct a sequence from a Try
@@ -4431,36 +4476,6 @@ Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_toSeq_1" class="def">toSeq</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>TryOption<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> value<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1335" class="link">Source</a>
-<a href="#Prelude_0_toSeq_1" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div><p>Construct a sequence from a TryOption
-Succ(x) : [x]
-Fail(e) : []
-None    : []
-null    : []</p>
-</div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-Task<span class='generics'>&lt;</span>Seq<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
-<a id="Prelude_0_toSeq_1" class="def">toSeq</a>
-<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
-<span class='parens'>(</span>TryAsync<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> value<span class='parens'>)</span>
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1346" class="link">Source</a>
 <a href="#Prelude_0_toSeq_1" class="selflink">#</a>
 <div class="constraints"></div></p>
@@ -4490,8 +4505,38 @@ null    : []</p>
 Task<span class='generics'>&lt;</span>Seq<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
 <a id="Prelude_0_toSeq_1" class="def">toSeq</a>
 <span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
-<span class='parens'>(</span>TryOptionAsync<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> value<span class='parens'>)</span>
+<span class='parens'>(</span>TryAsync<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> value<span class='parens'>)</span>
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1357" class="link">Source</a>
+<a href="#Prelude_0_toSeq_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Construct a sequence from a TryOption
+Succ(x) : [x]
+Fail(e) : []
+None    : []
+null    : []</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Task<span class='generics'>&lt;</span>Seq<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Prelude_0_toSeq_1" class="def">toSeq</a>
+<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>TryOptionAsync<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1368" class="link">Source</a>
 <a href="#Prelude_0_toSeq_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Construct a sequence from a TryOption
@@ -4521,7 +4566,7 @@ Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_toSeq_1" class="def">toSeq</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Tuple<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> tup<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1364" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1375" class="link">Source</a>
 <a href="#Prelude_0_toSeq_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Construct a sequence from a tuple</p>
@@ -4547,7 +4592,7 @@ Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_toSeq_1" class="def">toSeq</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Tuple<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> tup<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1373" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1384" class="link">Source</a>
 <a href="#Prelude_0_toSeq_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Construct a sequence from a tuple</p>
@@ -4573,7 +4618,7 @@ Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_toSeq_1" class="def">toSeq</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Tuple<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> tup<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1382" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1393" class="link">Source</a>
 <a href="#Prelude_0_toSeq_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Construct a sequence from a tuple</p>
@@ -4599,7 +4644,7 @@ Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_toSeq_1" class="def">toSeq</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Tuple<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> tup<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1391" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1402" class="link">Source</a>
 <a href="#Prelude_0_toSeq_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Construct a sequence from a tuple</p>
@@ -4625,7 +4670,7 @@ Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_toSeq_1" class="def">toSeq</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Tuple<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> tup<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1400" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1411" class="link">Source</a>
 <a href="#Prelude_0_toSeq_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Construct a sequence from a tuple</p>
@@ -4651,7 +4696,7 @@ Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_toSeq_1" class="def">toSeq</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Tuple<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> tup<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1409" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1420" class="link">Source</a>
 <a href="#Prelude_0_toSeq_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Construct a sequence from a tuple</p>
@@ -4677,7 +4722,7 @@ Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_toSeq_1" class="def">toSeq</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Tuple<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> tup<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1418" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1429" class="link">Source</a>
 <a href="#Prelude_0_toSeq_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Construct a sequence from a tuple</p>
@@ -4703,7 +4748,7 @@ Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_toSeq_1" class="def">toSeq</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>ValueTuple<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> tup<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1427" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1438" class="link">Source</a>
 <a href="#Prelude_0_toSeq_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Construct a sequence from a tuple</p>
@@ -4729,7 +4774,7 @@ Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_toSeq_1" class="def">toSeq</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>ValueTuple<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> tup<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1434" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1445" class="link">Source</a>
 <a href="#Prelude_0_toSeq_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Construct a sequence from a tuple</p>
@@ -4755,7 +4800,7 @@ Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_toSeq_1" class="def">toSeq</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>ValueTuple<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> tup<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1441" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1452" class="link">Source</a>
 <a href="#Prelude_0_toSeq_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Construct a sequence from a tuple</p>
@@ -4781,7 +4826,7 @@ Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_toSeq_1" class="def">toSeq</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>ValueTuple<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> tup<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1448" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1459" class="link">Source</a>
 <a href="#Prelude_0_toSeq_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Construct a sequence from a tuple</p>
@@ -4807,7 +4852,7 @@ Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_toSeq_1" class="def">toSeq</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>ValueTuple<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> tup<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1455" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1466" class="link">Source</a>
 <a href="#Prelude_0_toSeq_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Construct a sequence from a tuple</p>
@@ -4833,7 +4878,7 @@ Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_toSeq_1" class="def">toSeq</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>ValueTuple<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> tup<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1462" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1473" class="link">Source</a>
 <a href="#Prelude_0_toSeq_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Construct a sequence from a tuple</p>
@@ -4859,7 +4904,7 @@ Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_toSeq_1" class="def">toSeq</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>ValueTuple<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> tup<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1469" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1480" class="link">Source</a>
 <a href="#Prelude_0_toSeq_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Construct a sequence from a tuple</p>
@@ -4885,7 +4930,7 @@ AtomSeq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_AtomSeq_1" class="def">AtomSeq</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1476" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1487" class="link">Source</a>
 <a href="#Prelude_0_AtomSeq_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Construct an empty AtomSeq</p>
@@ -4911,7 +4956,7 @@ AtomSeq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_AtomSeq_1" class="def">AtomSeq</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>params A[] items<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1483" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1494" class="link">Source</a>
 <a href="#Prelude_0_AtomSeq_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Construct an AtomSeq</p>
@@ -4937,7 +4982,7 @@ AtomSeq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_AtomSeq_1" class="def">AtomSeq</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> items<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1490" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1501" class="link">Source</a>
 <a href="#Prelude_0_AtomSeq_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Construct an AtomSeq</p>
@@ -4963,7 +5008,7 @@ AtomSeq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_AtomSeq_1" class="def">AtomSeq</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> items<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1497" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1508" class="link">Source</a>
 <a href="#Prelude_0_AtomSeq_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Construct an AtomSeq</p>
@@ -4989,7 +5034,7 @@ Patch<span class='generics'>&lt;</span>EqA<span class='comma'>, </span>A<span cl
 <a id="Prelude_0_Diff_2" class="def">Diff</a>
 <span class='generics'>&lt;</span>EqA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this IEnumerable<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> va<span class='comma'>, </span>IEnumerable<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> vb<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1516" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1527" class="link">Source</a>
 <a href="#Prelude_0_Diff_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> EqA : struct, Eq&lt;A&gt;</span></div></div></p>
@@ -5027,7 +5072,7 @@ IEnumerable<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_Apply_2" class="def">Apply</a>
 <span class='generics'>&lt;</span>EqA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this IEnumerable<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> va<span class='comma'>, </span>Patch<span class='generics'>&lt;</span>EqA<span class='comma'>, </span>A<span class='generics'>&gt;</span> patch<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1522" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1533" class="link">Source</a>
 <a href="#Prelude_0_Apply_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> EqA : struct, Eq&lt;A&gt;</span></div></div></p>
@@ -5054,7 +5099,7 @@ Lst<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_Apply_2" class="def">Apply</a>
 <span class='generics'>&lt;</span>EqA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this Lst<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> va<span class='comma'>, </span>Patch<span class='generics'>&lt;</span>EqA<span class='comma'>, </span>A<span class='generics'>&gt;</span> patch<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1528" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1539" class="link">Source</a>
 <a href="#Prelude_0_Apply_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> EqA : struct, Eq&lt;A&gt;</span></div></div></p>
@@ -5081,7 +5126,7 @@ Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_Apply_2" class="def">Apply</a>
 <span class='generics'>&lt;</span>EqA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> va<span class='comma'>, </span>Patch<span class='generics'>&lt;</span>EqA<span class='comma'>, </span>A<span class='generics'>&gt;</span> patch<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1534" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1545" class="link">Source</a>
 <a href="#Prelude_0_Apply_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> EqA : struct, Eq&lt;A&gt;</span></div></div></p>
@@ -5108,7 +5153,7 @@ SpanArray<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_Apply_2" class="def">Apply</a>
 <span class='generics'>&lt;</span>EqA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this SpanArray<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> va<span class='comma'>, </span>Patch<span class='generics'>&lt;</span>EqA<span class='comma'>, </span>A<span class='generics'>&gt;</span> patch<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1540" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1551" class="link">Source</a>
 <a href="#Prelude_0_Apply_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> EqA : struct, Eq&lt;A&gt;</span></div></div></p>
@@ -5135,7 +5180,7 @@ A[]
 <a id="Prelude_0_Apply_2" class="def">Apply</a>
 <span class='generics'>&lt;</span>EqA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this A[] va<span class='comma'>, </span>Patch<span class='generics'>&lt;</span>EqA<span class='comma'>, </span>A<span class='generics'>&gt;</span> patch<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1546" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1557" class="link">Source</a>
 <a href="#Prelude_0_Apply_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> EqA : struct, Eq&lt;A&gt;</span></div></div></p>
@@ -5162,7 +5207,7 @@ Arr<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_Apply_2" class="def">Apply</a>
 <span class='generics'>&lt;</span>EqA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this Arr<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> va<span class='comma'>, </span>Patch<span class='generics'>&lt;</span>EqA<span class='comma'>, </span>A<span class='generics'>&gt;</span> patch<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1552" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1563" class="link">Source</a>
 <a href="#Prelude_0_Apply_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> EqA : struct, Eq&lt;A&gt;</span></div></div></p>
@@ -5189,7 +5234,7 @@ List<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_Apply_2" class="def">Apply</a>
 <span class='generics'>&lt;</span>EqA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this List<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> va<span class='comma'>, </span>Patch<span class='generics'>&lt;</span>EqA<span class='comma'>, </span>A<span class='generics'>&gt;</span> patch<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1558" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1569" class="link">Source</a>
 <a href="#Prelude_0_Apply_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> EqA : struct, Eq&lt;A&gt;</span></div></div></p>
@@ -5216,7 +5261,7 @@ bool
 <a id="Prelude_0_Applicable_2" class="def">Applicable</a>
 <span class='generics'>&lt;</span>EqA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this IEnumerable<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> va<span class='comma'>, </span>Patch<span class='generics'>&lt;</span>EqA<span class='comma'>, </span>A<span class='generics'>&gt;</span> patch<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1565" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Prelude_Collections.cs#L1576" class="link">Source</a>
 <a href="#Prelude_0_Applicable_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> EqA : struct, Eq&lt;A&gt;</span></div></div></p>
