@@ -1,0 +1,2273 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>LanguageExt.Core\Monads\Alternative Value Monads\OptionT</title>
+<link href="style.css" rel="stylesheet" type="text/css"/></head>
+<body class="js-enabled"><div id="package-header"><ul class="links" id="page-menu"><li><a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT" class="link">Source</a></li>
+<li><a href="../index.html" class="link">Contents</a></li>
+<li><a href="../../../../index.html" class="link">Index</a></li></ul>
+<p class="caption">LanguageExt.Core</p></div>
+<div id="content"><div id="module-header"><p class="caption"><a href="../../../index.html" class="link">LanguageExt.Core</a>
+<span> ► </span>
+<a href="../../index.html" class="link">Monads</a>
+<span> ► </span>
+<a href="../index.html" class="link">Alternative Value Monads</a>
+<span> ► </span>
+<a href="index.html" class="link">OptionT</a></p></div>
+
+<div id="table-of-contents"><p class="caption">Contents</p>
+<ul><li><a href="#_0_OptionT_2" class="link"><div class="nowrap">OptionT
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Option<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> runOption<span class='parens'>)</span></div></a></li>
+<ul><li><a href="#OptionT_2_Some_0" class="link"><div class="nowrap">Some
+
+<span class='parens'>(</span>A value<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_2_None =
+        Lift(Option<A>.None)_0" class="link"><div class="nowrap">None =
+        Lift(Option&lt;A&gt;.None)</div></a></li>
+<li><a href="#OptionT_2_Lift_0" class="link"><div class="nowrap">Lift
+
+<span class='parens'>(</span>Pure<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> monad<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_2_Lift_0" class="link"><div class="nowrap">Lift
+
+<span class='parens'>(</span>Option<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> monad<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_2_Lift_0" class="link"><div class="nowrap">Lift
+
+<span class='parens'>(</span>Fail<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> monad<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_2_Lift_0" class="link"><div class="nowrap">Lift
+
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> monad<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_2_Lift_0" class="link"><div class="nowrap">Lift
+
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Option<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> monad<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_2_LiftIO_0" class="link"><div class="nowrap">LiftIO
+
+<span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> monad<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_2_LiftIO_0" class="link"><div class="nowrap">LiftIO
+
+<span class='parens'>(</span>IO<span class='generics'>&lt;</span>Option<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> monad<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_2_Match_1" class="link"><div class="nowrap">Match
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> Some<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span> None<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_2_Match_0" class="link"><div class="nowrap">Match
+
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> Some<span class='comma'>, </span>Action None<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_2_IfSome_0" class="link"><div class="nowrap">IfSome
+
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_2_IfSome_0" class="link"><div class="nowrap">IfSome
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_2_IfNone_0" class="link"><div class="nowrap">IfNone
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> None<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_2_IfNone_0" class="link"><div class="nowrap">IfNone
+
+<span class='parens'>(</span>Action None<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_2_IfNone_0" class="link"><div class="nowrap">IfNone
+
+<span class='parens'>(</span>A noneValue<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_2_Run_0" class="link"><div class="nowrap">Run
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_2_MapT_2" class="link"><div class="nowrap">MapT
+<span class='generics'>&lt;</span>M1<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Option<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>M1<span class='comma'>, </span>Option<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_2_MapM_1" class="link"><div class="nowrap">MapM
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_2_Map_1" class="link"><div class="nowrap">Map
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_2_Select_1" class="link"><div class="nowrap">Select
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_2_Bind_1" class="link"><div class="nowrap">Bind
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>OptionT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_2_Bind_1" class="link"><div class="nowrap">Bind
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_2_Bind_1" class="link"><div class="nowrap">Bind
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_2_Bind_1" class="link"><div class="nowrap">Bind
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Pure<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_2_SelectMany_2" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>OptionT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_2_SelectMany_2" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_2_SelectMany_2" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_2_SelectMany_2" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Option<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_2_SelectMany_2" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Pure<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_2_SelectMany_2" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_2_ToEither_1" class="link"><div class="nowrap">ToEither
+<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span>
+<span class='parens'>(</span>L left<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_2_ToEither_1" class="link"><div class="nowrap">ToEither
+<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span> left<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_2_ToEither_1" class="link"><div class="nowrap">ToEither
+<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_OptionTExt_0" class="link"><div class="nowrap">OptionTExt
+</div></a></li>
+<ul><li><a href="#OptionTExt_0_As_2" class="link"><div class="nowrap">As
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>OptionT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionTExt_0_Flatten_1" class="link"><div class="nowrap">Flatten
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Task<span class='generics'>&lt;</span>OptionT<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> tma<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionTExt_0_ToIO_1" class="link"><div class="nowrap">ToIO
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Task<span class='generics'>&lt;</span>Option<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionTExt_0_Flatten_2" class="link"><div class="nowrap">Flatten
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mma<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionTExt_0_SelectMany_4" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>OptionT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionTExt_0_SelectMany_4" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionTExt_0_Apply_3" class="link"><div class="nowrap">Apply
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionTExt_0_Action_3" class="link"><div class="nowrap">Action
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_OptionT_1" class="link"><div class="nowrap">OptionT
+<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#OptionT_1_Some_1" class="link"><div class="nowrap">Some
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_1_None_1" class="link"><div class="nowrap">None
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_1_lift_1" class="link"><div class="nowrap">lift
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Option<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_1_lift_1" class="link"><div class="nowrap">lift
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Pure<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_1_lift_1" class="link"><div class="nowrap">lift
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Fail<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_1_liftIO_1" class="link"><div class="nowrap">liftIO
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_OptionT_0" class="link"><div class="nowrap">OptionT
+</div></a></li>
+<ul><li><a href="#OptionT_0_bind_3" class="link"><div class="nowrap">bind
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_0_map_3" class="link"><div class="nowrap">map
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='comma'>, </span>OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_0_Some_2" class="link"><div class="nowrap">Some
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_0_None_2" class="link"><div class="nowrap">None
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_0_apply_3" class="link"><div class="nowrap">apply
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_0_action_3" class="link"><div class="nowrap">action
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_0_lift_2" class="link"><div class="nowrap">lift
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Option<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_0_lift_2" class="link"><div class="nowrap">lift
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_0_lift_2" class="link"><div class="nowrap">lift
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Pure<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_0_lift_2" class="link"><div class="nowrap">lift
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Fail<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_0_liftIO_2" class="link"><div class="nowrap">liftIO
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#OptionT_0_match_3" class="link"><div class="nowrap">match
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> Some<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span> None<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_OptionT_1" class="link"><div class="nowrap">OptionT
+<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span></div></a></li>
+<ul></ul></ul></div>
+<div class="interface">
+<div class="top"><p class="src"><span class="keyword">record</span>
+<a id="_0_OptionT_2" class="def">OptionT</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Option<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> runOption<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.cs#L14" class="link">Source</a>
+<a href="#_0_OptionT_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p><code>OptionT</code> monad transformer, which allows for an optional result.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Given monad trait</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">runOption</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Transducer that represents the transformer operation</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+<div class="subs methods"><p class="caption">Fields</p>
+<div class="top"><p class="src"><span class="keyword">field</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="OptionT_2_None =
+        Lift(Option<A>.None)_0" class="def">None =
+        Lift(Option&lt;A&gt;.None)</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.cs#L30" class="link">Source</a>
+<a href="#OptionT_2_None =
+        Lift(Option<A>.None)_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Lift a pure value into the monad-transformer</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">value</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Value to lift</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>OptionT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="OptionT_2_Some_0" class="def">Some</a>
+
+<span class='parens'>(</span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.cs#L22" class="link">Source</a>
+<a href="#OptionT_2_Some_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Lift a pure value into the monad-transformer</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">value</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Value to lift</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>OptionT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="OptionT_2_Lift_0" class="def">Lift</a>
+
+<span class='parens'>(</span>Pure<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> monad<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.cs#L38" class="link">Source</a>
+<a href="#OptionT_2_Lift_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Lifts a given monad into the transformer</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">monad</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monad to lift</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>OptionT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="OptionT_2_Lift_0" class="def">Lift</a>
+
+<span class='parens'>(</span>Option<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> monad<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.cs#L46" class="link">Source</a>
+<a href="#OptionT_2_Lift_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Lifts a given monad into the transformer</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">monad</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monad to lift</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>OptionT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="OptionT_2_Lift_0" class="def">Lift</a>
+
+<span class='parens'>(</span>Fail<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> monad<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.cs#L54" class="link">Source</a>
+<a href="#OptionT_2_Lift_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Lifts a given monad into the transformer</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">monad</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monad to lift</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>OptionT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="OptionT_2_Lift_0" class="def">Lift</a>
+
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> monad<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.cs#L62" class="link">Source</a>
+<a href="#OptionT_2_Lift_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Lifts a given monad into the transformer</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">monad</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monad to lift</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>OptionT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="OptionT_2_Lift_0" class="def">Lift</a>
+
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Option<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> monad<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.cs#L70" class="link">Source</a>
+<a href="#OptionT_2_Lift_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Lifts a given monad into the transformer</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">monad</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monad to lift</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>OptionT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="OptionT_2_LiftIO_0" class="def">LiftIO</a>
+
+<span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> monad<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.cs#L78" class="link">Source</a>
+<a href="#OptionT_2_LiftIO_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Lifts a given monad into the transformer</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">monad</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monad to lift</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>OptionT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="OptionT_2_LiftIO_0" class="def">LiftIO</a>
+
+<span class='parens'>(</span>IO<span class='generics'>&lt;</span>Option<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> monad<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.cs#L86" class="link">Source</a>
+<a href="#OptionT_2_LiftIO_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Lifts a given monad into the transformer</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">monad</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monad to lift</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>OptionT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="OptionT_2_Match_1" class="def">Match</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> Some<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span> None<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.cs#L101" class="link">Source</a>
+<a href="#OptionT_2_Match_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Match the two states of the Option and return a B, which can be null.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Return type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Some</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Some match operation. May return null.</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">None</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>None match operation. May return null.</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>B, or null</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="OptionT_2_Match_0" class="def">Match</a>
+
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> Some<span class='comma'>, </span>Action None<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.cs#L109" class="link">Source</a>
+<a href="#OptionT_2_Match_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Match the two states of the Option</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Some</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Some match operation</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">None</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>None match operation</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="OptionT_2_IfSome_0" class="def">IfSome</a>
+
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.cs#L116" class="link">Source</a>
+<a href="#OptionT_2_IfSome_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Invokes the action if Option is in the Some state, otherwise nothing happens.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Action to invoke if Option is in the Some state</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="OptionT_2_IfSome_0" class="def">IfSome</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.cs#L125" class="link">Source</a>
+<a href="#OptionT_2_IfSome_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Invokes the f function if Option is in the Some state, otherwise nothing
+happens.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Function to invoke if Option is in the Some state</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="OptionT_2_IfNone_0" class="def">IfNone</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> None<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.cs#L138" class="link">Source</a>
+<a href="#OptionT_2_IfNone_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns the result of invoking the None() operation if the optional
+is in a None state, otherwise the bound Some(x) value is returned.</p>
+</div>
+<div><p>Will not accept a null return value from the None operation</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">None</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Operation to invoke if the structure is in a None state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Result of invoking the None() operation if the optional
+is in a None state, otherwise the bound Some(x) value is returned.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="OptionT_2_IfNone_0" class="def">IfNone</a>
+
+<span class='parens'>(</span>Action None<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.cs#L147" class="link">Source</a>
+<a href="#OptionT_2_IfNone_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Invokes the action if Option is in the None state, otherwise nothing happens.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Action to invoke if Option is in the None state</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="OptionT_2_IfNone_0" class="def">IfNone</a>
+
+<span class='parens'>(</span>A noneValue<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.cs#L160" class="link">Source</a>
+<a href="#OptionT_2_IfNone_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns the noneValue if the optional is in a None state, otherwise
+the bound Some(x) value is returned.</p>
+</div>
+<div><p>Will not accept a null noneValue</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">noneValue</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Value to return if in a None state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>noneValue if the optional is in a None state, otherwise
+the bound Some(x) value is returned</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Option<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="OptionT_2_Run_0" class="def">Run</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.cs#L173" class="link">Source</a>
+<a href="#OptionT_2_Run_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Runs the OptionT exposing the outer monad with an inner wrapped <code>Option</code></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M1<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="OptionT_2_MapT_2" class="def">MapT</a>
+<span class='generics'>&lt;</span>M1<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Option<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>M1<span class='comma'>, </span>Option<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.cs#L188" class="link">Source</a>
+<a href="#OptionT_2_MapT_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M1 : Monad&lt;M1&gt;</span></div></div></p>
+<div class="doc"><div><p>Maps the bound monad</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M1</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target monad type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Mapped monad</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="OptionT_2_MapM_1" class="def">MapM</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.cs#L196" class="link">Source</a>
+<a href="#OptionT_2_MapM_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Maps the given monad</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="OptionT_2_Map_1" class="def">Map</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.cs#L207" class="link">Source</a>
+<a href="#OptionT_2_Map_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Maps the bound value</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>OptionT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="OptionT_2_Select_1" class="def">Select</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.cs#L216" class="link">Source</a>
+<a href="#OptionT_2_Select_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Maps the bound value</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping transducer</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>OptionT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="OptionT_2_Bind_1" class="def">Bind</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>OptionT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.cs#L230" class="link">Source</a>
+<a href="#OptionT_2_Bind_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monad bind operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>OptionT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="OptionT_2_Bind_1" class="def">Bind</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.cs#L239" class="link">Source</a>
+<a href="#OptionT_2_Bind_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monad bind operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>OptionT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="OptionT_2_Bind_1" class="def">Bind</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.cs#L251" class="link">Source</a>
+<a href="#OptionT_2_Bind_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monad bind operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>OptionT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="OptionT_2_Bind_1" class="def">Bind</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Pure<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.cs#L260" class="link">Source</a>
+<a href="#OptionT_2_Bind_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monad bind operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>OptionT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="OptionT_2_SelectMany_2" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>OptionT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.cs#L276" class="link">Source</a>
+<a href="#OptionT_2_SelectMany_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monad bind operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Intermediate bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">C</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">bind</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monadic bind function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">project</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Projection function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>OptionT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="OptionT_2_SelectMany_2" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.cs#L287" class="link">Source</a>
+<a href="#OptionT_2_SelectMany_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monad bind operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Intermediate bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">C</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">bind</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monadic bind function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">project</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Projection function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>OptionT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="OptionT_2_SelectMany_2" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.cs#L298" class="link">Source</a>
+<a href="#OptionT_2_SelectMany_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monad bind operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Intermediate bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">C</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">bind</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monadic bind function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">project</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Projection function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>OptionT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="OptionT_2_SelectMany_2" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Option<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.cs#L309" class="link">Source</a>
+<a href="#OptionT_2_SelectMany_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monad bind operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Intermediate bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">C</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">bind</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monadic bind function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">project</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Projection function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>OptionT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="OptionT_2_SelectMany_2" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Pure<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.cs#L320" class="link">Source</a>
+<a href="#OptionT_2_SelectMany_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monad bind operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Intermediate bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">C</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">bind</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monadic bind function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">project</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Projection function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>OptionT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="OptionT_2_SelectMany_2" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.cs#L331" class="link">Source</a>
+<a href="#OptionT_2_SelectMany_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monad bind operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Intermediate bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">C</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">bind</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monadic bind function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">project</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Projection function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>OptionT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="OptionT_2_ToEither_1" class="def">ToEither</a>
+<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span>
+<span class='parens'>(</span>L left<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.cs#L360" class="link">Source</a>
+<a href="#OptionT_2_ToEither_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="OptionT_2_ToEither_1" class="def">ToEither</a>
+<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span> left<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.cs#L363" class="link">Source</a>
+<a href="#OptionT_2_ToEither_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="OptionT_2_ToEither_1" class="def">ToEither</a>
+<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.cs#L366" class="link">Source</a>
+<a href="#OptionT_2_ToEither_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> L : Monoid&lt;L&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_OptionTExt_0" class="def">OptionTExt</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.Extensions.cs#L12" class="link">Source</a>
+<a href="#_0_OptionTExt_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Option monad extensions</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="OptionTExt_0_As_2" class="def">As</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>OptionT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.Extensions.cs#L14" class="link">Source</a>
+<a href="#OptionTExt_0_As_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="OptionTExt_0_Flatten_1" class="def">Flatten</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Task<span class='generics'>&lt;</span>OptionT<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> tma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.Extensions.cs#L21" class="link">Source</a>
+<a href="#OptionTExt_0_Flatten_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Get the outer task and wrap it up in a new IO within the OptionT IO</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="OptionTExt_0_ToIO_1" class="def">ToIO</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Task<span class='generics'>&lt;</span>Option<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.Extensions.cs#L29" class="link">Source</a>
+<a href="#OptionTExt_0_ToIO_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Lift the task</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="OptionTExt_0_Flatten_2" class="def">Flatten</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.Extensions.cs#L35" class="link">Source</a>
+<a href="#OptionTExt_0_Flatten_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Monadic join</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="OptionTExt_0_SelectMany_4" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>OptionT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.Extensions.cs#L48" class="link">Source</a>
+<a href="#OptionTExt_0_SelectMany_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Monad bind operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Intermediate bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">C</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">bind</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monadic bind function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">project</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Projection function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>OptionT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="OptionTExt_0_SelectMany_4" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.Extensions.cs#L64" class="link">Source</a>
+<a href="#OptionTExt_0_SelectMany_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Monad bind operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Intermediate bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">C</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">bind</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monadic bind function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">project</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Projection function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>OptionT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="OptionTExt_0_Apply_3" class="def">Apply</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.Extensions.cs#L75" class="link">Source</a>
+<a href="#OptionTExt_0_Apply_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Applicative apply</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="OptionTExt_0_Action_3" class="def">Action</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.Extensions.cs#L83" class="link">Source</a>
+<a href="#OptionTExt_0_Action_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Applicative action</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_OptionT_1" class="def">OptionT</a>
+<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.Module.cs#L6" class="link">Source</a>
+<a href="#_0_OptionT_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="OptionT_1_Some_1" class="def">Some</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.Module.cs#L8" class="link">Source</a>
+<a href="#OptionT_1_Some_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="OptionT_1_None_1" class="def">None</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.Module.cs#L11" class="link">Source</a>
+<a href="#OptionT_1_None_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="OptionT_1_lift_1" class="def">lift</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Option<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.Module.cs#L14" class="link">Source</a>
+<a href="#OptionT_1_lift_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="OptionT_1_lift_1" class="def">lift</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Pure<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.Module.cs#L17" class="link">Source</a>
+<a href="#OptionT_1_lift_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="OptionT_1_lift_1" class="def">lift</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Fail<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.Module.cs#L20" class="link">Source</a>
+<a href="#OptionT_1_lift_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="OptionT_1_liftIO_1" class="def">liftIO</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.Module.cs#L23" class="link">Source</a>
+<a href="#OptionT_1_liftIO_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_OptionT_0" class="def">OptionT</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.Module.cs#L27" class="link">Source</a>
+<a href="#_0_OptionT_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="OptionT_0_bind_3" class="def">bind</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.Module.cs#L29" class="link">Source</a>
+<a href="#OptionT_0_bind_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="OptionT_0_map_3" class="def">map</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='comma'>, </span>OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.Module.cs#L33" class="link">Source</a>
+<a href="#OptionT_0_map_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="OptionT_0_Some_2" class="def">Some</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.Module.cs#L37" class="link">Source</a>
+<a href="#OptionT_0_Some_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="OptionT_0_None_2" class="def">None</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.Module.cs#L41" class="link">Source</a>
+<a href="#OptionT_0_None_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="OptionT_0_apply_3" class="def">apply</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.Module.cs#L45" class="link">Source</a>
+<a href="#OptionT_0_apply_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="OptionT_0_action_3" class="def">action</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.Module.cs#L49" class="link">Source</a>
+<a href="#OptionT_0_action_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="OptionT_0_lift_2" class="def">lift</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Option<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.Module.cs#L53" class="link">Source</a>
+<a href="#OptionT_0_lift_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="OptionT_0_lift_2" class="def">lift</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.Module.cs#L57" class="link">Source</a>
+<a href="#OptionT_0_lift_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="OptionT_0_lift_2" class="def">lift</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Pure<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.Module.cs#L61" class="link">Source</a>
+<a href="#OptionT_0_lift_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="OptionT_0_lift_2" class="def">lift</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Fail<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.Module.cs#L65" class="link">Source</a>
+<a href="#OptionT_0_lift_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="OptionT_0_liftIO_2" class="def">liftIO</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.Module.cs#L69" class="link">Source</a>
+<a href="#OptionT_0_liftIO_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="OptionT_0_match_3" class="def">match</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> Some<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span> None<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.Module.cs#L73" class="link">Source</a>
+<a href="#OptionT_0_match_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_OptionT_1" class="def">OptionT</a>
+<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/OptionT/OptionT.Monad.cs#L10" class="link">Source</a>
+<a href="#_0_OptionT_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Trait implementation for <code>OptionT</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Given monad trait</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div></div></body></html>

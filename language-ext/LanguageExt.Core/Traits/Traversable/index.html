@@ -1,0 +1,650 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>LanguageExt.Core\Traits\Traversable</title>
+<link href="style.css" rel="stylesheet" type="text/css"/></head>
+<body class="js-enabled"><div id="package-header"><ul class="links" id="page-menu"><li><a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Traversable" class="link">Source</a></li>
+<li><a href="../index.html" class="link">Contents</a></li>
+<li><a href="../../../index.html" class="link">Index</a></li></ul>
+<p class="caption">LanguageExt.Core</p></div>
+<div id="content"><div id="module-header"><p class="caption"><a href="../../index.html" class="link">LanguageExt.Core</a>
+<span> ► </span>
+<a href="../index.html" class="link">Traits</a>
+<span> ► </span>
+<a href="index.html" class="link">Traversable</a></p></div>
+<p>Traversable structures support element-wise sequencing of <code>Applicative</code> effects (thus also <code>Monad</code> effects)
+to construct new structures of the same shape as the input.</p>
+<p>To illustrate what is meant by same shape, if the input structure is <code>[a]</code>, each output structure is a list <code>[b]</code> of
+the same length as the input. If the input is a <code>Tree&lt;A&gt;</code>, each output <code>Tree&lt;B&gt;</code> has the same graph of intermediate
+nodes and leaves. Similarly, if the input is a tuple <code>(x, a)</code>, each output is a tuple <code>(x, b)</code>, and so forth.</p>
+<p>Every Traversable structure is both a <code>Functor</code> and <code>Foldable</code>.</p>
+
+<div id="table-of-contents"><p class="caption">Contents</p>
+<ul><li><a href="#_0_Traversable_0" class="link"><div class="nowrap">Traversable
+</div></a></li>
+<ul><li><a href="#Traversable_0_Traverse_4" class="link"><div class="nowrap">Traverse
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta,
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Traversable_0_SequenceA_3" class="link"><div class="nowrap">SequenceA
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Traversable_0_MapM_4" class="link"><div class="nowrap">MapM
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>T<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+        K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Traversable_0_Sequence_3" class="link"><div class="nowrap">Sequence
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_Traversable_0" class="link"><div class="nowrap">Traversable
+</div></a></li>
+<ul><li><a href="#Traversable_0_traverse_4" class="link"><div class="nowrap">traverse
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+        K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Traversable_0_sequenceA_3" class="link"><div class="nowrap">sequenceA
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        K<span class='generics'>&lt;</span>T<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Traversable_0_mapM_4" class="link"><div class="nowrap">mapM
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+        K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Traversable_0_sequence_3" class="link"><div class="nowrap">sequence
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        K<span class='generics'>&lt;</span>T<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_Traversable_1" class="link"><div class="nowrap">Traversable
+<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#Traversable_1_Traverse_3" class="link"><div class="nowrap">Traverse
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+        K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Traversable_1_SequenceA_2" class="link"><div class="nowrap">SequenceA
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        K<span class='generics'>&lt;</span>T<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Traversable_1_MapM_3" class="link"><div class="nowrap">MapM
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+        K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Traversable_1_Sequence_2" class="link"><div class="nowrap">Sequence
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        K<span class='generics'>&lt;</span>T<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Traversable_1_TraverseDefault_3" class="link"><div class="nowrap">TraverseDefault
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+        K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li></ul></ul></div>
+<div class="interface">
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_Traversable_0" class="def">Traversable</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Traversable/Traversable.Extensions.cs#L14" class="link">Source</a>
+<a href="#_0_Traversable_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Functors representing data structures that can be transformed to structures of the same
+shape by performing an <code>Applicative</code> (or, therefore, <code>Monad</code>) action on each element from
+left to right.</p>
+<p>A more detailed description of what same shape means, the various methods, how traversals
+are constructed, and example advanced use-cases can be found in the Overview section of Data.Traversable.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">T</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>F<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Traversable_0_Traverse_4" class="def">Traverse</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta,
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Traversable/Traversable.Extensions.cs#L16" class="link">Source</a>
+<a href="#Traversable_0_Traverse_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Traversable&lt;T&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> F : Applicative&lt;F&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>F<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Traversable_0_SequenceA_3" class="def">SequenceA</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Traversable/Traversable.Extensions.cs#L23" class="link">Source</a>
+<a href="#Traversable_0_SequenceA_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Traversable&lt;T&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> F : Applicative&lt;F&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Traversable_0_MapM_4" class="def">MapM</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>T<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+        K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Traversable/Traversable.Extensions.cs#L29" class="link">Source</a>
+<a href="#Traversable_0_MapM_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Traversable&lt;T&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>F<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Traversable_0_Sequence_3" class="def">Sequence</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Traversable/Traversable.Extensions.cs#L36" class="link">Source</a>
+<a href="#Traversable_0_Sequence_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Traversable&lt;T&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> F : Monad&lt;F&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_Traversable_0" class="def">Traversable</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Traversable/Traversable.Module.cs#L5" class="link">Source</a>
+<a href="#_0_Traversable_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>F<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Traversable_0_traverse_4" class="def">traverse</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+        K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Traversable/Traversable.Module.cs#L24" class="link">Source</a>
+<a href="#Traversable_0_traverse_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Traversable&lt;T&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> F : Applicative&lt;F&gt;</span></div></div></p>
+<div class="doc"><div><p>Map each element of a structure to an action, evaluate these actions from
+left to right, and collect the results.</p>
+</div>
+<div><p>This version of <code>traverse</code> works with the lifted <code>K</code> types which are
+sometimes difficult to work with when nested.  If you need to get concrete
+types out of your traversal operation then use <code>traverse2</code> - it needs more
+generic parameters but it retains the concrete types.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">T</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Traversable trait</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">F</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Applicative functor trait</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value (input)</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value (output)</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"></span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ta</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Traversable structure</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>F<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Traversable_0_sequenceA_3" class="def">sequenceA</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        K<span class='generics'>&lt;</span>T<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Traversable/Traversable.Module.cs#L39" class="link">Source</a>
+<a href="#Traversable_0_sequenceA_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Traversable&lt;T&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> F : Applicative&lt;F&gt;</span></div></div></p>
+<div class="doc"><div><p>Evaluate each action in the structure from left to right, and collect the results.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">T</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Traversable trait</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">F</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Applicative functor trait</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value (input)</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ta</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Traversable structure</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Traversable_0_mapM_4" class="def">mapM</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+        K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Traversable/Traversable.Module.cs#L56" class="link">Source</a>
+<a href="#Traversable_0_mapM_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Traversable&lt;T&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Map each element of a structure to a monadic action, evaluate these actions from
+left to right, and collect the results.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">T</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Traversable trait</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monad trait</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value (input)</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value (output)</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"></span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ta</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Traversable structure</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Traversable_0_sequence_3" class="def">sequence</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        K<span class='generics'>&lt;</span>T<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Traversable/Traversable.Module.cs#L71" class="link">Source</a>
+<a href="#Traversable_0_sequence_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Traversable&lt;T&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Evaluate each monadic action in the structure from left to right, and collect the results.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">T</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Traversable trait</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monad trait</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value (input)</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ta</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Traversable structure</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">interface</span>
+<a id="_0_Traversable_1" class="def">Traversable</a>
+<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Traversable/Traversable.Trait.cs#L14" class="link">Source</a>
+<a href="#_0_Traversable_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Traversable&lt;T&gt;, Functor&lt;T&gt;, Foldable&lt;T&gt;</span></div></div></p>
+<div class="doc"><div><p>Functors representing data structures that can be transformed to structures of the same
+shape by performing an <code>Applicative</code> (or, therefore, <code>Monad</code>) action on each element from
+left to right.</p>
+<p>A more detailed description of what same shape means, the various methods, how traversals
+are constructed, and example advanced use-cases can be found in the Overview section of Data.Traversable.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">T</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>F<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Traversable_1_Traverse_3" class="def">Traverse</a>
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+        K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Traversable/Traversable.Trait.cs#L17" class="link">Source</a>
+<a href="#Traversable_1_Traverse_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> F : Applicative&lt;F&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>F<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Traversable_1_SequenceA_2" class="def">SequenceA</a>
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        K<span class='generics'>&lt;</span>T<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Traversable/Traversable.Trait.cs#L22" class="link">Source</a>
+<a href="#Traversable_1_SequenceA_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> F : Applicative&lt;F&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Traversable_1_MapM_3" class="def">MapM</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+        K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Traversable/Traversable.Trait.cs#L27" class="link">Source</a>
+<a href="#Traversable_1_MapM_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>F<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Traversable_1_Sequence_2" class="def">Sequence</a>
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        K<span class='generics'>&lt;</span>T<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Traversable/Traversable.Trait.cs#L33" class="link">Source</a>
+<a href="#Traversable_1_Sequence_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> F : Monad&lt;F&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>F<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Traversable_1_TraverseDefault_3" class="def">TraverseDefault</a>
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+        K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Traversable/Traversable.Trait.cs#L38" class="link">Source</a>
+<a href="#Traversable_1_TraverseDefault_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> F : Applicative&lt;F&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div></div></div></body></html>

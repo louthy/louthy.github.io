@@ -1,0 +1,1134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>LanguageExt.Core\Monads\State and Environment Monads\Reader\Reader</title>
+<link href="style.css" rel="stylesheet" type="text/css"/></head>
+<body class="js-enabled"><div id="package-header"><ul class="links" id="page-menu"><li><a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/Reader/Reader" class="link">Source</a></li>
+<li><a href="../index.html" class="link">Contents</a></li>
+<li><a href="../../../../../index.html" class="link">Index</a></li></ul>
+<p class="caption">LanguageExt.Core</p></div>
+<div id="content"><div id="module-header"><p class="caption"><a href="../../../../index.html" class="link">LanguageExt.Core</a>
+<span> ► </span>
+<a href="../../../index.html" class="link">Monads</a>
+<span> ► </span>
+<a href="../../index.html" class="link">State and Environment Monads</a>
+<span> ► </span>
+<a href="../index.html" class="link">Reader</a>
+<span> ► </span>
+<a href="index.html" class="link">Reader</a></p></div>
+
+<div id="table-of-contents"><p class="caption">Contents</p>
+<ul><li><a href="#_0_Reader_2" class="link"><div class="nowrap">Reader
+<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span> runReader<span class='parens'>)</span></div></a></li>
+<ul><li><a href="#Reader_2_Pure_0" class="link"><div class="nowrap">Pure
+
+<span class='parens'>(</span>A value<span class='parens'>)</span></div></a></li>
+<li><a href="#Reader_2_Asks_0" class="link"><div class="nowrap">Asks
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Reader_2_AsksM_0" class="link"><div class="nowrap">AsksM
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Env<span class='comma'>, </span>Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Reader_2_Lift_0" class="link"><div class="nowrap">Lift
+
+<span class='parens'>(</span>Pure<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> monad<span class='parens'>)</span></div></a></li>
+<li><a href="#Reader_2_Lift_0" class="link"><div class="nowrap">Lift
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Reader_2_With_1" class="link"><div class="nowrap">With
+<span class='generics'>&lt;</span>Env1<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Env1<span class='comma'>, </span>Env<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Reader_2_Local_0" class="link"><div class="nowrap">Local
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Env<span class='comma'>, </span>Env<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Reader_2_Map_1" class="link"><div class="nowrap">Map
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Reader_2_Select_1" class="link"><div class="nowrap">Select
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Reader_2_Bind_1" class="link"><div class="nowrap">Bind
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>Reader<span class='generics'>&lt;</span>Env<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Reader_2_Bind_1" class="link"><div class="nowrap">Bind
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Reader_2_Bind_1" class="link"><div class="nowrap">Bind
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Ask<span class='generics'>&lt;</span>Env<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Reader_2_SelectMany_2" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>Reader<span class='generics'>&lt;</span>Env<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#Reader_2_SelectMany_2" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#Reader_2_SelectMany_2" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Pure<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#Reader_2_SelectMany_2" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Ask<span class='generics'>&lt;</span>Env<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#Reader_2_Run_0" class="link"><div class="nowrap">Run
+
+<span class='parens'>(</span>Env env<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_ReaderExt_0" class="link"><div class="nowrap">ReaderExt
+</div></a></li>
+<ul><li><a href="#ReaderExt_0_As_2" class="link"><div class="nowrap">As
+<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>Reader<span class='generics'>&lt;</span>Env<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#ReaderExt_0_Flatten_2" class="link"><div class="nowrap">Flatten
+<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mma<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_Reader_0" class="link"><div class="nowrap">Reader
+</div></a></li>
+<ul><li><a href="#Reader_0_bind_3" class="link"><div class="nowrap">bind
+<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Reader_0_map_3" class="link"><div class="nowrap">map
+<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='comma'>, </span>Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#Reader_0_Pure_2" class="link"><div class="nowrap">Pure
+<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='parens'>)</span></div></a></li>
+<li><a href="#Reader_0_apply_3" class="link"><div class="nowrap">apply
+<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#Reader_0_action_3" class="link"><div class="nowrap">action
+<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#Reader_0_ask_1" class="link"><div class="nowrap">ask
+<span class='generics'>&lt;</span>Env<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Reader_0_asks_2" class="link"><div class="nowrap">asks
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>Env<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Reader_0_asksM_2" class="link"><div class="nowrap">asksM
+<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Env<span class='comma'>, </span>Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Reader_0_local_2" class="link"><div class="nowrap">local
+<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Env<span class='comma'>, </span>Env<span class='generics'>&gt;</span> f<span class='comma'>, </span>Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_Reader_1" class="link"><div class="nowrap">Reader
+<span class='generics'>&lt;</span>Env<span class='generics'>&gt;</span></div></a></li>
+<ul></ul></ul></div>
+<div class="interface">
+<div class="top"><p class="src"><span class="keyword">record</span>
+<a id="_0_Reader_2" class="def">Reader</a>
+<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span> runReader<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/Reader/Reader/Reader.cs#L13" class="link">Source</a>
+<a href="#_0_Reader_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p><code>Reader</code> monad transformer, which adds a static environment to a given monad.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Env</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Reader environment type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Given monad trait</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">runReader</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Transducer that represents the transformer operation</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Reader_2_Pure_0" class="def">Pure</a>
+
+<span class='parens'>(</span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/Reader/Reader/Reader.cs#L20" class="link">Source</a>
+<a href="#Reader_2_Pure_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Lift a pure value into the monad-transformer</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">value</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Value to lift</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>Reader</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Reader_2_Asks_0" class="def">Asks</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/Reader/Reader/Reader.cs#L28" class="link">Source</a>
+<a href="#Reader_2_Asks_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Extracts the environment value and maps it to the bound value</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Environment mapping function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>Reader</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Reader_2_AsksM_0" class="def">AsksM</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Env<span class='comma'>, </span>Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/Reader/Reader/Reader.cs#L36" class="link">Source</a>
+<a href="#Reader_2_AsksM_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Extracts the environment value and maps it to the bound value</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Environment mapping function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>Reader</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Reader_2_Lift_0" class="def">Lift</a>
+
+<span class='parens'>(</span>Pure<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> monad<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/Reader/Reader/Reader.cs#L44" class="link">Source</a>
+<a href="#Reader_2_Lift_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Lifts a given monad into the transformer</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">monad</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monad to lift</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>Reader</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Reader_2_Lift_0" class="def">Lift</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/Reader/Reader/Reader.cs#L52" class="link">Source</a>
+<a href="#Reader_2_Lift_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Lifts a unit function into the transformer</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Function to lift</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>Reader</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Reader<span class='generics'>&lt;</span>Env1<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Reader_2_With_1" class="def">With</a>
+<span class='generics'>&lt;</span>Env1<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Env1<span class='comma'>, </span>Env<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/Reader/Reader/Reader.cs#L60" class="link">Source</a>
+<a href="#Reader_2_With_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Maps the Reader's environment value</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>Reader</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Reader_2_Local_0" class="def">Local</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Env<span class='comma'>, </span>Env<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/Reader/Reader/Reader.cs#L68" class="link">Source</a>
+<a href="#Reader_2_Local_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Maps the Reader's environment value</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>Reader</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Reader_2_Map_1" class="def">Map</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/Reader/Reader/Reader.cs#L82" class="link">Source</a>
+<a href="#Reader_2_Map_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Maps the bound value</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>Reader</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Reader_2_Select_1" class="def">Select</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/Reader/Reader/Reader.cs#L91" class="link">Source</a>
+<a href="#Reader_2_Select_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Maps the bound value</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping transducer</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>Reader</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Reader_2_Bind_1" class="def">Bind</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>Reader<span class='generics'>&lt;</span>Env<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/Reader/Reader/Reader.cs#L105" class="link">Source</a>
+<a href="#Reader_2_Bind_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monad bind operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>Reader</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Reader_2_Bind_1" class="def">Bind</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/Reader/Reader/Reader.cs#L114" class="link">Source</a>
+<a href="#Reader_2_Bind_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monad bind operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>Reader</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Reader_2_Bind_1" class="def">Bind</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Ask<span class='generics'>&lt;</span>Env<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/Reader/Reader/Reader.cs#L123" class="link">Source</a>
+<a href="#Reader_2_Bind_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monad bind operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>Reader</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="Reader_2_SelectMany_2" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>Reader<span class='generics'>&lt;</span>Env<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/Reader/Reader/Reader.cs#L139" class="link">Source</a>
+<a href="#Reader_2_SelectMany_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monad bind operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Intermediate bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">C</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">bind</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monadic bind function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">project</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Projection function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>Reader</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="Reader_2_SelectMany_2" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/Reader/Reader/Reader.cs#L150" class="link">Source</a>
+<a href="#Reader_2_SelectMany_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monad bind operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Intermediate bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">C</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">bind</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monadic bind function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">project</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Projection function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>Reader</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="Reader_2_SelectMany_2" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Pure<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/Reader/Reader/Reader.cs#L161" class="link">Source</a>
+<a href="#Reader_2_SelectMany_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monad bind operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Intermediate bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">C</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">bind</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monadic bind function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">project</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Projection function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>Reader</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="Reader_2_SelectMany_2" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Ask<span class='generics'>&lt;</span>Env<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/Reader/Reader/Reader.cs#L172" class="link">Source</a>
+<a href="#Reader_2_SelectMany_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monad bind operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Intermediate bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">C</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">bind</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monadic bind function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">project</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Projection function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>Reader</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+A
+<a id="Reader_2_Run_0" class="def">Run</a>
+
+<span class='parens'>(</span>Env env<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/Reader/Reader/Reader.cs#L196" class="link">Source</a>
+<a href="#Reader_2_Run_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Run the reader monad</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">env</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Input environment</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Bound monad</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_ReaderExt_0" class="def">ReaderExt</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/Reader/Reader/Reader.Extensions.cs#L10" class="link">Source</a>
+<a href="#_0_ReaderExt_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Reader monad extensions</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="ReaderExt_0_As_2" class="def">As</a>
+<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>Reader<span class='generics'>&lt;</span>Env<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/Reader/Reader/Reader.Extensions.cs#L12" class="link">Source</a>
+<a href="#ReaderExt_0_As_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="ReaderExt_0_Flatten_2" class="def">Flatten</a>
+<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/Reader/Reader/Reader.Extensions.cs#L18" class="link">Source</a>
+<a href="#ReaderExt_0_Flatten_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monadic join</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_Reader_0" class="def">Reader</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/Reader/Reader/Reader.Module.cs#L6" class="link">Source</a>
+<a href="#_0_Reader_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Reader_0_bind_3" class="def">bind</a>
+<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/Reader/Reader/Reader.Module.cs#L8" class="link">Source</a>
+<a href="#Reader_0_bind_3" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Reader_0_map_3" class="def">map</a>
+<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='comma'>, </span>Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/Reader/Reader/Reader.Module.cs#L11" class="link">Source</a>
+<a href="#Reader_0_map_3" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Reader_0_Pure_2" class="def">Pure</a>
+<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/Reader/Reader/Reader.Module.cs#L14" class="link">Source</a>
+<a href="#Reader_0_Pure_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Reader_0_apply_3" class="def">apply</a>
+<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/Reader/Reader/Reader.Module.cs#L17" class="link">Source</a>
+<a href="#Reader_0_apply_3" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Reader_0_action_3" class="def">action</a>
+<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/Reader/Reader/Reader.Module.cs#L20" class="link">Source</a>
+<a href="#Reader_0_action_3" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>Env<span class='generics'>&gt;</span>
+<a id="Reader_0_ask_1" class="def">ask</a>
+<span class='generics'>&lt;</span>Env<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/Reader/Reader/Reader.Module.cs#L23" class="link">Source</a>
+<a href="#Reader_0_ask_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Reader_0_asks_2" class="def">asks</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>Env<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/Reader/Reader/Reader.Module.cs#L26" class="link">Source</a>
+<a href="#Reader_0_asks_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Reader_0_asksM_2" class="def">asksM</a>
+<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Env<span class='comma'>, </span>Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/Reader/Reader/Reader.Module.cs#L29" class="link">Source</a>
+<a href="#Reader_0_asksM_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Reader_0_local_2" class="def">local</a>
+<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Env<span class='comma'>, </span>Env<span class='generics'>&gt;</span> f<span class='comma'>, </span>Reader<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/Reader/Reader/Reader.Module.cs#L32" class="link">Source</a>
+<a href="#Reader_0_local_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_Reader_1" class="def">Reader</a>
+<span class='generics'>&lt;</span>Env<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/Reader/Reader/Reader.Monad.cs#L10" class="link">Source</a>
+<a href="#_0_Reader_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Trait implementation for <code>Reader</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Env</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Reader environment type</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div></div></body></html>

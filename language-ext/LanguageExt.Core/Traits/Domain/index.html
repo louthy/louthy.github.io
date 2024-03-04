@@ -1,0 +1,499 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>LanguageExt.Core\Traits\Domain</title>
+<link href="style.css" rel="stylesheet" type="text/css"/></head>
+<body class="js-enabled"><div id="package-header"><ul class="links" id="page-menu"><li><a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Domain" class="link">Source</a></li>
+<li><a href="../index.html" class="link">Contents</a></li>
+<li><a href="../../../index.html" class="link">Index</a></li></ul>
+<p class="caption">LanguageExt.Core</p></div>
+<div id="content"><div id="module-header"><p class="caption"><a href="../../index.html" class="link">LanguageExt.Core</a>
+<span> ► </span>
+<a href="../index.html" class="link">Traits</a>
+<span> ► </span>
+<a href="index.html" class="link">Domain</a></p></div>
+<p>Inspired by: <a href="https://mmapped.blog/posts/25-domain-types.html">https://mmapped.blog/posts/25-domain-types.html</a></p>
+
+<div id="table-of-contents"><p class="caption">Contents</p>
+<ul><li><a href="#_0_AmountLike_3" class="link"><div class="nowrap">AmountLike
+<span class='generics'>&lt;</span>SELF<span class='comma'>, </span>REPR<span class='comma'>, </span>SCALAR<span class='generics'>&gt;</span></div></a></li>
+<ul></ul>
+<li><a href="#_0_DomainType_2" class="link"><div class="nowrap">DomainType
+<span class='generics'>&lt;</span>out SELF<span class='comma'>, </span>REPR<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#DomainType_2_From_0" class="link"><div class="nowrap">From
+
+<span class='parens'>(</span>REPR repr<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_IdentifierLike_2" class="link"><div class="nowrap">IdentifierLike
+<span class='generics'>&lt;</span>SELF<span class='comma'>, </span>REPR<span class='generics'>&gt;</span></div></a></li>
+<ul></ul>
+<li><a href="#_0_LocusLike_4" class="link"><div class="nowrap">LocusLike
+<span class='generics'>&lt;</span>SELF<span class='comma'>, </span>REPR<span class='comma'>, </span>SCALAR<span class='comma'>, </span>DISTANCE<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#LocusLike_4_Origin_0" class="link"><div class="nowrap">Origin</div></a></li>
+<li><a href="#LocusLike_4_+_0" class="link"><div class="nowrap">+
+<span class='parens'>(</span>SELF lhs<span class='comma'>, </span>DISTANCE rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#LocusLike_4_-_0" class="link"><div class="nowrap">-
+<span class='parens'>(</span>SELF lhs<span class='comma'>, </span>DISTANCE rhs<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_QuantityLike_4" class="link"><div class="nowrap">QuantityLike
+<span class='generics'>&lt;</span>SELF<span class='comma'>, </span>REPR<span class='comma'>, </span>SCALAR<span class='comma'>, </span>DimA<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#QuantityLike_4_Multiply_3" class="link"><div class="nowrap">Multiply
+<span class='generics'>&lt;</span>OTHER<span class='comma'>, </span>O<span class='comma'>, </span>DimB<span class='generics'>&gt;</span>
+<span class='parens'>(</span>O rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#QuantityLike_4_Divide_3" class="link"><div class="nowrap">Divide
+<span class='generics'>&lt;</span>OTHER<span class='comma'>, </span>O<span class='comma'>, </span>DimB<span class='generics'>&gt;</span>
+<span class='parens'>(</span>O rhs<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_VectorSpace_2" class="link"><div class="nowrap">VectorSpace
+<span class='generics'>&lt;</span>SELF<span class='comma'>, </span>in SCALAR<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#VectorSpace_2_-_0" class="link"><div class="nowrap">-
+<span class='parens'>(</span>SELF self<span class='parens'>)</span></div></a></li>
+<li><a href="#VectorSpace_2_+_0" class="link"><div class="nowrap">+
+<span class='parens'>(</span>SELF lhs<span class='comma'>, </span>SELF rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#VectorSpace_2_-_0" class="link"><div class="nowrap">-
+<span class='parens'>(</span>SELF lhs<span class='comma'>, </span>SELF rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#VectorSpace_2_*_0" class="link"><div class="nowrap">*
+<span class='parens'>(</span>SELF lhs<span class='comma'>, </span>SCALAR rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#VectorSpace_2_/_0" class="link"><div class="nowrap">/
+<span class='parens'>(</span>SELF lhs<span class='comma'>, </span>SCALAR rhs<span class='parens'>)</span></div></a></li></ul></ul></div>
+<div class="interface">
+<div class="top"><p class="src"><span class="keyword">interface</span>
+<a id="_0_AmountLike_3" class="def">AmountLike</a>
+<span class='generics'>&lt;</span>SELF<span class='comma'>, </span>REPR<span class='comma'>, </span>SCALAR<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Domain/AmountLike.cs#L8" class="link">Source</a>
+<a href="#_0_AmountLike_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> SELF : 
+        AmountLike&lt;SELF, REPR, SCALAR&gt;,
+        DomainType&lt;SELF, REPR&gt;,
+        VectorSpace&lt;SELF, SCALAR&gt;, 
+        IdentifierLike&lt;SELF, REPR&gt;, 
+        IEquatable&lt;SELF&gt;,
+        IComparable&lt;SELF&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">interface</span>
+<a id="_0_DomainType_2" class="def">DomainType</a>
+<span class='generics'>&lt;</span>out SELF<span class='comma'>, </span>REPR<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Domain/DomainType.cs#L6" class="link">Source</a>
+<a href="#_0_DomainType_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> SELF : DomainType&lt;SELF, REPR&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+SELF
+<a id="DomainType_2_From_0" class="def">From</a>
+
+<span class='parens'>(</span>REPR repr<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Domain/DomainType.cs#L11" class="link">Source</a>
+<a href="#DomainType_2_From_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Creates a domain value from its representation value</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">interface</span>
+<a id="_0_IdentifierLike_2" class="def">IdentifierLike</a>
+<span class='generics'>&lt;</span>SELF<span class='comma'>, </span>REPR<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Domain/IdentifierLike.cs#L8" class="link">Source</a>
+<a href="#_0_IdentifierLike_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> SELF :
+    DomainType&lt;SELF, REPR&gt;,
+    IdentifierLike&lt;SELF, REPR&gt;,
+    IEquatable&lt;SELF&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">interface</span>
+<a id="_0_LocusLike_4" class="def">LocusLike</a>
+<span class='generics'>&lt;</span>SELF<span class='comma'>, </span>REPR<span class='comma'>, </span>SCALAR<span class='comma'>, </span>DISTANCE<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Domain/LocusLike.cs#L8" class="link">Source</a>
+<a href="#_0_LocusLike_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> SELF : 
+        DomainType&lt;SELF, REPR&gt;,
+        LocusLike&lt;SELF, REPR, SCALAR, DISTANCE&gt;,
+        IdentifierLike&lt;SELF, REPR&gt;,
+        AmountLike&lt;SELF, REPR, SCALAR&gt;,
+        VectorSpace&lt;SELF, SCALAR&gt;,
+        IEquatable&lt;SELF&gt;,
+        IComparable&lt;SELF&gt;
+    </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> DISTANCE:
+        AmountLike&lt;SELF, REPR, SCALAR&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+<div class="subs methods"><p class="caption">Properties</p>
+<div class="top"><p class="src"><span class="keyword">property</span>
+SELF
+<a id="LocusLike_4_Origin_0" class="def">Origin</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Domain/LocusLike.cs#L21" class="link">Source</a>
+<a href="#LocusLike_4_Origin_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+<div class="subs methods"><p class="caption">Operators</p>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="LocusLike_4_+_0" class="def">+</a>
+<span class='parens'>(</span>SELF lhs<span class='comma'>, </span>DISTANCE rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Domain/LocusLike.cs#L24" class="link">Source</a>
+<a href="#LocusLike_4_+_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="LocusLike_4_-_0" class="def">-</a>
+<span class='parens'>(</span>SELF lhs<span class='comma'>, </span>DISTANCE rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Domain/LocusLike.cs#L27" class="link">Source</a>
+<a href="#LocusLike_4_-_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">interface</span>
+<a id="_0_QuantityLike_4" class="def">QuantityLike</a>
+<span class='generics'>&lt;</span>SELF<span class='comma'>, </span>REPR<span class='comma'>, </span>SCALAR<span class='comma'>, </span>DimA<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Domain/QuantityLike.cs#L8" class="link">Source</a>
+<a href="#_0_QuantityLike_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> SELF : 
+        QuantityLike&lt;SELF, REPR, SCALAR, DimA&gt;,
+        DomainType&lt;SELF, REPR&gt;,
+        VectorSpace&lt;SELF, SCALAR&gt;,
+        IdentifierLike&lt;SELF, REPR&gt;,
+        AmountLike&lt;SELF, REPR, SCALAR&gt;,
+        IEquatable&lt;SELF&gt;,
+        IComparable&lt;SELF&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+O
+<a id="QuantityLike_4_Multiply_3" class="def">Multiply</a>
+<span class='generics'>&lt;</span>OTHER<span class='comma'>, </span>O<span class='comma'>, </span>DimB<span class='generics'>&gt;</span>
+<span class='parens'>(</span>O rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Domain/QuantityLike.cs#L18" class="link">Source</a>
+<a href="#QuantityLike_4_Multiply_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> OTHER : QuantityLike&lt;OTHER, REPR, SCALAR, DimB&gt;,
+                      DomainType&lt;OTHER, REPR&gt;,
+                      VectorSpace&lt;OTHER, SCALAR&gt;,
+                      IdentifierLike&lt;OTHER, REPR&gt;,
+                      AmountLike&lt;OTHER, REPR, SCALAR&gt;,
+                      IEquatable&lt;OTHER&gt;,
+                      IComparable&lt;OTHER&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+O
+<a id="QuantityLike_4_Divide_3" class="def">Divide</a>
+<span class='generics'>&lt;</span>OTHER<span class='comma'>, </span>O<span class='comma'>, </span>DimB<span class='generics'>&gt;</span>
+<span class='parens'>(</span>O rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Domain/QuantityLike.cs#L27" class="link">Source</a>
+<a href="#QuantityLike_4_Divide_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> OTHER : QuantityLike&lt;OTHER, REPR, SCALAR, DimB&gt;,
+        DomainType&lt;OTHER, REPR&gt;,
+        VectorSpace&lt;OTHER, SCALAR&gt;,
+        IdentifierLike&lt;OTHER, REPR&gt;,
+        AmountLike&lt;OTHER, REPR, SCALAR&gt;,
+        IEquatable&lt;OTHER&gt;,
+        IComparable&lt;OTHER&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">interface</span>
+<a id="_0_VectorSpace_2" class="def">VectorSpace</a>
+<span class='generics'>&lt;</span>SELF<span class='comma'>, </span>in SCALAR<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Domain/VectorSpace.cs#L6" class="link">Source</a>
+<a href="#_0_VectorSpace_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> SELF : VectorSpace&lt;SELF, SCALAR&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Operators</p>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="VectorSpace_2_-_0" class="def">-</a>
+<span class='parens'>(</span>SELF self<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Domain/VectorSpace.cs#L9" class="link">Source</a>
+<a href="#VectorSpace_2_-_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="VectorSpace_2_+_0" class="def">+</a>
+<span class='parens'>(</span>SELF lhs<span class='comma'>, </span>SELF rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Domain/VectorSpace.cs#L12" class="link">Source</a>
+<a href="#VectorSpace_2_+_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="VectorSpace_2_-_0" class="def">-</a>
+<span class='parens'>(</span>SELF lhs<span class='comma'>, </span>SELF rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Domain/VectorSpace.cs#L15" class="link">Source</a>
+<a href="#VectorSpace_2_-_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="VectorSpace_2_*_0" class="def">*</a>
+<span class='parens'>(</span>SELF lhs<span class='comma'>, </span>SCALAR rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Domain/VectorSpace.cs#L18" class="link">Source</a>
+<a href="#VectorSpace_2_*_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="VectorSpace_2_/_0" class="def">/</a>
+<span class='parens'>(</span>SELF lhs<span class='comma'>, </span>SCALAR rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Domain/VectorSpace.cs#L21" class="link">Source</a>
+<a href="#VectorSpace_2_/_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+</div></div></div></body></html>

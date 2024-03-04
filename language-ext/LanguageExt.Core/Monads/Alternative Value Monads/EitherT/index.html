@@ -1,0 +1,2418 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>LanguageExt.Core\Monads\Alternative Value Monads\EitherT</title>
+<link href="style.css" rel="stylesheet" type="text/css"/></head>
+<body class="js-enabled"><div id="package-header"><ul class="links" id="page-menu"><li><a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT" class="link">Source</a></li>
+<li><a href="../index.html" class="link">Contents</a></li>
+<li><a href="../../../../index.html" class="link">Index</a></li></ul>
+<p class="caption">LanguageExt.Core</p></div>
+<div id="content"><div id="module-header"><p class="caption"><a href="../../../index.html" class="link">LanguageExt.Core</a>
+<span> ► </span>
+<a href="../../index.html" class="link">Monads</a>
+<span> ► </span>
+<a href="../index.html" class="link">Alternative Value Monads</a>
+<span> ► </span>
+<a href="index.html" class="link">EitherT</a></p></div>
+
+<div id="table-of-contents"><p class="caption">Contents</p>
+<ul><li><a href="#_0_EitherT_3" class="link"><div class="nowrap">EitherT
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Either<span class='generics'>&lt;</span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> runEither<span class='parens'>)</span></div></a></li>
+<ul><li><a href="#EitherT_3_Right_0" class="link"><div class="nowrap">Right
+
+<span class='parens'>(</span>A value<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_3_Left_0" class="link"><div class="nowrap">Left
+
+<span class='parens'>(</span>L value<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_3_Lift_0" class="link"><div class="nowrap">Lift
+
+<span class='parens'>(</span>Pure<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> pure<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_3_Lift_0" class="link"><div class="nowrap">Lift
+
+<span class='parens'>(</span>Either<span class='generics'>&lt;</span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span> either<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_3_Lift_0" class="link"><div class="nowrap">Lift
+
+<span class='parens'>(</span>Fail<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span> fail<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_3_Lift_0" class="link"><div class="nowrap">Lift
+
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> monad<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_3_Lift_0" class="link"><div class="nowrap">Lift
+
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Either<span class='generics'>&lt;</span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> monad<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_3_LiftIO_0" class="link"><div class="nowrap">LiftIO
+
+<span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> monad<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_3_LiftIO_0" class="link"><div class="nowrap">LiftIO
+
+<span class='parens'>(</span>IO<span class='generics'>&lt;</span>Either<span class='generics'>&lt;</span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> monad<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_3_Match_1" class="link"><div class="nowrap">Match
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>L<span class='comma'>, </span>B<span class='generics'>&gt;</span> Left<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> Right<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_3_Match_0" class="link"><div class="nowrap">Match
+
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span> Left<span class='comma'>, </span>Action<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> Right<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_3_IfLeft_0" class="link"><div class="nowrap">IfLeft
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> Left<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_3_IfLeft_0" class="link"><div class="nowrap">IfLeft
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span> leftMap<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_3_IfLeft_0" class="link"><div class="nowrap">IfLeft
+
+<span class='parens'>(</span>A rightValue<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_3_IfLeft_0" class="link"><div class="nowrap">IfLeft
+
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span> Left<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_3_IfRight_0" class="link"><div class="nowrap">IfRight
+
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> Right<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_3_IfRight_0" class="link"><div class="nowrap">IfRight
+
+<span class='parens'>(</span>L leftValue<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_3_IfRight_0" class="link"><div class="nowrap">IfRight
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span> Right<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_3_IfRight_0" class="link"><div class="nowrap">IfRight
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>L<span class='generics'>&gt;</span> rightMap<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_3_Run_0" class="link"><div class="nowrap">Run
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_3_MapT_2" class="link"><div class="nowrap">MapT
+<span class='generics'>&lt;</span>M1<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Either<span class='generics'>&lt;</span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>M1<span class='comma'>, </span>Either<span class='generics'>&lt;</span>L<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_3_MapM_1" class="link"><div class="nowrap">MapM
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_3_Map_1" class="link"><div class="nowrap">Map
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_3_Select_1" class="link"><div class="nowrap">Select
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_3_Bind_1" class="link"><div class="nowrap">Bind
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_3_Bind_1" class="link"><div class="nowrap">Bind
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Either<span class='generics'>&lt;</span>L<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_3_Bind_1" class="link"><div class="nowrap">Bind
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_3_Bind_1" class="link"><div class="nowrap">Bind
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_3_Bind_1" class="link"><div class="nowrap">Bind
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Pure<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_3_Bind_1" class="link"><div class="nowrap">Bind
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Fail<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_3_SelectMany_2" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_3_SelectMany_2" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_3_SelectMany_2" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_3_SelectMany_2" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Either<span class='generics'>&lt;</span>L<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_3_SelectMany_2" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Pure<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_3_SelectMany_2" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_3_ToOption_0" class="link"><div class="nowrap">ToOption
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_EitherTExt_0" class="link"><div class="nowrap">EitherTExt
+</div></a></li>
+<ul><li><a href="#EitherTExt_0_As_3" class="link"><div class="nowrap">As
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherTExt_0_Flatten_2" class="link"><div class="nowrap">Flatten
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Task<span class='generics'>&lt;</span>EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> tma<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherTExt_0_ToIO_2" class="link"><div class="nowrap">ToIO
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Task<span class='generics'>&lt;</span>Either<span class='generics'>&lt;</span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherTExt_0_Flatten_3" class="link"><div class="nowrap">Flatten
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mma<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherTExt_0_SelectMany_5" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherTExt_0_SelectMany_5" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherTExt_0_Apply_4" class="link"><div class="nowrap">Apply
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherTExt_0_Action_4" class="link"><div class="nowrap">Action
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_EitherT_2" class="link"><div class="nowrap">EitherT
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#EitherT_2_Right_1" class="link"><div class="nowrap">Right
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_2_Left_1" class="link"><div class="nowrap">Left
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>L value<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_2_lift_1" class="link"><div class="nowrap">lift
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Either<span class='generics'>&lt;</span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_2_lift_1" class="link"><div class="nowrap">lift
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Pure<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_2_lift_1" class="link"><div class="nowrap">lift
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Fail<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_2_liftIO_1" class="link"><div class="nowrap">liftIO
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_EitherT_0" class="link"><div class="nowrap">EitherT
+</div></a></li>
+<ul><li><a href="#EitherT_0_bind_4" class="link"><div class="nowrap">bind
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_0_map_4" class="link"><div class="nowrap">map
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='comma'>, </span>EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_0_Right_3" class="link"><div class="nowrap">Right
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_0_Left_3" class="link"><div class="nowrap">Left
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>L value<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_0_apply_4" class="link"><div class="nowrap">apply
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_0_action_4" class="link"><div class="nowrap">action
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_0_lift_3" class="link"><div class="nowrap">lift
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Either<span class='generics'>&lt;</span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_0_lift_3" class="link"><div class="nowrap">lift
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_0_lift_3" class="link"><div class="nowrap">lift
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Pure<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_0_lift_3" class="link"><div class="nowrap">lift
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Fail<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_0_liftIO_3" class="link"><div class="nowrap">liftIO
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#EitherT_0_match_4" class="link"><div class="nowrap">match
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>L<span class='comma'>, </span>B<span class='generics'>&gt;</span> Left<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> Right<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_EitherT_2" class="link"><div class="nowrap">EitherT
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='generics'>&gt;</span></div></a></li>
+<ul></ul></ul></div>
+<div class="interface">
+<div class="top"><p class="src"><span class="keyword">record</span>
+<a id="_0_EitherT_3" class="def">EitherT</a>
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Either<span class='generics'>&lt;</span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> runEither<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.cs#L15" class="link">Source</a>
+<a href="#_0_EitherT_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p><code>EitherT</code> monad transformer, which allows for an optional result.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Given monad trait</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">L</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Left value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">runEither</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Transducer that represents the transformer operation</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="EitherT_3_Right_0" class="def">Right</a>
+
+<span class='parens'>(</span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.cs#L23" class="link">Source</a>
+<a href="#EitherT_3_Right_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Lift a pure value into the monad-transformer</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">value</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Value to lift</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>EitherT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="EitherT_3_Left_0" class="def">Left</a>
+
+<span class='parens'>(</span>L value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.cs#L31" class="link">Source</a>
+<a href="#EitherT_3_Left_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Lift a fail value into the monad-transformer</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">value</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Value to lift</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>EitherT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="EitherT_3_Lift_0" class="def">Lift</a>
+
+<span class='parens'>(</span>Pure<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> pure<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.cs#L39" class="link">Source</a>
+<a href="#EitherT_3_Lift_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Lifts a given monad into the transformer</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">pure</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monad to lift</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>EitherT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="EitherT_3_Lift_0" class="def">Lift</a>
+
+<span class='parens'>(</span>Either<span class='generics'>&lt;</span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span> either<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.cs#L47" class="link">Source</a>
+<a href="#EitherT_3_Lift_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Lifts a given monad into the transformer</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">either</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monad to lift</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>EitherT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="EitherT_3_Lift_0" class="def">Lift</a>
+
+<span class='parens'>(</span>Fail<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span> fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.cs#L55" class="link">Source</a>
+<a href="#EitherT_3_Lift_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Lifts a given monad into the transformer</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">fail</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monad to lift</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>EitherT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="EitherT_3_Lift_0" class="def">Lift</a>
+
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> monad<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.cs#L63" class="link">Source</a>
+<a href="#EitherT_3_Lift_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Lifts a given monad into the transformer</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">monad</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monad to lift</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>EitherT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="EitherT_3_Lift_0" class="def">Lift</a>
+
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Either<span class='generics'>&lt;</span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> monad<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.cs#L71" class="link">Source</a>
+<a href="#EitherT_3_Lift_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Lifts a given monad into the transformer</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">monad</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monad to lift</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>EitherT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="EitherT_3_LiftIO_0" class="def">LiftIO</a>
+
+<span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> monad<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.cs#L79" class="link">Source</a>
+<a href="#EitherT_3_LiftIO_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Lifts a given monad into the transformer</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">monad</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monad to lift</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>EitherT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="EitherT_3_LiftIO_0" class="def">LiftIO</a>
+
+<span class='parens'>(</span>IO<span class='generics'>&lt;</span>Either<span class='generics'>&lt;</span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> monad<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.cs#L87" class="link">Source</a>
+<a href="#EitherT_3_LiftIO_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Lifts a given monad into the transformer</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">monad</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monad to lift</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>EitherT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="EitherT_3_Match_1" class="def">Match</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>L<span class='comma'>, </span>B<span class='generics'>&gt;</span> Left<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> Right<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.cs#L102" class="link">Source</a>
+<a href="#EitherT_3_Match_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Invokes the Right or Left function depending on the state of the Either</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Return type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Left</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Function to invoke if in a Left state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Right</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Function to invoke if in a Right state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The return value of the invoked function</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="EitherT_3_Match_0" class="def">Match</a>
+
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span> Left<span class='comma'>, </span>Action<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> Right<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.cs#L112" class="link">Source</a>
+<a href="#EitherT_3_Match_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Invokes the Right or Left action depending on the state of the Either</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Right</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Action to invoke if in a Right state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Left</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Action to invoke if in a Left state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Unit</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="EitherT_3_IfLeft_0" class="def">IfLeft</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> Left<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.cs#L122" class="link">Source</a>
+<a href="#EitherT_3_IfLeft_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Executes the Left function if the Either is in a Left state.
+Returns the Right value if the Either is in a Right state.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Left</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Function to generate a Right value if in the Left state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Returns an unwrapped Right value</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="EitherT_3_IfLeft_0" class="def">IfLeft</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span> leftMap<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.cs#L132" class="link">Source</a>
+<a href="#EitherT_3_IfLeft_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Executes the leftMap function if the Either is in a Left state.
+Returns the Right value if the Either is in a Right state.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">leftMap</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Function to generate a Right value if in the Left state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Returns an unwrapped Right value</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="EitherT_3_IfLeft_0" class="def">IfLeft</a>
+
+<span class='parens'>(</span>A rightValue<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.cs#L142" class="link">Source</a>
+<a href="#EitherT_3_IfLeft_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns the rightValue if the Either is in a Left state.
+Returns the Right value if the Either is in a Right state.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">rightValue</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Value to return if in the Left state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Returns an unwrapped Right value</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="EitherT_3_IfLeft_0" class="def">IfLeft</a>
+
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span> Left<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.cs#L151" class="link">Source</a>
+<a href="#EitherT_3_IfLeft_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Executes the Left action if the Either is in a Left state.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Left</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Function to generate a Right value if in the Left state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Returns an unwrapped Right value</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="EitherT_3_IfRight_0" class="def">IfRight</a>
+
+<span class='parens'>(</span>Action<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> Right<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.cs#L159" class="link">Source</a>
+<a href="#EitherT_3_IfRight_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Invokes the Right action if the Either is in a Right state, otherwise does nothing</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Right</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Action to invoke</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Unit</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>L<span class='generics'>&gt;</span>
+<a id="EitherT_3_IfRight_0" class="def">IfRight</a>
+
+<span class='parens'>(</span>L leftValue<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.cs#L168" class="link">Source</a>
+<a href="#EitherT_3_IfRight_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns the leftValue if the Either is in a Right state.
+Returns the Left value if the Either is in a Left state.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">leftValue</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Value to return if in the Left state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Returns an unwrapped Left value</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>L<span class='generics'>&gt;</span>
+<a id="EitherT_3_IfRight_0" class="def">IfRight</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span> Right<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.cs#L178" class="link">Source</a>
+<a href="#EitherT_3_IfRight_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns the result of Right() if the Either is in a Right state.
+Returns the Left value if the Either is in a Left state.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Right</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Function to generate a Left value if in the Right state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Returns an unwrapped Left value</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>L<span class='generics'>&gt;</span>
+<a id="EitherT_3_IfRight_0" class="def">IfRight</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>L<span class='generics'>&gt;</span> rightMap<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.cs#L188" class="link">Source</a>
+<a href="#EitherT_3_IfRight_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns the result of rightMap if the Either is in a Right state.
+Returns the Left value if the Either is in a Left state.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">rightMap</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Function to generate a Left value if in the Right state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Returns an unwrapped Left value</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Either<span class='generics'>&lt;</span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="EitherT_3_Run_0" class="def">Run</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.cs#L200" class="link">Source</a>
+<a href="#EitherT_3_Run_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Runs the EitherT exposing the outer monad with an inner wrapped <code>Either</code></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M1<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="EitherT_3_MapT_2" class="def">MapT</a>
+<span class='generics'>&lt;</span>M1<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Either<span class='generics'>&lt;</span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>M1<span class='comma'>, </span>Either<span class='generics'>&lt;</span>L<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.cs#L215" class="link">Source</a>
+<a href="#EitherT_3_MapT_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M1 : Monad&lt;M1&gt;</span></div></div></p>
+<div class="doc"><div><p>Maps the bound monad</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M1</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target monad type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Mapped monad</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="EitherT_3_MapM_1" class="def">MapM</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.cs#L223" class="link">Source</a>
+<a href="#EitherT_3_MapM_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Maps the given monad</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="EitherT_3_Map_1" class="def">Map</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.cs#L238" class="link">Source</a>
+<a href="#EitherT_3_Map_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Maps the bound value</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>EitherT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="EitherT_3_Select_1" class="def">Select</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.cs#L247" class="link">Source</a>
+<a href="#EitherT_3_Select_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Maps the bound value</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping transducer</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>EitherT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="EitherT_3_Bind_1" class="def">Bind</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.cs#L261" class="link">Source</a>
+<a href="#EitherT_3_Bind_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monad bind operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>EitherT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="EitherT_3_Bind_1" class="def">Bind</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Either<span class='generics'>&lt;</span>L<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.cs#L270" class="link">Source</a>
+<a href="#EitherT_3_Bind_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monad bind operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>EitherT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="EitherT_3_Bind_1" class="def">Bind</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.cs#L279" class="link">Source</a>
+<a href="#EitherT_3_Bind_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monad bind operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>EitherT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="EitherT_3_Bind_1" class="def">Bind</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.cs#L291" class="link">Source</a>
+<a href="#EitherT_3_Bind_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monad bind operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>EitherT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="EitherT_3_Bind_1" class="def">Bind</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Pure<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.cs#L300" class="link">Source</a>
+<a href="#EitherT_3_Bind_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monad bind operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>EitherT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="EitherT_3_Bind_1" class="def">Bind</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Fail<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.cs#L309" class="link">Source</a>
+<a href="#EitherT_3_Bind_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monad bind operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>EitherT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="EitherT_3_SelectMany_2" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.cs#L325" class="link">Source</a>
+<a href="#EitherT_3_SelectMany_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monad bind operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Intermediate bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">C</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">bind</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monadic bind function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">project</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Projection function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>EitherT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="EitherT_3_SelectMany_2" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.cs#L336" class="link">Source</a>
+<a href="#EitherT_3_SelectMany_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monad bind operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Intermediate bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">C</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">bind</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monadic bind function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">project</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Projection function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>EitherT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="EitherT_3_SelectMany_2" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.cs#L347" class="link">Source</a>
+<a href="#EitherT_3_SelectMany_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monad bind operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Intermediate bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">C</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">bind</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monadic bind function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">project</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Projection function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>EitherT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="EitherT_3_SelectMany_2" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Either<span class='generics'>&lt;</span>L<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.cs#L358" class="link">Source</a>
+<a href="#EitherT_3_SelectMany_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monad bind operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Intermediate bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">C</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">bind</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monadic bind function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">project</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Projection function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>EitherT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="EitherT_3_SelectMany_2" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Pure<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.cs#L369" class="link">Source</a>
+<a href="#EitherT_3_SelectMany_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monad bind operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Intermediate bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">C</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">bind</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monadic bind function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">project</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Projection function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>EitherT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="EitherT_3_SelectMany_2" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.cs#L380" class="link">Source</a>
+<a href="#EitherT_3_SelectMany_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monad bind operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Intermediate bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">C</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">bind</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monadic bind function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">project</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Projection function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>EitherT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="EitherT_3_ToOption_0" class="def">ToOption</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.cs#L409" class="link">Source</a>
+<a href="#EitherT_3_ToOption_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_EitherTExt_0" class="def">EitherTExt</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.Extensions.cs#L12" class="link">Source</a>
+<a href="#_0_EitherTExt_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Either monad extensions</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="EitherTExt_0_As_3" class="def">As</a>
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.Extensions.cs#L14" class="link">Source</a>
+<a href="#EitherTExt_0_As_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="EitherTExt_0_Flatten_2" class="def">Flatten</a>
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Task<span class='generics'>&lt;</span>EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> tma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.Extensions.cs#L21" class="link">Source</a>
+<a href="#EitherTExt_0_Flatten_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Get the outer task and wrap it up in a new IO within the EitherT IO</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="EitherTExt_0_ToIO_2" class="def">ToIO</a>
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Task<span class='generics'>&lt;</span>Either<span class='generics'>&lt;</span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.Extensions.cs#L29" class="link">Source</a>
+<a href="#EitherTExt_0_ToIO_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Lift the task</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="EitherTExt_0_Flatten_3" class="def">Flatten</a>
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.Extensions.cs#L35" class="link">Source</a>
+<a href="#EitherTExt_0_Flatten_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Monadic join</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="EitherTExt_0_SelectMany_5" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.Extensions.cs#L48" class="link">Source</a>
+<a href="#EitherTExt_0_SelectMany_5" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Monad bind operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Intermediate bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">C</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">bind</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monadic bind function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">project</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Projection function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>EitherT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="EitherTExt_0_SelectMany_5" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.Extensions.cs#L64" class="link">Source</a>
+<a href="#EitherTExt_0_SelectMany_5" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Monad bind operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Intermediate bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">C</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">bind</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monadic bind function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">project</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Projection function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>EitherT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="EitherTExt_0_Apply_4" class="def">Apply</a>
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.Extensions.cs#L75" class="link">Source</a>
+<a href="#EitherTExt_0_Apply_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Applicative apply</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="EitherTExt_0_Action_4" class="def">Action</a>
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.Extensions.cs#L83" class="link">Source</a>
+<a href="#EitherTExt_0_Action_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Applicative action</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_EitherT_2" class="def">EitherT</a>
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.Module.cs#L6" class="link">Source</a>
+<a href="#_0_EitherT_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="EitherT_2_Right_1" class="def">Right</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.Module.cs#L8" class="link">Source</a>
+<a href="#EitherT_2_Right_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="EitherT_2_Left_1" class="def">Left</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>L value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.Module.cs#L11" class="link">Source</a>
+<a href="#EitherT_2_Left_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="EitherT_2_lift_1" class="def">lift</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Either<span class='generics'>&lt;</span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.Module.cs#L14" class="link">Source</a>
+<a href="#EitherT_2_lift_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="EitherT_2_lift_1" class="def">lift</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Pure<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.Module.cs#L17" class="link">Source</a>
+<a href="#EitherT_2_lift_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="EitherT_2_lift_1" class="def">lift</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Fail<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.Module.cs#L20" class="link">Source</a>
+<a href="#EitherT_2_lift_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="EitherT_2_liftIO_1" class="def">liftIO</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.Module.cs#L23" class="link">Source</a>
+<a href="#EitherT_2_liftIO_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_EitherT_0" class="def">EitherT</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.Module.cs#L27" class="link">Source</a>
+<a href="#_0_EitherT_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="EitherT_0_bind_4" class="def">bind</a>
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.Module.cs#L29" class="link">Source</a>
+<a href="#EitherT_0_bind_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="EitherT_0_map_4" class="def">map</a>
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='comma'>, </span>EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.Module.cs#L33" class="link">Source</a>
+<a href="#EitherT_0_map_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="EitherT_0_Right_3" class="def">Right</a>
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.Module.cs#L37" class="link">Source</a>
+<a href="#EitherT_0_Right_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="EitherT_0_Left_3" class="def">Left</a>
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>L value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.Module.cs#L41" class="link">Source</a>
+<a href="#EitherT_0_Left_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="EitherT_0_apply_4" class="def">apply</a>
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.Module.cs#L45" class="link">Source</a>
+<a href="#EitherT_0_apply_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="EitherT_0_action_4" class="def">action</a>
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.Module.cs#L49" class="link">Source</a>
+<a href="#EitherT_0_action_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="EitherT_0_lift_3" class="def">lift</a>
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Either<span class='generics'>&lt;</span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.Module.cs#L53" class="link">Source</a>
+<a href="#EitherT_0_lift_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="EitherT_0_lift_3" class="def">lift</a>
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.Module.cs#L57" class="link">Source</a>
+<a href="#EitherT_0_lift_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="EitherT_0_lift_3" class="def">lift</a>
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Pure<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.Module.cs#L61" class="link">Source</a>
+<a href="#EitherT_0_lift_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="EitherT_0_lift_3" class="def">lift</a>
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Fail<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.Module.cs#L65" class="link">Source</a>
+<a href="#EitherT_0_lift_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="EitherT_0_liftIO_3" class="def">liftIO</a>
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.Module.cs#L69" class="link">Source</a>
+<a href="#EitherT_0_liftIO_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="EitherT_0_match_4" class="def">match</a>
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>L<span class='comma'>, </span>B<span class='generics'>&gt;</span> Left<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> Right<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.Module.cs#L73" class="link">Source</a>
+<a href="#EitherT_0_match_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_EitherT_2" class="def">EitherT</a>
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/EitherT/EitherT.Monad.cs#L10" class="link">Source</a>
+<a href="#_0_EitherT_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Trait implementation for <code>EitherT</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Given monad trait</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div></div></body></html>

@@ -1,0 +1,619 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>LanguageExt.Core\Traits\Alternative</title>
+<link href="style.css" rel="stylesheet" type="text/css"/></head>
+<body class="js-enabled"><div id="package-header"><ul class="links" id="page-menu"><li><a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Alternative" class="link">Source</a></li>
+<li><a href="../index.html" class="link">Contents</a></li>
+<li><a href="../../../index.html" class="link">Index</a></li></ul>
+<p class="caption">LanguageExt.Core</p></div>
+<div id="content"><div id="module-header"><p class="caption"><a href="../../index.html" class="link">LanguageExt.Core</a>
+<span> ► </span>
+<a href="../index.html" class="link">Traits</a>
+<span> ► </span>
+<a href="index.html" class="link">Alternative</a></p></div>
+
+<div id="table-of-contents"><p class="caption">Contents</p>
+<ul><li><a href="#_0_Alternative_0" class="link"><div class="nowrap">Alternative
+</div></a></li>
+<ul><li><a href="#Alternative_0_Filter_2" class="link"><div class="nowrap">Filter
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span></div></a></li>
+<li><a href="#Alternative_0_Where_2" class="link"><div class="nowrap">Where
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span></div></a></li>
+<li><a href="#Alternative_0_OneOf_2" class="link"><div class="nowrap">OneOf
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Seq<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ms<span class='parens'>)</span></div></a></li>
+<li><a href="#Alternative_0_Some_2" class="link"><div class="nowrap">Some
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> v<span class='parens'>)</span></div></a></li>
+<li><a href="#Alternative_0_Many_2" class="link"><div class="nowrap">Many
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> v<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_Alternative_0" class="link"><div class="nowrap">Alternative
+</div></a></li>
+<ul><li><a href="#Alternative_0_empty_2" class="link"><div class="nowrap">empty
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Alternative_0_or_2" class="link"><div class="nowrap">or
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#Alternative_0_oneOf_2" class="link"><div class="nowrap">oneOf
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>params K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>[] ms<span class='parens'>)</span></div></a></li>
+<li><a href="#Alternative_0_oneOf_2" class="link"><div class="nowrap">oneOf
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ms<span class='parens'>)</span></div></a></li>
+<li><a href="#Alternative_0_some_2" class="link"><div class="nowrap">some
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> v<span class='parens'>)</span></div></a></li>
+<li><a href="#Alternative_0_many_2" class="link"><div class="nowrap">many
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> v<span class='parens'>)</span></div></a></li>
+<li><a href="#Alternative_0_guard_1" class="link"><div class="nowrap">guard
+<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool flag<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_Alternative_1" class="link"><div class="nowrap">Alternative
+<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#Alternative_1_Empty_1" class="link"><div class="nowrap">Empty
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Alternative_1_Some_1" class="link"><div class="nowrap">Some
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> v<span class='parens'>)</span></div></a></li>
+<li><a href="#Alternative_1_Many_1" class="link"><div class="nowrap">Many
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> v<span class='parens'>)</span></div></a></li></ul></ul></div>
+<div class="interface">
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_Alternative_0" class="def">Alternative</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Alternative/Alternative.Extensions.cs#L9" class="link">Source</a>
+<a href="#_0_Alternative_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>A monoid on applicative functors</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">F</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Applicative functor</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Alternative_0_Filter_2" class="def">Filter</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Alternative/Alternative.Extensions.cs#L14" class="link">Source</a>
+<a href="#Alternative_0_Filter_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Alternative&lt;M&gt;, Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Results in Empty if the predicate results in <code>false</code></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Alternative_0_Where_2" class="def">Where</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Alternative/Alternative.Extensions.cs#L21" class="link">Source</a>
+<a href="#Alternative_0_Where_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Alternative&lt;M&gt;, Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Results in Empty if the predicate results in <code>false</code></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Alternative_0_OneOf_2" class="def">OneOf</a>
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Seq<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ms<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Alternative/Alternative.Extensions.cs#L31" class="link">Source</a>
+<a href="#Alternative_0_OneOf_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> F : Alternative&lt;F&gt;</span></div></div></p>
+<div class="doc"><div><p>Given a set of applicative functors, return the first one to succeed.</p>
+</div>
+<div><p>If none succeed, the last applicative functor will be returned.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Alternative_0_Some_2" class="def">Some</a>
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> v<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Alternative/Alternative.Extensions.cs#L45" class="link">Source</a>
+<a href="#Alternative_0_Some_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> F : Alternative&lt;F&gt;</span></div></div></p>
+<div class="doc"><div><p>One or more...</p>
+</div>
+<div><p>Run the applicative functor repeatedly, collecting the results, until failure.</p>
+<p>Will always succeed if at least one item has been yielded.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">v</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Applicative functor</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>One or more values</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Alternative_0_Many_2" class="def">Many</a>
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> v<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Alternative/Alternative.Extensions.cs#L59" class="link">Source</a>
+<a href="#Alternative_0_Many_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> F : Alternative&lt;F&gt;</span></div></div></p>
+<div class="doc"><div><p>Zero or more...</p>
+</div>
+<div><p>Run the applicative functor repeatedly, collecting the results, until failure.</p>
+<p>Will always succeed.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">v</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Applicative functor</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Zero or more values</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_Alternative_0" class="def">Alternative</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Alternative/Alternative.Module.cs#L7" class="link">Source</a>
+<a href="#_0_Alternative_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>A monoid on applicative functors</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">F</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Applicative functor</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Alternative_0_empty_2" class="def">empty</a>
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Alternative/Alternative.Module.cs#L14" class="link">Source</a>
+<a href="#Alternative_0_empty_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> F : Alternative&lt;F&gt;</span></div></div></p>
+<div class="doc"><div><p>Identity</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"></span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Alternative_0_or_2" class="def">or</a>
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Alternative/Alternative.Module.cs#L21" class="link">Source</a>
+<a href="#Alternative_0_or_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> F : SemiAlternative&lt;F&gt;</span></div></div></p>
+<div class="doc"><div><p>Associative binary operator</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Alternative_0_oneOf_2" class="def">oneOf</a>
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>params K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>[] ms<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Alternative/Alternative.Module.cs#L31" class="link">Source</a>
+<a href="#Alternative_0_oneOf_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> F : Alternative&lt;F&gt;</span></div></div></p>
+<div class="doc"><div><p>Given a set of applicative functors, return the first one to succeed.</p>
+</div>
+<div><p>If none succeed, the last applicative functor will be returned.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Alternative_0_oneOf_2" class="def">oneOf</a>
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ms<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Alternative/Alternative.Module.cs#L41" class="link">Source</a>
+<a href="#Alternative_0_oneOf_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> F : Alternative&lt;F&gt;</span></div></div></p>
+<div class="doc"><div><p>Given a set of applicative functors, return the first one to succeed.</p>
+</div>
+<div><p>If none succeed, the last applicative functor will be returned.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Alternative_0_some_2" class="def">some</a>
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> v<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Alternative/Alternative.Module.cs#L57" class="link">Source</a>
+<a href="#Alternative_0_some_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> F : Alternative&lt;F&gt;</span></div></div></p>
+<div class="doc"><div><p>One or more...</p>
+</div>
+<div><p>Run the applicative functor repeatedly, collecting the results, until failure.</p>
+<p>Will always succeed if at least one item has been yielded.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">v</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Applicative functor</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>One or more values</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Alternative_0_many_2" class="def">many</a>
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> v<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Alternative/Alternative.Module.cs#L71" class="link">Source</a>
+<a href="#Alternative_0_many_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> F : Alternative&lt;F&gt;</span></div></div></p>
+<div class="doc"><div><p>Zero or more...</p>
+</div>
+<div><p>Run the applicative functor repeatedly, collecting the results, until failure.</p>
+<p>Will always succeed.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">v</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Applicative functor</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Zero or more values</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="Alternative_0_guard_1" class="def">guard</a>
+<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool flag<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Alternative/Alternative.Module.cs#L84" class="link">Source</a>
+<a href="#Alternative_0_guard_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> F : Alternative&lt;F&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">interface</span>
+<a id="_0_Alternative_1" class="def">Alternative</a>
+<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Alternative/Alternative.Trait.cs#L10" class="link">Source</a>
+<a href="#_0_Alternative_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> F : Alternative&lt;F&gt;</span></div></div></p>
+<div class="doc"><div><p>A monoid on applicative functors</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">F</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Applicative functor</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Alternative_1_Empty_1" class="def">Empty</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Alternative/Alternative.Trait.cs#L18" class="link">Source</a>
+<a href="#Alternative_1_Empty_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Identity</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"></span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Alternative_1_Some_1" class="def">Some</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> v<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Alternative/Alternative.Trait.cs#L30" class="link">Source</a>
+<a href="#Alternative_1_Some_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>One or more...</p>
+</div>
+<div><p>Run the applicative functor repeatedly, collecting the results, until failure.</p>
+<p>Will always succeed if at least one item has been yielded.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">v</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Applicative functor</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>One or more values</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Alternative_1_Many_1" class="def">Many</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> v<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Alternative/Alternative.Trait.cs#L51" class="link">Source</a>
+<a href="#Alternative_1_Many_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Zero or more...</p>
+</div>
+<div><p>Run the applicative functor repeatedly, collecting the results, until failure.</p>
+<p>Will always succeed.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">v</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Applicative functor</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Zero or more values</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div></div></div></body></html>

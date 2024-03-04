@@ -1,0 +1,3189 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>LanguageExt.Core\Traits\Foldable</title>
+<link href="style.css" rel="stylesheet" type="text/css"/></head>
+<body class="js-enabled"><div id="package-header"><ul class="links" id="page-menu"><li><a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable" class="link">Source</a></li>
+<li><a href="../index.html" class="link">Contents</a></li>
+<li><a href="../../../index.html" class="link">Index</a></li></ul>
+<p class="caption">LanguageExt.Core</p></div>
+<div id="content"><div id="module-header"><p class="caption"><a href="../../index.html" class="link">LanguageExt.Core</a>
+<span> ► </span>
+<a href="../index.html" class="link">Traits</a>
+<span> ► </span>
+<a href="index.html" class="link">Foldable</a></p></div>
+
+<div id="table-of-contents"><p class="caption">Contents</p>
+<ul><li><a href="#_0_Foldable_0" class="link"><div class="nowrap">Foldable
+</div></a></li>
+<ul><li><a href="#Foldable_0_SelectMany_3" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Guard<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Unit<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind,
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Unit<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_SelectMany_3" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this Guard<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> ma,
+        Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind,
+        Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_Fold_3" class="link"><div class="nowrap">Fold
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='comma'>, </span>S initialState<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='comma'>, </span>S<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_Fold_3" class="link"><div class="nowrap">Fold
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='comma'>, </span>S initialState<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_FoldBack_3" class="link"><div class="nowrap">FoldBack
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='comma'>, </span>S initialState<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_FoldBack_3" class="link"><div class="nowrap">FoldBack
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='comma'>, </span>S initialState<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_Fold_2" class="link"><div class="nowrap">Fold
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> tm<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_FoldMap_3" class="link"><div class="nowrap">FoldMap
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_FoldMapBack_3" class="link"><div class="nowrap">FoldMapBack
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_FoldM_4" class="link"><div class="nowrap">FoldM
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta,
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+        S initialState<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_FoldM_4" class="link"><div class="nowrap">FoldM
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta,
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+        S initialState<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_FoldBackM_4" class="link"><div class="nowrap">FoldBackM
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta,
+        Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+        B initialState<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_FoldBackM_4" class="link"><div class="nowrap">FoldBackM
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta,
+        Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+        B initialState<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_ToSeq_2" class="link"><div class="nowrap">ToSeq
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_IsEmpty_2" class="link"><div class="nowrap">IsEmpty
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_Length_2" class="link"><div class="nowrap">Length
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_Exists_2" class="link"><div class="nowrap">Exists
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_ForAll_2" class="link"><div class="nowrap">ForAll
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_Contains_3" class="link"><div class="nowrap">Contains
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>EqA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='comma'>, </span>A value<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_Contains_2" class="link"><div class="nowrap">Contains
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='comma'>, </span>A value<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_Sum_3" class="link"><div class="nowrap">Sum
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>NumA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_Sum_2" class="link"><div class="nowrap">Sum
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_IterA_4" class="link"><div class="nowrap">IterA
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_IterM_4" class="link"><div class="nowrap">IterM
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_Foldable_0" class="link"><div class="nowrap">Foldable
+</div></a></li>
+<ul><li><a href="#Foldable_0_SumT_3" class="link"><div class="nowrap">SumT
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>K<span class='generics'>&lt;</span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mna<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_CountT_3" class="link"><div class="nowrap">CountT
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>K<span class='generics'>&lt;</span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mna<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_FoldT_4" class="link"><div class="nowrap">FoldT
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>N<span class='comma'>, </span>S<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>K<span class='generics'>&lt;</span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mna<span class='comma'>, </span>S state<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='comma'>, </span>S<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_FoldT_4" class="link"><div class="nowrap">FoldT
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>N<span class='comma'>, </span>S<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>K<span class='generics'>&lt;</span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mna<span class='comma'>, </span>S state<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_FoldBackT_4" class="link"><div class="nowrap">FoldBackT
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>N<span class='comma'>, </span>S<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>K<span class='generics'>&lt;</span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mna<span class='comma'>, </span>S state<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_FoldBackT_4" class="link"><div class="nowrap">FoldBackT
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>N<span class='comma'>, </span>S<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>K<span class='generics'>&lt;</span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mna<span class='comma'>, </span>S state<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_FoldT_3" class="link"><div class="nowrap">FoldT
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>K<span class='generics'>&lt;</span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mna<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_FoldMapT_4" class="link"><div class="nowrap">FoldMapT
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>N<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>K<span class='generics'>&lt;</span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mna<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_FoldMapBackT_4" class="link"><div class="nowrap">FoldMapBackT
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>N<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>K<span class='generics'>&lt;</span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mna<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_ToSeqT_3" class="link"><div class="nowrap">ToSeqT
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>K<span class='generics'>&lt;</span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mna<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_IsEmptyT_3" class="link"><div class="nowrap">IsEmptyT
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>K<span class='generics'>&lt;</span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mna<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_ExistsT_3" class="link"><div class="nowrap">ExistsT
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>K<span class='generics'>&lt;</span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mna<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_ForAllT_3" class="link"><div class="nowrap">ForAllT
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>K<span class='generics'>&lt;</span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mna<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_ContainsT_4" class="link"><div class="nowrap">ContainsT
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>N<span class='comma'>, </span>EqA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>K<span class='generics'>&lt;</span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mna<span class='comma'>, </span>A value<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_ContainsT_3" class="link"><div class="nowrap">ContainsT
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>K<span class='generics'>&lt;</span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mna<span class='comma'>, </span>A value<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_Foldable_0" class="link"><div class="nowrap">Foldable
+</div></a></li>
+<ul><li><a href="#Foldable_0_fold_3" class="link"><div class="nowrap">fold
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='comma'>, </span>S<span class='generics'>&gt;</span> f<span class='comma'>, </span>S initialState<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_fold_3" class="link"><div class="nowrap">fold
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='comma'>, </span>S initialState<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_foldBack_3" class="link"><div class="nowrap">foldBack
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> f<span class='comma'>, </span>S initialState<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_foldBack_3" class="link"><div class="nowrap">foldBack
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='comma'>, </span>S initialState<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_fold_2" class="link"><div class="nowrap">fold
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> tm<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_foldMap_3" class="link"><div class="nowrap">foldMap
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_foldMapBack_3" class="link"><div class="nowrap">foldMapBack
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_foldM_4" class="link"><div class="nowrap">foldM
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+        S initialState,
+        K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_foldM_4" class="link"><div class="nowrap">foldM
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+        S initialState,
+        K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_foldBackM_4" class="link"><div class="nowrap">foldBackM
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+        B initialState,
+        K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_foldBackM_4" class="link"><div class="nowrap">foldBackM
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+        B initialState,
+        K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_toSeq_2" class="link"><div class="nowrap">toSeq
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_isEmpty_2" class="link"><div class="nowrap">isEmpty
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_count_2" class="link"><div class="nowrap">count
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_exists_2" class="link"><div class="nowrap">exists
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_forAll_2" class="link"><div class="nowrap">forAll
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_contains_3" class="link"><div class="nowrap">contains
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>EqA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_contains_2" class="link"><div class="nowrap">contains
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_sum_3" class="link"><div class="nowrap">sum
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>NumA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_sum_2" class="link"><div class="nowrap">sum
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_iterA_4" class="link"><div class="nowrap">iterA
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_0_iterM_4" class="link"><div class="nowrap">iterM
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_Foldable_1" class="link"><div class="nowrap">Foldable
+<span class='generics'>&lt;</span>out T<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#Foldable_1_Fold_2" class="link"><div class="nowrap">Fold
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='comma'>, </span>S initialState<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_1_FoldBack_2" class="link"><div class="nowrap">FoldBack
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='comma'>, </span>S initialState<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_1_Fold_2" class="link"><div class="nowrap">Fold
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='comma'>, </span>S<span class='generics'>&gt;</span> f<span class='comma'>, </span>S initialState<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_1_FoldBack_2" class="link"><div class="nowrap">FoldBack
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> f<span class='comma'>, </span>S initialState<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_1_Fold_1" class="link"><div class="nowrap">Fold
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> tm<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_1_FoldMap_2" class="link"><div class="nowrap">FoldMap
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_1_FoldMapBack_2" class="link"><div class="nowrap">FoldMapBack
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_1_ToSeq_1" class="link"><div class="nowrap">ToSeq
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_1_IsEmpty_1" class="link"><div class="nowrap">IsEmpty
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_1_Count_1" class="link"><div class="nowrap">Count
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_1_Exists_1" class="link"><div class="nowrap">Exists
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_1_ForAll_1" class="link"><div class="nowrap">ForAll
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_1_Contains_2" class="link"><div class="nowrap">Contains
+<span class='generics'>&lt;</span>EqA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_1_Sum_2" class="link"><div class="nowrap">Sum
+<span class='generics'>&lt;</span>NumA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#Foldable_1_Product_2" class="link"><div class="nowrap">Product
+<span class='generics'>&lt;</span>NumA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li></ul></ul></div>
+<div class="interface">
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_Foldable_0" class="def">Foldable</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Extensions.cs#L11" class="link">Source</a>
+<a href="#_0_Foldable_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>F<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="Foldable_0_SelectMany_3" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Guard<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Unit<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind,
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Unit<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Extensions.cs#L21" class="link">Source</a>
+<a href="#Foldable_0_SelectMany_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> F : Functor&lt;F&gt;</span></div></div></p>
+<div class="doc"><div><p>Monad bind operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Initial bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">C</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">bind</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monadic bind function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">project</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Projection function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>M<C></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>F<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="Foldable_0_SelectMany_3" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this Guard<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> ma,
+        Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind,
+        Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Extensions.cs#L40" class="link">Source</a>
+<a href="#Foldable_0_SelectMany_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> F : Functor&lt;F&gt;</span></div></div></p>
+<div class="doc"><div><p>Monad bind operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Intermediate bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">C</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">bind</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monadic bind function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">project</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Projection function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>M<C></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+S
+<a id="Foldable_0_Fold_3" class="def">Fold</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='comma'>, </span>S initialState<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='comma'>, </span>S<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Extensions.cs#L58" class="link">Source</a>
+<a href="#Foldable_0_Fold_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;</span></div></div></p>
+<div class="doc"><div><p>Right-associative fold of a structure, lazy in the accumulator.</p>
+<p>In the case of lists, 'Fold', when applied to a binary operator, a
+starting value (typically the right-identity of the operator), and a
+list, reduces the list using the binary operator, from right to left.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+S
+<a id="Foldable_0_Fold_3" class="def">Fold</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='comma'>, </span>S initialState<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Extensions.cs#L69" class="link">Source</a>
+<a href="#Foldable_0_Fold_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;</span></div></div></p>
+<div class="doc"><div><p>Right-associative fold of a structure, lazy in the accumulator.</p>
+<p>In the case of lists, 'Fold', when applied to a binary operator, a
+starting value (typically the right-identity of the operator), and a
+list, reduces the list using the binary operator, from right to left.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+S
+<a id="Foldable_0_FoldBack_3" class="def">FoldBack</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='comma'>, </span>S initialState<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Extensions.cs#L88" class="link">Source</a>
+<a href="#Foldable_0_FoldBack_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;</span></div></div></p>
+<div class="doc"><div><p>Left-associative fold of a structure, lazy in the accumulator.  This
+is rarely what you want, but can work well for structures with efficient
+right-to-left sequencing and an operator that is lazy in its left
+argument.</p>
+<p>In the case of lists, 'FoldLeft', when applied to a binary operator, a
+starting value (typically the left-identity of the operator), and a
+list, reduces the list using the binary operator, from left to right</p>
+</div>
+<div><p>Note that to produce the outermost application of the operator the
+entire input list must be traversed.  Like all left-associative folds,
+`FoldBack' will diverge if given an infinite list.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+S
+<a id="Foldable_0_FoldBack_3" class="def">FoldBack</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='comma'>, </span>S initialState<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Extensions.cs#L107" class="link">Source</a>
+<a href="#Foldable_0_FoldBack_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;</span></div></div></p>
+<div class="doc"><div><p>Left-associative fold of a structure, lazy in the accumulator.  This
+is rarely what you want, but can work well for structures with efficient
+right-to-left sequencing and an operator that is lazy in its left
+argument.</p>
+<p>In the case of lists, 'FoldLeft', when applied to a binary operator, a
+starting value (typically the left-identity of the operator), and a
+list, reduces the list using the binary operator, from left to right</p>
+</div>
+<div><p>Note that to produce the outermost application of the operator the
+entire input list must be traversed.  Like all left-associative folds,
+`FoldBack' will diverge if given an infinite list.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+A
+<a id="Foldable_0_Fold_2" class="def">Fold</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> tm<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Extensions.cs#L117" class="link">Source</a>
+<a href="#Foldable_0_Fold_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> A : Monoid&lt;A&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;</span></div></div></p>
+<div class="doc"><div><p>Given a structure with elements whose type is a <code>Monoid</code>, combine them
+via the monoid's <code>Append</code> operator.  This fold is right-associative and
+lazy in the accumulator.  When you need a strict left-associative fold,
+use 'foldMap'' instead, with 'id' as the map.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+B
+<a id="Foldable_0_FoldMap_3" class="def">FoldMap</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Extensions.cs#L128" class="link">Source</a>
+<a href="#Foldable_0_FoldMap_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> B : Monoid&lt;B&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;</span></div></div></p>
+<div class="doc"><div><p>Map each element of the structure into a monoid, and combine the
+results with <code>Append</code>.  This fold is right-associative and lazy in the
+accumulator.  For strict left-associative folds consider <code>FoldMapBack</code>
+instead.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+B
+<a id="Foldable_0_FoldMapBack_3" class="def">FoldMapBack</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Extensions.cs#L138" class="link">Source</a>
+<a href="#Foldable_0_FoldMapBack_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> B : Monoid&lt;B&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;</span></div></div></p>
+<div class="doc"><div><p>A left-associative variant of 'FoldMap' that is strict in the
+accumulator.  Use this method for strict reduction when partial
+results are merged via <code>Append</code>.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<a id="Foldable_0_FoldM_4" class="def">FoldM</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta,
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+        S initialState<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Extensions.cs#L151" class="link">Source</a>
+<a href="#Foldable_0_FoldM_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Right-to-left monadic fold over the elements of a structure.</p>
+<p>Given a structure <code>T</code> with elements <code>[a, b, c, ..., x, y]</code>, the result of
+a fold with an operator function <code>f</code> is equivalent to running each element
+through the monadic bind operator and chaining it to the next element,
+resulting in a single monadic result.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<a id="Foldable_0_FoldM_4" class="def">FoldM</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta,
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+        S initialState<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Extensions.cs#L172" class="link">Source</a>
+<a href="#Foldable_0_FoldM_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Right-to-left monadic fold over the elements of a structure.</p>
+<p>Given a structure <code>T</code> with elements <code>[a, b, c, ..., x, y]</code>, the result of
+a fold with an operator function <code>f</code> is equivalent to running each element
+through the monadic bind operator and chaining it to the next element,
+resulting in a single monadic result.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Foldable_0_FoldBackM_4" class="def">FoldBackM</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta,
+        Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+        B initialState<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Extensions.cs#L193" class="link">Source</a>
+<a href="#Foldable_0_FoldBackM_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Left-to-right monadic fold over the elements of a structure.</p>
+<p>Given a structure <code>T</code> with elements <code>[a, b, c, ..., x, y]</code>, the result of
+a fold with an operator function <code>f</code> is equivalent to running each element
+through the monadic bind operator and chaining it to the next element,
+resulting in a single monadic result.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Foldable_0_FoldBackM_4" class="def">FoldBackM</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta,
+        Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+        B initialState<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Extensions.cs#L214" class="link">Source</a>
+<a href="#Foldable_0_FoldBackM_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Left-to-right monadic fold over the elements of a structure.</p>
+<p>Given a structure <code>T</code> with elements <code>[a, b, c, ..., x, y]</code>, the result of
+a fold with an operator function <code>f</code> is equivalent to running each element
+through the monadic bind operator and chaining it to the next element,
+resulting in a single monadic result.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Foldable_0_ToSeq_2" class="def">ToSeq</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Extensions.cs#L230" class="link">Source</a>
+<a href="#Foldable_0_ToSeq_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;</span></div></div></p>
+<div class="doc"><div><p>List of elements of a structure, from left to right</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="Foldable_0_IsEmpty_2" class="def">IsEmpty</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Extensions.cs#L237" class="link">Source</a>
+<a href="#Foldable_0_IsEmpty_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;</span></div></div></p>
+<div class="doc"><div><p>List of elements of a structure, from left to right</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+int
+<a id="Foldable_0_Length_2" class="def">Length</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Extensions.cs#L249" class="link">Source</a>
+<a href="#Foldable_0_Length_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;</span></div></div></p>
+<div class="doc"><div><p>Returns the size/length of a finite structure as an <code>int</code>.  The
+default implementation just counts elements starting with the leftmost.</p>
+<p>Instances for structures that can compute the element count faster
+than via element-by-element counting, should provide a specialised
+implementation.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="Foldable_0_Exists_2" class="def">Exists</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Extensions.cs#L256" class="link">Source</a>
+<a href="#Foldable_0_Exists_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;</span></div></div></p>
+<div class="doc"><div><p>Does an element that fits the predicate occur in the structure?</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="Foldable_0_ForAll_2" class="def">ForAll</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Extensions.cs#L263" class="link">Source</a>
+<a href="#Foldable_0_ForAll_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;</span></div></div></p>
+<div class="doc"><div><p>Does the predicate hold for all elements in the structure?</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="Foldable_0_Contains_3" class="def">Contains</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>EqA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='comma'>, </span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Extensions.cs#L270" class="link">Source</a>
+<a href="#Foldable_0_Contains_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> EqA : Eq&lt;A&gt;</span></div></div></p>
+<div class="doc"><div><p>Does the element exist in the structure?</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="Foldable_0_Contains_2" class="def">Contains</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='comma'>, </span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Extensions.cs#L278" class="link">Source</a>
+<a href="#Foldable_0_Contains_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;</span></div></div></p>
+<div class="doc"><div><p>Does the element exist in the structure?</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+A
+<a id="Foldable_0_Sum_3" class="def">Sum</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>NumA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Extensions.cs#L285" class="link">Source</a>
+<a href="#Foldable_0_Sum_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> NumA : Num&lt;A&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;</span></div></div></p>
+<div class="doc"><div><p>Computes the sum of the numbers of a structure.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+A
+<a id="Foldable_0_Sum_2" class="def">Sum</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Extensions.cs#L293" class="link">Source</a>
+<a href="#Foldable_0_Sum_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> A : INumber&lt;A&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;</span></div></div></p>
+<div class="doc"><div><p>Computes the sum of the numbers of a structure.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="Foldable_0_IterA_4" class="def">IterA</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Extensions.cs#L303" class="link">Source</a>
+<a href="#Foldable_0_IterA_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> F : Applicative&lt;F&gt;</span></div></div></p>
+<div class="doc"><div><p>Map each element of a structure to an 'Applicative' action, evaluate these
+actions from left to right, and ignore the results.  For a version that
+doesn't ignore the results see 'Data.Traversable.traverse'.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="Foldable_0_IterM_4" class="def">IterM</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Extensions.cs#L318" class="link">Source</a>
+<a href="#Foldable_0_IterM_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> F : Applicative&lt;F&gt;</span></div></div></p>
+<div class="doc"><div><p>Map each element of a structure to an 'Applicative' action, evaluate these
+actions from left to right, and ignore the results.  For a version that
+doesn't ignore the results see 'Data.Traversable.traverse'.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_Foldable_0" class="def">Foldable</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.ExtensionsT.cs#L8" class="link">Source</a>
+<a href="#_0_Foldable_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+A
+<a id="Foldable_0_SumT_3" class="def">SumT</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>K<span class='generics'>&lt;</span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mna<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.ExtensionsT.cs#L28" class="link">Source</a>
+<a href="#Foldable_0_SumT_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> A : INumber&lt;A&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> M : Foldable&lt;M&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> N : Foldable&lt;N&gt;</span></div></div></p>
+<div class="doc"><div><p>Sum the items in the nested foldables</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Outer foldable trait</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">N</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Inner foldable trait</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">mna</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Nested value</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Summed value</p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<p>var mx = Seq&lt;Option<int>&gt;(Some(1), Some(2), Some(3));</p>
+<p>var ma = mx.KindT&lt;Seq, Option, Option<int>, int&gt;()
+.BindT(a =&gt; Some(a + 1))
+.MapT(a =&gt; a + 1);
+.SumT();</p>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+int
+<a id="Foldable_0_CountT_3" class="def">CountT</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>K<span class='generics'>&lt;</span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mna<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.ExtensionsT.cs#L52" class="link">Source</a>
+<a href="#Foldable_0_CountT_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Foldable&lt;M&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> N : Foldable&lt;N&gt;</span></div></div></p>
+<div class="doc"><div><p>Count the items in the nested foldables</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Outer foldable trait</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">N</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Inner foldable trait</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">mna</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Nested value</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Total number of items counted</p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<p>var mx = Seq&lt;Option<int>&gt;(Some(1), Some(2), Some(3));</p>
+<p>var ma = mx.KindT&lt;Seq, Option, Option<int>, int&gt;()
+.BindT(a =&gt; Some(a + 1))
+.MapT(a =&gt; a + 1);
+.CountT();</p>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+S
+<a id="Foldable_0_FoldT_4" class="def">FoldT</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>N<span class='comma'>, </span>S<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>K<span class='generics'>&lt;</span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mna<span class='comma'>, </span>S state<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='comma'>, </span>S<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.ExtensionsT.cs#L80" class="link">Source</a>
+<a href="#Foldable_0_FoldT_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Foldable&lt;M&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> N : Foldable&lt;N&gt;</span></div></div></p>
+<div class="doc"><div><p>Right-associative fold of a structure, lazy in the accumulator.</p>
+<p>In the case of lists, 'Fold', when applied to a binary operator, a
+starting value (typically the right-identity of the operator), and a
+list, reduces the list using the binary operator, from right to left.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Outer foldable trait</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">N</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Inner foldable trait</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Aggregate state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">mna</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Nested value</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Folded value</p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<p>var mx = Seq&lt;Option<int>&gt;(Some(1), Some(2), Some(3));</p>
+<p>var ma = mx.KindT&lt;Seq, Option, Option<int>, int&gt;()
+.BindT(a =&gt; Some(a + 1))
+.MapT(a =&gt; a + 1);
+.FoldT(0, (s, x) =&gt; s + x);</p>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+S
+<a id="Foldable_0_FoldT_4" class="def">FoldT</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>N<span class='comma'>, </span>S<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>K<span class='generics'>&lt;</span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mna<span class='comma'>, </span>S state<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.ExtensionsT.cs#L108" class="link">Source</a>
+<a href="#Foldable_0_FoldT_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Foldable&lt;M&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> N : Foldable&lt;N&gt;</span></div></div></p>
+<div class="doc"><div><p>Right-associative fold of a structure, lazy in the accumulator.</p>
+<p>In the case of lists, 'Fold', when applied to a binary operator, a
+starting value (typically the right-identity of the operator), and a
+list, reduces the list using the binary operator, from right to left.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Outer foldable trait</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">N</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Inner foldable trait</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Aggregate state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">mna</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Nested value</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Folded value</p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<p>var mx = Seq&lt;Option<int>&gt;(Some(1), Some(2), Some(3));</p>
+<p>var ma = mx.KindT&lt;Seq, Option, Option<int>, int&gt;()
+.BindT(a =&gt; Some(a + 1))
+.MapT(a =&gt; a + 1);
+.FoldT(0, s =&gt; x =&gt; s + x);</p>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+S
+<a id="Foldable_0_FoldBackT_4" class="def">FoldBackT</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>N<span class='comma'>, </span>S<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>K<span class='generics'>&lt;</span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mna<span class='comma'>, </span>S state<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.ExtensionsT.cs#L139" class="link">Source</a>
+<a href="#Foldable_0_FoldBackT_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Foldable&lt;M&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> N : Foldable&lt;N&gt;</span></div></div></p>
+<div class="doc"><div><p>Left-associative fold of a structure, lazy in the accumulator.  This
+is rarely what you want, but can work well for structures with efficient
+right-to-left sequencing and an operator that is lazy in its left
+argument.</p>
+<p>In the case of lists, 'FoldLeft', when applied to a binary operator, a
+starting value (typically the left-identity of the operator), and a
+list, reduces the list using the binary operator, from left to right</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Outer foldable trait</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">N</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Inner foldable trait</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Aggregate state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">mna</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Nested value</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Folded value</p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<p>var mx = Seq&lt;Option<int>&gt;(Some(1), Some(2), Some(3));</p>
+<p>var ma = mx.KindT&lt;Seq, Option, Option<int>, int&gt;()
+.BindT(a =&gt; Some(a + 1))
+.MapT(a =&gt; a + 1);
+.FoldBackT(0, (x, s) =&gt; s + x);</p>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+S
+<a id="Foldable_0_FoldBackT_4" class="def">FoldBackT</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>N<span class='comma'>, </span>S<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>K<span class='generics'>&lt;</span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mna<span class='comma'>, </span>S state<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.ExtensionsT.cs#L170" class="link">Source</a>
+<a href="#Foldable_0_FoldBackT_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Foldable&lt;M&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> N : Foldable&lt;N&gt;</span></div></div></p>
+<div class="doc"><div><p>Left-associative fold of a structure, lazy in the accumulator.  This
+is rarely what you want, but can work well for structures with efficient
+right-to-left sequencing and an operator that is lazy in its left
+argument.</p>
+<p>In the case of lists, 'FoldLeft', when applied to a binary operator, a
+starting value (typically the left-identity of the operator), and a
+list, reduces the list using the binary operator, from left to right</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Outer foldable trait</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">N</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Inner foldable trait</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Aggregate state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">mna</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Nested value</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Folded value</p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<p>var mx = Seq&lt;Option<int>&gt;(Some(1), Some(2), Some(3));</p>
+<p>var ma = mx.KindT&lt;Seq, Option, Option<int>, int&gt;()
+.BindT(a =&gt; Some(a + 1))
+.MapT(a =&gt; a + 1);
+.FoldBackT(0, x =&gt; s =&gt; s + x);</p>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+A
+<a id="Foldable_0_FoldT_3" class="def">FoldT</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>K<span class='generics'>&lt;</span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mna<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.ExtensionsT.cs#L195" class="link">Source</a>
+<a href="#Foldable_0_FoldT_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> A : Monoid&lt;A&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> M : Foldable&lt;M&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> N : Foldable&lt;N&gt;</span></div></div></p>
+<div class="doc"><div><p>Given a structure with elements whose type is a <code>Monoid</code>, combine them
+via the monoid's <code>Append</code> operator.  This fold is right-associative and
+lazy in the accumulator.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Outer foldable trait</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">N</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Inner foldable trait</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">mna</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Nested value</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Folded value</p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<p>var mx = Seq&lt;Option<int>&gt;(Some(1), Some(2), Some(3));</p>
+<p>var ma = mx.KindT&lt;Seq, Option, Option<int>, int&gt;()
+.BindT(a =&gt; Some(a + 1))
+.MapT(a =&gt; a + 1);
+.FoldT();</p>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+B
+<a id="Foldable_0_FoldMapT_4" class="def">FoldMapT</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>N<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>K<span class='generics'>&lt;</span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mna<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.ExtensionsT.cs#L223" class="link">Source</a>
+<a href="#Foldable_0_FoldMapT_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> B : Monoid&lt;B&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> M : Foldable&lt;M&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> N : Foldable&lt;N&gt;</span></div></div></p>
+<div class="doc"><div><p>Map each element of the structure into a monoid, and combine the
+results with <code>Append</code>.  This fold is right-associative and lazy in the
+accumulator.  For strict left-associative folds consider <code>FoldMapBack</code>
+instead.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Outer foldable trait</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">N</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Inner foldable trait</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">mna</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Nested value</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Folded value</p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<p>var mx = Seq&lt;Option<int>&gt;(Some(1), Some(2), Some(3));</p>
+<p>var ma = mx.KindT&lt;Seq, Option, Option<int>, int&gt;()
+.BindT(a =&gt; Some(a + 1))
+.MapT(a =&gt; a + 1);
+.FoldMapT(x =&gt; x + 1);</p>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+B
+<a id="Foldable_0_FoldMapBackT_4" class="def">FoldMapBackT</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>N<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>K<span class='generics'>&lt;</span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mna<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.ExtensionsT.cs#L250" class="link">Source</a>
+<a href="#Foldable_0_FoldMapBackT_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> B : Monoid&lt;B&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> M : Foldable&lt;M&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> N : Foldable&lt;N&gt;</span></div></div></p>
+<div class="doc"><div><p>A left-associative variant of 'FoldMap' that is strict in the
+accumulator.  Use this method for strict reduction when partial
+results are merged via <code>Append</code>.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Outer foldable trait</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">N</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Inner foldable trait</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">mna</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Nested value</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Folded value</p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<p>var mx = Seq&lt;Option<int>&gt;(Some(1), Some(2), Some(3));</p>
+<p>var ma = mx.KindT&lt;Seq, Option, Option<int>, int&gt;()
+.BindT(a =&gt; Some(a + 1))
+.MapT(a =&gt; a + 1);
+.FoldMapBackT(x =&gt; x + 1);</p>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Foldable_0_ToSeqT_3" class="def">ToSeqT</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>K<span class='generics'>&lt;</span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mna<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.ExtensionsT.cs#L275" class="link">Source</a>
+<a href="#Foldable_0_ToSeqT_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Foldable&lt;M&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> N : Foldable&lt;N&gt;</span></div></div></p>
+<div class="doc"><div><p>List of elements of a structure, from left to right</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Outer foldable trait</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">N</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Inner foldable trait</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">mna</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Nested value</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Sequence of values</p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<p>var mx = Seq&lt;Option<int>&gt;(Some(1), Some(2), Some(3));</p>
+<p>var ma = mx.KindT&lt;Seq, Option, Option<int>, int&gt;()
+.BindT(a =&gt; Some(a + 1))
+.MapT(a =&gt; a + 1);
+.ToSeqT();</p>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="Foldable_0_IsEmptyT_3" class="def">IsEmptyT</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>K<span class='generics'>&lt;</span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mna<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.ExtensionsT.cs#L298" class="link">Source</a>
+<a href="#Foldable_0_IsEmptyT_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Foldable&lt;M&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> N : Foldable&lt;N&gt;</span></div></div></p>
+<div class="doc"><div><p>Returns true if no values are in the foldable</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Outer foldable trait</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">N</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Inner foldable trait</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">mna</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Nested value</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if empty</p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<p>var mx = Seq&lt;Option<int>&gt;(Some(1), Some(2), Some(3));</p>
+<p>var ma = mx.KindT&lt;Seq, Option, Option<int>, int&gt;()
+.BindT(a =&gt; Some(a + 1))
+.MapT(a =&gt; a + 1);
+.IsEmptyT();</p>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="Foldable_0_ExistsT_3" class="def">ExistsT</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>K<span class='generics'>&lt;</span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mna<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.ExtensionsT.cs#L321" class="link">Source</a>
+<a href="#Foldable_0_ExistsT_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Foldable&lt;M&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> N : Foldable&lt;N&gt;</span></div></div></p>
+<div class="doc"><div><p>Does an element that fits the predicate occur in the structure?</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Outer foldable trait</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">N</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Inner foldable trait</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">mna</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Nested value</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if the predicate holds for at least one item in the structure</p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<p>var mx = Seq&lt;Option<int>&gt;(Some(1), Some(2), Some(3));</p>
+<p>var ma = mx.KindT&lt;Seq, Option, Option<int>, int&gt;()
+.BindT(a =&gt; Some(a + 1))
+.MapT(a =&gt; a + 1);
+.ExistsT(x =&gt; x == 5);</p>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="Foldable_0_ForAllT_3" class="def">ForAllT</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>K<span class='generics'>&lt;</span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mna<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.ExtensionsT.cs#L345" class="link">Source</a>
+<a href="#Foldable_0_ForAllT_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Foldable&lt;M&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> N : Foldable&lt;N&gt;</span></div></div></p>
+<div class="doc"><div><p>Does the predicate hold for all elements in the structure?</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Outer foldable trait</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">N</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Inner foldable trait</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">mna</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Nested value</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if predicate holds for all items in the structure.  True if there are no items.</p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<p>var mx = Seq&lt;Option<int>&gt;(Some(1), Some(2), Some(3));</p>
+<p>var ma = mx.KindT&lt;Seq, Option, Option<int>, int&gt;()
+.BindT(a =&gt; Some(a + 1))
+.MapT(a =&gt; a + 1);
+.ForAllT(x =&gt; x == 5);</p>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="Foldable_0_ContainsT_4" class="def">ContainsT</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>N<span class='comma'>, </span>EqA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>K<span class='generics'>&lt;</span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mna<span class='comma'>, </span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.ExtensionsT.cs#L368" class="link">Source</a>
+<a href="#Foldable_0_ContainsT_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Foldable&lt;M&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> N : Foldable&lt;N&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> EqA : Eq&lt;A&gt;</span></div></div></p>
+<div class="doc"><div><p>Does the element exist in the structure?</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Outer foldable trait</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">N</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Inner foldable trait</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">mna</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Nested value</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if value exists in the structure.</p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<p>var mx = Seq&lt;Option<int>&gt;(Some(1), Some(2), Some(3));</p>
+<p>var ma = mx.KindT&lt;Seq, Option, Option<int>, int&gt;()
+.BindT(a =&gt; Some(a + 1))
+.MapT(a =&gt; a + 1);
+.Contains(5);</p>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="Foldable_0_ContainsT_3" class="def">ContainsT</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>K<span class='generics'>&lt;</span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mna<span class='comma'>, </span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.ExtensionsT.cs#L392" class="link">Source</a>
+<a href="#Foldable_0_ContainsT_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Foldable&lt;M&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> N : Foldable&lt;N&gt;</span></div></div></p>
+<div class="doc"><div><p>Does the element exist in the structure?</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Outer foldable trait</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">N</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Inner foldable trait</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">mna</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Nested value</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if value exists in the structure.</p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<p>var mx = Seq&lt;Option<int>&gt;(Some(1), Some(2), Some(3));</p>
+<p>var ma = mx.KindT&lt;Seq, Option, Option<int>, int&gt;()
+.BindT(a =&gt; Some(a + 1))
+.MapT(a =&gt; a + 1);
+.Contains(5);</p>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_Foldable_0" class="def">Foldable</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Module.cs#L10" class="link">Source</a>
+<a href="#_0_Foldable_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+S
+<a id="Foldable_0_fold_3" class="def">fold</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='comma'>, </span>S<span class='generics'>&gt;</span> f<span class='comma'>, </span>S initialState<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Module.cs#L19" class="link">Source</a>
+<a href="#Foldable_0_fold_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;</span></div></div></p>
+<div class="doc"><div><p>Right-associative fold of a structure, lazy in the accumulator.</p>
+<p>In the case of lists, 'Fold', when applied to a binary operator, a
+starting value (typically the right-identity of the operator), and a
+list, reduces the list using the binary operator, from right to left.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+S
+<a id="Foldable_0_fold_3" class="def">fold</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='comma'>, </span>S initialState<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Module.cs#L30" class="link">Source</a>
+<a href="#Foldable_0_fold_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;</span></div></div></p>
+<div class="doc"><div><p>Right-associative fold of a structure, lazy in the accumulator.</p>
+<p>In the case of lists, 'Fold', when applied to a binary operator, a
+starting value (typically the right-identity of the operator), and a
+list, reduces the list using the binary operator, from right to left.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+S
+<a id="Foldable_0_foldBack_3" class="def">foldBack</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> f<span class='comma'>, </span>S initialState<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Module.cs#L49" class="link">Source</a>
+<a href="#Foldable_0_foldBack_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;</span></div></div></p>
+<div class="doc"><div><p>Left-associative fold of a structure, lazy in the accumulator.  This
+is rarely what you want, but can work well for structures with efficient
+right-to-left sequencing and an operator that is lazy in its left
+argument.</p>
+<p>In the case of lists, 'FoldLeft', when applied to a binary operator, a
+starting value (typically the left-identity of the operator), and a
+list, reduces the list using the binary operator, from left to right</p>
+</div>
+<div><p>Note that to produce the outermost application of the operator the
+entire input list must be traversed.  Like all left-associative folds,
+`FoldBack' will diverge if given an infinite list.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+S
+<a id="Foldable_0_foldBack_3" class="def">foldBack</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='comma'>, </span>S initialState<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Module.cs#L68" class="link">Source</a>
+<a href="#Foldable_0_foldBack_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;</span></div></div></p>
+<div class="doc"><div><p>Left-associative fold of a structure, lazy in the accumulator.  This
+is rarely what you want, but can work well for structures with efficient
+right-to-left sequencing and an operator that is lazy in its left
+argument.</p>
+<p>In the case of lists, 'FoldLeft', when applied to a binary operator, a
+starting value (typically the left-identity of the operator), and a
+list, reduces the list using the binary operator, from left to right</p>
+</div>
+<div><p>Note that to produce the outermost application of the operator the
+entire input list must be traversed.  Like all left-associative folds,
+`FoldBack' will diverge if given an infinite list.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+A
+<a id="Foldable_0_fold_2" class="def">fold</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> tm<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Module.cs#L78" class="link">Source</a>
+<a href="#Foldable_0_fold_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> A : Monoid&lt;A&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;</span></div></div></p>
+<div class="doc"><div><p>Given a structure with elements whose type is a <code>Monoid</code>, combine them
+via the monoid's <code>Append</code> operator.  This fold is right-associative and
+lazy in the accumulator.  When you need a strict left-associative fold,
+use 'foldMap'' instead, with 'id' as the map.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+B
+<a id="Foldable_0_foldMap_3" class="def">foldMap</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Module.cs#L89" class="link">Source</a>
+<a href="#Foldable_0_foldMap_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> B : Monoid&lt;B&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;</span></div></div></p>
+<div class="doc"><div><p>Map each element of the structure into a monoid, and combine the
+results with <code>Append</code>.  This fold is right-associative and lazy in the
+accumulator.  For strict left-associative folds consider <code>FoldMapBack</code>
+instead.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+B
+<a id="Foldable_0_foldMapBack_3" class="def">foldMapBack</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Module.cs#L99" class="link">Source</a>
+<a href="#Foldable_0_foldMapBack_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> B : Monoid&lt;B&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;</span></div></div></p>
+<div class="doc"><div><p>A left-associative variant of 'FoldMap' that is strict in the
+accumulator.  Use this method for strict reduction when partial
+results are merged via <code>Append</code>.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<a id="Foldable_0_foldM_4" class="def">foldM</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+        S initialState,
+        K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Module.cs#L112" class="link">Source</a>
+<a href="#Foldable_0_foldM_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Right-to-left monadic fold over the elements of a structure.</p>
+<p>Given a structure <code>T</code> with elements <code>[a, b, c, ..., x, y]</code>, the result of
+a fold with an operator function <code>f</code> is equivalent to running each element
+through the monadic bind operator and chaining it to the next element,
+resulting in a single monadic result.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<a id="Foldable_0_foldM_4" class="def">foldM</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+        S initialState,
+        K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Module.cs#L133" class="link">Source</a>
+<a href="#Foldable_0_foldM_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Right-to-left monadic fold over the elements of a structure.</p>
+<p>Given a structure <code>T</code> with elements <code>[a, b, c, ..., x, y]</code>, the result of
+a fold with an operator function <code>f</code> is equivalent to running each element
+through the monadic bind operator and chaining it to the next element,
+resulting in a single monadic result.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Foldable_0_foldBackM_4" class="def">foldBackM</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+        B initialState,
+        K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Module.cs#L154" class="link">Source</a>
+<a href="#Foldable_0_foldBackM_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Left-to-right monadic fold over the elements of a structure.</p>
+<p>Given a structure <code>T</code> with elements <code>[a, b, c, ..., x, y]</code>, the result of
+a fold with an operator function <code>f</code> is equivalent to running each element
+through the monadic bind operator and chaining it to the next element,
+resulting in a single monadic result.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Foldable_0_foldBackM_4" class="def">foldBackM</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+        B initialState,
+        K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Module.cs#L175" class="link">Source</a>
+<a href="#Foldable_0_foldBackM_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Left-to-right monadic fold over the elements of a structure.</p>
+<p>Given a structure <code>T</code> with elements <code>[a, b, c, ..., x, y]</code>, the result of
+a fold with an operator function <code>f</code> is equivalent to running each element
+through the monadic bind operator and chaining it to the next element,
+resulting in a single monadic result.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Foldable_0_toSeq_2" class="def">toSeq</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Module.cs#L191" class="link">Source</a>
+<a href="#Foldable_0_toSeq_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;</span></div></div></p>
+<div class="doc"><div><p>List of elements of a structure, from left to right</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="Foldable_0_isEmpty_2" class="def">isEmpty</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Module.cs#L198" class="link">Source</a>
+<a href="#Foldable_0_isEmpty_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;</span></div></div></p>
+<div class="doc"><div><p>Returns true if no values are in the foldable</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+int
+<a id="Foldable_0_count_2" class="def">count</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Module.cs#L210" class="link">Source</a>
+<a href="#Foldable_0_count_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;</span></div></div></p>
+<div class="doc"><div><p>Returns the size/length of a finite structure as an <code>int</code>.  The
+default implementation just counts elements starting with the leftmost.</p>
+<p>Instances for structures that can compute the element count faster
+than via element-by-element counting, should provide a specialised
+implementation.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="Foldable_0_exists_2" class="def">exists</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Module.cs#L217" class="link">Source</a>
+<a href="#Foldable_0_exists_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;</span></div></div></p>
+<div class="doc"><div><p>Does an element that fits the predicate occur in the structure?</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="Foldable_0_forAll_2" class="def">forAll</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Module.cs#L224" class="link">Source</a>
+<a href="#Foldable_0_forAll_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;</span></div></div></p>
+<div class="doc"><div><p>Does the predicate hold for all elements in the structure?</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="Foldable_0_contains_3" class="def">contains</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>EqA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Module.cs#L231" class="link">Source</a>
+<a href="#Foldable_0_contains_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> EqA : Eq&lt;A&gt;</span></div></div></p>
+<div class="doc"><div><p>Does the element exist in the structure?</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="Foldable_0_contains_2" class="def">contains</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Module.cs#L239" class="link">Source</a>
+<a href="#Foldable_0_contains_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;</span></div></div></p>
+<div class="doc"><div><p>Does the element exist in the structure?</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+A
+<a id="Foldable_0_sum_3" class="def">sum</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>NumA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Module.cs#L246" class="link">Source</a>
+<a href="#Foldable_0_sum_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> NumA : Num&lt;A&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;</span></div></div></p>
+<div class="doc"><div><p>Computes the sum of the numbers of a structure.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+A
+<a id="Foldable_0_sum_2" class="def">sum</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Module.cs#L254" class="link">Source</a>
+<a href="#Foldable_0_sum_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> A : INumber&lt;A&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;</span></div></div></p>
+<div class="doc"><div><p>Computes the sum of the numbers of a structure.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="Foldable_0_iterA_4" class="def">iterA</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Module.cs#L264" class="link">Source</a>
+<a href="#Foldable_0_iterA_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> F : Applicative&lt;F&gt;</span></div></div></p>
+<div class="doc"><div><p>Map each element of a structure to an 'Applicative' action, evaluate these
+actions from left to right, and ignore the results.  For a version that
+doesn't ignore the results see 'Data.Traversable.traverse'.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="Foldable_0_iterM_4" class="def">iterM</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Module.cs#L279" class="link">Source</a>
+<a href="#Foldable_0_iterM_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> F : Applicative&lt;F&gt;</span></div></div></p>
+<div class="doc"><div><p>Map each element of a structure to an 'Applicative' action, evaluate these
+actions from left to right, and ignore the results.  For a version that
+doesn't ignore the results see 'Data.Traversable.traverse'.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">interface</span>
+<a id="_0_Foldable_1" class="def">Foldable</a>
+<span class='generics'>&lt;</span>out T<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Trait.cs#L7" class="link">Source</a>
+<a href="#_0_Foldable_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : Foldable&lt;T&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+S
+<a id="Foldable_1_Fold_2" class="def">Fold</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='comma'>, </span>S initialState<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Trait.cs#L21" class="link">Source</a>
+<a href="#Foldable_1_Fold_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Right-associative fold of a structure, lazy in the accumulator.</p>
+<p>In the case of lists, 'Fold', when applied to a binary operator, a
+starting value (typically the right-identity of the operator), and a
+list, reduces the list using the binary operator, from right to left.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+S
+<a id="Foldable_1_FoldBack_2" class="def">FoldBack</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='comma'>, </span>S initialState<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Trait.cs#L38" class="link">Source</a>
+<a href="#Foldable_1_FoldBack_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Left-associative fold of a structure, lazy in the accumulator.  This
+is rarely what you want, but can work well for structures with efficient
+right-to-left sequencing and an operator that is lazy in its left
+argument.</p>
+<p>In the case of lists, 'FoldLeft', when applied to a binary operator, a
+starting value (typically the left-identity of the operator), and a
+list, reduces the list using the binary operator, from left to right</p>
+</div>
+<div><p>Note that to produce the outermost application of the operator the
+entire input list must be traversed.  Like all left-associative folds,
+`FoldBack' will diverge if given an infinite list.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+S
+<a id="Foldable_1_Fold_2" class="def">Fold</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='comma'>, </span>S<span class='generics'>&gt;</span> f<span class='comma'>, </span>S initialState<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Trait.cs#L52" class="link">Source</a>
+<a href="#Foldable_1_Fold_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Right-associative fold of a structure, lazy in the accumulator.</p>
+<p>In the case of lists, 'Fold', when applied to a binary operator, a
+starting value (typically the right-identity of the operator), and a
+list, reduces the list using the binary operator, from right to left.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+S
+<a id="Foldable_1_FoldBack_2" class="def">FoldBack</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> f<span class='comma'>, </span>S initialState<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Trait.cs#L70" class="link">Source</a>
+<a href="#Foldable_1_FoldBack_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Left-associative fold of a structure, lazy in the accumulator.  This
+is rarely what you want, but can work well for structures with efficient
+right-to-left sequencing and an operator that is lazy in its left
+argument.</p>
+<p>In the case of lists, 'FoldLeft', when applied to a binary operator, a
+starting value (typically the left-identity of the operator), and a
+list, reduces the list using the binary operator, from left to right</p>
+</div>
+<div><p>Note that to produce the outermost application of the operator the
+entire input list must be traversed.  Like all left-associative folds,
+`FoldBack' will diverge if given an infinite list.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+A
+<a id="Foldable_1_Fold_1" class="def">Fold</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> tm<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Trait.cs#L79" class="link">Source</a>
+<a href="#Foldable_1_Fold_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> A : Monoid&lt;A&gt;</span></div></div></p>
+<div class="doc"><div><p>Given a structure with elements whose type is a <code>Monoid</code>, combine them
+via the monoid's <code>Append</code> operator.  This fold is right-associative and
+lazy in the accumulator.  When you need a strict left-associative fold,
+use 'foldMap'' instead, with 'id' as the map.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+B
+<a id="Foldable_1_FoldMap_2" class="def">FoldMap</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Trait.cs#L89" class="link">Source</a>
+<a href="#Foldable_1_FoldMap_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> B : Monoid&lt;B&gt;</span></div></div></p>
+<div class="doc"><div><p>Map each element of the structure into a monoid, and combine the
+results with <code>Append</code>.  This fold is right-associative and lazy in the
+accumulator.  For strict left-associative folds consider <code>FoldMapBack</code>
+instead.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+B
+<a id="Foldable_1_FoldMapBack_2" class="def">FoldMapBack</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Trait.cs#L98" class="link">Source</a>
+<a href="#Foldable_1_FoldMapBack_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> B : Monoid&lt;B&gt;</span></div></div></p>
+<div class="doc"><div><p>A left-associative variant of 'FoldMap' that is strict in the
+accumulator.  Use this method for strict reduction when partial
+results are merged via <code>Append</code>.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Foldable_1_ToSeq_1" class="def">ToSeq</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Trait.cs#L105" class="link">Source</a>
+<a href="#Foldable_1_ToSeq_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>List of elements of a structure, from left to right</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="Foldable_1_IsEmpty_1" class="def">IsEmpty</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Trait.cs#L111" class="link">Source</a>
+<a href="#Foldable_1_IsEmpty_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>List of elements of a structure, from left to right</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+int
+<a id="Foldable_1_Count_1" class="def">Count</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Trait.cs#L122" class="link">Source</a>
+<a href="#Foldable_1_Count_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns the size/length of a finite structure as an <code>int</code>.  The
+default implementation just counts elements starting with the leftmost.</p>
+<p>Instances for structures that can compute the element count faster
+than via element-by-element counting, should provide a specialised
+implementation.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="Foldable_1_Exists_1" class="def">Exists</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Trait.cs#L128" class="link">Source</a>
+<a href="#Foldable_1_Exists_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Does an element that fits the predicate occur in the structure?</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="Foldable_1_ForAll_1" class="def">ForAll</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Trait.cs#L134" class="link">Source</a>
+<a href="#Foldable_1_ForAll_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Does the predicate hold for all elements in the structure?</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="Foldable_1_Contains_2" class="def">Contains</a>
+<span class='generics'>&lt;</span>EqA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='comma'>, </span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Trait.cs#L140" class="link">Source</a>
+<a href="#Foldable_1_Contains_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> EqA : Eq&lt;A&gt;</span></div></div></p>
+<div class="doc"><div><p>Does the element exist in the structure?</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+A
+<a id="Foldable_1_Sum_2" class="def">Sum</a>
+<span class='generics'>&lt;</span>NumA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Trait.cs#L146" class="link">Source</a>
+<a href="#Foldable_1_Sum_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> NumA : Num&lt;A&gt;</span></div></div></p>
+<div class="doc"><div><p>Computes the sum of the numbers of a structure.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+A
+<a id="Foldable_1_Product_2" class="def">Product</a>
+<span class='generics'>&lt;</span>NumA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>T<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Foldable/Foldable.Trait.cs#L152" class="link">Source</a>
+<a href="#Foldable_1_Product_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> NumA : Num&lt;A&gt;</span></div></div></p>
+<div class="doc"><div><p>Computes the sum of the numbers of a structure.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div></div></div></body></html>
