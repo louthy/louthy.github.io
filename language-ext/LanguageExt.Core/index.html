@@ -231,7 +231,21 @@ the <code>Pipes</code> compositional streaming functionality.  To understand mor
         Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>Either<span class='generics'>&lt;</span>E<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li></ul>
 <li><a href="#_0_GuardExtensions_0" class="link"><div class="nowrap">GuardExtensions
 </div></a></li>
-<ul><li><a href="#GuardExtensions_0_ToEff_0" class="link"><div class="nowrap">ToEff
+<ul><li><a href="#GuardExtensions_0_Bind_1" class="link"><div class="nowrap">Bind
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this Guard<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> guard,
+        Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#GuardExtensions_0_SelectMany_2" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this Guard<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> guard,
+        Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#GuardExtensions_0_ToIO_0" class="link"><div class="nowrap">ToIO
+
+<span class='parens'>(</span>this Guard<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> guard<span class='parens'>)</span></div></a></li>
+<li><a href="#GuardExtensions_0_ToEff_0" class="link"><div class="nowrap">ToEff
 
 <span class='parens'>(</span>this Guard<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> guard<span class='parens'>)</span></div></a></li>
 <li><a href="#GuardExtensions_0_Bind_1" class="link"><div class="nowrap">Bind
@@ -285,13 +299,13 @@ the <code>Pipes</code> compositional streaming functionality.  To understand mor
 <li><a href="#Number_1_Compare_0" class="link"><div class="nowrap">Compare
 
 <span class='parens'>(</span>A x<span class='comma'>, </span>A y<span class='parens'>)</span></div></a></li>
-<li><a href="#Number_1_Plus_0" class="link"><div class="nowrap">Plus
+<li><a href="#Number_1_Add_0" class="link"><div class="nowrap">Add
 
 <span class='parens'>(</span>A x<span class='comma'>, </span>A y<span class='parens'>)</span></div></a></li>
 <li><a href="#Number_1_Subtract_0" class="link"><div class="nowrap">Subtract
 
 <span class='parens'>(</span>A x<span class='comma'>, </span>A y<span class='parens'>)</span></div></a></li>
-<li><a href="#Number_1_Product_0" class="link"><div class="nowrap">Product
+<li><a href="#Number_1_Multiply_0" class="link"><div class="nowrap">Multiply
 
 <span class='parens'>(</span>A x<span class='comma'>, </span>A y<span class='parens'>)</span></div></a></li>
 <li><a href="#Number_1_Negate_0" class="link"><div class="nowrap">Negate
@@ -1672,11 +1686,94 @@ Either<span class='generics'>&lt;</span>E<span class='comma'>, </span>C<span cla
 
 <div class="subs methods"><p class="caption">Methods</p>
 <div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<a id="GuardExtensions_0_Bind_1" class="def">Bind</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this Guard<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> guard,
+        Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Guard.cs#L92" class="link">Source</a>
+<a href="#GuardExtensions_0_Bind_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monadic binding support for <code>Eff</code></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<a id="GuardExtensions_0_SelectMany_2" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this Guard<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> guard,
+        Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Guard.cs#L102" class="link">Source</a>
+<a href="#GuardExtensions_0_SelectMany_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monadic binding support for <code>Eff</code></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
+<a id="GuardExtensions_0_ToIO_0" class="def">ToIO</a>
+
+<span class='parens'>(</span>this Guard<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> guard<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Guard.cs#L113" class="link">Source</a>
+<a href="#GuardExtensions_0_ToIO_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Natural transformation to <code>IO</code></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
 Eff<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
 <a id="GuardExtensions_0_ToEff_0" class="def">ToEff</a>
 
 <span class='parens'>(</span>this Guard<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> guard<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Guard.cs#L92" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Guard.cs#L121" class="link">Source</a>
 <a href="#GuardExtensions_0_ToEff_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Natural transformation to <code>Eff</code></p>
@@ -1704,7 +1801,7 @@ Eff<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>
         this Guard<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> guard,
         Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Guard.cs#L100" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Guard.cs#L129" class="link">Source</a>
 <a href="#GuardExtensions_0_Bind_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Monadic binding support for <code>Eff</code></p>
@@ -1733,7 +1830,7 @@ Eff<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
         this Guard<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> guard,
         Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>
         Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Guard.cs#L110" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Guard.cs#L139" class="link">Source</a>
 <a href="#GuardExtensions_0_SelectMany_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Monadic binding support for <code>Eff</code></p>
@@ -1759,7 +1856,7 @@ Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Unit<span cl
 <a id="GuardExtensions_0_ToEff_1" class="def">ToEff</a>
 <span class='generics'>&lt;</span>RT<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this Guard<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> guard<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Guard.cs#L121" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Guard.cs#L150" class="link">Source</a>
 <a href="#GuardExtensions_0_ToEff_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Natural transformation to <code>Eff</code></p>
@@ -1787,7 +1884,7 @@ Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>B<span class
 <span class='parens'>(</span>
         this Guard<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> guard,
         Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Guard.cs#L129" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Guard.cs#L158" class="link">Source</a>
 <a href="#GuardExtensions_0_Bind_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Monadic binding support for <code>Eff</code></p>
@@ -1816,7 +1913,7 @@ Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>C<span class
         this Guard<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> guard,
         Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>
         Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Guard.cs#L139" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Guard.cs#L168" class="link">Source</a>
 <a href="#GuardExtensions_0_SelectMany_3" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Monadic binding support for <code>Eff</code></p>
@@ -1842,7 +1939,7 @@ Validation<span class='generics'>&lt;</span>F<span class='comma'>, </span>Unit<s
 <a id="GuardExtensions_0_ToValidation_1" class="def">ToValidation</a>
 <span class='generics'>&lt;</span>F<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this Guard<span class='generics'>&lt;</span>F<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> guard<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Guard.cs#L150" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Guard.cs#L179" class="link">Source</a>
 <a href="#GuardExtensions_0_ToValidation_1" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> F : Monoid&lt;F&gt;</span></div></div></p>
@@ -1871,7 +1968,7 @@ Validation<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span
 <span class='parens'>(</span>
         this Guard<span class='generics'>&lt;</span>F<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> guard,
         Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Guard.cs#L159" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Guard.cs#L188" class="link">Source</a>
 <a href="#GuardExtensions_0_Bind_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> F : Monoid&lt;F&gt;</span></div></div></p>
@@ -1901,7 +1998,7 @@ Validation<span class='generics'>&lt;</span>F<span class='comma'>, </span>C<span
         this Guard<span class='generics'>&lt;</span>F<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> guard,
         Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>
         Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Guard.cs#L170" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Guard.cs#L199" class="link">Source</a>
 <a href="#GuardExtensions_0_SelectMany_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> F : Monoid&lt;F&gt;</span></div></div></p>
@@ -2029,11 +2126,11 @@ int
 </div>
 <div class="top"><p class="src"><span class="keyword">method</span>
 A
-<a id="Number_1_Plus_0" class="def">Plus</a>
+<a id="Number_1_Add_0" class="def">Add</a>
 
 <span class='parens'>(</span>A x<span class='comma'>, </span>A y<span class='parens'>)</span>
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Number.cs#L22" class="link">Source</a>
-<a href="#Number_1_Plus_0" class="selflink">#</a>
+<a href="#Number_1_Add_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
 <div></div>
@@ -2079,11 +2176,11 @@ A
 </div>
 <div class="top"><p class="src"><span class="keyword">method</span>
 A
-<a id="Number_1_Product_0" class="def">Product</a>
+<a id="Number_1_Multiply_0" class="def">Multiply</a>
 
 <span class='parens'>(</span>A x<span class='comma'>, </span>A y<span class='parens'>)</span>
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Number.cs#L28" class="link">Source</a>
-<a href="#Number_1_Product_0" class="selflink">#</a>
+<a href="#Number_1_Multiply_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
 <div></div>
