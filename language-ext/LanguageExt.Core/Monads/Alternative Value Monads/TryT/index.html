@@ -16,7 +16,7 @@
 <div id="table-of-contents"><p class="caption">Contents</p>
 <ul><li><a href="#_0_TryT_2" class="link"><div class="nowrap">TryT
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Fin<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> runTry<span class='parens'>)</span></div></a></li>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Try<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> runTry<span class='parens'>)</span></div></a></li>
 <ul><li><a href="#TryT_2_Succ_0" class="link"><div class="nowrap">Succ
 
 <span class='parens'>(</span>A value<span class='parens'>)</span></div></a></li>
@@ -44,15 +44,18 @@
 <li><a href="#TryT_2_Match_1" class="link"><div class="nowrap">Match
 <span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> Succ<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>B<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#TryT_2_IfFail_0" class="link"><div class="nowrap">IfFail
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>A<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#TryT_2_IfFailM_0" class="link"><div class="nowrap">IfFailM
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
 <li><a href="#TryT_2_Run_0" class="link"><div class="nowrap">Run
 
 <span class='parens'>(</span><span class='parens'>)</span></div></a></li>
 <li><a href="#TryT_2_MapT_2" class="link"><div class="nowrap">MapT
 <span class='generics'>&lt;</span>M1<span class='comma'>, </span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Fin<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>M1<span class='comma'>, </span>Fin<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
-<li><a href="#TryT_2_MapM_1" class="link"><div class="nowrap">MapM
-<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
-<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
 <li><a href="#TryT_2_Map_1" class="link"><div class="nowrap">Map
 <span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
@@ -88,7 +91,36 @@
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Pure<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
 <li><a href="#TryT_2_SelectMany_2" class="link"><div class="nowrap">SelectMany
 <span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
-<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li></ul>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#TryT_2_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Pure<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#TryT_2_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Fail<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#TryT_2_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Fail<span class='generics'>&lt;</span>Exception<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#TryT_2_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Error mb<span class='parens'>)</span></div></a></li>
+<li><a href="#TryT_2_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>CatchError mb<span class='parens'>)</span></div></a></li>
+<li><a href="#TryT_2_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>CatchValue<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#TryT_2_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>CatchIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#TryT_2_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>CatchM<span class='generics'>&lt;</span>TryT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#TryT_2_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>CatchError<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#TryT_2_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>CatchError<span class='generics'>&lt;</span>Exception<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#TryT_2_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>CatchValue<span class='generics'>&lt;</span>Error<span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#TryT_2_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>CatchValue<span class='generics'>&lt;</span>Exception<span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#TryT_2_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#TryT_2_Combine_0" class="link"><div class="nowrap">Combine
+
+<span class='parens'>(</span>TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span></div></a></li></ul>
 <li><a href="#_0_TryTExt_0" class="link"><div class="nowrap">TryTExt
 </div></a></li>
 <ul><li><a href="#TryTExt_0_As_2" class="link"><div class="nowrap">As
@@ -96,7 +128,10 @@
 <span class='parens'>(</span>this K<span class='generics'>&lt;</span>TryT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
 <li><a href="#TryTExt_0_Flatten_2" class="link"><div class="nowrap">Flatten
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>this TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mma<span class='parens'>)</span></div></a></li>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>TryT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mma<span class='parens'>)</span></div></a></li>
+<li><a href="#TryTExt_0_Flatten_2" class="link"><div class="nowrap">Flatten
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>TryT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>TryT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mma<span class='parens'>)</span></div></a></li>
 <li><a href="#TryTExt_0_SelectMany_4" class="link"><div class="nowrap">SelectMany
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>
@@ -192,8 +227,8 @@
 <div class="top"><p class="src"><span class="keyword">record</span>
 <a id="_0_TryT_2" class="def">TryT</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Fin<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> runTry<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L13" class="link">Source</a>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Try<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> runTry<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L14" class="link">Source</a>
 <a href="#_0_TryT_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -227,7 +262,7 @@ TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class
 <a id="TryT_2_Succ_0" class="def">Succ</a>
 
 <span class='parens'>(</span>A value<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L21" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L22" class="link">Source</a>
 <a href="#TryT_2_Succ_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Lift a pure value into the monad-transformer</p>
@@ -260,7 +295,7 @@ TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class
 <a id="TryT_2_Fail_0" class="def">Fail</a>
 
 <span class='parens'>(</span>Error value<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L29" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L30" class="link">Source</a>
 <a href="#TryT_2_Fail_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Lift a fail value into the monad-transformer</p>
@@ -300,11 +335,7 @@ TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">pure</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Monad to lift</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
 <td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>TryT</code></p>
 </span></td></tr></tbody></table></div></div>
 </div>
@@ -326,18 +357,14 @@ TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class
 <a id="TryT_2_Lift_0" class="def">Lift</a>
 
 <span class='parens'>(</span>Fin<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> result<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L45" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L44" class="link">Source</a>
 <a href="#TryT_2_Lift_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Lifts a given monad into the transformer</p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">either</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Monad to lift</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
 <td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>TryT</code></p>
 </span></td></tr></tbody></table></div></div>
 </div>
@@ -359,18 +386,14 @@ TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class
 <a id="TryT_2_Lift_0" class="def">Lift</a>
 
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>Fin<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> result<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L53" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L51" class="link">Source</a>
 <a href="#TryT_2_Lift_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Lifts a given monad into the transformer</p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">either</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Monad to lift</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
 <td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>TryT</code></p>
 </span></td></tr></tbody></table></div></div>
 </div>
@@ -392,7 +415,7 @@ TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class
 <a id="TryT_2_Lift_0" class="def">Lift</a>
 
 <span class='parens'>(</span>Fail<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span> fail<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L61" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L59" class="link">Source</a>
 <a href="#TryT_2_Lift_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Lifts a given monad into the transformer</p>
@@ -425,7 +448,7 @@ TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class
 <a id="TryT_2_Lift_0" class="def">Lift</a>
 
 <span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> monad<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L69" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L67" class="link">Source</a>
 <a href="#TryT_2_Lift_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Lifts a given monad into the transformer</p>
@@ -458,7 +481,7 @@ TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class
 <a id="TryT_2_LiftIO_0" class="def">LiftIO</a>
 
 <span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> monad<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L77" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L75" class="link">Source</a>
 <a href="#TryT_2_LiftIO_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Lifts a given monad into the transformer</p>
@@ -491,8 +514,82 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='g
 <a id="TryT_2_Match_1" class="def">Match</a>
 <span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> Succ<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>B<span class='generics'>&gt;</span> Fail<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L91" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L89" class="link">Source</a>
 <a href="#TryT_2_Match_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Match the bound value and return a result (which gets packages back up inside the inner monad)</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Succ</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Success branch</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Fail</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Fail branch</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Inner monad with the result of the <code>Succ</code> or <code>Fail</code> branches</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="TryT_2_IfFail_0" class="def">IfFail</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>A<span class='generics'>&gt;</span> Fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L98" class="link">Source</a>
+<a href="#TryT_2_IfFail_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Match the bound value and return a result (which gets packages back up inside the inner monad)</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Succ</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Success branch</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Fail</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Fail branch</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Inner monad with the result of the <code>Succ</code> or <code>Fail</code> branches</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="TryT_2_IfFailM_0" class="def">IfFailM</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> Fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L107" class="link">Source</a>
+<a href="#TryT_2_IfFailM_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Match the bound value and return a result (which gets packages back up inside the inner monad)</p>
 </div>
@@ -528,7 +625,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Fin<span class=
 <a id="TryT_2_Run_0" class="def">Run</a>
 
 <span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L100" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L116" class="link">Source</a>
 <a href="#TryT_2_Run_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Run the transformer</p>
@@ -555,7 +652,7 @@ TryT<span class='generics'>&lt;</span>M1<span class='comma'>, </span>B<span clas
 <a id="TryT_2_MapT_2" class="def">MapT</a>
 <span class='generics'>&lt;</span>M1<span class='comma'>, </span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Fin<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>M1<span class='comma'>, </span>Fin<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L124" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L131" class="link">Source</a>
 <a href="#TryT_2_MapT_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M1 : Monad&lt;M1&gt;</span></div></div></p>
@@ -594,40 +691,10 @@ TryT<span class='generics'>&lt;</span>M1<span class='comma'>, </span>B<span clas
 </div>
 <div class="top"><p class="src"><span class="keyword">method</span>
 TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
-<a id="TryT_2_MapM_1" class="def">MapM</a>
-<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
-<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L132" class="link">Source</a>
-<a href="#TryT_2_MapM_1" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div><p>Maps the given monad</p>
-</div>
-<div></div>
-<div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
-</span></td></tr></tbody></table></div></div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
 <a id="TryT_2_Map_1" class="def">Map</a>
 <span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L147" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L141" class="link">Source</a>
 <a href="#TryT_2_Map_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Maps the bound value</p>
@@ -664,7 +731,7 @@ TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class
 <a id="TryT_2_Select_1" class="def">Select</a>
 <span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L156" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L150" class="link">Source</a>
 <a href="#TryT_2_Select_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Maps the bound value</p>
@@ -701,7 +768,7 @@ TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class
 <a id="TryT_2_Bind_1" class="def">Bind</a>
 <span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>TryT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L170" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L164" class="link">Source</a>
 <a href="#TryT_2_Bind_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Monad bind operation</p>
@@ -738,7 +805,7 @@ TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class
 <a id="TryT_2_Bind_1" class="def">Bind</a>
 <span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L179" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L173" class="link">Source</a>
 <a href="#TryT_2_Bind_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Monad bind operation</p>
@@ -775,7 +842,7 @@ TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class
 <a id="TryT_2_Bind_1" class="def">Bind</a>
 <span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L191" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L182" class="link">Source</a>
 <a href="#TryT_2_Bind_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Monad bind operation</p>
@@ -812,7 +879,7 @@ TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class
 <a id="TryT_2_Bind_1" class="def">Bind</a>
 <span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Pure<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L200" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L191" class="link">Source</a>
 <a href="#TryT_2_Bind_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Monad bind operation</p>
@@ -849,7 +916,7 @@ TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span class
 <a id="TryT_2_SelectMany_2" class="def">SelectMany</a>
 <span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>TryT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L216" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L207" class="link">Source</a>
 <a href="#TryT_2_SelectMany_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Monad bind operation</p>
@@ -894,7 +961,7 @@ TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span class
 <a id="TryT_2_SelectMany_2" class="def">SelectMany</a>
 <span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L227" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L218" class="link">Source</a>
 <a href="#TryT_2_SelectMany_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Monad bind operation</p>
@@ -939,7 +1006,7 @@ TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span class
 <a id="TryT_2_SelectMany_2" class="def">SelectMany</a>
 <span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L238" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L229" class="link">Source</a>
 <a href="#TryT_2_SelectMany_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Monad bind operation</p>
@@ -984,7 +1051,7 @@ TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span class
 <a id="TryT_2_SelectMany_2" class="def">SelectMany</a>
 <span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Fin<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L249" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L240" class="link">Source</a>
 <a href="#TryT_2_SelectMany_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Monad bind operation</p>
@@ -1029,7 +1096,7 @@ TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span class
 <a id="TryT_2_SelectMany_2" class="def">SelectMany</a>
 <span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Pure<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L260" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L251" class="link">Source</a>
 <a href="#TryT_2_SelectMany_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Monad bind operation</p>
@@ -1074,7 +1141,7 @@ TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span class
 <a id="TryT_2_SelectMany_2" class="def">SelectMany</a>
 <span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L271" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L262" class="link">Source</a>
 <a href="#TryT_2_SelectMany_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Monad bind operation</p>
@@ -1113,8 +1180,332 @@ TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span class
 
 
 
-</div></div>
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="TryT_2_Combine_0" class="def">Combine</a>
 
+<span class='parens'>(</span>TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L375" class="link">Source</a>
+<a href="#TryT_2_Combine_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+<div class="subs methods"><p class="caption">Operators</p>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="TryT_2_|_0" class="def">|</a>
+<span class='parens'>(</span>TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Pure<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L290" class="link">Source</a>
+<a href="#TryT_2_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="TryT_2_|_0" class="def">|</a>
+<span class='parens'>(</span>TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Fail<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L293" class="link">Source</a>
+<a href="#TryT_2_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="TryT_2_|_0" class="def">|</a>
+<span class='parens'>(</span>TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Fail<span class='generics'>&lt;</span>Exception<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L296" class="link">Source</a>
+<a href="#TryT_2_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="TryT_2_|_0" class="def">|</a>
+<span class='parens'>(</span>TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Error mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L299" class="link">Source</a>
+<a href="#TryT_2_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="TryT_2_|_0" class="def">|</a>
+<span class='parens'>(</span>TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>CatchError mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L302" class="link">Source</a>
+<a href="#TryT_2_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="TryT_2_|_0" class="def">|</a>
+<span class='parens'>(</span>TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>CatchValue<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L305" class="link">Source</a>
+<a href="#TryT_2_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="TryT_2_|_0" class="def">|</a>
+<span class='parens'>(</span>TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>CatchIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L308" class="link">Source</a>
+<a href="#TryT_2_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="TryT_2_|_0" class="def">|</a>
+<span class='parens'>(</span>TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>CatchM<span class='generics'>&lt;</span>TryT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L320" class="link">Source</a>
+<a href="#TryT_2_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="TryT_2_|_0" class="def">|</a>
+<span class='parens'>(</span>TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>CatchError<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L332" class="link">Source</a>
+<a href="#TryT_2_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="TryT_2_|_0" class="def">|</a>
+<span class='parens'>(</span>TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>CatchError<span class='generics'>&lt;</span>Exception<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L342" class="link">Source</a>
+<a href="#TryT_2_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="TryT_2_|_0" class="def">|</a>
+<span class='parens'>(</span>TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>CatchValue<span class='generics'>&lt;</span>Error<span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L352" class="link">Source</a>
+<a href="#TryT_2_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="TryT_2_|_0" class="def">|</a>
+<span class='parens'>(</span>TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>CatchValue<span class='generics'>&lt;</span>Exception<span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L362" class="link">Source</a>
+<a href="#TryT_2_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="TryT_2_|_0" class="def">|</a>
+<span class='parens'>(</span>TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.cs#L372" class="link">Source</a>
+<a href="#TryT_2_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
 
 
 
@@ -1168,8 +1559,35 @@ TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class
 TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <a id="TryTExt_0_Flatten_2" class="def">Flatten</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>this TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mma<span class='parens'>)</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>TryT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mma<span class='parens'>)</span>
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.Extensions.cs#L20" class="link">Source</a>
+<a href="#TryTExt_0_Flatten_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Monadic join</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="TryTExt_0_Flatten_2" class="def">Flatten</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>TryT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>TryT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.Extensions.cs#L34" class="link">Source</a>
 <a href="#TryTExt_0_Flatten_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -1199,7 +1617,7 @@ TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span class
         this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
         Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>TryT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>
         Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.Extensions.cs#L33" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.Extensions.cs#L53" class="link">Source</a>
 <a href="#TryTExt_0_SelectMany_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -1248,7 +1666,7 @@ TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span class
         this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
         Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>
         Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.Extensions.cs#L49" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.Extensions.cs#L69" class="link">Source</a>
 <a href="#TryTExt_0_SelectMany_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -1294,7 +1712,7 @@ TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class
 <a id="TryTExt_0_Apply_3" class="def">Apply</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.Extensions.cs#L60" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.Extensions.cs#L80" class="link">Source</a>
 <a href="#TryTExt_0_Apply_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -1321,7 +1739,7 @@ TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class
 <a id="TryTExt_0_Action_3" class="def">Action</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.Extensions.cs#L68" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Value Monads/TryT/TryT.Extensions.cs#L88" class="link">Source</a>
 <a href="#TryTExt_0_Action_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
