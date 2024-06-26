@@ -12,9 +12,12 @@
 <a href="index.html" class="link">ValueTask</a></p></div>
 
 <div id="table-of-contents"><p class="caption">Contents</p>
-<ul><li><a href="#_0_ValueTaskExtensions_0" class="link"><div class="nowrap">ValueTaskExtensions
+<ul><li><a href="#LanguageExt_0_ValueTaskExtensions_0" class="link"><div class="nowrap">ValueTaskExtensions
 </div></a></li>
 <ul><li><a href="#ValueTaskExtensions_0_CompletedSuccessfully_1" class="link"><div class="nowrap">CompletedSuccessfully
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#ValueTaskExtensions_0_Case_1" class="link"><div class="nowrap">Case
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
 <li><a href="#ValueTaskExtensions_0_AsFailedValueTask_1" class="link"><div class="nowrap">AsFailedValueTask
@@ -26,6 +29,9 @@
 <li><a href="#ValueTaskExtensions_0_ToValue_1" class="link"><div class="nowrap">ToValue
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this Task<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> self<span class='parens'>)</span></div></a></li>
+<li><a href="#ValueTaskExtensions_0_ToAff_1" class="link"><div class="nowrap">ToAff
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
 <li><a href="#ValueTaskExtensions_0_Flatten_1" class="link"><div class="nowrap">Flatten
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this ValueTask<span class='generics'>&lt;</span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> self<span class='parens'>)</span></div></a></li>
@@ -41,12 +47,12 @@
 <li><a href="#ValueTaskExtensions_0_SelectMany_2" class="link"><div class="nowrap">SelectMany
 <span class='generics'>&lt;</span>T<span class='comma'>, </span>U<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this ValueTask<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> self,
-        Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>U<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='parens'>)</span></div></a></li>
+            Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>U<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='parens'>)</span></div></a></li>
 <li><a href="#ValueTaskExtensions_0_SelectMany_3" class="link"><div class="nowrap">SelectMany
 <span class='generics'>&lt;</span>T<span class='comma'>, </span>U<span class='comma'>, </span>V<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this ValueTask<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> self,
-        Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>U<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind,
-        Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>U<span class='comma'>, </span>V<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+            Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>U<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind,
+            Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>U<span class='comma'>, </span>V<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
 <li><a href="#ValueTaskExtensions_0_Count_1" class="link"><div class="nowrap">Count
 <span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this ValueTask<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> self<span class='parens'>)</span></div></a></li>
@@ -89,21 +95,18 @@
 <li><a href="#ValueTaskExtensions_0_Join_4" class="link"><div class="nowrap">Join
 <span class='generics'>&lt;</span>T<span class='comma'>, </span>U<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this ValueTask<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> source,
-        ValueTask<span class='generics'>&lt;</span>U<span class='generics'>&gt;</span> inner,
-        Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>K<span class='generics'>&gt;</span> outerKeyMap,
-        Func<span class='generics'>&lt;</span>U<span class='comma'>, </span>K<span class='generics'>&gt;</span> innerKeyMap,
-        Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>U<span class='comma'>, </span>V<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+            ValueTask<span class='generics'>&lt;</span>U<span class='generics'>&gt;</span> inner,
+            Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>K<span class='generics'>&gt;</span> outerKeyMap,
+            Func<span class='generics'>&lt;</span>U<span class='comma'>, </span>K<span class='generics'>&gt;</span> innerKeyMap,
+            Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>U<span class='comma'>, </span>V<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
 <li><a href="#ValueTaskExtensions_0_GroupJoin_4" class="link"><div class="nowrap">GroupJoin
 <span class='generics'>&lt;</span>T<span class='comma'>, </span>U<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this ValueTask<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> source,
-        ValueTask<span class='generics'>&lt;</span>U<span class='generics'>&gt;</span> inner,
-        Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>K<span class='generics'>&gt;</span> outerKeyMap,
-        Func<span class='generics'>&lt;</span>U<span class='comma'>, </span>K<span class='generics'>&gt;</span> innerKeyMap,
-        Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>U<span class='generics'>&gt;</span><span class='comma'>, </span>V<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+            ValueTask<span class='generics'>&lt;</span>U<span class='generics'>&gt;</span> inner,
+            Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>K<span class='generics'>&gt;</span> outerKeyMap,
+            Func<span class='generics'>&lt;</span>U<span class='comma'>, </span>K<span class='generics'>&gt;</span> innerKeyMap,
+            Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>U<span class='generics'>&gt;</span><span class='comma'>, </span>V<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
 <li><a href="#ValueTaskExtensions_0_Plus_1" class="link"><div class="nowrap">Plus
-<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>this ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
-<li><a href="#ValueTaskExtensions_0_PlusFirst_1" class="link"><div class="nowrap">PlusFirst
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
 <li><a href="#ValueTaskExtensions_0_Cast_1" class="link"><div class="nowrap">Cast
@@ -118,7 +121,7 @@
 <li><a href="#ValueTaskExtensions_0_WindowIter_1" class="link"><div class="nowrap">WindowIter
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this IEnumerable<span class='generics'>&lt;</span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ma<span class='comma'>, </span>int windowSize<span class='comma'>, </span>Action<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li></ul>
-<li><a href="#_0_Prelude_0" class="link"><div class="nowrap">Prelude
+<li><a href="#LanguageExt_0_Prelude_0" class="link"><div class="nowrap">Prelude
 </div></a></li>
 <ul><li><a href="#Prelude_0_ValueTaskSucc_1" class="link"><div class="nowrap">ValueTaskSucc
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
@@ -153,6 +156,12 @@
 <li><a href="#Prelude_0_filter_1" class="link"><div class="nowrap">filter
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_fold_2" class="link"><div class="nowrap">fold
+<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> self<span class='comma'>, </span>S state<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> folder<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_foldAsync_2" class="link"><div class="nowrap">foldAsync
+<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> self<span class='comma'>, </span>S state<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> folder<span class='parens'>)</span></div></a></li>
 <li><a href="#Prelude_0_iter_1" class="link"><div class="nowrap">iter
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> self<span class='comma'>, </span>Action<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
@@ -163,9 +172,6 @@
 <span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> map<span class='parens'>)</span></div></a></li>
 <li><a href="#Prelude_0_plus_1" class="link"><div class="nowrap">plus
-<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>this ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
-<li><a href="#Prelude_0_plusFirst_1" class="link"><div class="nowrap">plusFirst
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
 <li><a href="#Prelude_0_choice_1" class="link"><div class="nowrap">choice
@@ -201,10 +207,10 @@
 </ul></div>
 <div class="interface">
 <div class="top"><p class="src"><span class="keyword">class</span>
-<a id="_0_ValueTaskExtensions_0" class="def">ValueTaskExtensions</a>
+<a id="LanguageExt_0_ValueTaskExtensions_0" class="def">ValueTaskExtensions</a>
 
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L13" class="link">Source</a>
-<a href="#_0_ValueTaskExtensions_0" class="selflink">#</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L16" class="link">Source</a>
+<a href="#LanguageExt_0_ValueTaskExtensions_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
 <div></div>
@@ -223,7 +229,7 @@ bool
 <a id="ValueTaskExtensions_0_CompletedSuccessfully_1" class="def">CompletedSuccessfully</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L15" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L18" class="link">Source</a>
 <a href="#ValueTaskExtensions_0_CompletedSuccessfully_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -244,11 +250,40 @@ bool
 
 </div>
 <div class="top"><p class="src"><span class="keyword">method</span>
+ValueTask<span class='generics'>&lt;</span>object<span class='generics'>&gt;</span>
+<a id="ValueTaskExtensions_0_Case_1" class="def">Case</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L30" class="link">Source</a>
+<a href="#ValueTaskExtensions_0_Case_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Use for pattern-matching the case of the target</p>
+</div>
+<div><pre><code>Task succeeds = result is A
+Task fails    = result is LanguageExt.Common.Error
+</code></pre>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
 ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="ValueTaskExtensions_0_AsFailedValueTask_1" class="def">AsFailedValueTask</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this Exception ex<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L18" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L43" class="link">Source</a>
 <a href="#ValueTaskExtensions_0_AsFailedValueTask_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -273,7 +308,7 @@ ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="ValueTaskExtensions_0_AsValueTask_1" class="def">AsValueTask</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this A self<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L25" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L50" class="link">Source</a>
 <a href="#ValueTaskExtensions_0_AsValueTask_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Convert a value to a Task that completes immediately</p>
@@ -299,7 +334,7 @@ ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="ValueTaskExtensions_0_ToValue_1" class="def">ToValue</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this Task<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> self<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L32" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L57" class="link">Source</a>
 <a href="#ValueTaskExtensions_0_ToValue_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Convert a Task to a ValueTask</p>
@@ -321,11 +356,40 @@ ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 
 </div>
 <div class="top"><p class="src"><span class="keyword">method</span>
+Aff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="ValueTaskExtensions_0_ToAff_1" class="def">ToAff</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L65" class="link">Source</a>
+<a href="#ValueTaskExtensions_0_ToAff_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Convert the structure to an Aff</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>An Aff representation of the structure</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
 ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="ValueTaskExtensions_0_Flatten_1" class="def">Flatten</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this ValueTask<span class='generics'>&lt;</span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> self<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L39" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L73" class="link">Source</a>
 <a href="#ValueTaskExtensions_0_Flatten_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Flatten the nested Task type</p>
@@ -351,7 +415,7 @@ ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="ValueTaskExtensions_0_Flatten_1" class="def">Flatten</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this ValueTask<span class='generics'>&lt;</span>ValueTask<span class='generics'>&lt;</span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> self<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L50" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L84" class="link">Source</a>
 <a href="#ValueTaskExtensions_0_Flatten_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Flatten the nested Task type</p>
@@ -377,7 +441,7 @@ ValueTask<span class='generics'>&lt;</span>U<span class='generics'>&gt;</span>
 <a id="ValueTaskExtensions_0_Select_2" class="def">Select</a>
 <span class='generics'>&lt;</span>T<span class='comma'>, </span>U<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this ValueTask<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>U<span class='generics'>&gt;</span> map<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L62" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L96" class="link">Source</a>
 <a href="#ValueTaskExtensions_0_Select_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Standard LINQ Select implementation for Task</p>
@@ -403,7 +467,7 @@ ValueTask<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <a id="ValueTaskExtensions_0_Where_1" class="def">Where</a>
 <span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this ValueTask<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L69" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L103" class="link">Source</a>
 <a href="#ValueTaskExtensions_0_Where_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Standard LINQ Where implementation for Task</p>
@@ -429,8 +493,8 @@ ValueTask<span class='generics'>&lt;</span>U<span class='generics'>&gt;</span>
 <a id="ValueTaskExtensions_0_SelectMany_2" class="def">SelectMany</a>
 <span class='generics'>&lt;</span>T<span class='comma'>, </span>U<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this ValueTask<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> self,
-        Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>U<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L85" class="link">Source</a>
+            Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>U<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L119" class="link">Source</a>
 <a href="#ValueTaskExtensions_0_SelectMany_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Standard LINQ SelectMany implementation for Task</p>
@@ -456,9 +520,9 @@ ValueTask<span class='generics'>&lt;</span>V<span class='generics'>&gt;</span>
 <a id="ValueTaskExtensions_0_SelectMany_3" class="def">SelectMany</a>
 <span class='generics'>&lt;</span>T<span class='comma'>, </span>U<span class='comma'>, </span>V<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this ValueTask<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> self,
-        Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>U<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind,
-        Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>U<span class='comma'>, </span>V<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L93" class="link">Source</a>
+            Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>U<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind,
+            Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>U<span class='comma'>, </span>V<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L127" class="link">Source</a>
 <a href="#ValueTaskExtensions_0_SelectMany_3" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Standard LINQ SelectMany implementation for Task</p>
@@ -484,7 +548,7 @@ ValueTask<span class='generics'>&lt;</span>int<span class='generics'>&gt;</span>
 <a id="ValueTaskExtensions_0_Count_1" class="def">Count</a>
 <span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this ValueTask<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> self<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L106" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L140" class="link">Source</a>
 <a href="#ValueTaskExtensions_0_Count_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Get the Count of a Task T.  Returns either 1 or 0 if cancelled or faulted.</p>
@@ -510,7 +574,7 @@ ValueTask<span class='generics'>&lt;</span>U<span class='generics'>&gt;</span>
 <a id="ValueTaskExtensions_0_Bind_2" class="def">Bind</a>
 <span class='generics'>&lt;</span>T<span class='comma'>, </span>U<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this ValueTask<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>U<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L123" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L157" class="link">Source</a>
 <a href="#ValueTaskExtensions_0_Bind_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Monadic bind operation for Task</p>
@@ -536,7 +600,7 @@ ValueTask<span class='generics'>&lt;</span>bool<span class='generics'>&gt;</span
 <a id="ValueTaskExtensions_0_Exists_1" class="def">Exists</a>
 <span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this ValueTask<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L131" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L165" class="link">Source</a>
 <a href="#ValueTaskExtensions_0_Exists_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Returns false if the Task is cancelled or faulted, otherwise
@@ -563,7 +627,7 @@ ValueTask<span class='generics'>&lt;</span>bool<span class='generics'>&gt;</span
 <a id="ValueTaskExtensions_0_ExistsAsync_1" class="def">ExistsAsync</a>
 <span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this ValueTask<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>bool<span class='generics'>&gt;</span><span class='generics'>&gt;</span> pred<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L139" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L173" class="link">Source</a>
 <a href="#ValueTaskExtensions_0_ExistsAsync_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Returns false if the Task is cancelled or faulted, otherwise
@@ -590,7 +654,7 @@ ValueTask<span class='generics'>&lt;</span>bool<span class='generics'>&gt;</span
 <a id="ValueTaskExtensions_0_ForAll_1" class="def">ForAll</a>
 <span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this ValueTask<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L147" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L181" class="link">Source</a>
 <a href="#ValueTaskExtensions_0_ForAll_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Returns false if the Task is cancelled or faulted, otherwise
@@ -617,7 +681,7 @@ ValueTask<span class='generics'>&lt;</span>bool<span class='generics'>&gt;</span
 <a id="ValueTaskExtensions_0_ForAllAsync_1" class="def">ForAllAsync</a>
 <span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this ValueTask<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>bool<span class='generics'>&gt;</span><span class='generics'>&gt;</span> pred<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L155" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L189" class="link">Source</a>
 <a href="#ValueTaskExtensions_0_ForAllAsync_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Returns false if the Task is cancelled or faulted, otherwise
@@ -644,7 +708,7 @@ ValueTask<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <a id="ValueTaskExtensions_0_Filter_1" class="def">Filter</a>
 <span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this ValueTask<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L163" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L197" class="link">Source</a>
 <a href="#ValueTaskExtensions_0_Filter_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Filters the task.  This throws a BottomException when pred(Result)
@@ -671,7 +735,7 @@ ValueTask<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
 <a id="ValueTaskExtensions_0_Fold_2" class="def">Fold</a>
 <span class='generics'>&lt;</span>T<span class='comma'>, </span>S<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this ValueTask<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> self<span class='comma'>, </span>S state<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>T<span class='comma'>, </span>S<span class='generics'>&gt;</span> folder<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L171" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L205" class="link">Source</a>
 <a href="#ValueTaskExtensions_0_Fold_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Folds the Task.  Returns folder(state,Result) if not faulted or
@@ -698,7 +762,7 @@ ValueTask<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
 <a id="ValueTaskExtensions_0_FoldAsync_2" class="def">FoldAsync</a>
 <span class='generics'>&lt;</span>T<span class='comma'>, </span>S<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this ValueTask<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> self<span class='comma'>, </span>S state<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>T<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> folder<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L179" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L213" class="link">Source</a>
 <a href="#ValueTaskExtensions_0_FoldAsync_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Folds the Task.  Returns folder(state,Result) if not faulted or
@@ -725,7 +789,7 @@ ValueTask<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span
 <a id="ValueTaskExtensions_0_Iter_1" class="def">Iter</a>
 <span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this ValueTask<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> self<span class='comma'>, </span>Action<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L186" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L220" class="link">Source</a>
 <a href="#ValueTaskExtensions_0_Iter_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Iterates the Task.  Invokes f(Result) if not faulted or cancelled</p>
@@ -751,7 +815,7 @@ ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="ValueTaskExtensions_0_Do_1" class="def">Do</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Action<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L198" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L232" class="link">Source</a>
 <a href="#ValueTaskExtensions_0_Do_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Impure iteration of the bound value in the structure</p>
@@ -780,7 +844,7 @@ ValueTask<span class='generics'>&lt;</span>U<span class='generics'>&gt;</span>
 <a id="ValueTaskExtensions_0_Map_2" class="def">Map</a>
 <span class='generics'>&lt;</span>T<span class='comma'>, </span>U<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this ValueTask<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>U<span class='generics'>&gt;</span> map<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L207" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L241" class="link">Source</a>
 <a href="#ValueTaskExtensions_0_Map_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Returns map(Result) if not faulted or cancelled.</p>
@@ -806,7 +870,7 @@ ValueTask<span class='generics'>&lt;</span>U<span class='generics'>&gt;</span>
 <a id="ValueTaskExtensions_0_MapAsync_2" class="def">MapAsync</a>
 <span class='generics'>&lt;</span>T<span class='comma'>, </span>U<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this ValueTask<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>U<span class='generics'>&gt;</span><span class='generics'>&gt;</span> map<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L214" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L248" class="link">Source</a>
 <a href="#ValueTaskExtensions_0_MapAsync_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Returns map(Result) if not faulted or cancelled.</p>
@@ -832,11 +896,11 @@ ValueTask<span class='generics'>&lt;</span>V<span class='generics'>&gt;</span>
 <a id="ValueTaskExtensions_0_Join_4" class="def">Join</a>
 <span class='generics'>&lt;</span>T<span class='comma'>, </span>U<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this ValueTask<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> source,
-        ValueTask<span class='generics'>&lt;</span>U<span class='generics'>&gt;</span> inner,
-        Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>K<span class='generics'>&gt;</span> outerKeyMap,
-        Func<span class='generics'>&lt;</span>U<span class='comma'>, </span>K<span class='generics'>&gt;</span> innerKeyMap,
-        Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>U<span class='comma'>, </span>V<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L218" class="link">Source</a>
+            ValueTask<span class='generics'>&lt;</span>U<span class='generics'>&gt;</span> inner,
+            Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>K<span class='generics'>&gt;</span> outerKeyMap,
+            Func<span class='generics'>&lt;</span>U<span class='comma'>, </span>K<span class='generics'>&gt;</span> innerKeyMap,
+            Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>U<span class='comma'>, </span>V<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L252" class="link">Source</a>
 <a href="#ValueTaskExtensions_0_Join_4" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -861,11 +925,11 @@ ValueTask<span class='generics'>&lt;</span>V<span class='generics'>&gt;</span>
 <a id="ValueTaskExtensions_0_GroupJoin_4" class="def">GroupJoin</a>
 <span class='generics'>&lt;</span>T<span class='comma'>, </span>U<span class='comma'>, </span>K<span class='comma'>, </span>V<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this ValueTask<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> source,
-        ValueTask<span class='generics'>&lt;</span>U<span class='generics'>&gt;</span> inner,
-        Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>K<span class='generics'>&gt;</span> outerKeyMap,
-        Func<span class='generics'>&lt;</span>U<span class='comma'>, </span>K<span class='generics'>&gt;</span> innerKeyMap,
-        Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>U<span class='generics'>&gt;</span><span class='comma'>, </span>V<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L233" class="link">Source</a>
+            ValueTask<span class='generics'>&lt;</span>U<span class='generics'>&gt;</span> inner,
+            Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>K<span class='generics'>&gt;</span> outerKeyMap,
+            Func<span class='generics'>&lt;</span>U<span class='comma'>, </span>K<span class='generics'>&gt;</span> innerKeyMap,
+            Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>U<span class='generics'>&gt;</span><span class='comma'>, </span>V<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L268" class="link">Source</a>
 <a href="#ValueTaskExtensions_0_GroupJoin_4" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -890,33 +954,8 @@ ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="ValueTaskExtensions_0_Plus_1" class="def">Plus</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L244" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L279" class="link">Source</a>
 <a href="#ValueTaskExtensions_0_Plus_1" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<a id="ValueTaskExtensions_0_PlusFirst_1" class="def">PlusFirst</a>
-<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>this ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L257" class="link">Source</a>
-<a href="#ValueTaskExtensions_0_PlusFirst_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
 <div></div>
@@ -940,7 +979,7 @@ ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="ValueTaskExtensions_0_Cast_1" class="def">Cast</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this ValueTask source<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L264" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L286" class="link">Source</a>
 <a href="#ValueTaskExtensions_0_Cast_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Cast a ValueTask to a ValueTask<A> (may throw if underlying value doesn't exist)</p>
@@ -966,7 +1005,7 @@ ValueTask<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span
 <a id="ValueTaskExtensions_0_ToUnit_0" class="def">ToUnit</a>
 
 <span class='parens'>(</span>this ValueTask source<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L267" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L289" class="link">Source</a>
 <a href="#ValueTaskExtensions_0_ToUnit_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -991,7 +1030,7 @@ ValueTask<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span
 <a id="ValueTaskExtensions_0_WindowIter_1" class="def">WindowIter</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this IEnumerable<span class='generics'>&lt;</span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ma<span class='comma'>, </span>Action<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L280" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L302" class="link">Source</a>
 <a href="#ValueTaskExtensions_0_WindowIter_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Tasks a lazy sequence of tasks and iterates them in a 'measured way'.  A default window size of
@@ -1021,7 +1060,7 @@ ValueTask<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span
 <a id="ValueTaskExtensions_0_WindowIter_1" class="def">WindowIter</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this IEnumerable<span class='generics'>&lt;</span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ma<span class='comma'>, </span>int windowSize<span class='comma'>, </span>Action<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L290" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Extensions.cs#L312" class="link">Source</a>
 <a href="#ValueTaskExtensions_0_WindowIter_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Tasks a lazy sequence of tasks and iterates them in a 'measured way'.  A default window size of
@@ -1052,10 +1091,10 @@ for infinite streams.  Therefore there are at most <code>windowSize</code> tasks
 
 </div>
 <div class="top"><p class="src"><span class="keyword">class</span>
-<a id="_0_Prelude_0" class="def">Prelude</a>
+<a id="LanguageExt_0_Prelude_0" class="def">Prelude</a>
 
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L8" class="link">Source</a>
-<a href="#_0_Prelude_0" class="selflink">#</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L11" class="link">Source</a>
+<a href="#LanguageExt_0_Prelude_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
 <div></div>
@@ -1074,7 +1113,7 @@ ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_ValueTaskSucc_1" class="def">ValueTaskSucc</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>A self<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L13" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L16" class="link">Source</a>
 <a href="#Prelude_0_ValueTaskSucc_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Convert a value to a Task that completes immediately</p>
@@ -1100,7 +1139,7 @@ ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_ValueTaskFail_1" class="def">ValueTaskFail</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Exception ex<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L20" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L23" class="link">Source</a>
 <a href="#Prelude_0_ValueTaskFail_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Convert a value to a Task that completes immediately</p>
@@ -1126,7 +1165,7 @@ ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_flatten_1" class="def">flatten</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>ValueTask<span class='generics'>&lt;</span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> self<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L27" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L30" class="link">Source</a>
 <a href="#Prelude_0_flatten_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Flatten the nested Task type</p>
@@ -1152,7 +1191,7 @@ ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_flatten_1" class="def">flatten</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>ValueTask<span class='generics'>&lt;</span>ValueTask<span class='generics'>&lt;</span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> self<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L34" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L37" class="link">Source</a>
 <a href="#Prelude_0_flatten_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Flatten the nested Task type</p>
@@ -1178,7 +1217,7 @@ ValueTask<span class='generics'>&lt;</span>int<span class='generics'>&gt;</span>
 <a id="Prelude_0_count_1" class="def">count</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> self<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L41" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L44" class="link">Source</a>
 <a href="#Prelude_0_count_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Get the Count of a Task T.  Returns either 1 or 0 if cancelled or faulted.</p>
@@ -1204,7 +1243,7 @@ ValueTask<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <a id="Prelude_0_bind_2" class="def">bind</a>
 <span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L48" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L51" class="link">Source</a>
 <a href="#Prelude_0_bind_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Monadic bind operation for Task</p>
@@ -1230,7 +1269,7 @@ ValueTask<span class='generics'>&lt;</span>bool<span class='generics'>&gt;</span
 <a id="Prelude_0_exists_1" class="def">exists</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L56" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L59" class="link">Source</a>
 <a href="#Prelude_0_exists_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Returns false if the Task is cancelled or faulted, otherwise
@@ -1257,7 +1296,7 @@ ValueTask<span class='generics'>&lt;</span>bool<span class='generics'>&gt;</span
 <a id="Prelude_0_existsAsync_1" class="def">existsAsync</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>bool<span class='generics'>&gt;</span><span class='generics'>&gt;</span> pred<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L64" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L67" class="link">Source</a>
 <a href="#Prelude_0_existsAsync_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Returns false if the Task is cancelled or faulted, otherwise
@@ -1284,7 +1323,7 @@ ValueTask<span class='generics'>&lt;</span>bool<span class='generics'>&gt;</span
 <a id="Prelude_0_forall_1" class="def">forall</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L72" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L75" class="link">Source</a>
 <a href="#Prelude_0_forall_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Returns false if the Task is cancelled or faulted, otherwise
@@ -1311,7 +1350,7 @@ ValueTask<span class='generics'>&lt;</span>bool<span class='generics'>&gt;</span
 <a id="Prelude_0_forallAsync_1" class="def">forallAsync</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>bool<span class='generics'>&gt;</span><span class='generics'>&gt;</span> pred<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L80" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L83" class="link">Source</a>
 <a href="#Prelude_0_forallAsync_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Returns false if the Task is cancelled or faulted, otherwise
@@ -1338,7 +1377,7 @@ ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_filter_1" class="def">filter</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L88" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L91" class="link">Source</a>
 <a href="#Prelude_0_filter_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Filters the task.  This throws a BottomException when pred(Result)
@@ -1361,11 +1400,65 @@ returns false</p>
 
 </div>
 <div class="top"><p class="src"><span class="keyword">method</span>
+ValueTask<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<a id="Prelude_0_fold_2" class="def">fold</a>
+<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> self<span class='comma'>, </span>S state<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> folder<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L99" class="link">Source</a>
+<a href="#Prelude_0_fold_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Folds the Task.  Returns folder(state,Result) if not faulted or
+cancelled.  Returns state otherwise.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ValueTask<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<a id="Prelude_0_foldAsync_2" class="def">foldAsync</a>
+<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> self<span class='comma'>, </span>S state<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> folder<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L107" class="link">Source</a>
+<a href="#Prelude_0_foldAsync_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Folds the Task.  Returns folder(state,Result) if not faulted or
+cancelled.  Returns state otherwise.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
 ValueTask<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
 <a id="Prelude_0_iter_1" class="def">iter</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> self<span class='comma'>, </span>Action<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L95" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L114" class="link">Source</a>
 <a href="#Prelude_0_iter_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Iterates the Task.  Invokes f(Result) if not faulted or cancelled</p>
@@ -1391,7 +1484,7 @@ ValueTask<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <a id="Prelude_0_map_2" class="def">map</a>
 <span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> map<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L101" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L120" class="link">Source</a>
 <a href="#Prelude_0_map_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Returns map(Result) if not faulted or cancelled.</p>
@@ -1417,7 +1510,7 @@ ValueTask<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <a id="Prelude_0_mapAsync_2" class="def">mapAsync</a>
 <span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> map<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L108" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L127" class="link">Source</a>
 <a href="#Prelude_0_mapAsync_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Returns map(Result) if not faulted or cancelled.</p>
@@ -1443,33 +1536,8 @@ ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_plus_1" class="def">plus</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L112" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L131" class="link">Source</a>
 <a href="#Prelude_0_plus_1" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<a id="Prelude_0_plusFirst_1" class="def">plusFirst</a>
-<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>this ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L116" class="link">Source</a>
-<a href="#Prelude_0_plusFirst_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
 <div></div>
@@ -1493,7 +1561,7 @@ ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_choice_1" class="def">choice</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>params ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>[] tail<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L127" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L142" class="link">Source</a>
 <a href="#Prelude_0_choice_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Returns the first successful computation</p>
@@ -1534,7 +1602,7 @@ ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_choice_1" class="def">choice</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Seq<span class='generics'>&lt;</span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> xs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L137" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L152" class="link">Source</a>
 <a href="#Prelude_0_choice_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Returns the first successful computation</p>
@@ -1571,7 +1639,7 @@ ValueTask<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <a id="Prelude_0_apply_2" class="def">apply</a>
 <span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>ValueTask<span class='generics'>&lt;</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> fab<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> fa<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L160" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L167" class="link">Source</a>
 <a href="#Prelude_0_apply_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Apply</p>
@@ -1608,7 +1676,7 @@ ValueTask<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <a id="Prelude_0_apply_2" class="def">apply</a>
 <span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> fab<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> fa<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L173" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L177" class="link">Source</a>
 <a href="#Prelude_0_apply_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Apply</p>
@@ -1645,7 +1713,7 @@ ValueTask<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
 <a id="Prelude_0_apply_3" class="def">apply</a>
 <span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>ValueTask<span class='generics'>&lt;</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> fabc<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> fa<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span> fb<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L184" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L188" class="link">Source</a>
 <a href="#Prelude_0_apply_3" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Apply</p>
@@ -1686,7 +1754,7 @@ ValueTask<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
 <a id="Prelude_0_apply_3" class="def">apply</a>
 <span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> fabc<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> fa<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span> fb<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L198" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L201" class="link">Source</a>
 <a href="#Prelude_0_apply_3" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Apply</p>
@@ -1764,7 +1832,7 @@ ValueTask<span class='generics'>&lt;</span>Func<span class='generics'>&lt;</span
 <a id="Prelude_0_apply_3" class="def">apply</a>
 <span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> fabc<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> fa<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L224" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L223" class="link">Source</a>
 <a href="#Prelude_0_apply_3" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Apply</p>
@@ -1801,7 +1869,7 @@ ValueTask<span class='generics'>&lt;</span>Func<span class='generics'>&lt;</span
 <a id="Prelude_0_apply_3" class="def">apply</a>
 <span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>ValueTask<span class='generics'>&lt;</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> fabc<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> fa<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L234" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L233" class="link">Source</a>
 <a href="#Prelude_0_apply_3" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Apply</p>
@@ -1838,7 +1906,7 @@ ValueTask<span class='generics'>&lt;</span>Func<span class='generics'>&lt;</span
 <a id="Prelude_0_apply_3" class="def">apply</a>
 <span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> fabc<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> fa<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L247" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/ValueTask/ValueTask.Prelude.cs#L243" class="link">Source</a>
 <a href="#Prelude_0_apply_3" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Apply</p>
