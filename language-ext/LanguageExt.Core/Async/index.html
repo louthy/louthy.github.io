@@ -1,0 +1,194 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>LanguageExt.Core\Async</title>
+<link href="style.css" rel="stylesheet" type="text/css"/></head>
+<body class="js-enabled"><div id="package-header"><ul class="links" id="page-menu"><li><a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Async" class="link">Source</a></li>
+<li><a href="../index.html" class="link">Contents</a></li>
+<li><a href="../../index.html" class="link">Index</a></li></ul>
+<p class="caption">LanguageExt.Core</p></div>
+<div id="content"><div id="module-header"><p class="caption"><a href="../index.html" class="link">LanguageExt.Core</a>
+<span> ► </span>
+<a href="index.html" class="link">Async</a></p></div>
+
+<div id="table-of-contents"><p class="caption">Contents</p>
+<ul><li><a href="#_0_Async_0" class="link"><div class="nowrap">Async
+</div></a></li>
+<ul><li><a href="#Async_0_await_1" class="link"><div class="nowrap">await
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Task<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> operation<span class='parens'>)</span></div></a></li>
+<li><a href="#Async_0_fork_1" class="link"><div class="nowrap">fork
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> operation<span class='comma'>, </span>TimeSpan timeout = default<span class='parens'>)</span></div></a></li>
+<li><a href="#Async_0_fork_1" class="link"><div class="nowrap">fork
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Task<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> operation<span class='comma'>, </span>TimeSpan timeout = default<span class='parens'>)</span></div></a></li></ul></ul></div>
+<div class="interface">
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_Async_0" class="def">Async</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Async/Async.Module.cs#L32" class="link">Source</a>
+<a href="#_0_Async_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>The <code>Async</code> module helps transition away from the <code>Task</code> / <code>async</code> / <code>await</code> world and into one
+where awaiting is the default setting for concurrent programming and branching/forking is the
+thing we do the least.</p>
+<p>The <code>Async.await</code> function will convert a <code>Task&lt;A&gt;</code> into an <code>A</code> by waiting for the <code>Task</code> to
+complete; it will yield the thread whilst it's waiting (to play nice with other tasks in the
+task-pool).  This is just like the regular <code>await</code> keyword without all the ceremony and
+colouring of methods.</p>
+<p><code>Async.fork</code> lifts a function into an IO monad, forks it, and then runs the IO monad returning
+a <code>ForkIO</code> object.  The forked operation continues to run in parallel.  The <code>ForkIO</code> object
+contains two properties: <code>Await</code> and <code>Cancel</code> that be used to either await the result or
+cancel the operation.</p>
+<p>These two functions remove the need for methods that are 'tainted' with <code>Task</code> or <code>async</code> /
+<code>await</code> mechanics and assume that the thing we will do the most with asynchronous code is to
+await it.</p>
+<p>This module shouldn't be needed too much, as the IO monad is where most of the asynchrony
+should be. But, when converting from existing async/await code, or if you're coming from
+language-ext v4, or earlier, where there was lots of <code>*Async</code> methods in the key types, then
+this module will help ease the transition.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+A
+<a id="Async_0_await_1" class="def">await</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Task<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> operation<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Async/Async.Module.cs#L43" class="link">Source</a>
+<a href="#Async_0_await_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Simple awaiter that yields the thread whilst waiting.  Allows for the <code>Task</code> to
+be used with synchronous code without blocking any threads for concurrent
+processing.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">operation</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Task to await</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Result of the task, <code>TaskCanceledException</code>, or any exception raised by the task</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Async_0_fork_1" class="def">fork</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> operation<span class='comma'>, </span>TimeSpan timeout = default<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Async/Async.Module.cs#L75" class="link">Source</a>
+<a href="#Async_0_fork_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p><code>Async.fork</code> lifts a function into an IO monad, forks it, and then runs the IO monad returning
+the <code>ForkIO</code> object.  The forked operation continues to run in parallel.  The <code>ForkIO</code> object
+contains two properties: <code>Await</code> and <code>Cancel</code> that be used to either await the result or
+cancel the operation.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">operation</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Operation to fork</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">timeout</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Optional timeout</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The <code>ForkIO</code> object contains two properties: <code>Await</code> and <code>Cancel</code> that be used to either
+await the result or cancel the operation.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Async_0_fork_1" class="def">fork</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Task<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> operation<span class='comma'>, </span>TimeSpan timeout = default<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Async/Async.Module.cs#L89" class="link">Source</a>
+<a href="#Async_0_fork_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p><code>Async.fork</code> lifts a function into an IO monad, forks it, and then runs the IO monad returning
+the <code>ForkIO</code> object.  The forked operation continues to run in parallel.  The <code>ForkIO</code> object
+contains two properties: <code>Await</code> and <code>Cancel</code> that be used to either await the result or
+cancel the operation.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">operation</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Operation to fork</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">timeout</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Optional timeout</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The <code>ForkIO</code> object contains two properties: <code>Await</code> and <code>Cancel</code> that be used to either
+await the result or cancel the operation.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div></div></div></body></html>

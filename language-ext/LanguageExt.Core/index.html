@@ -33,7 +33,7 @@ the <code>Pipes</code> compositional streaming functionality.  To understand mor
 <div id="table-of-contents"><p class="caption">Contents</p>
 <ul><li><a href="#_0_CatchM_3" class="link"><div class="nowrap">CatchM
 <span class='generics'>&lt;</span>E<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>Func<span class='generics'>&lt;</span>E<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Match<span class='comma'>, </span>Func<span class='generics'>&lt;</span>E<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> Value<span class='parens'>)</span></div></a></li>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>E<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Match<span class='comma'>, </span>Func<span class='generics'>&lt;</span>E<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> Action<span class='parens'>)</span></div></a></li>
 <ul><li><a href="#CatchM_3_Run_0" class="link"><div class="nowrap">Run
 
 <span class='parens'>(</span>E error<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> otherwise<span class='parens'>)</span></div></a></li>
@@ -297,7 +297,8 @@ the <code>Pipes</code> compositional streaming functionality.  To understand mor
 <span class='parens'>(</span>A x<span class='comma'>, </span>A y<span class='parens'>)</span></div></a></li></ul>
 </ul></div>
 <div class="interface"><H1>Sub modules</H1>
-<table><tbody><tr><td class="src clearfix"><span class="inst-left"><a href="Class Instances\index.html" class="link">Class Instances</a></span></td></tr>
+<table><tbody><tr><td class="src clearfix"><span class="inst-left"><a href="Async\index.html" class="link">Async</a></span></td></tr>
+<tr><td class="src clearfix"><span class="inst-left"><a href="Class Instances\index.html" class="link">Class Instances</a></span></td></tr>
 <tr><td class="src clearfix"><span class="inst-left"><a href="Common\index.html" class="link">Common</a></span></td></tr>
 <tr><td class="src clearfix"><span class="inst-left"><a href="Concurrency\index.html" class="link">Concurrency</a></span></td></tr>
 <tr><td class="src clearfix"><span class="inst-left"><a href="DataTypes\index.html" class="link">DataTypes</a></span></td></tr>
@@ -307,7 +308,7 @@ the <code>Pipes</code> compositional streaming functionality.  To understand mor
 <tr><td class="src clearfix"><span class="inst-left"><a href="Immutable Collections\index.html" class="link">Immutable Collections</a></span></td></tr>
 <tr><td class="src clearfix"><span class="inst-left"><a href="Lens\index.html" class="link">Lens</a></span></td></tr>
 <tr><td class="src clearfix"><span class="inst-left"><a href="Monads\index.html" class="link">Monads</a></span></td></tr>
-<tr><td class="src clearfix"><span class="inst-left"><a href="Obsolute and Deprecated\index.html" class="link">Obsolute and Deprecated</a></span></td></tr>
+<tr><td class="src clearfix"><span class="inst-left"><a href="Obsolete and Deprecated\index.html" class="link">Obsolete and Deprecated</a></span></td></tr>
 <tr><td class="src clearfix"><span class="inst-left"><a href="Prelude\index.html" class="link">Prelude</a></span></td></tr>
 <tr><td class="src clearfix"><span class="inst-left"><a href="Pretty\index.html" class="link">Pretty</a></span></td></tr>
 <tr><td class="src clearfix"><span class="inst-left"><a href="Prism\index.html" class="link">Prism</a></span></td></tr>
@@ -318,11 +319,12 @@ the <code>Pipes</code> compositional streaming functionality.  To understand mor
 <div class="top"><p class="src"><span class="keyword">record</span>
 <a id="_0_CatchM_3" class="def">CatchM</a>
 <span class='generics'>&lt;</span>E<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>Func<span class='generics'>&lt;</span>E<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Match<span class='comma'>, </span>Func<span class='generics'>&lt;</span>E<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> Value<span class='parens'>)</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>E<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Match<span class='comma'>, </span>Func<span class='generics'>&lt;</span>E<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> Action<span class='parens'>)</span>
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Catch.cs#L9" class="link">Source</a>
 <a href="#_0_CatchM_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> M : Fallible&lt;E, M&gt;</span></div></div></p>
+<span> M : 
+        Fallible&lt;E, M&gt;</span></div></div></p>
 <div class="doc"><div><p>Used by <code>@catch</code>, <code>@exceptional</code>, <code>@expected</code> to represent the catching of errors</p>
 </div>
 <div></div>
@@ -341,7 +343,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <a id="CatchM_3_Run_0" class="def">Run</a>
 
 <span class='parens'>(</span>E error<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> otherwise<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Catch.cs#L12" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Catch.cs#L13" class="link">Source</a>
 <a href="#CatchM_3_Run_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -365,7 +367,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <div class="top"><p class="src"><span class="keyword">operator</span>
 <a id="CatchM_3_|_0" class="def">|</a>
 <span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>CatchM<span class='generics'>&lt;</span>E<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Catch.cs#L15" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Catch.cs#L16" class="link">Source</a>
 <a href="#CatchM_3_|_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
