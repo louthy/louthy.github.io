@@ -1,0 +1,1148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>LanguageExt.Core/Monads/Alternative Monads/Nullable</title>
+<link href="style.css" rel="stylesheet" type="text/css"/></head>
+<body class="js-enabled"><div id="package-header"><ul class="links" id="page-menu"><li><a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/Nullable" class="link">Source</a></li>
+<li><a href="../index.html" class="link">Contents</a></li>
+<li><a href="../../../../index.html" class="link">Index</a></li></ul>
+<p class="caption">LanguageExt.Core</p></div>
+<div id="content"><div id="module-header"><p class="caption"><a href="../../../index.html" class="link">LanguageExt.Core</a>
+<span> ► </span>
+<a href="../../index.html" class="link">Monads</a>
+<span> ► </span>
+<a href="../index.html" class="link">Alternative Monads</a>
+<span> ► </span>
+<a href="index.html" class="link">Nullable</a></p></div>
+<p>The <code>Nullable</code> extensions turns the <code>Nullable&lt;T&gt;</code> type from .NET into a monad.  This means you can use them in LINQ expressions, just like
+the other monadic types in this library.  There are natural transformation functions to help convert from a nullable into other types, i.e.</p>
+<pre><code>int? x = ...
+Option&lt;int&gt; mx = x.ToOption();
+</code></pre>
+
+<div id="table-of-contents"><p class="caption">Contents</p>
+<ul><li><a href="#_0_Prelude_0" class="link"><div class="nowrap">Prelude
+</div></a></li>
+<ul><li><a href="#Prelude_0_toOption_1" class="link"><div class="nowrap">toOption
+<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_match_2" class="link"><div class="nowrap">match
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>R<span class='generics'>&gt;</span> Some<span class='comma'>, </span>Func<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span> None<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_matchAsync_2" class="link"><div class="nowrap">matchAsync
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>Task<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span><span class='generics'>&gt;</span> Some<span class='comma'>, </span>Func<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span> None<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_matchAsync_2" class="link"><div class="nowrap">matchAsync
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>Task<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span><span class='generics'>&gt;</span> Some<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Task<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span><span class='generics'>&gt;</span> None<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_match_1" class="link"><div class="nowrap">match
+<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='comma'>, </span>Action<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> Some<span class='comma'>, </span>Action None<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_ifSome_1" class="link"><div class="nowrap">ifSome
+<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='comma'>, </span>Action<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> someHandler<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_ifSome_1" class="link"><div class="nowrap">ifSome
+<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> someHandler<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_ifNone_1" class="link"><div class="nowrap">ifNone
+<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> None<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_ifNone_1" class="link"><div class="nowrap">ifNone
+<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='comma'>, </span>T noneValue<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_toEither_2" class="link"><div class="nowrap">toEither
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='comma'>, </span>L defaultLeftValue<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_toEither_2" class="link"><div class="nowrap">toEither
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span> Left<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_append_1" class="link"><div class="nowrap">append
+<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? lhs<span class='comma'>, </span>T? rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_plus_2" class="link"><div class="nowrap">plus
+<span class='generics'>&lt;</span>NUM<span class='comma'>, </span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? lhs<span class='comma'>, </span>T? rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_subtract_2" class="link"><div class="nowrap">subtract
+<span class='generics'>&lt;</span>NUM<span class='comma'>, </span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? lhs<span class='comma'>, </span>T? rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_product_2" class="link"><div class="nowrap">product
+<span class='generics'>&lt;</span>NUM<span class='comma'>, </span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? lhs<span class='comma'>, </span>T? rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_divide_2" class="link"><div class="nowrap">divide
+<span class='generics'>&lt;</span>NUM<span class='comma'>, </span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? lhs<span class='comma'>, </span>T? rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_somes_1" class="link"><div class="nowrap">somes
+<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>T?<span class='generics'>&gt;</span> self<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_iter_1" class="link"><div class="nowrap">iter
+<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='comma'>, </span>Action<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> action<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_count_1" class="link"><div class="nowrap">count
+<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_forall_1" class="link"><div class="nowrap">forall
+<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_forall_1" class="link"><div class="nowrap">forall
+<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Some<span class='comma'>, </span>Func<span class='generics'>&lt;</span>bool<span class='generics'>&gt;</span> None<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_exists_1" class="link"><div class="nowrap">exists
+<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_exists_1" class="link"><div class="nowrap">exists
+<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Some<span class='comma'>, </span>Func<span class='generics'>&lt;</span>bool<span class='generics'>&gt;</span> None<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_map_2" class="link"><div class="nowrap">map
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>R<span class='generics'>&gt;</span> mapper<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_map_2" class="link"><div class="nowrap">map
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>R<span class='generics'>&gt;</span> Some<span class='comma'>, </span>Func<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span> None<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_filter_1" class="link"><div class="nowrap">filter
+<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_filter_1" class="link"><div class="nowrap">filter
+<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Some<span class='comma'>, </span>Func<span class='generics'>&lt;</span>bool<span class='generics'>&gt;</span> None<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_bind_2" class="link"><div class="nowrap">bind
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>R?<span class='generics'>&gt;</span> binder<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_bind_2" class="link"><div class="nowrap">bind
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>R?<span class='generics'>&gt;</span> Some<span class='comma'>, </span>Func<span class='generics'>&lt;</span>R?<span class='generics'>&gt;</span> None<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_sum_0" class="link"><div class="nowrap">sum
+
+<span class='parens'>(</span>int? self<span class='parens'>)</span></div></a></li></ul></ul></div>
+<div class="interface">
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_Prelude_0" class="def">Prelude</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/Nullable/Nullable.Prelude.cs#L9" class="link">Source</a>
+<a href="#_0_Prelude_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Option<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
+<a id="Prelude_0_toOption_1" class="def">toOption</a>
+<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/Nullable/Nullable.Prelude.cs#L17" class="link">Source</a>
+<a href="#Prelude_0_toOption_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : struct</span></div></div></p>
+<div class="doc"><div><p>Convert NullableT to OptionT</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">T</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"></span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">self</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Value to convert</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>OptionT with Some or None, depending on HasValue</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+R
+<a id="Prelude_0_match_2" class="def">match</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>R<span class='generics'>&gt;</span> Some<span class='comma'>, </span>Func<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span> None<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/Nullable/Nullable.Prelude.cs#L30" class="link">Source</a>
+<a href="#Prelude_0_match_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : struct</span></div></div></p>
+<div class="doc"><div><p>Match the two states of the Nullable and return a non-null R.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">R</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Return type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Some</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Some handler</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">None</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>None handler</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A non-null R</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Task<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span>
+<a id="Prelude_0_matchAsync_2" class="def">matchAsync</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>Task<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span><span class='generics'>&gt;</span> Some<span class='comma'>, </span>Func<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span> None<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/Nullable/Nullable.Prelude.cs#L43" class="link">Source</a>
+<a href="#Prelude_0_matchAsync_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : struct</span></div></div></p>
+<div class="doc"><div><p>Match the two states of the Nullable and return a promise for an R.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">R</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Return type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Some</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Some handler</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">None</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>None handler</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A promise to return an R</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Task<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span>
+<a id="Prelude_0_matchAsync_2" class="def">matchAsync</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>Task<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span><span class='generics'>&gt;</span> Some<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Task<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span><span class='generics'>&gt;</span> None<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/Nullable/Nullable.Prelude.cs#L55" class="link">Source</a>
+<a href="#Prelude_0_matchAsync_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : struct</span></div></div></p>
+<div class="doc"><div><p>Match the two states of the Nullable and return a promise for an R.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">R</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Return type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Some</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Some handler</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">None</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>None handler</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A promise to return an R</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<a id="Prelude_0_match_1" class="def">match</a>
+<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='comma'>, </span>Action<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> Some<span class='comma'>, </span>Action None<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/Nullable/Nullable.Prelude.cs#L65" class="link">Source</a>
+<a href="#Prelude_0_match_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : struct</span></div></div></p>
+<div class="doc"><div><p>Match the two states of the Nullable T</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Some</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Some match</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">None</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>None match</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<a id="Prelude_0_ifSome_1" class="def">ifSome</a>
+<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='comma'>, </span>Action<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> someHandler<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/Nullable/Nullable.Prelude.cs#L82" class="link">Source</a>
+<a href="#Prelude_0_ifSome_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : struct</span></div></div></p>
+<div class="doc"><div><p>Invokes the someHandler if Nullable is in the Some state, otherwise nothing
+happens.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<a id="Prelude_0_ifSome_1" class="def">ifSome</a>
+<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> someHandler<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/Nullable/Nullable.Prelude.cs#L95" class="link">Source</a>
+<a href="#Prelude_0_ifSome_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : struct</span></div></div></p>
+<div class="doc"><div><p>Invokes the someHandler if Nullable is in the Some state, otherwise nothing
+happens.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+T
+<a id="Prelude_0_ifNone_1" class="def">ifNone</a>
+<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> None<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/Nullable/Nullable.Prelude.cs#L104" class="link">Source</a>
+<a href="#Prelude_0_ifNone_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : struct</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+T
+<a id="Prelude_0_ifNone_1" class="def">ifNone</a>
+<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='comma'>, </span>T noneValue<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/Nullable/Nullable.Prelude.cs#L108" class="link">Source</a>
+<a href="#Prelude_0_ifNone_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : struct</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Either<span class='generics'>&lt;</span>L<span class='comma'>, </span>T<span class='generics'>&gt;</span>
+<a id="Prelude_0_toEither_2" class="def">toEither</a>
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='comma'>, </span>L defaultLeftValue<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/Nullable/Nullable.Prelude.cs#L112" class="link">Source</a>
+<a href="#Prelude_0_toEither_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : struct</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Either<span class='generics'>&lt;</span>L<span class='comma'>, </span>T<span class='generics'>&gt;</span>
+<a id="Prelude_0_toEither_2" class="def">toEither</a>
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span> Left<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/Nullable/Nullable.Prelude.cs#L118" class="link">Source</a>
+<a href="#Prelude_0_toEither_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : struct</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+T?
+<a id="Prelude_0_append_1" class="def">append</a>
+<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? lhs<span class='comma'>, </span>T? rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/Nullable/Nullable.Prelude.cs#L136" class="link">Source</a>
+<a href="#Prelude_0_append_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : struct, Semigroup&lt;T&gt;</span></div></div></p>
+<div class="doc"><div><p>Append the Some(x) of one option to the Some(y) of another.
+For numeric values the behaviour is to sum the Somes (lhs + rhs)
+For string values the behaviour is to concatenate the strings
+For Lst/Stck/Que values the behaviour is to concatenate the lists
+For Map or Set values the behaviour is to merge the sets
+Otherwise if the T type derives from IAppendable then the behaviour
+is to call lhs.Append(rhs);</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">lhs</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Left-hand side of the operation</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">rhs</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Right-hand side of the operation</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>lhs + rhs</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+T?
+<a id="Prelude_0_plus_2" class="def">plus</a>
+<span class='generics'>&lt;</span>NUM<span class='comma'>, </span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? lhs<span class='comma'>, </span>T? rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/Nullable/Nullable.Prelude.cs#L157" class="link">Source</a>
+<a href="#Prelude_0_plus_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : struct
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> NUM : Arithmetic&lt;T&gt;</span></div></div></p>
+<div class="doc"><div><p>Sum the Some(x) of one nullable from the Some(y) of another.
+For numeric values the behaviour is to find the subtract between the Somes (lhs - rhs)
+For Lst values the behaviour is to remove items in the rhs from the lhs
+For Map or Set values the behaviour is to remove items in the rhs from the lhs
+Otherwise if the T type derives from ISubtractable then the behaviour
+is to call lhs.Plus(rhs);</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">lhs</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Left-hand side of the operation</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">rhs</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Right-hand side of the operation</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>lhs - rhs</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+T?
+<a id="Prelude_0_subtract_2" class="def">subtract</a>
+<span class='generics'>&lt;</span>NUM<span class='comma'>, </span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? lhs<span class='comma'>, </span>T? rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/Nullable/Nullable.Prelude.cs#L178" class="link">Source</a>
+<a href="#Prelude_0_subtract_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : struct
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> NUM : Arithmetic&lt;T&gt;</span></div></div></p>
+<div class="doc"><div><p>Subtract the Some(x) of one nullable from the Some(y) of another.
+For numeric values the behaviour is to find the subtract between the Somes (lhs - rhs)
+For Lst values the behaviour is to remove items in the rhs from the lhs
+For Map or Set values the behaviour is to remove items in the rhs from the lhs
+Otherwise if the T type derives from ISubtractable then the behaviour
+is to call lhs.Subtract(rhs);</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">lhs</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Left-hand side of the operation</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">rhs</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Right-hand side of the operation</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>lhs - rhs</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+T?
+<a id="Prelude_0_product_2" class="def">product</a>
+<span class='generics'>&lt;</span>NUM<span class='comma'>, </span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? lhs<span class='comma'>, </span>T? rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/Nullable/Nullable.Prelude.cs#L199" class="link">Source</a>
+<a href="#Prelude_0_product_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : struct
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> NUM : Arithmetic&lt;T&gt;</span></div></div></p>
+<div class="doc"><div><p>Find the product of the Somes.
+For numeric values the behaviour is to multiply the Somes (lhs * rhs)
+For Lst values the behaviour is to multiply all combinations of values in both lists
+to produce a new list
+Otherwise if the T type derives from IMultiplicable then the behaviour
+is to call lhs.Product(rhs);</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">lhs</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Left-hand side of the operation</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">rhs</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Right-hand side of the operation</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>lhs * rhs</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+T?
+<a id="Prelude_0_divide_2" class="def">divide</a>
+<span class='generics'>&lt;</span>NUM<span class='comma'>, </span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? lhs<span class='comma'>, </span>T? rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/Nullable/Nullable.Prelude.cs#L220" class="link">Source</a>
+<a href="#Prelude_0_divide_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : struct
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> NUM : Num&lt;T&gt;</span></div></div></p>
+<div class="doc"><div><p>Divide the Somes.
+For numeric values the behaviour is to divide the Somes (lhs / rhs)
+For Lst values the behaviour is to divide all combinations of values in both lists
+to produce a new list
+Otherwise if the T type derives from IDivisible then the behaviour
+is to call lhs.Divide(rhs);</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">lhs</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Left-hand side of the operation</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">rhs</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Right-hand side of the operation</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>lhs / rhs</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IEnumerable<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
+<a id="Prelude_0_somes_1" class="def">somes</a>
+<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>T?<span class='generics'>&gt;</span> self<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/Nullable/Nullable.Prelude.cs#L234" class="link">Source</a>
+<a href="#Prelude_0_somes_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : struct</span></div></div></p>
+<div class="doc"><div><p>Extracts from a list of 'Option' all the 'Some' elements.
+All the 'Some' elements are extracted in order.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<a id="Prelude_0_iter_1" class="def">iter</a>
+<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='comma'>, </span>Action<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span> action<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/Nullable/Nullable.Prelude.cs#L251" class="link">Source</a>
+<a href="#Prelude_0_iter_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : struct</span></div></div></p>
+<div class="doc"><div><p>Iterate Nullable.  Imagine the item has zero or one items depending on whether
+it's in a None state or not.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">action</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Action to invoke with the value if not in None state</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+int
+<a id="Prelude_0_count_1" class="def">count</a>
+<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/Nullable/Nullable.Prelude.cs#L262" class="link">Source</a>
+<a href="#Prelude_0_count_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : struct</span></div></div></p>
+<div class="doc"><div><p>Returns 1 if there is a value, 0 otherwise</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>1 if there is a value, 0 otherwise</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="Prelude_0_forall_1" class="def">forall</a>
+<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/Nullable/Nullable.Prelude.cs#L275" class="link">Source</a>
+<a href="#Prelude_0_forall_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : struct</span></div></div></p>
+<div class="doc"><div><p>ForAll Nullable.  Imagine the item has zero or one items depending on whether
+it's in a None state or not.  This function runs a predicate against the value
+if it exists, returns true if it doesn't (because the predicate holds 'for all'
+items).</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="Prelude_0_forall_1" class="def">forall</a>
+<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Some<span class='comma'>, </span>Func<span class='generics'>&lt;</span>bool<span class='generics'>&gt;</span> None<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/Nullable/Nullable.Prelude.cs#L287" class="link">Source</a>
+<a href="#Prelude_0_forall_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : struct</span></div></div></p>
+<div class="doc"><div><p>ForAll Nullable.  Imagine the item has zero or one items depending on whether
+it's in a None state or not.  This function runs a predicate against the value
+if it exists, returns true if it doesn't (because the predicate holds 'for all'
+items).</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Some</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Some predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">None</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>None predicate</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="Prelude_0_exists_1" class="def">exists</a>
+<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/Nullable/Nullable.Prelude.cs#L299" class="link">Source</a>
+<a href="#Prelude_0_exists_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : struct</span></div></div></p>
+<div class="doc"><div><p>Exists Nullable.  Imagine the item has zero or one items depending on whether
+it's in a None state or not.  This function runs a predicate against the value
+if it exists, returns false if it doesn't.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="Prelude_0_exists_1" class="def">exists</a>
+<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Some<span class='comma'>, </span>Func<span class='generics'>&lt;</span>bool<span class='generics'>&gt;</span> None<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/Nullable/Nullable.Prelude.cs#L310" class="link">Source</a>
+<a href="#Prelude_0_exists_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : struct</span></div></div></p>
+<div class="doc"><div><p>Exists Nullable.  Imagine the item has zero or one items depending on whether
+it's in a None state or not.  This function runs a predicate against the value
+if it exists, returns false if it doesn't.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Some</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Some predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">None</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>None predicate</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+R?
+<a id="Prelude_0_map_2" class="def">map</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>R<span class='generics'>&gt;</span> mapper<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/Nullable/Nullable.Prelude.cs#L316" class="link">Source</a>
+<a href="#Prelude_0_map_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : struct
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> R : struct</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+R?
+<a id="Prelude_0_map_2" class="def">map</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>R<span class='generics'>&gt;</span> Some<span class='comma'>, </span>Func<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span> None<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/Nullable/Nullable.Prelude.cs#L324" class="link">Source</a>
+<a href="#Prelude_0_map_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : struct
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> R : struct</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+T?
+<a id="Prelude_0_filter_1" class="def">filter</a>
+<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/Nullable/Nullable.Prelude.cs#L332" class="link">Source</a>
+<a href="#Prelude_0_filter_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : struct</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+T?
+<a id="Prelude_0_filter_1" class="def">filter</a>
+<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Some<span class='comma'>, </span>Func<span class='generics'>&lt;</span>bool<span class='generics'>&gt;</span> None<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/Nullable/Nullable.Prelude.cs#L340" class="link">Source</a>
+<a href="#Prelude_0_filter_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : struct</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+R?
+<a id="Prelude_0_bind_2" class="def">bind</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>R?<span class='generics'>&gt;</span> binder<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/Nullable/Nullable.Prelude.cs#L350" class="link">Source</a>
+<a href="#Prelude_0_bind_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : struct
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> R : struct</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+R?
+<a id="Prelude_0_bind_2" class="def">bind</a>
+<span class='generics'>&lt;</span>T<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T? self<span class='comma'>, </span>Func<span class='generics'>&lt;</span>T<span class='comma'>, </span>R?<span class='generics'>&gt;</span> Some<span class='comma'>, </span>Func<span class='generics'>&lt;</span>R?<span class='generics'>&gt;</span> None<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/Nullable/Nullable.Prelude.cs#L358" class="link">Source</a>
+<a href="#Prelude_0_bind_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> T : struct
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> R : struct</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+int
+<a id="Prelude_0_sum_0" class="def">sum</a>
+
+<span class='parens'>(</span>int? self<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/Nullable/Nullable.Prelude.cs#L366" class="link">Source</a>
+<a href="#Prelude_0_sum_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div></div></div></body></html>
