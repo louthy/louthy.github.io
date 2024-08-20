@@ -12,16 +12,16 @@
 <a href="../index.html" class="link">Alternative Monads</a>
 <span> ► </span>
 <a href="index.html" class="link">Either</a></p></div>
-<p><code class='language-csharp'>Either</code> monads support either a <code class='language-csharp'>L</code> (left) or a <code class='language-csharp'>R</code> (right) value.  <code class='language-csharp'>L</code> is traditionally used as an error carrier, and any <code class='language-csharp'>Either</code> monad
-carrying an <code class='language-csharp'>L</code> will short-cut any bind operations and return the <code class='language-csharp'>L</code> (kinda like an <code class='language-csharp'>Exception</code>).  However, they're not only for that,
-and can be used to carry an alternative value which could be mapped using <code class='language-csharp'>BiMap</code>, or <code class='language-csharp'>MapLeft</code>.</p>
-<p>You can construct an <code class='language-csharp'>Either</code> using the constructor functions in the <code class='language-csharp'>Prelude</code>:</p>
-<pre class='language-csharp'><code class='language-csharp'>Either&lt;string, int&gt; ma = Left&lt;string, int&gt;(&quot;this is an error&quot;);
+<p><code>Either</code> monads support either a <code>L</code> (left) or a <code>R</code> (right) value.  <code>L</code> is traditionally used as an error carrier, and any <code>Either</code> monad
+carrying an <code>L</code> will short-cut any bind operations and return the <code>L</code> (kinda like an <code>Exception</code>).  However, they're not only for that,
+and can be used to carry an alternative value which could be mapped using <code>BiMap</code>, or <code>MapLeft</code>.</p>
+<p>You can construct an <code>Either</code> using the constructor functions in the <code>Prelude</code>:</p>
+<pre class='language-csharp'><code>Either&lt;string, int&gt; ma = Left&lt;string, int&gt;(&quot;this is an error&quot;);
 Either&lt;string, int&gt; mb = Right&lt;string, int&gt;(123);
 </code></pre>
-<p>There are also convenience types called <code class='language-csharp'>Left</code> and <code class='language-csharp'>Right</code>, that don't need both generics providing.  They can often make it a little
-easier to work with <code class='language-csharp'>Either</code>:</p>
-<pre class='language-csharp'><code class='language-csharp'>Either&lt;string, int&gt; ma = Left(&quot;this is an error&quot;);
+<p>There are also convenience types called <code>Left</code> and <code>Right</code>, that don't need both generics providing.  They can often make it a little
+easier to work with <code>Either</code>:</p>
+<pre class='language-csharp'><code>Either&lt;string, int&gt; ma = Left(&quot;this is an error&quot;);
 Either&lt;string, int&gt; mb = Right(123);
 </code></pre>
 <p>It uses implicit casts to work out what the type should be.  Note, if you're having trouble getting the types resolved, just specify the
@@ -671,18 +671,18 @@ type parameters.</p>
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/Either/Either.cs#L32" class="link">Source</a>
 <a href="#_0_Either_2" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Holds one of two values <code class='language-csharp'>Left</code> or <code class='language-csharp'>Right</code>.  Usually, <code class='language-csharp'>Left</code> is considered <em>wrong</em> or <em>in-error</em>, and
-<code class='language-csharp'>Right</code> is, well, right - as in correct.  When the <code class='language-csharp'>Either</code> is in a <code class='language-csharp'>Left</code> state, it cancels
-computations like <code class='language-csharp'>bind</code> or <code class='language-csharp'>map</code>, etc.  So, you can see <code class='language-csharp'>Left</code> as an <em>'early out, with a message'</em>.
-Unlike <code class='language-csharp'>Option</code> that has <code class='language-csharp'>None</code> as its alternative value (i.e. it has an <em>'early out, but no message'</em>).</p>
+<div class="doc"><div><p>Holds one of two values <code>Left</code> or <code>Right</code>.  Usually, <code>Left</code> is considered <em>wrong</em> or <em>in-error</em>, and
+<code>Right</code> is, well, right - as in correct.  When the <code>Either</code> is in a <code>Left</code> state, it cancels
+computations like <code>bind</code> or <code>map</code>, etc.  So, you can see <code>Left</code> as an <em>'early out, with a message'</em>.
+Unlike <code>Option</code> that has <code>None</code> as its alternative value (i.e. it has an <em>'early out, but no message'</em>).</p>
 </div>
-<div><p>NOTE: If you use <code class='language-csharp'>Filter</code> or <code class='language-csharp'>Where</code> (or <code class='language-csharp'>where</code> in a LINQ expression) with <code class='language-csharp'>Either</code>, then the <code class='language-csharp'>Either</code>
-will be put into a <code class='language-csharp'>Bottom</code> state [if the predicate returns false].  When it's in this state it is
-neither <code class='language-csharp'>Right</code> nor <code class='language-csharp'>Left</code>.  And any usage could trigger a <code class='language-csharp'>BottomException</code>.  So be aware of the issue
-of filtering <code class='language-csharp'>Either</code>.</p>
-<p>Also note, when the <code class='language-csharp'>Either</code> is in a <code class='language-csharp'>Bottom</code> state, some operations on it will continue to give valid
-results or return another <code class='language-csharp'>Either</code> in the <code class='language-csharp'>Bottom</code> state and not throw.  This is so a filtered <code class='language-csharp'>Either</code>
-doesn't needlessly break expressions and could be rescued into something useful via <code class='language-csharp'>Match</code>.</p>
+<div><p>NOTE: If you use <code>Filter</code> or <code>Where</code> (or <code>where</code> in a LINQ expression) with <code>Either</code>, then the <code>Either</code>
+will be put into a <code>Bottom</code> state [if the predicate returns false].  When it's in this state it is
+neither <code>Right</code> nor <code>Left</code>.  And any usage could trigger a <code>BottomException</code>.  So be aware of the issue
+of filtering <code>Either</code>.</p>
+<p>Also note, when the <code>Either</code> is in a <code>Bottom</code> state, some operations on it will continue to give valid
+results or return another <code>Either</code> in the <code>Bottom</code> state and not throw.  This is so a filtered <code>Either</code>
+doesn't needlessly break expressions and could be rescued into something useful via <code>Match</code>.</p>
 </div>
 <div class="methods"><p class="caption">Parameters</p>
 <div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
@@ -1471,16 +1471,16 @@ Eff<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span>
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/Either/Either.cs#L282" class="link">Source</a>
 <a href="#Either_2_ToEff_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Convert to an <code class='language-csharp'>Eff</code></p>
+<div class="doc"><div><p>Convert to an <code>Eff</code></p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
 <div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">Left</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Map the <code class='language-csharp'>Left</code> value to the<code class='language-csharp'>Fail</code> state of the <code class='language-csharp'>Eff</code></p>
+<td class="src clearfix"><span class="instruction inst-left"><p>Map the <code>Left</code> value to the<code>Fail</code> state of the <code>Eff</code></p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code class='language-csharp'>Eff</code> monad</p>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>Eff</code> monad</p>
 </span></td></tr></tbody></table></div></div>
 </div>
 
@@ -5674,7 +5674,7 @@ Either<span class='generics'>&lt;</span>L2<span class='comma'>, </span>R2<span c
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/Either/Either.Monad.cs#L10" class="link">Source</a>
 <a href="#_0_Either_1" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Monad trait implementation for <code class='language-csharp'>Either&lt;L, R&gt;</code></p>
+<div class="doc"><div><p>Monad trait implementation for <code>Either&lt;L, R&gt;</code></p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>

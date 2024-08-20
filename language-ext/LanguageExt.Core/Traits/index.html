@@ -60,13 +60,13 @@
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/K.cs#L20" class="link">Source</a>
 <a href="#_0_K_2" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Arrow kind: <code class='language-csharp'>* -&gt; *</code> used to represent higher-kinded types.</p>
+<div class="doc"><div><p>Arrow kind: <code>* -&gt; *</code> used to represent higher-kinded types.</p>
 </div>
-<div><p><code class='language-csharp'>K&lt;F, A&gt;</code> should be thought of as <code class='language-csharp'>F&lt;A&gt;</code> (where both <code class='language-csharp'>F</code> an <code class='language-csharp'>A</code> are parametric).  It currently
+<div><p><code>K&lt;F, A&gt;</code> should be thought of as <code>F&lt;A&gt;</code> (where both <code>F</code> an <code>A</code> are parametric).  It currently
 can't be represented in C#, so this allows us to define higher-kinded types and pass them
-around.  We can then build traits that expected a <code class='language-csharp'>K</code> where the trait is tied to the <code class='language-csharp'>F</code>.</p>
+around.  We can then build traits that expected a <code>K</code> where the trait is tied to the <code>F</code>.</p>
 <p>For example:</p>
-<pre class='language-csharp'><code class='language-csharp'>K&lt;F, A&gt; where F : Functor&lt;F&gt;
+<pre class='language-csharp'><code>K&lt;F, A&gt; where F : Functor&lt;F&gt;
 K&lt;M, A&gt; where M : Monad&lt;F&gt;
 </code></pre>
 <p>That means we can write generic functions that work with monads, functors, etc.</p>
@@ -179,41 +179,41 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>K<span class='g
         </span></div>
 <div class="constraint"><span class="keyword">where</span>
 <span> M : Functor&lt;M&gt;</span></div></div></p>
-<div class="doc"><div><p><code class='language-csharp'>KindT</code> converts a nested Kind type (inherits <code class='language-csharp'>K&lt;M, A&gt;</code>), where the inner
-type is a concrete type and not <code class='language-csharp'>K&lt;N, A&gt;</code> to the more general version - which
-allows the other <code class='language-csharp'>T</code> variant methods to work seamlessly.</p>
+<div class="doc"><div><p><code>KindT</code> converts a nested Kind type (inherits <code>K&lt;M, A&gt;</code>), where the inner
+type is a concrete type and not <code>K&lt;N, A&gt;</code> to the more general version - which
+allows the other <code>T</code> variant methods to work seamlessly.</p>
 </div>
 <div><p>The casting of nested types is especially problematic for C#'s type-system,
 so even though this isn't ideal, it does allow for a truly generic system
-of working with any nested types as long as there's a <code class='language-csharp'>Functor</code> implementation
+of working with any nested types as long as there's a <code>Functor</code> implementation
 for the outer type.</p>
 </div>
 <div class="methods"><p class="caption">Parameters</p>
 <div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Outer functor trait (i.e. <code class='language-csharp'>Seq</code>)</p>
+<td class="src clearfix"><span class="instruction inst-left"><p>Outer functor trait (i.e. <code>Seq</code>)</p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">N</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Inner trait (i.e. <code class='language-csharp'>Option</code>)</p>
+<td class="src clearfix"><span class="instruction inst-left"><p>Inner trait (i.e. <code>Option</code>)</p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">NA</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Concrete nested type (i.e. <code class='language-csharp'>Option&lt;int&gt;</code>)</p>
+<td class="src clearfix"><span class="instruction inst-left"><p>Concrete nested type (i.e. <code>Option&lt;int&gt;</code>)</p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Concrete bound value type (i.e. <code class='language-csharp'>int</code>)</p>
+<td class="src clearfix"><span class="instruction inst-left"><p>Concrete bound value type (i.e. <code>int</code>)</p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">param</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">mna</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Nested functor value</p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>More general version of the type that can be used with other <code class='language-csharp'>T</code> extensions, like <code class='language-csharp'>BindT</code></p>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>More general version of the type that can be used with other <code>T</code> extensions, like <code>BindT</code></p>
 </span></td></tr></tbody></table></div></div>
 <div class="methods"><p class="caption">Examples</p>
-<pre class='language-csharp'><code class='language-csharp'>var mx = Seq&lt;Option&lt;int&gt;&gt;(Some(1), Some(2), Some(3));
+<pre class='language-csharp'><code>var mx = Seq&lt;Option&lt;int&gt;&gt;(Some(1), Some(2), Some(3));
 
 var ma = mx.KindT&lt;Seq, Option, Option&lt;int&gt;, int&gt;()
            .BindT(a =&gt; Some(a + 1))
@@ -246,30 +246,30 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>NA<span class='
         </span></div>
 <div class="constraint"><span class="keyword">where</span>
 <span> M : Functor&lt;M&gt;</span></div></div></p>
-<div class="doc"><div><p><code class='language-csharp'>AsT</code> converts a nested Kind type (inherits <code class='language-csharp'>K&lt;M, A&gt;</code>), where the inner type
-is a general type (<code class='language-csharp'>K&lt;N, A&gt;</code>) to its downcast concrete version.</p>
+<div class="doc"><div><p><code>AsT</code> converts a nested Kind type (inherits <code>K&lt;M, A&gt;</code>), where the inner type
+is a general type (<code>K&lt;N, A&gt;</code>) to its downcast concrete version.</p>
 </div>
 <div><p>The casting of nested types is especially problematic for C#'s type-system,
 so even though this isn't ideal, it does allow for a truly generic system
-of working with any nested types as long as there's a <code class='language-csharp'>Functor</code> implementation
+of working with any nested types as long as there's a <code>Functor</code> implementation
 for the outer type.</p>
 </div>
 <div class="methods"><p class="caption">Parameters</p>
 <div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Outer functor trait (i.e. <code class='language-csharp'>Seq</code>)</p>
+<td class="src clearfix"><span class="instruction inst-left"><p>Outer functor trait (i.e. <code>Seq</code>)</p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">N</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Inner trait (i.e. <code class='language-csharp'>Option</code>)</p>
+<td class="src clearfix"><span class="instruction inst-left"><p>Inner trait (i.e. <code>Option</code>)</p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">NA</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Concrete nested type (i.e. <code class='language-csharp'>Option&lt;int&gt;</code>)</p>
+<td class="src clearfix"><span class="instruction inst-left"><p>Concrete nested type (i.e. <code>Option&lt;int&gt;</code>)</p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Concrete nested-monad bound value type (i.e. <code class='language-csharp'>int</code>)</p>
+<td class="src clearfix"><span class="instruction inst-left"><p>Concrete nested-monad bound value type (i.e. <code>int</code>)</p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">param</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">mna</span></span></td>
@@ -279,7 +279,7 @@ for the outer type.</p>
 <td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Concrete version of the general type.</p>
 </span></td></tr></tbody></table></div></div>
 <div class="methods"><p class="caption">Examples</p>
-<pre class='language-csharp'><code class='language-csharp'>var mx = Seq&lt;Option&lt;int&gt;&gt;(Some(1), Some(2), Some(3));
+<pre class='language-csharp'><code>var mx = Seq&lt;Option&lt;int&gt;&gt;(Some(1), Some(2), Some(3));
 
 var ma = mx.KindT&lt;Seq, Option, Option&lt;int&gt;, int&gt;()
            .BindT(a =&gt; Some(a + 1))
