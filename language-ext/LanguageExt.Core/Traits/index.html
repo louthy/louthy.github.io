@@ -8,6 +8,29 @@
 <div id="content"><div id="module-header"><p class="caption"><a href="../index.html" class="link">LanguageExt.Core</a>
 <span> ► </span>
 <a href="index.html" class="link">Traits</a></p></div>
+<p>A recent C# feature is <code>static</code> interface members – this opens up some new possibilities for bending C# to make trait like functionality work.  You may have already seen the technique:</p>
+<pre class='language-csharp'><code class="language-c#">public interface Addable&lt;SELF&gt; where SELF : Addable&lt;SELF&gt;
+{
+    public static abstract SELF Add(SELF x, SELF y);
+}
+</code></pre>
+<p>Note, how the Add member is <code>static abstract</code> and that the interface has a constraint that <code>SELF</code> is forced to inherit <code>Addable&lt;SELF&gt;</code>.</p>
+<p>We can then create two distinct types that inherit the Addable trait:</p>
+<pre class='language-csharp'><code class="language-c#">public record MyList&lt;A&gt;(A[] values) : Addable&lt;MyList&lt;A&gt;&gt;
+{
+    public static MyList&lt;A&gt; Add(MyList&lt;A&gt; x, MyList&lt;A&gt; y) =&gt;
+        new (x.values.Append(y.values).ToArray());
+}
+
+public record MyString(string value) : Addable&lt;MyString&gt;
+{
+    public static MyString Add(MyString x, MyString y) =&gt;
+        new (x.value + y.value);
+}
+</code></pre>
+<p>Language-Ext takes this idea and uses it to implement 'higher-kinded traits' (with the <code>K&lt;F, A&gt;</code> type being the anchor for
+them all).</p>
+<p>To continue reading about how this works, check out <a href="https://paullouth.com/higher-kinds-in-c-with-language-ext/">Paul Louth's Higher-Kinds series</a>.</p>
 
 <div id="table-of-contents"><p class="caption">Contents</p>
 <ul><li><a href="#_0_K_2" class="link"><div class="nowrap">K
@@ -67,7 +90,7 @@ can't be represented in C#, so this allows us to define higher-kinded types and 
 around.  We can then build traits that expected a <code>K</code> where the trait is tied to the <code>F</code>.</p>
 <p>For example:</p>
 <pre class='language-csharp'><code>K&lt;F, A&gt; where F : Functor&lt;F&gt;
-K&lt;M, A&gt; where M : Monad&lt;F&gt;
+K&lt;M, A&gt; where M : Monad&lt;M&gt;
 </code></pre>
 <p>That means we can write generic functions that work with monads, functors, etc.</p>
 </div>
