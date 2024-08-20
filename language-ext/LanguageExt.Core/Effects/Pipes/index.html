@@ -26,7 +26,7 @@ following three features:</p>
 <li class='markdown-bullet'><strong>Streaming</strong></li>
 <li class='markdown-bullet'><strong>Composability</strong></li>
 </ol>
-<p>If you sacrifice <em>Effects</em> you get <code>IEnumerable</code>, which you
+<p>If you sacrifice <em>Effects</em> you get <code class='language-csharp'>IEnumerable</code>, which you
 can transform using composable functions in constant space, but without
 interleaving effects (other than of the <em>imperative kind</em>).</p>
 <p>If you sacrifice <em>Streaming</em> you get 'Traverse' and  'Sequence', which are
@@ -35,19 +35,19 @@ list has first been processed and loaded into memory.</p>
 <p>If you sacrifice <em>Composability</em> you write a tightly coupled for loops,
 and fire off imperative side-effects like they're going out of style.  Which
 is streaming and effectful, but is not modular or separable.</p>
-<p><code>Pipes</code> gives you all three features: effectful, streaming, and composable
-programming.  <code>Pipes</code> also provides a wide variety of stream programming
+<p><code class='language-csharp'>Pipes</code> gives you all three features: effectful, streaming, and composable
+programming.  <code class='language-csharp'>Pipes</code> also provides a wide variety of stream programming
 abstractions which are all subsets of a single unified machinery:</p>
 <ul>
-<li class='markdown-bullet'>effectful <a href="Producer"><code>Producer</code></a>,</li>
-<li class='markdown-bullet'>effectful <a href="Consumer"><code>Consumer</code></a>,</li>
-<li class='markdown-bullet'>effectful <a href="Pipe"><code>Pipe</code></a> (like Unix pipes)</li>
+<li class='markdown-bullet'>effectful <a href="Producer"><code class='language-csharp'>Producer</code></a>,</li>
+<li class='markdown-bullet'>effectful <a href="Consumer"><code class='language-csharp'>Consumer</code></a>,</li>
+<li class='markdown-bullet'>effectful <a href="Pipe"><code class='language-csharp'>Pipe</code></a> (like Unix pipes)</li>
 </ul>
-<p>On top of that, <code>Pipes</code> has more advanced features, including bi-directional
+<p>On top of that, <code class='language-csharp'>Pipes</code> has more advanced features, including bi-directional
 streaming.  This comes into play when fusing clients and servers:</p>
 <ul>
-<li class='markdown-bullet'>effectful <a href="Client"><code>Client</code></a>,</li>
-<li class='markdown-bullet'>effectful <a href="Server"><code>Server</code></a>,</li>
+<li class='markdown-bullet'>effectful <a href="Client"><code class='language-csharp'>Client</code></a>,</li>
+<li class='markdown-bullet'>effectful <a href="Server"><code class='language-csharp'>Server</code></a>,</li>
 </ul>
 <p>All of these are connectable and you can combine them together in clever and
 unexpected ways because they all share the same underlying type.</p>
@@ -59,32 +59,32 @@ pipes lets you connect pre-made streaming components with minimal effort to
 produce a highly-efficient program that streams data in constant memory.</p>
 <p>To enforce loose coupling, components can only communicate using two commands:</p>
 <ul>
-<li class='markdown-bullet'><a href="#Proxy_0_yield_1"><code>yield</code></a>: Send output data</li>
-<li class='markdown-bullet'><a href="#Proxy_0_awaiting_1"><code>awaiting</code></a>: Receive input data</li>
+<li class='markdown-bullet'><a href="#Proxy_0_yield_1"><code class='language-csharp'>yield</code></a>: Send output data</li>
+<li class='markdown-bullet'><a href="#Proxy_0_awaiting_1"><code class='language-csharp'>awaiting</code></a>: Receive input data</li>
 </ul>
 <p>Pipes has four types of components built around these two commands:</p>
 <ul>
-<li class='markdown-bullet'><a href="Producer"><code>Producer</code></a> can only <a href="#Proxy_0_yield_1"><code>yield</code></a> values and they model streaming sources</li>
-<li class='markdown-bullet'><a href="Consumer"><code>Consumer</code></a> can only be <a href="#Proxy_0_awaiting_1"><code>awaiting</code></a> values and they model streaming sinks</li>
-<li class='markdown-bullet'><a href="Pipe"><code>Pipe</code></a> can both <a href="#Proxy_0_yield_1"><code>yield</code></a> and be <a href="#Proxy_0_awaiting_1"><code>awaiting</code></a> values and they model stream transformations</li>
-<li class='markdown-bullet'><a href="Effect"><code>Effect</code></a> can neither <a href="#Proxy_0_yield_1"><code>yield</code></a> nor be <a href="#Proxy_0_awaiting_1"><code>awaiting</code></a> and they model non-streaming components</li>
+<li class='markdown-bullet'><a href="Producer"><code class='language-csharp'>Producer</code></a> can only <a href="#Proxy_0_yield_1"><code class='language-csharp'>yield</code></a> values and they model streaming sources</li>
+<li class='markdown-bullet'><a href="Consumer"><code class='language-csharp'>Consumer</code></a> can only be <a href="#Proxy_0_awaiting_1"><code class='language-csharp'>awaiting</code></a> values and they model streaming sinks</li>
+<li class='markdown-bullet'><a href="Pipe"><code class='language-csharp'>Pipe</code></a> can both <a href="#Proxy_0_yield_1"><code class='language-csharp'>yield</code></a> and be <a href="#Proxy_0_awaiting_1"><code class='language-csharp'>awaiting</code></a> values and they model stream transformations</li>
+<li class='markdown-bullet'><a href="Effect"><code class='language-csharp'>Effect</code></a> can neither <a href="#Proxy_0_yield_1"><code class='language-csharp'>yield</code></a> nor be <a href="#Proxy_0_awaiting_1"><code class='language-csharp'>awaiting</code></a> and they model non-streaming components</li>
 </ul>
 <p>Pipes uses parametric polymorphism (i.e. generics) to overload all operations.</p>
 <p>You've probably noticed this overloading already:</p>
 <ul>
-<li class='markdown-bullet'><a href="#Proxy_0_yield_1"><code>yield</code></a> works within both <a href="Producer"><code>Producer</code></a> and a <a href="Pipe"><code>Pipe</code></a></li>
-<li class='markdown-bullet'><a href="Consumer"><code>Consumer</code></a> works within both <a href="Consumer"><code>Consumer</code></a> and <a href="Pipe"><code>Pipe</code></a></li>
-<li class='markdown-bullet'>The operator <code>|</code> connects <a href="Producer"><code>Producer</code></a>, <a href="Consumer"><code>Consumer</code></a>, and <a href="Pipe"><code>Pipe</code></a> in varying ways</li>
+<li class='markdown-bullet'><a href="#Proxy_0_yield_1"><code class='language-csharp'>yield</code></a> works within both <a href="Producer"><code class='language-csharp'>Producer</code></a> and a <a href="Pipe"><code class='language-csharp'>Pipe</code></a></li>
+<li class='markdown-bullet'><a href="Consumer"><code class='language-csharp'>Consumer</code></a> works within both <a href="Consumer"><code class='language-csharp'>Consumer</code></a> and <a href="Pipe"><code class='language-csharp'>Pipe</code></a></li>
+<li class='markdown-bullet'>The operator <code class='language-csharp'>|</code> connects <a href="Producer"><code class='language-csharp'>Producer</code></a>, <a href="Consumer"><code class='language-csharp'>Consumer</code></a>, and <a href="Pipe"><code class='language-csharp'>Pipe</code></a> in varying ways</li>
 </ul>
 <p><em>This overloading is great when it works, but when connections fail they
 produce type errors that appear intimidating at first.  This section
 explains the underlying types so that you can work through type errors
 intelligently.</em></p>
-<p><code>Producer</code>, <code>Consumer</code>, <code>Pipe</code>, and <code>Effect</code> are all special cases of a
-single underlying type: <a href="#LanguageExt.Pipes_0_Proxy_6"><code>Proxy</code></a>.  This overarching type permits fully
+<p><code class='language-csharp'>Producer</code>, <code class='language-csharp'>Consumer</code>, <code class='language-csharp'>Pipe</code>, and <code class='language-csharp'>Effect</code> are all special cases of a
+single underlying type: <a href="#LanguageExt.Pipes_0_Proxy_6"><code class='language-csharp'>Proxy</code></a>.  This overarching type permits fully
 bidirectional communication on both an upstream and downstream interface.</p>
 <p>You can think of it as having the following shape:</p>
-<pre><code>Proxy&lt;RT, UOut, UIn, DIn, DOut, A&gt;
+<pre class='language-csharp'><code class='language-csharp'>Proxy&lt;RT, UOut, UIn, DIn, DOut, A&gt;
 
       Upstream | Downstream
           +---------+
@@ -99,23 +99,23 @@ bidirectional communication on both an upstream and downstream interface.</p>
     
 </code></pre>
 <p>The four core types do not use the upstream flow of information.  This means
-that the <code>UOut</code> and <code>DIn</code> in the above diagram go unused unless you use the
+that the <code class='language-csharp'>UOut</code> and <code class='language-csharp'>DIn</code> in the above diagram go unused unless you use the
 more advanced features.</p>
 <p>Pipes uses type synonyms to hide unused inputs or outputs and clean up
 type signatures.  These type synonyms come in two flavors:</p>
 <ul>
 <li class='markdown-bullet'><p>Concrete type synonyms that explicitly close unused inputs and outputs of
-the <code>Proxy</code> type</p>
+the <code class='language-csharp'>Proxy</code> type</p>
 </li>
 <li class='markdown-bullet'><p>Polymorphic type synonyms that don't explicitly close unused inputs or
 outputs</p>
 </li>
 </ul>
-<p>The concrete type synonyms use <code>Unit</code> to close unused inputs and <code>Void</code> (the
+<p>The concrete type synonyms use <code class='language-csharp'>Unit</code> to close unused inputs and <code class='language-csharp'>Void</code> (the
 uninhabited type) to close unused outputs:</p>
 <ul>
-<li class='markdown-bullet'><p><code>Effect</code>: explicitly closes both ends, forbidding <code>awaiting</code> and <code>yield</code></p>
-<pre><code> Effect&lt;RT, A&gt; = Proxy&lt;RT, Void, Unit, Unit, Void, A&gt;
+<li class='markdown-bullet'><p><code class='language-csharp'>Effect</code>: explicitly closes both ends, forbidding <code class='language-csharp'>awaiting</code> and <code class='language-csharp'>yield</code></p>
+<pre class='language-csharp'><code class='language-csharp'> Effect&lt;RT, A&gt; = Proxy&lt;RT, Void, Unit, Unit, Void, A&gt;
 
           Upstream | Downstream
               +---------+
@@ -129,8 +129,8 @@ uninhabited type) to close unused outputs:</p>
                    A
 </code></pre>
 </li>
-<li class='markdown-bullet'><p><code>Producer</code>: explicitly closes the upstream end, forbidding <code>awaiting</code></p>
-<pre><code> Producer&lt;RT, OUT, A&gt; = Proxy&lt;RT, Void, Unit, Unit, OUT, A&gt;
+<li class='markdown-bullet'><p><code class='language-csharp'>Producer</code>: explicitly closes the upstream end, forbidding <code class='language-csharp'>awaiting</code></p>
+<pre class='language-csharp'><code class='language-csharp'> Producer&lt;RT, OUT, A&gt; = Proxy&lt;RT, Void, Unit, Unit, OUT, A&gt;
 
           Upstream | Downstream
               +---------+
@@ -144,8 +144,8 @@ uninhabited type) to close unused outputs:</p>
                    A
 </code></pre>
 </li>
-<li class='markdown-bullet'><p><code>Consumer</code>: explicitly closes the downstream end, forbidding <code>yield</code></p>
-<pre><code>  Consumer&lt;RT, IN, A&gt; = Proxy&lt;RT, Unit, IN, Unit, Void, A&gt;
+<li class='markdown-bullet'><p><code class='language-csharp'>Consumer</code>: explicitly closes the downstream end, forbidding <code class='language-csharp'>yield</code></p>
+<pre class='language-csharp'><code class='language-csharp'>  Consumer&lt;RT, IN, A&gt; = Proxy&lt;RT, Unit, IN, Unit, Void, A&gt;
 
           Upstream | Downstream
               +---------+
@@ -159,8 +159,8 @@ uninhabited type) to close unused outputs:</p>
                    A
 </code></pre>
 </li>
-<li class='markdown-bullet'><p><code>Pipe</code>: marks both ends open, allowing both <code>awaiting</code> and <code>yield</code></p>
-<pre><code>  Pipe&lt;RT, IN, OUT, A&gt; = Proxy&lt;RT, Unit, IN, Unit, OUT, A&gt;
+<li class='markdown-bullet'><p><code class='language-csharp'>Pipe</code>: marks both ends open, allowing both <code class='language-csharp'>awaiting</code> and <code class='language-csharp'>yield</code></p>
+<pre class='language-csharp'><code class='language-csharp'>  Pipe&lt;RT, IN, OUT, A&gt; = Proxy&lt;RT, Unit, IN, Unit, OUT, A&gt;
 
           Upstream | Downstream
               +---------+
@@ -175,11 +175,11 @@ uninhabited type) to close unused outputs:</p>
 </code></pre>
 </li>
 </ul>
-<p>When you compose <code>Proxy</code> using <code>|</code> all you are doing is placing them
+<p>When you compose <code class='language-csharp'>Proxy</code> using <code class='language-csharp'>|</code> all you are doing is placing them
 side by side and fusing them laterally.  For example, when you compose a
-<code>Producer</code>, <code>Pipe</code>, and a <code>Consumer</code>, you can think of information flowing
+<code class='language-csharp'>Producer</code>, <code class='language-csharp'>Pipe</code>, and a <code class='language-csharp'>Consumer</code>, you can think of information flowing
 like this:</p>
-<pre><code>            Producer                Pipe                 Consumer
+<pre class='language-csharp'><code class='language-csharp'>            Producer                Pipe                 Consumer
          +------------+          +------------+          +-------------+
          |            |          |            |          |             |
    Void ◄--          ◄--  Unit   ◄--         ◄--  Unit  ◄--           ◄-- Unit
@@ -190,8 +190,8 @@ like this:</p>
                v                     v                       v
                ()                    ()                      ()
 </code></pre>
-<p>Composition fuses away the intermediate interfaces, leaving behind an <code>Effect</code>:</p>
-<pre><code>                       Effect
+<p>Composition fuses away the intermediate interfaces, leaving behind an <code class='language-csharp'>Effect</code>:</p>
+<pre class='language-csharp'><code class='language-csharp'>                       Effect
         +-----------------------------------+
         |                                   |
   Void ◄--                                 ◄-- Unit
@@ -572,12 +572,12 @@ like this:</p>
 <a href="#_0_Proxy_6" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
-<div class="doc"><div><p>A <code>Proxy</code> is a monad transformer that receives and sends information on both
+<div class="doc"><div><p>A <code class='language-csharp'>Proxy</code> is a monad transformer that receives and sends information on both
 an upstream and downstream interface.  It is the base type for all of the key
-other important types in the Pipes ecosystem, like <code>Producer</code>, <code>Consumer</code>,
-<code>Pipe</code>, etc.</p>
-<p>Diagrammatically, you can think of a <code>Proxy</code> as having the following shape:</p>
-<pre><code>    Upstream | Downstream
+other important types in the Pipes ecosystem, like <code class='language-csharp'>Producer</code>, <code class='language-csharp'>Consumer</code>,
+<code class='language-csharp'>Pipe</code>, etc.</p>
+<p>Diagrammatically, you can think of a <code class='language-csharp'>Proxy</code> as having the following shape:</p>
+<pre class='language-csharp'><code class='language-csharp'>    Upstream | Downstream
         +---------+
         |         |
   UOut ◄--       ◄-- DIn
@@ -597,10 +597,10 @@ other important types in the Pipes ecosystem, like <code>Producer</code>, <code>
 </ol>
 <p>The type variables signify:</p>
 <ul>
-<li class='markdown-bullet'><code>UOut</code> and <code>Uin</code> - The upstream interface, where <code>UOut</code> go out and <code>UIn</code> come in</li>
-<li class='markdown-bullet'><code>DOut</code> and <code>DIn</code> - The downstream interface, where <code>DOut</code> go out and <code>DIn</code> come in</li>
-<li class='markdown-bullet'><code>RT</code> - The runtime of the transformed effect monad</li>
-<li class='markdown-bullet'><code>A</code> - The return value</li>
+<li class='markdown-bullet'><code class='language-csharp'>UOut</code> and <code class='language-csharp'>Uin</code> - The upstream interface, where <code class='language-csharp'>UOut</code> go out and <code class='language-csharp'>UIn</code> come in</li>
+<li class='markdown-bullet'><code class='language-csharp'>DOut</code> and <code class='language-csharp'>DIn</code> - The downstream interface, where <code class='language-csharp'>DOut</code> go out and <code class='language-csharp'>DIn</code> come in</li>
+<li class='markdown-bullet'><code class='language-csharp'>RT</code> - The runtime of the transformed effect monad</li>
+<li class='markdown-bullet'><code class='language-csharp'>A</code> - The return value</li>
 </ul>
 </div>
 <div></div>
@@ -624,8 +624,8 @@ other important types in the Pipes ecosystem, like <code>Producer</code>, <code>
 <tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>The monadic bound variable - it doesn't flow up or down stream, it works just like any bound
-monadic variable.  If the effect represented by the <code>Proxy</code> ends, then this will be the result value.</p>
-<p>When composing <code>Proxy</code> subtypes (like <code>Producer</code>, <code>Pipe</code>, <code>Consumer</code>, etc.)</p>
+monadic variable.  If the effect represented by the <code class='language-csharp'>Proxy</code> ends, then this will be the result value.</p>
+<p>When composing <code class='language-csharp'>Proxy</code> subtypes (like <code class='language-csharp'>Producer</code>, <code class='language-csharp'>Pipe</code>, <code class='language-csharp'>Consumer</code>, etc.)</p>
 </span></td></tr></tbody></table></div></div>
 </div>
 
@@ -644,12 +644,12 @@ Proxy<span class='generics'>&lt;</span>UOut<span class='comma'>, </span>UIn<span
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Proxy.cs#L56" class="link">Source</a>
 <a href="#Proxy_6_ToProxy_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>When working with subtypes, like <code>Producer</code>, calling this will effectively cast the sub-type to the base.</p>
+<div class="doc"><div><p>When working with subtypes, like <code class='language-csharp'>Producer</code>, calling this will effectively cast the sub-type to the base.</p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
 <div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A general <code>Proxy</code> type from a more specialised type</p>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A general <code class='language-csharp'>Proxy</code> type from a more specialised type</p>
 </span></td></tr></tbody></table></div></div>
 </div>
 
@@ -673,7 +673,7 @@ Proxy<span class='generics'>&lt;</span>UOut<span class='comma'>, </span>UIn<span
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Proxy.cs#L64" class="link">Source</a>
 <a href="#Proxy_6_Bind_1" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Monadic bind operation, for chaining <code>Proxy</code> computations together.</p>
+<div class="doc"><div><p>Monadic bind operation, for chaining <code class='language-csharp'>Proxy</code> computations together.</p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
@@ -686,7 +686,7 @@ Proxy<span class='generics'>&lt;</span>UOut<span class='comma'>, </span>UIn<span
 <td class="src clearfix"><span class="instruction inst-left"><p>The bind function</p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A new <code>Proxy</code> that represents the composition of this <code>Proxy</code> and the result of the bind operation</p>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A new <code class='language-csharp'>Proxy</code> that represents the composition of this <code class='language-csharp'>Proxy</code> and the result of the bind operation</p>
 </span></td></tr></tbody></table></div></div>
 </div>
 
@@ -710,7 +710,7 @@ Proxy<span class='generics'>&lt;</span>UOut<span class='comma'>, </span>UIn<span
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Proxy.cs#L72" class="link">Source</a>
 <a href="#Proxy_6_Map_1" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Lifts a pure function into the <code>Proxy</code> domain, causing it to map the bound value within</p>
+<div class="doc"><div><p>Lifts a pure function into the <code class='language-csharp'>Proxy</code> domain, causing it to map the bound value within</p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
@@ -723,7 +723,7 @@ Proxy<span class='generics'>&lt;</span>UOut<span class='comma'>, </span>UIn<span
 <td class="src clearfix"><span class="instruction inst-left"><p>The map function</p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A new <code>Proxy</code> that represents the composition of this <code>Proxy</code> and the result of the map operation</p>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A new <code class='language-csharp'>Proxy</code> that represents the composition of this <code class='language-csharp'>Proxy</code> and the result of the map operation</p>
 </span></td></tr></tbody></table></div></div>
 </div>
 
@@ -760,7 +760,7 @@ Proxy<span class='generics'>&lt;</span>UOut<span class='comma'>, </span>UIn<span
 <td class="src clearfix"><span class="instruction inst-left"><p>The map function</p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A new <code>Proxy</code> that represents the composition of this <code>Proxy</code> and the result of the map operation</p>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A new <code class='language-csharp'>Proxy</code> that represents the composition of this <code class='language-csharp'>Proxy</code> and the result of the map operation</p>
 </span></td></tr></tbody></table></div></div>
 </div>
 
@@ -793,7 +793,7 @@ Proxy<span class='generics'>&lt;</span>UOut<span class='comma'>, </span>UIn<span
 <td class="src clearfix"><span class="instruction inst-left"><p>The map function</p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A new <code>Proxy</code> that represents the innermost IO monad, if it exists.</p>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A new <code class='language-csharp'>Proxy</code> that represents the innermost IO monad, if it exists.</p>
 </span></td></tr></tbody></table></div></div>
 </div>
 
@@ -817,18 +817,18 @@ Proxy<span class='generics'>&lt;</span>UOut<span class='comma'>, </span>UIn<span
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Proxy.cs#L97" class="link">Source</a>
 <a href="#Proxy_6_For_2" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p><code>For(body)</code> loops over the <code>Proxy p</code> replacing each <code>yield</code> with <code>body</code></p>
+<div class="doc"><div><p><code class='language-csharp'>For(body)</code> loops over the <code class='language-csharp'>Proxy p</code> replacing each <code class='language-csharp'>yield</code> with <code class='language-csharp'>body</code></p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
 <div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">body</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Any <code>yield</code> found in the <code>Proxy</code> will be replaced with this function.  It will be composed so
-that the value yielded will be passed to the argument of the function.  That returns a <code>Proxy</code> to continue the
+<td class="src clearfix"><span class="instruction inst-left"><p>Any <code class='language-csharp'>yield</code> found in the <code class='language-csharp'>Proxy</code> will be replaced with this function.  It will be composed so
+that the value yielded will be passed to the argument of the function.  That returns a <code class='language-csharp'>Proxy</code> to continue the
 processing of the computation</p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A new <code>Proxy</code> that represents the composition of this <code>Proxy</code> and the function provided</p>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A new <code class='language-csharp'>Proxy</code> that represents the composition of this <code class='language-csharp'>Proxy</code> and the function provided</p>
 </span></td></tr></tbody></table></div></div>
 </div>
 
@@ -853,13 +853,13 @@ Proxy<span class='generics'>&lt;</span>UOut<span class='comma'>, </span>UIn<span
 <a href="#Proxy_6_Action_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Applicative action</p>
-<p>Invokes this <code>Proxy</code>, then the <code>Proxy r</code></p>
+<p>Invokes this <code class='language-csharp'>Proxy</code>, then the <code class='language-csharp'>Proxy r</code></p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
 <div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">r</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p><code>Proxy</code> to run after this one</p>
+<td class="src clearfix"><span class="instruction inst-left"><p><code class='language-csharp'>Proxy</code> to run after this one</p>
 </span></td></tr></tbody></table></div></div>
 </div>
 
@@ -884,10 +884,10 @@ Proxy<span class='generics'>&lt;</span>UOutA<span class='comma'>, </span>AUInA<s
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Proxy.cs#L114" class="link">Source</a>
 <a href="#Proxy_6_PairEachRequestWithRespond_2" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Used by the various composition functions and when composing proxies with the <code>|</code> operator.  You usually
-wouldn't need to call this directly, instead either pipe them using <code>|</code> or call <code>Proxy.compose(lhs, rhs)</code></p>
+<div class="doc"><div><p>Used by the various composition functions and when composing proxies with the <code class='language-csharp'>|</code> operator.  You usually
+wouldn't need to call this directly, instead either pipe them using <code class='language-csharp'>|</code> or call <code class='language-csharp'>Proxy.compose(lhs, rhs)</code></p>
 </div>
-<div><p>(f +&gt;&gt; p) pairs each 'request' in <code>this</code> with a 'respond' in <code>lhs</code>.</p>
+<div><p>(f +&gt;&gt; p) pairs each 'request' in <code class='language-csharp'>this</code> with a 'respond' in <code class='language-csharp'>lhs</code>.</p>
 </div>
 
 </div>
@@ -913,8 +913,8 @@ Proxy<span class='generics'>&lt;</span>UOutA<span class='comma'>, </span>AUInA<s
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Proxy.cs#L121" class="link">Source</a>
 <a href="#Proxy_6_ReplaceRequest_2" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Used by the various composition functions and when composing proxies with the <code>|</code> operator.  You usually
-wouldn't need to call this directly, instead either pipe them using <code>|</code> or call <code>Proxy.compose(lhs, rhs)</code></p>
+<div class="doc"><div><p>Used by the various composition functions and when composing proxies with the <code class='language-csharp'>|</code> operator.  You usually
+wouldn't need to call this directly, instead either pipe them using <code class='language-csharp'>|</code> or call <code class='language-csharp'>Proxy.compose(lhs, rhs)</code></p>
 </div>
 <div></div>
 
@@ -941,8 +941,8 @@ Proxy<span class='generics'>&lt;</span>UOut<span class='comma'>, </span>UIn<span
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Proxy.cs#L128" class="link">Source</a>
 <a href="#Proxy_6_PairEachRespondWithRequest_2" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Used by the various composition functions and when composing proxies with the <code>|</code> operator.  You usually
-wouldn't need to call this directly, instead either pipe them using <code>|</code> or call <code>Proxy.compose(lhs, rhs)</code></p>
+<div class="doc"><div><p>Used by the various composition functions and when composing proxies with the <code class='language-csharp'>|</code> operator.  You usually
+wouldn't need to call this directly, instead either pipe them using <code class='language-csharp'>|</code> or call <code class='language-csharp'>Proxy.compose(lhs, rhs)</code></p>
 </div>
 <div></div>
 
@@ -969,8 +969,8 @@ Proxy<span class='generics'>&lt;</span>UOut<span class='comma'>, </span>UIn<span
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Proxy.cs#L135" class="link">Source</a>
 <a href="#Proxy_6_ReplaceRespond_2" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Used by the various composition functions and when composing proxies with the <code>|</code> operator.  You usually
-wouldn't need to call this directly, instead either pipe them using <code>|</code> or call <code>Proxy.compose(lhs, rhs)</code></p>
+<div class="doc"><div><p>Used by the various composition functions and when composing proxies with the <code class='language-csharp'>|</code> operator.  You usually
+wouldn't need to call this directly, instead either pipe them using <code class='language-csharp'>|</code> or call <code class='language-csharp'>Proxy.compose(lhs, rhs)</code></p>
 </div>
 <div></div>
 
@@ -996,12 +996,12 @@ Proxy<span class='generics'>&lt;</span>DOut<span class='comma'>, </span>DIn<span
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Proxy.cs#L142" class="link">Source</a>
 <a href="#Proxy_6_Reflect_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Reverse the arrows of the <code>Proxy</code> to find its dual.</p>
+<div class="doc"><div><p>Reverse the arrows of the <code class='language-csharp'>Proxy</code> to find its dual.</p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
 <div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The dual of <code>this</code></p>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The dual of <code class='language-csharp'>this</code></p>
 </span></td></tr></tbody></table></div></div>
 </div>
 
@@ -1025,7 +1025,7 @@ Proxy<span class='generics'>&lt;</span>UOut<span class='comma'>, </span>UIn<span
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Proxy.cs#L153" class="link">Source</a>
 <a href="#Proxy_6_Observe_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><pre><code>Observe(lift (Pure(r))) = Observe(Pure(r))
+<div class="doc"><div><pre class='language-csharp'><code class='language-csharp'>Observe(lift (Pure(r))) = Observe(Pure(r))
 Observe(lift (m.Bind(f))) = Observe(lift(m.Bind(x =&gt; lift(f(x)))))
 </code></pre>
 <p>This correctness comes at a small cost to performance, so use this function sparingly.
@@ -1165,7 +1165,7 @@ string
 <a href="#_0_Proxy_5" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
-<div class="doc"><div><p>Monad transformer trait implementation for <code>Proxy</code></p>
+<div class="doc"><div><p>Monad transformer trait implementation for <code class='language-csharp'>Proxy</code></p>
 </div>
 <div></div>
 
@@ -1189,7 +1189,7 @@ string
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Proxy.Prelude.cs#L15" class="link">Source</a>
 <a href="#_0_Proxy_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>The <code>static Proxy</code> class is the <code>Prelude</code> of the Pipes system.</p>
+<div class="doc"><div><p>The <code class='language-csharp'>static Proxy</code> class is the <code class='language-csharp'>Prelude</code> of the Pipes system.</p>
 </div>
 <div></div>
 
@@ -1210,7 +1210,7 @@ Consumer<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span c
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Proxy.Prelude.cs#L22" class="link">Source</a>
 <a href="#Proxy_0_awaiting_1" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Wait for a value to flow from upstream (whilst in a <code>Pipe</code> or a <code>Consumer</code>)</p>
+<div class="doc"><div><p>Wait for a value to flow from upstream (whilst in a <code class='language-csharp'>Pipe</code> or a <code class='language-csharp'>Consumer</code>)</p>
 </div>
 <div></div>
 
@@ -1236,7 +1236,7 @@ Producer<span class='generics'>&lt;</span>A<span class='comma'>, </span>Unit<spa
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Proxy.Prelude.cs#L29" class="link">Source</a>
 <a href="#Proxy_0_yield_1" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Send a value flowing downstream (whilst in a <code>Producer</code> or a <code>Pipe</code>)</p>
+<div class="doc"><div><p>Send a value flowing downstream (whilst in a <code class='language-csharp'>Producer</code> or a <code class='language-csharp'>Pipe</code>)</p>
 </div>
 <div></div>
 
@@ -1265,7 +1265,7 @@ Queue<span class='generics'>&lt;</span>A<span class='comma'>, </span>M<span clas
 <span> M : Monad&lt;M&gt;</span></div></div></p>
 <div class="doc"><div><p>Create a queue</p>
 </div>
-<div><p>A <code>Queue</code> is a <code>Producer</code> with an <code>Enqueue</code>, and a <code>Done</code> to cancel the operation</p>
+<div><p>A <code class='language-csharp'>Queue</code> is a <code class='language-csharp'>Producer</code> with an <code class='language-csharp'>Enqueue</code>, and a <code class='language-csharp'>Done</code> to cancel the operation</p>
 </div>
 
 </div>
@@ -1291,21 +1291,21 @@ Producer<span class='generics'>&lt;</span>X<span class='comma'>, </span>Unit<spa
 <a href="#Proxy_0_yieldAll_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> F : Foldable&lt;F&gt;</span></div></div></p>
-<div class="doc"><div><p>Create a <code>Producer</code> from an <code>IEnumerable</code>.  This will automatically <code>yield</code> each value of the
-<code>IEnumerable</code> down stream</p>
+<div class="doc"><div><p>Create a <code class='language-csharp'>Producer</code> from an <code class='language-csharp'>IEnumerable</code>.  This will automatically <code class='language-csharp'>yield</code> each value of the
+<code class='language-csharp'>IEnumerable</code> down stream</p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
 <div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">X</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Type of the value to <code>yield</code></p>
+<td class="src clearfix"><span class="instruction inst-left"><p>Type of the value to <code class='language-csharp'>yield</code></p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">param</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">xs</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Items to <code>yield</code></p>
+<td class="src clearfix"><span class="instruction inst-left"><p>Items to <code class='language-csharp'>yield</code></p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>Producer</code></p>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code class='language-csharp'>Producer</code></p>
 </span></td></tr></tbody></table></div></div>
 </div>
 
@@ -1329,21 +1329,21 @@ Producer<span class='generics'>&lt;</span>X<span class='comma'>, </span>Unit<spa
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Proxy.Prelude.cs#L65" class="link">Source</a>
 <a href="#Proxy_0_yieldAll_1" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Create a <code>Producer</code> from an <code>IAsyncEnumerable</code>.  This will automatically <code>yield</code> each value of the
-<code>IEnumerable</code> down stream</p>
+<div class="doc"><div><p>Create a <code class='language-csharp'>Producer</code> from an <code class='language-csharp'>IAsyncEnumerable</code>.  This will automatically <code class='language-csharp'>yield</code> each value of the
+<code class='language-csharp'>IEnumerable</code> down stream</p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
 <div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">X</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Type of the value to <code>yield</code></p>
+<td class="src clearfix"><span class="instruction inst-left"><p>Type of the value to <code class='language-csharp'>yield</code></p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">param</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">xs</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Items to <code>yield</code></p>
+<td class="src clearfix"><span class="instruction inst-left"><p>Items to <code class='language-csharp'>yield</code></p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>Producer</code></p>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code class='language-csharp'>Producer</code></p>
 </span></td></tr></tbody></table></div></div>
 </div>
 
@@ -1367,21 +1367,21 @@ Producer<span class='generics'>&lt;</span>X<span class='comma'>, </span>Unit<spa
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Proxy.Prelude.cs#L76" class="link">Source</a>
 <a href="#Proxy_0_yieldAll_1" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Create a <code>Producer</code> from an <code>IObservable</code>.  This will automatically <code>yield</code> each value of the
-<code>IObservable</code> down stream</p>
+<div class="doc"><div><p>Create a <code class='language-csharp'>Producer</code> from an <code class='language-csharp'>IObservable</code>.  This will automatically <code class='language-csharp'>yield</code> each value of the
+<code class='language-csharp'>IObservable</code> down stream</p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
 <div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">X</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Type of the value to <code>yield</code></p>
+<td class="src clearfix"><span class="instruction inst-left"><p>Type of the value to <code class='language-csharp'>yield</code></p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">param</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">xs</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Items to <code>yield</code></p>
+<td class="src clearfix"><span class="instruction inst-left"><p>Items to <code class='language-csharp'>yield</code></p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>Producer</code></p>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code class='language-csharp'>Producer</code></p>
 </span></td></tr></tbody></table></div></div>
 </div>
 
@@ -1484,7 +1484,7 @@ Producer<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span
 <a href="#Proxy_0_repeat_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
-<div class="doc"><div><p>Repeat the <code>Producer</code> indefinitely</p>
+<div class="doc"><div><p>Repeat the <code class='language-csharp'>Producer</code> indefinitely</p>
 </div>
 <div></div>
 
@@ -1511,7 +1511,7 @@ Consumer<span class='generics'>&lt;</span>IN<span class='comma'>, </span>M<span 
 <a href="#Proxy_0_repeat_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
-<div class="doc"><div><p>Repeat the <code>Consumer</code> indefinitely</p>
+<div class="doc"><div><p>Repeat the <code class='language-csharp'>Consumer</code> indefinitely</p>
 </div>
 <div></div>
 
@@ -1538,7 +1538,7 @@ Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span cl
 <a href="#Proxy_0_repeat_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
-<div class="doc"><div><p>Repeat the <code>Pipe</code> indefinitely</p>
+<div class="doc"><div><p>Repeat the <code class='language-csharp'>Pipe</code> indefinitely</p>
 </div>
 <div></div>
 
@@ -1565,7 +1565,7 @@ Proxy<span class='generics'>&lt;</span>A1<span class='comma'>, </span>A<span cla
 <a href="#Proxy_0_lift_6" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
-<div class="doc"><div><p>Lift a monad into the <code>Proxy</code> monad transformer</p>
+<div class="doc"><div><p>Lift a monad into the <code class='language-csharp'>Proxy</code> monad transformer</p>
 </div>
 <div></div>
 
@@ -1592,7 +1592,7 @@ Proxy<span class='generics'>&lt;</span>A1<span class='comma'>, </span>A<span cla
 <a href="#Proxy_0_liftIO_6" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
-<div class="doc"><div><p>Lift an IO monad into the <code>Proxy</code> monad transformer</p>
+<div class="doc"><div><p>Lift an IO monad into the <code class='language-csharp'>Proxy</code> monad transformer</p>
 </div>
 <div></div>
 
@@ -1619,7 +1619,7 @@ Pipe<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class
 <a href="#Proxy_0_cat_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
-<div class="doc"><div><p>The identity <code>Pipe</code>, simply replicates its upstream value and propagates it downstream</p>
+<div class="doc"><div><p>The identity <code class='language-csharp'>Pipe</code>, simply replicates its upstream value and propagates it downstream</p>
 </div>
 <div></div>
 
@@ -1649,7 +1649,7 @@ Proxy<span class='generics'>&lt;</span>UOut<span class='comma'>, </span>UIn<span
 <div class="doc"><div><p>Forward requests followed by responses</p>
 <p>pull = request | respond | pull</p>
 </div>
-<div><p><code>pull</code> is the identity of the pull category.</p>
+<div><p><code class='language-csharp'>pull</code> is the identity of the pull category.</p>
 </div>
 
 </div>
@@ -1675,9 +1675,9 @@ Proxy<span class='generics'>&lt;</span>UOut<span class='comma'>, </span>UIn<span
 <a href="#Proxy_0_push_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
-<div class="doc"><div><p><code>push = respond | request | push</code></p>
+<div class="doc"><div><p><code class='language-csharp'>push = respond | request | push</code></p>
 </div>
-<div><p><code>push</code> is the identity of the push category.</p>
+<div><p><code class='language-csharp'>push</code> is the identity of the push category.</p>
 </div>
 
 </div>
@@ -1703,9 +1703,9 @@ Proxy<span class='generics'>&lt;</span>X1<span class='comma'>, </span>X<span cla
 <a href="#Proxy_0_respond_5" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
-<div class="doc"><div><p>Send a value of type <code>DOut</code> downstream and block waiting for a reply of type <code>DIn</code></p>
+<div class="doc"><div><p>Send a value of type <code class='language-csharp'>DOut</code> downstream and block waiting for a reply of type <code class='language-csharp'>DIn</code></p>
 </div>
-<div><p><code>respond</code> is the identity of the respond category.</p>
+<div><p><code class='language-csharp'>respond</code> is the identity of the respond category.</p>
 </div>
 
 </div>
@@ -1731,9 +1731,9 @@ Proxy<span class='generics'>&lt;</span>UOut<span class='comma'>, </span>UIn<span
 <a href="#Proxy_0_request_5" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
-<div class="doc"><div><p>Send a value of type <code>UOut</code> upstream and block waiting for a reply of type <code>UIn</code></p>
+<div class="doc"><div><p>Send a value of type <code class='language-csharp'>UOut</code> upstream and block waiting for a reply of type <code class='language-csharp'>UIn</code></p>
 </div>
-<div><p><code>request</code> is the identity of the request category.</p>
+<div><p><code class='language-csharp'>request</code> is the identity of the request category.</p>
 </div>
 
 </div>
@@ -1760,15 +1760,15 @@ Proxy<span class='generics'>&lt;</span>DOut<span class='comma'>, </span>DIn<span
 <a href="#Proxy_0_reflect_6" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
-<div class="doc"><div><p><code>reflect</code> transforms each streaming category into its dual:</p>
+<div class="doc"><div><p><code class='language-csharp'>reflect</code> transforms each streaming category into its dual:</p>
 <p>The request category is the dual of the respond category</p>
-<pre><code> reflect . respond = request
+<pre class='language-csharp'><code class='language-csharp'> reflect . respond = request
  reflect . (f | g) = reflect . f | reflect . g
  reflect . request = respond
  reflect . (f | g) = reflect . f | reflect . g
 </code></pre>
 <p>The pull category is the dual of the push category</p>
-<pre><code> reflect . push = pull
+<pre class='language-csharp'><code class='language-csharp'> reflect . push = pull
  reflect . (f | g) = reflect . f | reflect . g
  reflect . pull = push
  reflect . (f | g) = reflect . f | reflect . g
@@ -1801,8 +1801,8 @@ Producer<span class='generics'>&lt;</span>OUT_B<span class='comma'>, </span>M<sp
 <a href="#Proxy_0_ForEach_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
-<div class="doc"><div><p><code>p.ForEach(body)</code> loops over the <code>Producer p</code> replacing each <code>yield</code> with <code>body</code></p>
-<pre><code>Producer b r -&gt; (b -&gt; Producer c ()) -&gt; Producer c r
+<div class="doc"><div><p><code class='language-csharp'>p.ForEach(body)</code> loops over the <code class='language-csharp'>Producer p</code> replacing each <code class='language-csharp'>yield</code> with <code class='language-csharp'>body</code></p>
+<pre class='language-csharp'><code class='language-csharp'>Producer b r -&gt; (b -&gt; Producer c ()) -&gt; Producer c r
 </code></pre>
 </div>
 <div></div>
@@ -1832,8 +1832,8 @@ Effect<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span cla
 <a href="#Proxy_0_ForEach_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
-<div class="doc"><div><p><code>p.ForEach(body)</code> loops over <code>Producer p</code> replacing each <code>yield</code> with <code>body</code></p>
-<pre><code>Producer b r -&gt; (b -&gt; Effect ()) -&gt; Effect r
+<div class="doc"><div><p><code class='language-csharp'>p.ForEach(body)</code> loops over <code class='language-csharp'>Producer p</code> replacing each <code class='language-csharp'>yield</code> with <code class='language-csharp'>body</code></p>
+<pre class='language-csharp'><code class='language-csharp'>Producer b r -&gt; (b -&gt; Effect ()) -&gt; Effect r
 </code></pre>
 </div>
 <div></div>
@@ -1863,8 +1863,8 @@ Consumer<span class='generics'>&lt;</span>IN<span class='comma'>, </span>M<span 
 <a href="#Proxy_0_ForEach_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
-<div class="doc"><div><p><code>p.ForEach(body)</code> loops over <code>Pipe p</code> replacing each <code>yield</code> with <code>body</code></p>
-<pre><code>Pipe x b r -&gt; (b -&gt; Consumer x ()) -&gt; Consumer x r
+<div class="doc"><div><p><code class='language-csharp'>p.ForEach(body)</code> loops over <code class='language-csharp'>Pipe p</code> replacing each <code class='language-csharp'>yield</code> with <code class='language-csharp'>body</code></p>
+<pre class='language-csharp'><code class='language-csharp'>Pipe x b r -&gt; (b -&gt; Consumer x ()) -&gt; Consumer x r
 </code></pre>
 </div>
 <div></div>
@@ -1894,8 +1894,8 @@ Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span cl
 <a href="#Proxy_0_ForEach_5" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
-<div class="doc"><div><p><code>p.ForEach(body)</code> loops over <code>Pipe p</code> replacing each <code>yield</code> with <code>body</code></p>
-<pre><code>Pipe x b r -&gt; (b -&gt; Pipe x c ()) -&gt; Pipe x c r
+<div class="doc"><div><p><code class='language-csharp'>p.ForEach(body)</code> loops over <code class='language-csharp'>Pipe p</code> replacing each <code class='language-csharp'>yield</code> with <code class='language-csharp'>body</code></p>
+<pre class='language-csharp'><code class='language-csharp'>Pipe x b r -&gt; (b -&gt; Pipe x c ()) -&gt; Pipe x c r
 </code></pre>
 </div>
 <div></div>
@@ -1925,7 +1925,7 @@ Proxy<span class='generics'>&lt;</span>UOut<span class='comma'>, </span>UIn<span
 <a href="#Proxy_0_compose_7" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
-<div class="doc"><div><p><code>compose(draw, p)</code> loops over <code>p</code> replacing each <code>await</code> with <code>draw</code></p>
+<div class="doc"><div><p><code class='language-csharp'>compose(draw, p)</code> loops over <code class='language-csharp'>p</code> replacing each <code class='language-csharp'>await</code> with <code class='language-csharp'>draw</code></p>
 </div>
 <div></div>
 
@@ -1954,8 +1954,8 @@ Effect<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span cla
 <a href="#Proxy_0_compose_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
-<div class="doc"><div><p><code>compose(draw, p)</code> loops over <code>p</code> replacing each <code>await</code> with <code>draw</code></p>
-<pre><code>Effect b -&gt; Consumer b c -&gt; Effect c
+<div class="doc"><div><p><code class='language-csharp'>compose(draw, p)</code> loops over <code class='language-csharp'>p</code> replacing each <code class='language-csharp'>await</code> with <code class='language-csharp'>draw</code></p>
+<pre class='language-csharp'><code class='language-csharp'>Effect b -&gt; Consumer b c -&gt; Effect c
 </code></pre>
 </div>
 <div></div>
@@ -1985,8 +1985,8 @@ Consumer<span class='generics'>&lt;</span>A<span class='comma'>, </span>M<span c
 <a href="#Proxy_0_compose_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
-<div class="doc"><div><p><code>compose(draw, p)</code> loops over <code>p</code> replacing each <code>await</code> with <code>draw</code></p>
-<pre><code>Consumer a b -&gt; Consumer b c -&gt; Consumer a c
+<div class="doc"><div><p><code class='language-csharp'>compose(draw, p)</code> loops over <code class='language-csharp'>p</code> replacing each <code class='language-csharp'>await</code> with <code class='language-csharp'>draw</code></p>
+<pre class='language-csharp'><code class='language-csharp'>Consumer a b -&gt; Consumer b c -&gt; Consumer a c
 </code></pre>
 </div>
 <div></div>
@@ -2016,8 +2016,8 @@ Producer<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span
 <a href="#Proxy_0_compose_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
-<div class="doc"><div><p><code>compose(draw, p)</code> loops over <code>p</code> replacing each <code>await</code> with <code>draw</code></p>
-<pre><code>Producer y b -&gt; Pipe b y m c -&gt; Producer y c
+<div class="doc"><div><p><code class='language-csharp'>compose(draw, p)</code> loops over <code class='language-csharp'>p</code> replacing each <code class='language-csharp'>await</code> with <code class='language-csharp'>draw</code></p>
+<pre class='language-csharp'><code class='language-csharp'>Producer y b -&gt; Pipe b y m c -&gt; Producer y c
 </code></pre>
 </div>
 <div></div>
@@ -2047,8 +2047,8 @@ Pipe<span class='generics'>&lt;</span>A<span class='comma'>, </span>Y<span class
 <a href="#Proxy_0_compose_5" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
-<div class="doc"><div><p><code>compose(draw, p)</code> loops over <code>p</code> replacing each <code>await</code> with <code>draw</code></p>
-<pre><code>Pipe a y b -&gt; Pipe b y c -&gt; Pipe a y c
+<div class="doc"><div><p><code class='language-csharp'>compose(draw, p)</code> loops over <code class='language-csharp'>p</code> replacing each <code class='language-csharp'>await</code> with <code class='language-csharp'>draw</code></p>
+<pre class='language-csharp'><code class='language-csharp'>Pipe a y b -&gt; Pipe b y c -&gt; Pipe a y c
 </code></pre>
 </div>
 <div></div>
@@ -2106,7 +2106,7 @@ Proxy<span class='generics'>&lt;</span>A1<span class='comma'>, </span>A<span cla
 <a href="#Proxy_0_compose_8" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
-<div class="doc"><div><p>Replaces each <code>request</code> or <code>respond</code> in <code>p0</code> with <code>fb1</code>.</p>
+<div class="doc"><div><p>Replaces each <code class='language-csharp'>request</code> or <code class='language-csharp'>respond</code> in <code class='language-csharp'>p0</code> with <code class='language-csharp'>fb1</code>.</p>
 </div>
 <div></div>
 
@@ -2135,7 +2135,7 @@ Proxy<span class='generics'>&lt;</span>A1<span class='comma'>, </span>A<span cla
 <a href="#Proxy_0_compose_8" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
-<div class="doc"><div><p><code>compose(p, f)</code> pairs each <code>respond</code> in <code>p</code> with a <code>request</code> in <code>f</code>.</p>
+<div class="doc"><div><p><code class='language-csharp'>compose(p, f)</code> pairs each <code class='language-csharp'>respond</code> in <code class='language-csharp'>p</code> with a <code class='language-csharp'>request</code> in <code class='language-csharp'>f</code>.</p>
 </div>
 <div></div>
 
@@ -2164,7 +2164,7 @@ Proxy<span class='generics'>&lt;</span>A1<span class='comma'>, </span>A<span cla
 <a href="#Proxy_0_compose_8" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
-<div class="doc"><div><p><code>compose(f, p)</code> pairs each <code>request</code> in <code>p</code> with a <code>respond</code> in <code>f</code></p>
+<div class="doc"><div><p><code class='language-csharp'>compose(f, p)</code> pairs each <code class='language-csharp'>request</code> in <code class='language-csharp'>p</code> with a <code class='language-csharp'>respond</code> in <code class='language-csharp'>f</code></p>
 </div>
 <div></div>
 
@@ -2223,7 +2223,7 @@ Effect<span class='generics'>&lt;</span>M<span class='comma'>, </span>R<span cla
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
 <div class="doc"><div><p>Pipe composition</p>
-<pre><code>Producer b r -&gt; Consumer b r -&gt; Effect m r
+<pre class='language-csharp'><code class='language-csharp'>Producer b r -&gt; Consumer b r -&gt; Effect m r
 </code></pre>
 </div>
 <div></div>
@@ -2254,7 +2254,7 @@ Producer<span class='generics'>&lt;</span>C<span class='comma'>, </span>M<span c
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
 <div class="doc"><div><p>Pipe composition</p>
-<pre><code>Producer b r -&gt; Pipe b c r -&gt; Producer c r
+<pre class='language-csharp'><code class='language-csharp'>Producer b r -&gt; Pipe b c r -&gt; Producer c r
 </code></pre>
 </div>
 <div></div>
@@ -2285,7 +2285,7 @@ Consumer<span class='generics'>&lt;</span>A<span class='comma'>, </span>M<span c
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
 <div class="doc"><div><p>Pipe composition</p>
-<pre><code>Pipe a b r -&gt; Consumer b r -&gt; Consumer a r
+<pre class='language-csharp'><code class='language-csharp'>Pipe a b r -&gt; Consumer b r -&gt; Consumer a r
 </code></pre>
 </div>
 <div></div>
@@ -2316,7 +2316,7 @@ Pipe<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
 <div class="doc"><div><p>Pipe composition</p>
-<pre><code>Pipe a b r -&gt; Pipe b c r -&gt; Pipe a c r
+<pre class='language-csharp'><code class='language-csharp'>Pipe a b r -&gt; Pipe b c r -&gt; Pipe a c r
 </code></pre>
 </div>
 <div></div>
@@ -2406,7 +2406,7 @@ Proxy<span class='generics'>&lt;</span>X1<span class='comma'>, </span>X<span cla
 <a href="#Proxy_0_compose_8" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
-<div class="doc"><div><p><code>compose(p, f)</code> replaces each <code>respond</code> in <code>p</code> with <code>f</code>.</p>
+<div class="doc"><div><p><code class='language-csharp'>compose(p, f)</code> replaces each <code class='language-csharp'>respond</code> in <code class='language-csharp'>p</code> with <code class='language-csharp'>f</code>.</p>
 </div>
 <div></div>
 
@@ -2435,7 +2435,7 @@ Proxy<span class='generics'>&lt;</span>X1<span class='comma'>, </span>X<span cla
 <a href="#Proxy_0_Then_8" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
-<div class="doc"><div><p><code>compose(p, f)</code> replaces each <code>respond</code> in <code>p</code> with <code>f</code>.</p>
+<div class="doc"><div><p><code class='language-csharp'>compose(p, f)</code> replaces each <code class='language-csharp'>respond</code> in <code class='language-csharp'>p</code> with <code class='language-csharp'>f</code>.</p>
 </div>
 <div></div>
 
@@ -2465,7 +2465,7 @@ Func<span class='generics'>&lt;</span>C1<span class='comma'>, </span>Proxy<span 
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
 <div class="doc"><div><p>Compose two folds, creating a new fold</p>
-<pre><code>(f | g) x = f | g x
+<pre class='language-csharp'><code class='language-csharp'>(f | g) x = f | g x
 
 | is the composition operator of the request category.
 </code></pre>
@@ -2496,7 +2496,7 @@ Proxy<span class='generics'>&lt;</span>A1<span class='comma'>, </span>A<span cla
 <a href="#Proxy_0_observe_6" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
-<div class="doc"><div><pre><code>observe(lift (Pure(r))) = observe(Pure(r))
+<div class="doc"><div><pre class='language-csharp'><code class='language-csharp'>observe(lift (Pure(r))) = observe(Pure(r))
 observe(lift (m.Bind(f))) = observe(lift(m.Bind(x =&gt; lift(f(x)))))
 </code></pre>
 <p>This correctness comes at a small cost to performance, so use this function sparingly.
@@ -2527,14 +2527,14 @@ A
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Proxy.Prelude.cs#L541" class="link">Source</a>
 <a href="#Proxy_0_closed_1" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p><code>Absurd</code> function</p>
+<div class="doc"><div><p><code class='language-csharp'>Absurd</code> function</p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
 <div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">value</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p><code>Void</code> is supposed to represent <code>void</code>, nothing can be constructed from <code>void</code> and
-so this method just throws <code>ApplicationException(&quot;closed&quot;)</code></p>
+<td class="src clearfix"><span class="instruction inst-left"><p><code class='language-csharp'>Void</code> is supposed to represent <code class='language-csharp'>void</code>, nothing can be constructed from <code class='language-csharp'>void</code> and
+so this method just throws <code class='language-csharp'>ApplicationException(&quot;closed&quot;)</code></p>
 </span></td></tr></tbody></table></div></div>
 </div>
 
@@ -3002,7 +3002,7 @@ Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span cl
 <a href="#_0_Pure_6" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
-<div class="doc"><div><p>One of the algebraic cases of the <code>Proxy</code> type.  This type represents a pure value.  It can be thought of as the
+<div class="doc"><div><p>One of the algebraic cases of the <code class='language-csharp'>Proxy</code> type.  This type represents a pure value.  It can be thought of as the
 terminating value of the computation, as there's not continuation attached to this case.</p>
 </div>
 <div></div>
@@ -3026,8 +3026,8 @@ terminating value of the computation, as there's not continuation attached to th
 <tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>The monadic bound variable - it doesn't flow up or down stream, it works just like any bound
-monadic variable.  If the effect represented by the <code>Proxy</code> ends, then this will be the result value.</p>
-<p>When composing <code>Proxy</code> subtypes (like <code>Producer</code>, <code>Pipe</code>, <code>Consumer</code>, etc.)</p>
+monadic variable.  If the effect represented by the <code class='language-csharp'>Proxy</code> ends, then this will be the result value.</p>
+<p>When composing <code class='language-csharp'>Proxy</code> subtypes (like <code class='language-csharp'>Producer</code>, <code class='language-csharp'>Pipe</code>, <code class='language-csharp'>Consumer</code>, etc.)</p>
 </span></td></tr></tbody></table></div></div>
 </div>
 
@@ -3046,12 +3046,12 @@ Proxy<span class='generics'>&lt;</span>UOut<span class='comma'>, </span>UIn<span
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Proxy.Pure.cs#L27" class="link">Source</a>
 <a href="#Pure_6_ToProxy_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>When working with subtypes, like <code>Producer</code>, calling this will effectively cast the subtype to the base.</p>
+<div class="doc"><div><p>When working with subtypes, like <code class='language-csharp'>Producer</code>, calling this will effectively cast the subtype to the base.</p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
 <div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A general <code>Proxy</code> type from a more specialised type</p>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A general <code class='language-csharp'>Proxy</code> type from a more specialised type</p>
 </span></td></tr></tbody></table></div></div>
 </div>
 
@@ -3075,7 +3075,7 @@ Proxy<span class='generics'>&lt;</span>UOut<span class='comma'>, </span>UIn<span
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Proxy.Pure.cs#L36" class="link">Source</a>
 <a href="#Pure_6_Bind_1" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Monadic bind operation, for chaining <code>Proxy</code> computations together</p>
+<div class="doc"><div><p>Monadic bind operation, for chaining <code class='language-csharp'>Proxy</code> computations together</p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
@@ -3088,7 +3088,7 @@ Proxy<span class='generics'>&lt;</span>UOut<span class='comma'>, </span>UIn<span
 <td class="src clearfix"><span class="instruction inst-left"><p>The bind function</p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A new <code>Proxy</code> that represents the composition of this <code>Proxy</code> and the result of the bind operation</p>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A new <code class='language-csharp'>Proxy</code> that represents the composition of this <code class='language-csharp'>Proxy</code> and the result of the bind operation</p>
 </span></td></tr></tbody></table></div></div>
 </div>
 
@@ -3112,7 +3112,7 @@ Proxy<span class='generics'>&lt;</span>UOut<span class='comma'>, </span>UIn<span
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Proxy.Pure.cs#L46" class="link">Source</a>
 <a href="#Pure_6_Map_1" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Lifts a pure function into the <code>Proxy</code> domain, causing it to map the bound value within</p>
+<div class="doc"><div><p>Lifts a pure function into the <code class='language-csharp'>Proxy</code> domain, causing it to map the bound value within</p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
@@ -3125,7 +3125,7 @@ Proxy<span class='generics'>&lt;</span>UOut<span class='comma'>, </span>UIn<span
 <td class="src clearfix"><span class="instruction inst-left"><p>The map function</p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A new <code>Proxy</code> that represents the composition of this <code>Proxy</code> and the result of the map operation</p>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A new <code class='language-csharp'>Proxy</code> that represents the composition of this <code class='language-csharp'>Proxy</code> and the result of the map operation</p>
 </span></td></tr></tbody></table></div></div>
 </div>
 
@@ -3162,7 +3162,7 @@ Proxy<span class='generics'>&lt;</span>UOut<span class='comma'>, </span>UIn<span
 <td class="src clearfix"><span class="instruction inst-left"><p>The map function</p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A new <code>Proxy</code> that represents the composition of this <code>Proxy</code> and the result of the map operation</p>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A new <code class='language-csharp'>Proxy</code> that represents the composition of this <code class='language-csharp'>Proxy</code> and the result of the map operation</p>
 </span></td></tr></tbody></table></div></div>
 </div>
 
@@ -3195,7 +3195,7 @@ Proxy<span class='generics'>&lt;</span>UOut<span class='comma'>, </span>UIn<span
 <td class="src clearfix"><span class="instruction inst-left"><p>The map function</p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A new <code>Proxy</code> that represents the innermost IO monad, if it exists.</p>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A new <code class='language-csharp'>Proxy</code> that represents the innermost IO monad, if it exists.</p>
 </span></td></tr></tbody></table></div></div>
 </div>
 
@@ -3219,14 +3219,14 @@ Proxy<span class='generics'>&lt;</span>UOut<span class='comma'>, </span>UIn<span
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Proxy.Pure.cs#L77" class="link">Source</a>
 <a href="#Pure_6_For_2" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p><code>For(body)</code> loops over the <code>Proxy p</code> replacing each <code>yield</code> with <code>body</code></p>
+<div class="doc"><div><p><code class='language-csharp'>For(body)</code> loops over the <code class='language-csharp'>Proxy p</code> replacing each <code class='language-csharp'>yield</code> with <code class='language-csharp'>body</code></p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
 <div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">body</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Any <code>yield</code> found in the <code>Proxy</code> will be replaced with this function.  It will be composed so
-that the value yielded will be passed to the argument of the function.  That returns a <code>Proxy</code> to continue the
+<td class="src clearfix"><span class="instruction inst-left"><p>Any <code class='language-csharp'>yield</code> found in the <code class='language-csharp'>Proxy</code> will be replaced with this function.  It will be composed so
+that the value yielded will be passed to the argument of the function.  That returns a <code class='language-csharp'>Proxy</code> to continue the
 processing of the computation</p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">returns</span></td>
@@ -3254,13 +3254,13 @@ Proxy<span class='generics'>&lt;</span>UOut<span class='comma'>, </span>UIn<span
 <a href="#Pure_6_Action_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Applicative action</p>
-<p>Invokes this <code>Proxy</code>, then the <code>Proxy r</code></p>
+<p>Invokes this <code class='language-csharp'>Proxy</code>, then the <code class='language-csharp'>Proxy r</code></p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
 <div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">r</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p><code>Proxy</code> to run after this one</p>
+<td class="src clearfix"><span class="instruction inst-left"><p><code class='language-csharp'>Proxy</code> to run after this one</p>
 </span></td></tr></tbody></table></div></div>
 </div>
 
@@ -3285,10 +3285,10 @@ Proxy<span class='generics'>&lt;</span>UOutA<span class='comma'>, </span>AUInA<s
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Proxy.Pure.cs#L98" class="link">Source</a>
 <a href="#Pure_6_PairEachRequestWithRespond_2" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Used by the various composition functions and when composing proxies with the <code>|</code> operator.  You usually
-wouldn't need to call this directly, instead either pipe them using <code>|</code> or call <code>Proxy.compose(lhs, rhs)</code></p>
+<div class="doc"><div><p>Used by the various composition functions and when composing proxies with the <code class='language-csharp'>|</code> operator.  You usually
+wouldn't need to call this directly, instead either pipe them using <code class='language-csharp'>|</code> or call <code class='language-csharp'>Proxy.compose(lhs, rhs)</code></p>
 </div>
-<div><p>(f +&gt;&gt; p) pairs each 'request' in <code>this</code> with a 'respond' in <code>lhs</code>.</p>
+<div><p>(f +&gt;&gt; p) pairs each 'request' in <code class='language-csharp'>this</code> with a 'respond' in <code class='language-csharp'>lhs</code>.</p>
 </div>
 
 </div>
@@ -3314,8 +3314,8 @@ Proxy<span class='generics'>&lt;</span>UOutA<span class='comma'>, </span>AUInA<s
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Proxy.Pure.cs#L107" class="link">Source</a>
 <a href="#Pure_6_ReplaceRequest_2" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Used by the various composition functions and when composing proxies with the <code>|</code> operator.  You usually
-wouldn't need to call this directly, instead either pipe them using <code>|</code> or call <code>Proxy.compose(lhs, rhs)</code></p>
+<div class="doc"><div><p>Used by the various composition functions and when composing proxies with the <code class='language-csharp'>|</code> operator.  You usually
+wouldn't need to call this directly, instead either pipe them using <code class='language-csharp'>|</code> or call <code class='language-csharp'>Proxy.compose(lhs, rhs)</code></p>
 </div>
 <div></div>
 
@@ -3342,8 +3342,8 @@ Proxy<span class='generics'>&lt;</span>UOut<span class='comma'>, </span>UIn<span
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Proxy.Pure.cs#L116" class="link">Source</a>
 <a href="#Pure_6_PairEachRespondWithRequest_2" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Used by the various composition functions and when composing proxies with the <code>|</code> operator.  You usually
-wouldn't need to call this directly, instead either pipe them using <code>|</code> or call <code>Proxy.compose(lhs, rhs)</code></p>
+<div class="doc"><div><p>Used by the various composition functions and when composing proxies with the <code class='language-csharp'>|</code> operator.  You usually
+wouldn't need to call this directly, instead either pipe them using <code class='language-csharp'>|</code> or call <code class='language-csharp'>Proxy.compose(lhs, rhs)</code></p>
 </div>
 <div></div>
 
@@ -3370,8 +3370,8 @@ Proxy<span class='generics'>&lt;</span>UOut<span class='comma'>, </span>UIn<span
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Proxy.Pure.cs#L125" class="link">Source</a>
 <a href="#Pure_6_ReplaceRespond_2" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Used by the various composition functions and when composing proxies with the <code>|</code> operator.  You usually
-wouldn't need to call this directly, instead either pipe them using <code>|</code> or call <code>Proxy.compose(lhs, rhs)</code></p>
+<div class="doc"><div><p>Used by the various composition functions and when composing proxies with the <code class='language-csharp'>|</code> operator.  You usually
+wouldn't need to call this directly, instead either pipe them using <code class='language-csharp'>|</code> or call <code class='language-csharp'>Proxy.compose(lhs, rhs)</code></p>
 </div>
 <div></div>
 
@@ -3397,7 +3397,7 @@ Proxy<span class='generics'>&lt;</span>DOut<span class='comma'>, </span>DIn<span
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Proxy.Pure.cs#L134" class="link">Source</a>
 <a href="#Pure_6_Reflect_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Reverse the arrows of the <code>Proxy</code> to find its dual.</p>
+<div class="doc"><div><p>Reverse the arrows of the <code class='language-csharp'>Proxy</code> to find its dual.</p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
@@ -3426,7 +3426,7 @@ Proxy<span class='generics'>&lt;</span>UOut<span class='comma'>, </span>UIn<span
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Proxy.Pure.cs#L147" class="link">Source</a>
 <a href="#Pure_6_Observe_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><pre><code>Observe(lift (Pure(r))) = Observe(Pure(r))
+<div class="doc"><div><pre class='language-csharp'><code class='language-csharp'>Observe(lift (Pure(r))) = Observe(Pure(r))
 Observe(lift (m.Bind(f))) = Observe(lift(m.Bind(x =&gt; lift(f(x)))))
 </code></pre>
 <p>This correctness comes at a small cost to performance, so use this function sparingly.
@@ -3510,9 +3510,9 @@ string
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Pipes/Void.cs#L14" class="link">Source</a>
 <a href="#_0_Void_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Meant to represent <code>void</code>, but we can't construct a <code>System.Void</code>.</p>
-<p>A <code>void</code> is the initial object in a category, equivalent to an empty set, and because there are no values in an
-empty set there's no way to construct a type of <code>void</code>.  We use this type in the pipes system to represent a
+<div class="doc"><div><p>Meant to represent <code class='language-csharp'>void</code>, but we can't construct a <code class='language-csharp'>System.Void</code>.</p>
+<p>A <code class='language-csharp'>void</code> is the initial object in a category, equivalent to an empty set, and because there are no values in an
+empty set there's no way to construct a type of <code class='language-csharp'>void</code>.  We use this type in the pipes system to represent a
 a 'closed' path.</p>
 </div>
 <div></div>
@@ -3555,4 +3555,6 @@ string
 
 
 
-</div></div></div></body></html>
+</div></div></div></body>
+<script/>
+<script/></html>

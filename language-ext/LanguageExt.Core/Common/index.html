@@ -8,47 +8,47 @@
 <div id="content"><div id="module-header"><p class="caption"><a href="../index.html" class="link">LanguageExt.Core</a>
 <span> ► </span>
 <a href="index.html" class="link">Common</a></p></div>
-<h2><code>Error</code></h2>
-<p>The <code>Error</code> type works like a discriminated-union, it is an <code>abstract record</code> type with many sub-cases
-(which are listed below).  It is used extensively with various monadic types, like <code>Fin&lt;A&gt;</code>, the
-<em>Effect System</em> monads of <code>Eff&lt;A&gt;</code>, <code>Eff&lt;RT, A&gt;</code>, <code>Aff&lt;A&gt;</code>, <code>Aff&lt;RT, A&gt;</code> and the compositional
+<h2><code class='language-csharp'>Error</code></h2>
+<p>The <code class='language-csharp'>Error</code> type works like a discriminated-union, it is an <code class='language-csharp'>abstract record</code> type with many sub-cases
+(which are listed below).  It is used extensively with various monadic types, like <code class='language-csharp'>Fin&lt;A&gt;</code>, the
+<em>Effect System</em> monads of <code class='language-csharp'>Eff&lt;A&gt;</code>, <code class='language-csharp'>Eff&lt;RT, A&gt;</code>, <code class='language-csharp'>Aff&lt;A&gt;</code>, <code class='language-csharp'>Aff&lt;RT, A&gt;</code> and the compositional
 streaming Pipes features.</p>
 <blockquote>
-<p>The reason they're buried in the <code>Common</code> namespace is because, <code>Error</code> is a common type name.  And so, this gives
-the programmer a chance to not include it when <code>using LanguageExt;</code></p>
+<p>The reason they're buried in the <code class='language-csharp'>Common</code> namespace is because, <code class='language-csharp'>Error</code> is a common type name.  And so, this gives
+the programmer a chance to not include it when <code class='language-csharp'>using LanguageExt;</code></p>
 </blockquote>
-<p><code>Error</code> exists because <code>Exception</code> is really only meant for <em>exceptional</em> errors. However, in C#-land we've been trained
+<p><code class='language-csharp'>Error</code> exists because <code class='language-csharp'>Exception</code> is really only meant for <em>exceptional</em> errors. However, in C#-land we've been trained
 to throw them even for <em>expected</em> errors.</p>
-<p>Instead we use <code>Error</code> to represent three key types of error:</p>
+<p>Instead we use <code class='language-csharp'>Error</code> to represent three key types of error:</p>
 <ul>
-<li class='markdown-bullet'><code>Exceptional</code> - An unexpected error</li>
-<li class='markdown-bullet'><code>Expected</code>    - An expected error</li>
-<li class='markdown-bullet'><code>ManyErrors</code>  - Many errors (possibly zero)</li>
+<li class='markdown-bullet'><code class='language-csharp'>Exceptional</code> - An unexpected error</li>
+<li class='markdown-bullet'><code class='language-csharp'>Expected</code>    - An expected error</li>
+<li class='markdown-bullet'><code class='language-csharp'>ManyErrors</code>  - Many errors (possibly zero)</li>
 </ul>
 <p>These are the key base-types that indicate the <em>'flavour'</em> of the error.  For example, a 'user not found' error isn't
-something exceptional, it's something we expect <em>might</em> happen.  An <code>OutOfMemoryException</code> however, <em>is</em>
+something exceptional, it's something we expect <em>might</em> happen.  An <code class='language-csharp'>OutOfMemoryException</code> however, <em>is</em>
 exceptional - it should never happen, and we should treat it as such.</p>
 <p>Most of the time we want sensible handling of expected errors, and bail out completely for something exceptional.  We also want
 to protect ourselves from information leakage.  Leaking exceptional errors via public APIs is a surefire way to open up more
-information to hackers than you would like.  The <code>Error</code> derived types all try to protect against this kind of leakage without
+information to hackers than you would like.  The <code class='language-csharp'>Error</code> derived types all try to protect against this kind of leakage without
 losing the context of the type of error thrown.</p>
-<p>Essentially an error is either created from an <code>Exception</code> or it isn't.  This allows for expected errors to be
+<p>Essentially an error is either created from an <code class='language-csharp'>Exception</code> or it isn't.  This allows for expected errors to be
 represented without throwing exceptions, but also it allows for more principled error handling.  We can pattern-match on the
-type, or use some of the built-in properties and methods to inspect the <code>Error</code>:</p>
+type, or use some of the built-in properties and methods to inspect the <code class='language-csharp'>Error</code>:</p>
 <ul>
-<li class='markdown-bullet'><code>IsExceptional</code> - <code>true</code> for exceptional errors.  For <code>ManyErrors</code> this is <code>true</code> if <em>any</em> of the errors are exceptional.</li>
-<li class='markdown-bullet'><code>IsExpected</code> - <code>true</code> for non-exceptional/expected errors.  For <code>ManyErrors</code> this is <code>true</code> if <em>all</em> of the errors are expected.</li>
-<li class='markdown-bullet'><code>Is&lt;E&gt;(E exception)</code> - <code>true</code> if the <code>Error</code> is exceptional and any of the the internal <code>Exception</code> values are of type <code>E</code>.</li>
-<li class='markdown-bullet'><code>Is(Error error)</code> - <code>true</code> if the <code>Error</code> matches the one provided.  i.e. <code>error.Is(Errors.TimedOut)</code>.</li>
+<li class='markdown-bullet'><code class='language-csharp'>IsExceptional</code> - <code class='language-csharp'>true</code> for exceptional errors.  For <code class='language-csharp'>ManyErrors</code> this is <code class='language-csharp'>true</code> if <em>any</em> of the errors are exceptional.</li>
+<li class='markdown-bullet'><code class='language-csharp'>IsExpected</code> - <code class='language-csharp'>true</code> for non-exceptional/expected errors.  For <code class='language-csharp'>ManyErrors</code> this is <code class='language-csharp'>true</code> if <em>all</em> of the errors are expected.</li>
+<li class='markdown-bullet'><code class='language-csharp'>Is&lt;E&gt;(E exception)</code> - <code class='language-csharp'>true</code> if the <code class='language-csharp'>Error</code> is exceptional and any of the the internal <code class='language-csharp'>Exception</code> values are of type <code class='language-csharp'>E</code>.</li>
+<li class='markdown-bullet'><code class='language-csharp'>Is(Error error)</code> - <code class='language-csharp'>true</code> if the <code class='language-csharp'>Error</code> matches the one provided.  i.e. <code class='language-csharp'>error.Is(Errors.TimedOut)</code>.</li>
 </ul>
-<p>The <code>Error</code> type can be constructed to be exceptional or expected.  For example, this is an expected error:</p>
-<pre><code>Error.New(&quot;This error was expected&quot;)
+<p>The <code class='language-csharp'>Error</code> type can be constructed to be exceptional or expected.  For example, this is an expected error:</p>
+<pre class='language-csharp'><code class='language-csharp'>Error.New(&quot;This error was expected&quot;)
 </code></pre>
 <p>When expected errors are used with codes then equality and matching is done via the code only:</p>
-<pre><code>Error.New(404, &quot;Page not found&quot;);
+<pre class='language-csharp'><code class='language-csharp'>Error.New(404, &quot;Page not found&quot;);
 </code></pre>
 <p>And this is an exceptional error:</p>
-<pre><code>try
+<pre class='language-csharp'><code class='language-csharp'>try
 {
     // This wraps up the exceptional error
 }
@@ -58,19 +58,19 @@ catch(Exception e)
 }
 </code></pre>
 <p>Finally, you can collect many errors:</p>
-<pre><code>Error.Many(Error.New(&quot;error one&quot;), Error.New(&quot;error two&quot;));
+<pre class='language-csharp'><code class='language-csharp'>Error.Many(Error.New(&quot;error one&quot;), Error.New(&quot;error two&quot;));
 </code></pre>
 <p>Or more simply:</p>
-<pre><code>Error.New(&quot;error one&quot;) + Error.New(&quot;error two&quot;)
+<pre class='language-csharp'><code class='language-csharp'>Error.New(&quot;error one&quot;) + Error.New(&quot;error two&quot;)
 </code></pre>
 <p>You can extend the set of error types (perhaps for passing through extra data) by creating a new
-record inherits <code>Exceptional</code> or <code>Expected</code>:</p>
-<pre><code>public record BespokeError(bool MyData) 
+record inherits <code class='language-csharp'>Exceptional</code> or <code class='language-csharp'>Expected</code>:</p>
+<pre class='language-csharp'><code class='language-csharp'>public record BespokeError(bool MyData) 
     : Expected(&quot;Something bespoke&quot;, 100, None); 
 </code></pre>
 <p>By default the properties of the new error-type won't be serialised.  So, if you want to pass a
-payload over the wire, add the <code>[property: DataMember]</code> attribute to each member:</p>
-<pre><code>public record BespokeError([property: DataMember] bool MyData) 
+payload over the wire, add the <code class='language-csharp'>[property: DataMember]</code> attribute to each member:</p>
+<pre class='language-csharp'><code class='language-csharp'>public record BespokeError([property: DataMember] bool MyData) 
     : Expected(&quot;Something bespoke&quot;, 100, None); 
 </code></pre>
 <p>Using this technique it's trivial to create new error-types when additional data needs to be moved
@@ -605,7 +605,7 @@ Error
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Error.cs#L87" class="link">Source</a>
 <a href="#Error_0_Head_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Get the first error (this will be <code>Errors.None</code> if there are zero errors)</p>
+<div class="doc"><div><p>Get the first error (this will be <code class='language-csharp'>Errors.None</code> if there are zero errors)</p>
 </div>
 <div></div>
 
@@ -629,7 +629,7 @@ Error
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Error.cs#L95" class="link">Source</a>
 <a href="#Error_0_Tail_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Get the errors with the head removed (this may be <code>Errors.None</code> if there are zero errors in the tail)</p>
+<div class="doc"><div><p>Get the errors with the head removed (this may be <code class='language-csharp'>Errors.None</code> if there are zero errors in the tail)</p>
 </div>
 <div></div>
 
@@ -654,7 +654,7 @@ bool
 <a href="#Error_0_IsEmpty_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>This type can contain zero or more errors.</p>
-<p>If <code>IsEmpty</code> is <code>true</code> then this is like <code>None</code> in <code>Option</code>: still an error, but without any specific
+<p>If <code class='language-csharp'>IsEmpty</code> is <code class='language-csharp'>true</code> then this is like <code class='language-csharp'>None</code> in <code class='language-csharp'>Option</code>: still an error, but without any specific
 information about the error.</p>
 </div>
 <div></div>
@@ -680,7 +680,7 @@ int
 <a href="#Error_0_Count_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>This type can contain zero or more errors.  This property returns the number of information carrying errors.</p>
-<p>If <code>Count</code> is <code>0</code> then this is like <code>None</code> in <code>Option</code>: still an error, but without any specific information
+<p>If <code class='language-csharp'>Count</code> is <code class='language-csharp'>0</code> then this is like <code class='language-csharp'>None</code> in <code class='language-csharp'>Option</code>: still an error, but without any specific information
 about the error.</p>
 </div>
 <div></div>
@@ -705,7 +705,7 @@ Option<span class='generics'>&lt;</span>Exception<span class='generics'>&gt;</sp
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Error.cs#L133" class="link">Source</a>
 <a href="#Error_0_Exception_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>If this error represents an exceptional error, then this will return that exception, otherwise <code>None</code></p>
+<div class="doc"><div><p>If this error represents an exceptional error, then this will return that exception, otherwise <code class='language-csharp'>None</code></p>
 </div>
 <div></div>
 
@@ -783,7 +783,7 @@ bool
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Error.cs#L52" class="link">Source</a>
 <a href="#Error_0_Is_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Return true if this error contains or <em>is</em> the <code>error</code> provided</p>
+<div class="doc"><div><p>Return true if this error contains or <em>is</em> the <code class='language-csharp'>error</code> provided</p>
 </div>
 <div></div>
 
@@ -886,7 +886,7 @@ ErrorException
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Error.cs#L142" class="link">Source</a>
 <a href="#Error_0_ToErrorException_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Convert to an <code>ErrorException</code> which is like <code>Error</code> but derived from the <code>Exception</code> hierarchy</p>
+<div class="doc"><div><p>Convert to an <code class='language-csharp'>ErrorException</code> which is like <code class='language-csharp'>Error</code> but derived from the <code class='language-csharp'>Exception</code> hierarchy</p>
 </div>
 <div></div>
 
@@ -914,7 +914,7 @@ Error
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Append an error to this error</p>
 </div>
-<div><p>Single errors will be converted to <code>ManyErrors</code>;  <code>ManyErrors</code> will have their collection updated</p>
+<div><p>Single errors will be converted to <code class='language-csharp'>ManyErrors</code>;  <code class='language-csharp'>ManyErrors</code> will have their collection updated</p>
 </div>
 <div class="methods"><p class="caption">Parameters</p>
 <div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
@@ -996,7 +996,7 @@ Error
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Error.cs#L194" class="link">Source</a>
 <a href="#Error_0_New_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Create an <code>Exceptional</code> error</p>
+<div class="doc"><div><p>Create an <code class='language-csharp'>Exceptional</code> error</p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
@@ -1026,7 +1026,7 @@ Error
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Error.cs#L214" class="link">Source</a>
 <a href="#Error_0_New_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Create a <code>Exceptional</code> error with an overriden message.  This can be useful for sanitising the display message
+<div class="doc"><div><p>Create a <code class='language-csharp'>Exceptional</code> error with an overriden message.  This can be useful for sanitising the display message
 when internally we're carrying the exception.</p>
 </div>
 <div></div>
@@ -1061,7 +1061,7 @@ Error
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Error.cs#L222" class="link">Source</a>
 <a href="#Error_0_New_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Create an <code>Expected</code> error</p>
+<div class="doc"><div><p>Create an <code class='language-csharp'>Expected</code> error</p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
@@ -1091,7 +1091,7 @@ Error
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Error.cs#L231" class="link">Source</a>
 <a href="#Error_0_New_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Create an <code>Expected</code> error</p>
+<div class="doc"><div><p>Create an <code class='language-csharp'>Expected</code> error</p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
@@ -1125,7 +1125,7 @@ Error
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Error.cs#L241" class="link">Source</a>
 <a href="#Error_0_New_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Create an <code>Expected</code> error</p>
+<div class="doc"><div><p>Create an <code class='language-csharp'>Expected</code> error</p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
@@ -1163,7 +1163,7 @@ Error
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Error.cs#L250" class="link">Source</a>
 <a href="#Error_0_New_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Create an <code>Expected</code> error</p>
+<div class="doc"><div><p>Create an <code class='language-csharp'>Expected</code> error</p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
@@ -1197,9 +1197,9 @@ Error
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Error.cs#L260" class="link">Source</a>
 <a href="#Error_0_Many_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Create a <code>ManyErrors</code> error</p>
+<div class="doc"><div><p>Create a <code class='language-csharp'>ManyErrors</code> error</p>
 </div>
-<div><p>Collects many errors into a single <code>Error</code> type, called <code>ManyErrors</code></p>
+<div><p>Collects many errors into a single <code class='language-csharp'>Error</code> type, called <code class='language-csharp'>ManyErrors</code></p>
 </div>
 <div class="methods"><p class="caption">Parameters</p>
 <div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
@@ -1347,7 +1347,7 @@ R
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Append an error to this error</p>
 </div>
-<div><p>Single errors will be converted to <code>ManyErrors</code>;  <code>ManyErrors</code> will have their collection updated</p>
+<div><p>Single errors will be converted to <code class='language-csharp'>ManyErrors</code>;  <code class='language-csharp'>ManyErrors</code> will have their collection updated</p>
 </div>
 
 </div>
@@ -1377,15 +1377,15 @@ R
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Contains the following:</p>
 <ul>
-<li class='markdown-bullet'><code>Code</code> - an integer value</li>
-<li class='markdown-bullet'><code>Message</code> - display text</li>
-<li class='markdown-bullet'><code>Option&lt;Error&gt;</code> - a nested inner error</li>
+<li class='markdown-bullet'><code class='language-csharp'>Code</code> - an integer value</li>
+<li class='markdown-bullet'><code class='language-csharp'>Message</code> - display text</li>
+<li class='markdown-bullet'><code class='language-csharp'>Option&lt;Error&gt;</code> - a nested inner error</li>
 </ul>
-<p>It returns <code>false</code> when <code>IsExceptional</code> is called against it; and <code>true</code> when <code>IsExpected</code> is
+<p>It returns <code class='language-csharp'>false</code> when <code class='language-csharp'>IsExceptional</code> is called against it; and <code class='language-csharp'>true</code> when <code class='language-csharp'>IsExpected</code> is
 called against it.</p>
-<p>Equality is done via the <code>Code</code>, so any two <code>Expected</code> errors with the same <code>Code</code> will be considered
-the same.  This is useful when using the <code>@catch</code> behaviours with the <code>Aff</code> and <code>Eff</code> monads.  If the
-<code>Code</code> is <code>0</code> then equality is done by comparing <code>Message</code>.</p>
+<p>Equality is done via the <code class='language-csharp'>Code</code>, so any two <code class='language-csharp'>Expected</code> errors with the same <code class='language-csharp'>Code</code> will be considered
+the same.  This is useful when using the <code class='language-csharp'>@catch</code> behaviours with the <code class='language-csharp'>Aff</code> and <code class='language-csharp'>Eff</code> monads.  If the
+<code class='language-csharp'>Code</code> is <code class='language-csharp'>0</code> then equality is done by comparing <code class='language-csharp'>Message</code>.</p>
 <blockquote>
 <p>This allows for localised error messages where the message is ignored when matching/catching</p>
 </blockquote>
@@ -1566,7 +1566,7 @@ ErrorException
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Error.cs#L414" class="link">Source</a>
 <a href="#Expected_0_ToErrorException_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Generates a new <code>ErrorException</code> that contains the <code>Code</code>, <code>Message</code>, and <code>Inner</code> of this <code>Error</code>.</p>
+<div class="doc"><div><p>Generates a new <code class='language-csharp'>ErrorException</code> that contains the <code class='language-csharp'>Code</code>, <code class='language-csharp'>Message</code>, and <code class='language-csharp'>Inner</code> of this <code class='language-csharp'>Error</code>.</p>
 </div>
 <div></div>
 
@@ -1622,11 +1622,11 @@ bool
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Error.cs#L452" class="link">Source</a>
 <a href="#_0_Exceptional_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>This contains an <code>Exception</code> is the classic sense.  This also returns <code>true</code> when <code>IsExceptional</code> is
-called against it; and <code>false</code> when <code>IsExpected</code> is called against it.</p>
+<div class="doc"><div><p>This contains an <code class='language-csharp'>Exception</code> is the classic sense.  This also returns <code class='language-csharp'>true</code> when <code class='language-csharp'>IsExceptional</code> is
+called against it; and <code class='language-csharp'>false</code> when <code class='language-csharp'>IsExpected</code> is called against it.</p>
 </div>
-<div><p>If this record is constructed via deserialisation, or the default constructor then the internal <code>Exception</code>
-will be <code>null</code>.  This is intentional to stop exceptions leaking over application boundaries.  The type will
+<div><p>If this record is constructed via deserialisation, or the default constructor then the internal <code class='language-csharp'>Exception</code>
+will be <code class='language-csharp'>null</code>.  This is intentional to stop exceptions leaking over application boundaries.  The type will
 gracefully handle that, but all stack-trace information (and the like) will be erased.  It is still considered
 an exceptional error, however.</p>
 </div>
@@ -1690,7 +1690,7 @@ Option<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span>
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Error.cs#L489" class="link">Source</a>
 <a href="#Exceptional_0_Inner_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Returns the inner exception as an <code>Error</code> (if one exists), <code>None</code> otherwise</p>
+<div class="doc"><div><p>Returns the inner exception as an <code class='language-csharp'>Error</code> (if one exists), <code class='language-csharp'>None</code> otherwise</p>
 </div>
 <div></div>
 
@@ -1791,7 +1791,7 @@ Exception
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Error.cs#L499" class="link">Source</a>
 <a href="#Exceptional_0_ToException_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Gets the <code>Exception</code></p>
+<div class="doc"><div><p>Gets the <code class='language-csharp'>Exception</code></p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
@@ -1819,7 +1819,7 @@ ErrorException
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Error.cs#L507" class="link">Source</a>
 <a href="#Exceptional_0_ToErrorException_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Gets the <code>ErrorException</code></p>
+<div class="doc"><div><p>Gets the <code class='language-csharp'>ErrorException</code></p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
@@ -2093,7 +2093,7 @@ ErrorException
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Error.cs#L575" class="link">Source</a>
 <a href="#BottomError_0_ToErrorException_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Gets the <code>ErrorException</code></p>
+<div class="doc"><div><p>Gets the <code class='language-csharp'>ErrorException</code></p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
@@ -2147,7 +2147,7 @@ bool
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Error.cs#L588" class="link">Source</a>
 <a href="#BottomError_0_Is_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Return true this error contains or <em>is</em> the <code>error</code> provided</p>
+<div class="doc"><div><p>Return true this error contains or <em>is</em> the <code class='language-csharp'>error</code> provided</p>
 </div>
 <div></div>
 
@@ -2177,9 +2177,9 @@ bool
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Error.cs#L617" class="link">Source</a>
 <a href="#_0_ManyErrors_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p><code>ManyErrors</code> allows for zero or more errors to be collected.  This is useful for applicative behaviours
-like validation.  It effectively turns the <code>Error</code> type into a monoid, with 'zero' being <code>Errors.None</code>,
-and 'append' coming from the <code>Append</code> method or use of <code>operator+</code></p>
+<div class="doc"><div><p><code class='language-csharp'>ManyErrors</code> allows for zero or more errors to be collected.  This is useful for applicative behaviours
+like validation.  It effectively turns the <code class='language-csharp'>Error</code> type into a monoid, with 'zero' being <code class='language-csharp'>Errors.None</code>,
+and 'append' coming from the <code class='language-csharp'>Append</code> method or use of <code class='language-csharp'>operator+</code></p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
@@ -2317,7 +2317,7 @@ Error
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Error.cs#L677" class="link">Source</a>
 <a href="#ManyErrors_0_Head_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Get the first error (this may be <code>Errors.None</code> if there are zero errors)</p>
+<div class="doc"><div><p>Get the first error (this may be <code class='language-csharp'>Errors.None</code> if there are zero errors)</p>
 </div>
 <div></div>
 
@@ -2341,7 +2341,7 @@ Error
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Error.cs#L687" class="link">Source</a>
 <a href="#ManyErrors_0_Tail_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Get the errors with the head removed (this may be <code>Errors.None</code> if there are zero errors in the tail)</p>
+<div class="doc"><div><p>Get the errors with the head removed (this may be <code class='language-csharp'>Errors.None</code> if there are zero errors in the tail)</p>
 </div>
 <div></div>
 
@@ -2365,7 +2365,7 @@ bool
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Error.cs#L698" class="link">Source</a>
 <a href="#ManyErrors_0_IsEmpty_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>This type can contain zero or more errors.  If <code>IsEmpty</code> is <code>true</code> then this is like <code>None</code> in <code>Option</code>:  still
+<div class="doc"><div><p>This type can contain zero or more errors.  If <code class='language-csharp'>IsEmpty</code> is <code class='language-csharp'>true</code> then this is like <code class='language-csharp'>None</code> in <code class='language-csharp'>Option</code>:  still
 an error, but without any specific information about the error.</p>
 </div>
 <div></div>
@@ -2391,7 +2391,7 @@ int
 <a href="#ManyErrors_0_Count_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>This type can contain zero or more errors.  This property returns the number of information carrying errors.</p>
-<p>If <code>Count</code> is <code>0</code> then this is like <code>None</code> in <code>Option</code>: still an error, but without any specific information
+<p>If <code class='language-csharp'>Count</code> is <code class='language-csharp'>0</code> then this is like <code class='language-csharp'>None</code> in <code class='language-csharp'>Option</code>: still an error, but without any specific information
 about the error.</p>
 </div>
 <div></div>
@@ -2445,7 +2445,7 @@ Exception
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Error.cs#L635" class="link">Source</a>
 <a href="#ManyErrors_0_ToException_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Gets the <code>Exception</code></p>
+<div class="doc"><div><p>Gets the <code class='language-csharp'>Exception</code></p>
 </div>
 <div></div>
 
@@ -2471,7 +2471,7 @@ ErrorException
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Error.cs#L641" class="link">Source</a>
 <a href="#ManyErrors_0_ToErrorException_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Gets the <code>ErrorException</code></p>
+<div class="doc"><div><p>Gets the <code class='language-csharp'>ErrorException</code></p>
 </div>
 <div></div>
 
@@ -2523,7 +2523,7 @@ bool
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/Error.cs#L654" class="link">Source</a>
 <a href="#ManyErrors_0_Is_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Return true this error contains or <em>is</em> the <code>error</code> provided</p>
+<div class="doc"><div><p>Return true this error contains or <em>is</em> the <code class='language-csharp'>error</code> provided</p>
 </div>
 <div></div>
 
@@ -2579,15 +2579,15 @@ Iterable<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Error value</p>
 </div>
-<div><p>This is a pair to the <code>Error</code> type, to allow <code>Error</code> to be converted to-and-from a classic <code>Exception</code>.</p>
-<p>This allows code that can't handle the <code>Error</code> type to still throw something that keeps the fidelity of the <code>Error</code>
-type, and can be converted directly to an <code>Error</code> in a <code>catch</code> block.</p>
+<div><p>This is a pair to the <code class='language-csharp'>Error</code> type, to allow <code class='language-csharp'>Error</code> to be converted to-and-from a classic <code class='language-csharp'>Exception</code>.</p>
+<p>This allows code that can't handle the <code class='language-csharp'>Error</code> type to still throw something that keeps the fidelity of the <code class='language-csharp'>Error</code>
+type, and can be converted directly to an <code class='language-csharp'>Error</code> in a <code class='language-csharp'>catch</code> block.</p>
 
-<p>Unlike exceptions, <code>Error</code> can be either:</p>
+<p>Unlike exceptions, <code class='language-csharp'>Error</code> can be either:</p>
 <ul>
-<li class='markdown-bullet'><code>ExceptionalException</code>    - representing an unexpected error</li>
-<li class='markdown-bullet'><code>ExpectedException</code>       - representing an expected error</li>
-<li class='markdown-bullet'><code>ManyExceptions</code>          - representing many errors</li>
+<li class='markdown-bullet'><code class='language-csharp'>ExceptionalException</code>    - representing an unexpected error</li>
+<li class='markdown-bullet'><code class='language-csharp'>ExpectedException</code>       - representing an expected error</li>
+<li class='markdown-bullet'><code class='language-csharp'>ManyExceptions</code>          - representing many errors</li>
 </ul>
 <p>i.e. it is either created from an exception or it isn't.  This allows for expected errors to be represented
 without throwing exceptions.</p>
@@ -2654,7 +2654,7 @@ bool
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/ErrorException.cs#L59" class="link">Source</a>
 <a href="#ErrorException_0_IsEmpty_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>This type can contain zero or more errors.  If <code>IsEmpty</code> is <code>true</code> then this is like <code>None</code> in <code>Option</code>:  still
+<div class="doc"><div><p>This type can contain zero or more errors.  If <code class='language-csharp'>IsEmpty</code> is <code class='language-csharp'>true</code> then this is like <code class='language-csharp'>None</code> in <code class='language-csharp'>Option</code>:  still
 an error, but without any specific information about the error.</p>
 </div>
 <div></div>
@@ -2754,7 +2754,7 @@ Error
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/ErrorException.cs#L52" class="link">Source</a>
 <a href="#ErrorException_0_ToError_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Convert to an <code>Error</code></p>
+<div class="doc"><div><p>Convert to an <code class='language-csharp'>Error</code></p>
 </div>
 <div></div>
 
@@ -2782,7 +2782,7 @@ ErrorException
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Append an error to this error</p>
 </div>
-<div><p>Single errors will be converted to <code>ManyErrors</code>;  <code>ManyErrors</code> will have their collection updated</p>
+<div><p>Single errors will be converted to <code class='language-csharp'>ManyErrors</code>;  <code class='language-csharp'>ManyErrors</code> will have their collection updated</p>
 </div>
 
 </div>
@@ -3127,7 +3127,7 @@ ErrorException
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Append an error to this error</p>
 </div>
-<div><p>Single errors will be converted to <code>ManyErrors</code>;  <code>ManyErrors</code> will have their collection updated</p>
+<div><p>Single errors will be converted to <code class='language-csharp'>ManyErrors</code>;  <code class='language-csharp'>ManyErrors</code> will have their collection updated</p>
 </div>
 
 </div>
@@ -3321,7 +3321,7 @@ Error
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/ErrorException.cs#L216" class="link">Source</a>
 <a href="#ExpectedException_0_ToError_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Generates a new <code>Error</code> that contains the <code>Code</code>, <code>Message</code>, and <code>Inner</code> of this <code>ErrorException</code>.</p>
+<div class="doc"><div><p>Generates a new <code class='language-csharp'>Error</code> that contains the <code class='language-csharp'>Code</code>, <code class='language-csharp'>Message</code>, and <code class='language-csharp'>Inner</code> of this <code class='language-csharp'>ErrorException</code>.</p>
 </div>
 <div></div>
 
@@ -3349,7 +3349,7 @@ ErrorException
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Append an error to this error</p>
 </div>
-<div><p>Single errors will be converted to <code>ManyErrors</code>;  <code>ManyErrors</code> will have their collection updated</p>
+<div><p>Single errors will be converted to <code class='language-csharp'>ManyErrors</code>;  <code class='language-csharp'>ManyErrors</code> will have their collection updated</p>
 </div>
 
 </div>
@@ -3377,7 +3377,7 @@ ErrorException
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/ErrorException.cs#L249" class="link">Source</a>
 <a href="#_0_WrappedErrorExpectedException_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Wraps an <code>Error</code> maintaining its type for subsequent conversion back to an <code>Error</code> later</p>
+<div class="doc"><div><p>Wraps an <code class='language-csharp'>Error</code> maintaining its type for subsequent conversion back to an <code class='language-csharp'>Error</code> later</p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
@@ -3401,7 +3401,7 @@ Error
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/ErrorException.cs#L256" class="link">Source</a>
 <a href="#WrappedErrorExpectedException_0_ToError_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Convert back to an <code>Error</code></p>
+<div class="doc"><div><p>Convert back to an <code class='language-csharp'>Error</code></p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
@@ -3548,7 +3548,7 @@ Option<span class='generics'>&lt;</span>ErrorException<span class='generics'>&gt
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/ErrorException.cs#L306" class="link">Source</a>
 <a href="#ExceptionalException_0_Inner_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Returns the inner exception as an <code>Error</code> (if one exists), None otherwise</p>
+<div class="doc"><div><p>Returns the inner exception as an <code class='language-csharp'>Error</code> (if one exists), None otherwise</p>
 </div>
 <div></div>
 
@@ -3719,7 +3719,7 @@ Error
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/ErrorException.cs#L316" class="link">Source</a>
 <a href="#ExceptionalException_0_ToError_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Gets the <code>Error</code></p>
+<div class="doc"><div><p>Gets the <code class='language-csharp'>Error</code></p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
@@ -3749,7 +3749,7 @@ ErrorException
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Append an error to this error</p>
 </div>
-<div><p>Single errors will be converted to <code>ManyErrors</code>;  <code>ManyErrors</code> will have their collection updated</p>
+<div><p>Single errors will be converted to <code class='language-csharp'>ManyErrors</code>;  <code class='language-csharp'>ManyErrors</code> will have their collection updated</p>
 </div>
 <div class="methods"><p class="caption">Parameters</p>
 <div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
@@ -3783,7 +3783,7 @@ ErrorException
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/ErrorException.cs#L352" class="link">Source</a>
 <a href="#_0_WrappedErrorExceptionalException_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Wraps an <code>Error</code> maintaining its type for subsequent conversion back to an <code>Error</code> later</p>
+<div class="doc"><div><p>Wraps an <code class='language-csharp'>Error</code> maintaining its type for subsequent conversion back to an <code class='language-csharp'>Error</code> later</p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
@@ -3807,7 +3807,7 @@ Error
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/ErrorException.cs#L359" class="link">Source</a>
 <a href="#WrappedErrorExceptionalException_0_ToError_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Convert back to an <code>Error</code></p>
+<div class="doc"><div><p>Convert back to an <code class='language-csharp'>Error</code></p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
@@ -3977,7 +3977,7 @@ Option<span class='generics'>&lt;</span>ErrorException<span class='generics'>&gt
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/ErrorException.cs#L389" class="link">Source</a>
 <a href="#ManyExceptions_0_Inner_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Returns the inner exception as an <code>Error</code> (if one exists), None otherwise</p>
+<div class="doc"><div><p>Returns the inner exception as an <code class='language-csharp'>Error</code> (if one exists), None otherwise</p>
 </div>
 <div></div>
 
@@ -4001,7 +4001,7 @@ bool
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Common/ErrorException.cs#L410" class="link">Source</a>
 <a href="#ManyExceptions_0_IsEmpty_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>This type can contain zero or more errors.  If <code>IsEmpty</code> is <code>true</code> then this is like <code>None</code> in <code>Option</code>:  still
+<div class="doc"><div><p>This type can contain zero or more errors.  If <code class='language-csharp'>IsEmpty</code> is <code class='language-csharp'>true</code> then this is like <code class='language-csharp'>None</code> in <code class='language-csharp'>Option</code>:  still
 an error, but without any specific information about the error.</p>
 </div>
 <div></div>
@@ -4132,7 +4132,7 @@ ErrorException
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Append an error to this error</p>
 </div>
-<div><p>Single errors will be converted to <code>ManyErrors</code>;  <code>ManyErrors</code> will have their collection updated</p>
+<div><p>Single errors will be converted to <code class='language-csharp'>ManyErrors</code>;  <code class='language-csharp'>ManyErrors</code> will have their collection updated</p>
 </div>
 <div class="methods"><p class="caption">Parameters</p>
 <div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
@@ -5542,4 +5542,6 @@ ExpectedException
 
 
 
-</div></div></div></body></html>
+</div></div></div></body>
+<script/>
+<script/></html>

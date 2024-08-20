@@ -240,48 +240,48 @@
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> A : IComparable&lt;A&gt;</span></div></div></p>
 <div class="doc"><div>
-<p><p>To create a vector clock, start from <code>Empty</code> or <code>Single</code> and <code>Insert</code>
-elements into it.  As a shortcut, <code>fromList</code> just inserts all the
+<p><p>To create a vector clock, start from <code class='language-csharp'>Empty</code> or <code class='language-csharp'>Single</code> and <code class='language-csharp'>Insert</code>
+elements into it.  As a shortcut, <code class='language-csharp'>fromList</code> just inserts all the
 elements in a list, in order.</p>
 </p>
-<code><pre><code>var vc = VectorClock&lt;char&gt;.Empty;
+<pre><code><pre class='language-csharp'><code class='language-csharp'>var vc = VectorClock&lt;char&gt;.Empty;
 vc = vc.Insert('a', 1);
 vc = vc.Insert('b', 2);
 vc == VectorClock&lt;char&gt;.fromList(Seq(('a', 1), ('b', 2)))
 </code></pre>
-</code>
+</code></pre>
 <p><p>Note that, for different keys, the order of insertion does not
 matter:</p>
 </p>
-<code><pre><code>fromList(Seq(('a', 1), ('b', 2)) == fromList(Seq(('b', 2), ('a', 1))
+<pre><code><pre class='language-csharp'><code class='language-csharp'>fromList(Seq(('a', 1), ('b', 2)) == fromList(Seq(('b', 2), ('a', 1))
 </code></pre>
-</code>
+</code></pre>
 <p><p>Once you have a given vector clock, you can 'lookup' its fields,
 check that keys are 'member's, or convert it back 'toList' form.</p>
 </p>
-<code><pre><code>vc.Lookup('a') == Some(1)
+<pre><code><pre class='language-csharp'><code class='language-csharp'>vc.Lookup('a') == Some(1)
 vc.Lookup('c') == None
 </code></pre>
-</code>
+</code></pre>
 <p><p>The main operations that you would do with a vector clock are to
 increment the entry corresponding to the current process and to
 update the process's vector clock with the 'max' of its and the
 received message's clocks.</p>
 </p>
-<code><pre><code>vc.Inc('a') == Some [('a', 2), ('b', 2)]
+<pre><code><pre class='language-csharp'><code class='language-csharp'>vc.Inc('a') == Some [('a', 2), ('b', 2)]
 VectorClock.max( [('a', 1), ('b', 2)], [('c', 3), ('b', 1)] ) == [('a', 1), ('b', 2), ('c' 3)]
 </code></pre>
-</code>
+</code></pre>
 <p><p>Finally, upon receiving different messages, you may wish to
 discover the relationship, if any, between them.  This
 information could be useful in determining the correct order to
 process the messages.</p>
 </p>
-<code><pre><code>VectorClock.relation (fromList [('a', 1), ('b', 2)], fromList [('a', 2), ('b', 2)]) == Causes
+<pre><code><pre class='language-csharp'><code class='language-csharp'>VectorClock.relation (fromList [('a', 1), ('b', 2)], fromList [('a', 2), ('b', 2)]) == Causes
 VectorClock.relation (fromList [('a', 2), ('b', 2)], fromList [('a', 1), ('b', 2)]) == CausedBy
 VectorClock.relation (fromList [('a', 2), ('b', 2)], fromList [('a', 1), ('b', 3)]) == Concurrent
 </code></pre>
-</code>
+</code></pre>
 <p><p>A vector clock is, conceptually, an associative list sorted by the
 value of the key, where each key appears only once.</p>
 </p></div>
@@ -969,48 +969,48 @@ Option<span class='generics'>&lt;</span>VectorClock<span class='generics'>&lt;</
 <a href="#LanguageExt_0_VectorClock_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div>
-<p><p>To create a vector clock, start from <code>Empty</code> or <code>Single</code> and <code>Insert</code>
-elements into it.  As a shortcut, <code>fromList</code> just inserts all the
+<p><p>To create a vector clock, start from <code class='language-csharp'>Empty</code> or <code class='language-csharp'>Single</code> and <code class='language-csharp'>Insert</code>
+elements into it.  As a shortcut, <code class='language-csharp'>fromList</code> just inserts all the
 elements in a list, in order.</p>
 </p>
-<code><pre><code>var vc = VectorClock&lt;char&gt;.Empty;
+<pre><code><pre class='language-csharp'><code class='language-csharp'>var vc = VectorClock&lt;char&gt;.Empty;
 vc = vc.Insert('a', 1);
 vc = vc.Insert('b', 2);
 vc == VectorClock&lt;char&gt;.fromList(Seq(('a', 1), ('b', 2)))
 </code></pre>
-</code>
+</code></pre>
 <p><p>Note that, for different keys, the order of insertion does not
 matter:</p>
 </p>
-<code><pre><code>fromList(Seq(('a', 1), ('b', 2)) == fromList(Seq(('b', 2), ('a', 1))
+<pre><code><pre class='language-csharp'><code class='language-csharp'>fromList(Seq(('a', 1), ('b', 2)) == fromList(Seq(('b', 2), ('a', 1))
 </code></pre>
-</code>
+</code></pre>
 <p><p>Once you have a given vector clock, you can 'lookup' its fields,
 check that keys are 'member's, or convert it back 'toList' form.</p>
 </p>
-<code><pre><code>vc.Lookup('a') == Some(1)
+<pre><code><pre class='language-csharp'><code class='language-csharp'>vc.Lookup('a') == Some(1)
 vc.Lookup('c') == None
 </code></pre>
-</code>
+</code></pre>
 <p><p>The main operations that you would do with a vector clock are to
 increment the entry corresponding to the current process and to
 update the process's vector clock with the 'max' of its and the
 received message's clocks.</p>
 </p>
-<code><pre><code>vc.Inc('a') == Some [('a', 2), ('b', 2)]
+<pre><code><pre class='language-csharp'><code class='language-csharp'>vc.Inc('a') == Some [('a', 2), ('b', 2)]
 VectorClock.max( [('a', 1), ('b', 2)], [('c', 3), ('b', 1)] ) == [('a', 1), ('b', 2), ('c' 3)]
 </code></pre>
-</code>
+</code></pre>
 <p><p>Finally, upon receiving different messages, you may wish to
 discover the relationship, if any, between them.  This
 information could be useful in determining the correct order to
 process the messages.</p>
 </p>
-<code><pre><code>VectorClock.relation (fromList [('a', 1), ('b', 2)], fromList [('a', 2), ('b', 2)]) == Causes
+<pre><code><pre class='language-csharp'><code class='language-csharp'>VectorClock.relation (fromList [('a', 1), ('b', 2)], fromList [('a', 2), ('b', 2)]) == Causes
 VectorClock.relation (fromList [('a', 2), ('b', 2)], fromList [('a', 1), ('b', 2)]) == CausedBy
 VectorClock.relation (fromList [('a', 2), ('b', 2)], fromList [('a', 1), ('b', 3)]) == Concurrent
 </code></pre>
-</code>
+</code></pre>
 <p><p>A vector clock is, conceptually, an associative list sorted by the
 value of the key, where each key appears only once.</p>
 </p></div>
@@ -1485,48 +1485,48 @@ Option<span class='generics'>&lt;</span>VectorClock<span class='generics'>&lt;</
 <div class="constraint"><span class="keyword">where</span>
 <span> NumB : Num&lt;B&gt;</span></div></div></p>
 <div class="doc"><div>
-<p><p>To create a vector clock, start from <code>Empty</code> or <code>Single</code> and <code>Insert</code>
-elements into it.  As a shortcut, <code>fromList</code> just inserts all the
+<p><p>To create a vector clock, start from <code class='language-csharp'>Empty</code> or <code class='language-csharp'>Single</code> and <code class='language-csharp'>Insert</code>
+elements into it.  As a shortcut, <code class='language-csharp'>fromList</code> just inserts all the
 elements in a list, in order.</p>
 </p>
-<code><pre><code>var vc = VectorClock&lt;char&gt;.Empty;
+<pre><code><pre class='language-csharp'><code class='language-csharp'>var vc = VectorClock&lt;char&gt;.Empty;
 vc = vc.Insert('a', 1);
 vc = vc.Insert('b', 2);
 vc == VectorClock&lt;char&gt;.fromList(Seq(('a', 1), ('b', 2)))
 </code></pre>
-</code>
+</code></pre>
 <p><p>Note that, for different keys, the order of insertion does not
 matter:</p>
 </p>
-<code><pre><code>fromList(Seq(('a', 1), ('b', 2)) == fromList(Seq(('b', 2), ('a', 1))
+<pre><code><pre class='language-csharp'><code class='language-csharp'>fromList(Seq(('a', 1), ('b', 2)) == fromList(Seq(('b', 2), ('a', 1))
 </code></pre>
-</code>
+</code></pre>
 <p><p>Once you have a given vector clock, you can 'lookup' its fields,
 check that keys are 'member's, or convert it back 'toList' form.</p>
 </p>
-<code><pre><code>vc.Lookup('a') == Some(1)
+<pre><code><pre class='language-csharp'><code class='language-csharp'>vc.Lookup('a') == Some(1)
 vc.Lookup('c') == None
 </code></pre>
-</code>
+</code></pre>
 <p><p>The main operations that you would do with a vector clock are to
 increment the entry corresponding to the current process and to
 update the process's vector clock with the 'max' of its and the
 received message's clocks.</p>
 </p>
-<code><pre><code>vc.Inc('a') == Some [('a', 2), ('b', 2)]
+<pre><code><pre class='language-csharp'><code class='language-csharp'>vc.Inc('a') == Some [('a', 2), ('b', 2)]
 VectorClock.max( [('a', 1), ('b', 2)], [('c', 3), ('b', 1)] ) == [('a', 1), ('b', 2), ('c' 3)]
 </code></pre>
-</code>
+</code></pre>
 <p><p>Finally, upon receiving different messages, you may wish to
 discover the relationship, if any, between them.  This
 information could be useful in determining the correct order to
 process the messages.</p>
 </p>
-<code><pre><code>VectorClock.relation (fromList [('a', 1), ('b', 2)], fromList [('a', 2), ('b', 2)]) == Causes
+<pre><code><pre class='language-csharp'><code class='language-csharp'>VectorClock.relation (fromList [('a', 1), ('b', 2)], fromList [('a', 2), ('b', 2)]) == Causes
 VectorClock.relation (fromList [('a', 2), ('b', 2)], fromList [('a', 1), ('b', 2)]) == CausedBy
 VectorClock.relation (fromList [('a', 2), ('b', 2)], fromList [('a', 1), ('b', 3)]) == Concurrent
 </code></pre>
-</code>
+</code></pre>
 <p><p>A vector clock is, conceptually, an associative list sorted by the
 value of the key, where each key appears only once.</p>
 </p></div>
@@ -2181,4 +2181,6 @@ Option<span class='generics'>&lt;</span>VectorClock<span class='generics'>&lt;</
 
 
 
-</div></div></div></body></html>
+</div></div></div></body>
+<script/>
+<script/></html>

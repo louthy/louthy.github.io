@@ -11,12 +11,12 @@
 <span> ► </span>
 <a href="index.html" class="link">Atom</a></p></div>
 <p>Atoms provide a way to manage shared, synchronous, independent state without locks.  You can use them to wrap up immutable data structures
-and then atomically update them using the various <code>Swap</code> methods, or read them by calling the <code>Value</code> property.</p>
-<p>If a conflict is encountered during a <code>Swap</code> operation, the operation is re-run using the latest state, and so you should minimise the time
-spent in the <code>Swap</code> function, as well as make sure there are no side-effects, otherwise all bets are off.</p>
+and then atomically update them using the various <code class='language-csharp'>Swap</code> methods, or read them by calling the <code class='language-csharp'>Value</code> property.</p>
+<p>If a conflict is encountered during a <code class='language-csharp'>Swap</code> operation, the operation is re-run using the latest state, and so you should minimise the time
+spent in the <code class='language-csharp'>Swap</code> function, as well as make sure there are no side-effects, otherwise all bets are off.</p>
 <p>See the <a href="https://github.com/louthy/language-ext/wiki/Concurrency">concurrency section</a> of the wiki for more info.</p>
 <h3>Usage</h3>
-<pre><code>record Person(string Name, string Surname);
+<pre class='language-csharp'><code class='language-csharp'>record Person(string Name, string Surname);
 
 // Create a new atom
 var person = Atom(new Person(&quot;Paul&quot;, &quot;Louth&quot;));
@@ -82,9 +82,9 @@ locks.</p>
 </div>
 <div><p>The intended use of atom is to hold an immutable data structure. You change
 the value by applying a function to the old value. This is done in an atomic
-manner by <code>Swap</code>.</p>
-<p>Internally, <code>Swap</code> reads the current value, applies the function to it, and
-attempts to <code>CompareExchange</code> it in. Since another thread may have changed the
+manner by <code class='language-csharp'>Swap</code>.</p>
+<p>Internally, <code class='language-csharp'>Swap</code> reads the current value, applies the function to it, and
+attempts to <code class='language-csharp'>CompareExchange</code> it in. Since another thread may have changed the
 value in the intervening time, it may have to retry, and does so in a spin loop.</p>
 <p>The net effect is that the value will always be the result of the application
 of the supplied function to a current value, atomically. However, because the
@@ -111,11 +111,11 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <div class="doc"><div><p>Value accessor (read and write)</p>
 </div>
 <div><ul>
-<li class='markdown-bullet'><p>Gets will return a freshly constructed <code>IO</code> monad that can be repeatedly
-evaluated to get the latest state of the <code>Atom</code>.</p>
+<li class='markdown-bullet'><p>Gets will return a freshly constructed <code class='language-csharp'>IO</code> monad that can be repeatedly
+evaluated to get the latest state of the <code class='language-csharp'>Atom</code>.</p>
 </li>
-<li class='markdown-bullet'><p>Sets pass an <code>IO</code> monad that will be mapped to an operation that will set
-the value of the <code>Atom</code> each time it's evaluated.</p>
+<li class='markdown-bullet'><p>Sets pass an <code class='language-csharp'>IO</code> monad that will be mapped to an operation that will set
+the value of the <code class='language-csharp'>Atom</code> each time it's evaluated.</p>
 </li>
 </ul>
 </div>
@@ -168,8 +168,8 @@ A
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L83" class="link">Source</a>
 <a href="#Atom_1_Swap_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
-the atom with the result.  Note: <code>f</code> may be called multiple times, so it
+<div class="doc"><div><p>Atomically updates the value by passing the old value to <code class='language-csharp'>f</code> and updating
+the atom with the result.  Note: <code class='language-csharp'>f</code> may be called multiple times, so it
 should be free of side effects.</p>
 </div>
 <div></div>
@@ -183,7 +183,7 @@ should be free of side effects.</p>
 If the swap operation fails (which can only happen due to its validator returning false),
 then a snapshot of the current value within the Atom is returned.
 If there is no validator for the Atom then the return value is always the snapshot of
-the successful <code>f</code> function.</p>
+the successful <code class='language-csharp'>f</code> function.</p>
 </span></td></tr></tbody></table></div></div>
 </div>
 
@@ -207,8 +207,8 @@ A
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L122" class="link">Source</a>
 <a href="#Atom_1_Swap_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
-the atom with the result.  Note: <code>f</code> may be called multiple times, so it
+<div class="doc"><div><p>Atomically updates the value by passing the old value to <code class='language-csharp'>f</code> and updating
+the atom with the result.  Note: <code class='language-csharp'>f</code> may be called multiple times, so it
 should be free of side effects.</p>
 </div>
 <div></div>
@@ -219,13 +219,13 @@ should be free of side effects.</p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">returns</span></td>
 <td colspan="2" class="src clearfix"><span class="instruction inst-left"><ul>
-<li class='markdown-bullet'>If <code>f</code> returns <code>None</code> then no update occurs and the result of the call
-to <code>Swap</code> will be the latest (unchanged) value of <code>A</code>.</li>
+<li class='markdown-bullet'>If <code class='language-csharp'>f</code> returns <code class='language-csharp'>None</code> then no update occurs and the result of the call
+to <code class='language-csharp'>Swap</code> will be the latest (unchanged) value of <code class='language-csharp'>A</code>.</li>
 <li class='markdown-bullet'>If the swap operation fails, due to its validator returning false, then a snapshot of
 the current value within the Atom is returned.</li>
 <li class='markdown-bullet'>If the swap operation succeeded then a snapshot of the value that was set is returned.</li>
 <li class='markdown-bullet'>If there is no validator for the Atom then the return value is always the snapshot of
-the successful <code>f</code> function.</li>
+the successful <code class='language-csharp'>f</code> function.</li>
 </ul>
 </span></td></tr></tbody></table></div></div>
 </div>
@@ -250,8 +250,8 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L161" class="link">Source</a>
 <a href="#Atom_1_SwapIO_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
-the atom with the result.  Note: <code>f</code> may be called multiple times, so it
+<div class="doc"><div><p>Atomically updates the value by passing the old value to <code class='language-csharp'>f</code> and updating
+the atom with the result.  Note: <code class='language-csharp'>f</code> may be called multiple times, so it
 should be free of side effects.</p>
 </div>
 <div></div>
@@ -265,7 +265,7 @@ should be free of side effects.</p>
 If the swap operation fails (which can only happen due to its validator returning false),
 then a snapshot of the current value within the Atom is returned.
 If there is no validator for the Atom then the return value is always the snapshot of
-the successful <code>f</code> function.</p>
+the successful <code class='language-csharp'>f</code> function.</p>
 </span></td></tr></tbody></table></div></div>
 </div>
 
@@ -289,8 +289,8 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.cs#L179" class="link">Source</a>
 <a href="#Atom_1_SwapIO_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
-the atom with the result.  Note: <code>f</code> may be called multiple times, so it
+<div class="doc"><div><p>Atomically updates the value by passing the old value to <code class='language-csharp'>f</code> and updating
+the atom with the result.  Note: <code class='language-csharp'>f</code> may be called multiple times, so it
 should be free of side effects.</p>
 </div>
 <div></div>
@@ -301,13 +301,13 @@ should be free of side effects.</p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">returns</span></td>
 <td colspan="2" class="src clearfix"><span class="instruction inst-left"><ul>
-<li class='markdown-bullet'>If <code>f</code> returns <code>None</code> then no update occurs and the result of the call
-to <code>Swap</code> will be the latest (unchanged) value of <code>A</code>.</li>
+<li class='markdown-bullet'>If <code class='language-csharp'>f</code> returns <code class='language-csharp'>None</code> then no update occurs and the result of the call
+to <code class='language-csharp'>Swap</code> will be the latest (unchanged) value of <code class='language-csharp'>A</code>.</li>
 <li class='markdown-bullet'>If the swap operation fails, due to its validator returning false, then a snapshot of
 the current value within the Atom is returned.</li>
 <li class='markdown-bullet'>If the swap operation succeeded then a snapshot of the value that was set is returned.</li>
 <li class='markdown-bullet'>If there is no validator for the Atom then the return value is always the snapshot of
-the successful <code>f</code> function.</li>
+the successful <code class='language-csharp'>f</code> function.</li>
 </ul>
 </span></td></tr></tbody></table></div></div>
 </div>
@@ -365,9 +365,9 @@ locks.</p>
 </div>
 <div><p>The intended use of atom is to hold an immutable data structure. You change
 the value by applying a function to the old value. This is done in an atomic
-manner by <code>Swap</code>.</p>
-<p>Internally, <code>Swap</code> reads the current value, applies the function to it, and
-attempts to <code>CompareExchange</code> it in. Since another thread may have changed the
+manner by <code class='language-csharp'>Swap</code>.</p>
+<p>Internally, <code class='language-csharp'>Swap</code> reads the current value, applies the function to it, and
+attempts to <code class='language-csharp'>CompareExchange</code> it in. Since another thread may have changed the
 value in the intervening time, it may have to retry, and does so in a spin loop.</p>
 <p>The net effect is that the value will always be the result of the application
 of the supplied function to a current value, atomically. However, because the
@@ -394,11 +394,11 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <div class="doc"><div><p>Value accessor (read and write)</p>
 </div>
 <div><ul>
-<li class='markdown-bullet'><p>Gets will return a freshly constructed <code>IO</code> monad that can be repeatedly
-evaluated to get the latest state of the <code>Atom</code>.</p>
+<li class='markdown-bullet'><p>Gets will return a freshly constructed <code class='language-csharp'>IO</code> monad that can be repeatedly
+evaluated to get the latest state of the <code class='language-csharp'>Atom</code>.</p>
 </li>
-<li class='markdown-bullet'><p>Sets pass an <code>IO</code> monad that will be mapped to an operation that will set
-the value of the <code>Atom</code> each time it's evaluated.</p>
+<li class='markdown-bullet'><p>Sets pass an <code class='language-csharp'>IO</code> monad that will be mapped to an operation that will set
+the value of the <code class='language-csharp'>Atom</code> each time it's evaluated.</p>
 </li>
 </ul>
 </div>
@@ -451,8 +451,8 @@ A
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L85" class="link">Source</a>
 <a href="#Atom_2_Swap_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
-the atom with the result.  Note: <code>f</code> may be called multiple times, so it
+<div class="doc"><div><p>Atomically updates the value by passing the old value to <code class='language-csharp'>f</code> and updating
+the atom with the result.  Note: <code class='language-csharp'>f</code> may be called multiple times, so it
 should be free of side effects.</p>
 </div>
 <div></div>
@@ -466,7 +466,7 @@ should be free of side effects.</p>
 If the swap operation fails (which can only happen due to its validator returning false),
 then a snapshot of the current value within the Atom is returned.
 If there is no validator for the Atom then the return value is always the snapshot of
-the successful <code>f</code> function.</p>
+the successful <code class='language-csharp'>f</code> function.</p>
 </span></td></tr></tbody></table></div></div>
 </div>
 
@@ -490,8 +490,8 @@ A
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L124" class="link">Source</a>
 <a href="#Atom_2_Swap_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
-the atom with the result.  Note: <code>f</code> may be called multiple times, so it
+<div class="doc"><div><p>Atomically updates the value by passing the old value to <code class='language-csharp'>f</code> and updating
+the atom with the result.  Note: <code class='language-csharp'>f</code> may be called multiple times, so it
 should be free of side effects.</p>
 </div>
 <div></div>
@@ -502,13 +502,13 @@ should be free of side effects.</p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">returns</span></td>
 <td colspan="2" class="src clearfix"><span class="instruction inst-left"><ul>
-<li class='markdown-bullet'>If <code>f</code> returns <code>None</code> then no update occurs and the result of the call
-to <code>Swap</code> will be the latest (unchanged) value of <code>A</code>.</li>
+<li class='markdown-bullet'>If <code class='language-csharp'>f</code> returns <code class='language-csharp'>None</code> then no update occurs and the result of the call
+to <code class='language-csharp'>Swap</code> will be the latest (unchanged) value of <code class='language-csharp'>A</code>.</li>
 <li class='markdown-bullet'>If the swap operation fails, due to its validator returning false, then a snapshot of
 the current value within the Atom is returned.</li>
 <li class='markdown-bullet'>If the swap operation succeeded then a snapshot of the value that was set is returned.</li>
 <li class='markdown-bullet'>If there is no validator for the Atom then the return value is always the snapshot of
-the successful <code>f</code> function.</li>
+the successful <code class='language-csharp'>f</code> function.</li>
 </ul>
 </span></td></tr></tbody></table></div></div>
 </div>
@@ -533,15 +533,15 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L164" class="link">Source</a>
 <a href="#Atom_2_SwapIO_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
-the atom with the result.  Note: <code>f</code> may be called multiple times, so it
+<div class="doc"><div><p>Atomically updates the value by passing the old value to <code class='language-csharp'>f</code> and updating
+the atom with the result.  Note: <code class='language-csharp'>f</code> may be called multiple times, so it
 should be free of side effects.</p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
 <div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">x</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Additional value to pass to <code>f</code></p>
+<td class="src clearfix"><span class="instruction inst-left"><p>Additional value to pass to <code class='language-csharp'>f</code></p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">param</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
@@ -552,7 +552,7 @@ should be free of side effects.</p>
 If the swap operation fails (which can only happen due to its validator returning false),
 then a snapshot of the current value within the Atom is returned.
 If there is no validator for the Atom then the return value is always the snapshot of
-the successful <code>f</code> function.</p>
+the successful <code class='language-csharp'>f</code> function.</p>
 </span></td></tr></tbody></table></div></div>
 </div>
 
@@ -576,8 +576,8 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Atom/Atom.Metadata.cs#L182" class="link">Source</a>
 <a href="#Atom_2_SwapIO_0" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
-the atom with the result.  Note: <code>f</code> may be called multiple times, so it
+<div class="doc"><div><p>Atomically updates the value by passing the old value to <code class='language-csharp'>f</code> and updating
+the atom with the result.  Note: <code class='language-csharp'>f</code> may be called multiple times, so it
 should be free of side effects.</p>
 </div>
 <div></div>
@@ -588,13 +588,13 @@ should be free of side effects.</p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">returns</span></td>
 <td colspan="2" class="src clearfix"><span class="instruction inst-left"><ul>
-<li class='markdown-bullet'>If <code>f</code> returns <code>None</code> then no update occurs and the result of the call
-to <code>Swap</code> will be the latest (unchanged) value of <code>A</code>.</li>
+<li class='markdown-bullet'>If <code class='language-csharp'>f</code> returns <code class='language-csharp'>None</code> then no update occurs and the result of the call
+to <code class='language-csharp'>Swap</code> will be the latest (unchanged) value of <code class='language-csharp'>A</code>.</li>
 <li class='markdown-bullet'>If the swap operation fails, due to its validator returning false, then a snapshot of
 the current value within the Atom is returned.</li>
 <li class='markdown-bullet'>If the swap operation succeeded then a snapshot of the value that was set is returned.</li>
 <li class='markdown-bullet'>If there is no validator for the Atom then the return value is always the snapshot of
-the successful <code>f</code> function.</li>
+the successful <code class='language-csharp'>f</code> function.</li>
 </ul>
 </span></td></tr></tbody></table></div></div>
 </div>
@@ -665,4 +665,6 @@ string
 
 
 
-</div></div></div></body></html>
+</div></div></div></body>
+<script/>
+<script/></html>

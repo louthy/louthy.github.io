@@ -10,7 +10,7 @@
 <a href="index.html" class="link">Concurrency</a></p></div>
 <p>We prefer to work with immutable types in functional-programming.  However, it's not always possible, and sometimes we
 need some shared mutable state.  With the immutable types in this library you'd need to protect the updates with locks:</p>
-<pre><code>// Some global
+<pre class='language-csharp'><code class='language-csharp'>// Some global
 static HashSet&lt;int&gt; set = HashSet(1, 2, 3);
 static object sync = new();
 
@@ -19,14 +19,14 @@ lock(sync)
     set = set.Add(4);
 }
 </code></pre>
-<p>This in unsatisfactory, and so this module is all about lock-free atomic operations.  <code>Atom</code> allows you to protect any
-value.  <code>AtomHashMap</code> and <code>AtomSeq</code> are <code>HashMap</code> and <code>Seq</code> wrapped up into a lock-free mutable structure.  Snapshots
+<p>This in unsatisfactory, and so this module is all about lock-free atomic operations.  <code class='language-csharp'>Atom</code> allows you to protect any
+value.  <code class='language-csharp'>AtomHashMap</code> and <code class='language-csharp'>AtomSeq</code> are <code class='language-csharp'>HashMap</code> and <code class='language-csharp'>Seq</code> wrapped up into a lock-free mutable structure.  Snapshots
 of those are free!  The above code can be written:</p>
-<pre><code>static AtomHashSet&lt;int&gt; set = AtomHashSet(1, 2, 3);
+<pre class='language-csharp'><code class='language-csharp'>static AtomHashSet&lt;int&gt; set = AtomHashSet(1, 2, 3);
 set.Add(4);
 </code></pre>
 <p>Finally, there's the Software Transactional Memory (STM) system.  Which allows for transactional changes to multiple
-<code>Ref</code> values.  <code>Ref</code> just wrap up access to a value, and allows the state changes to be tracked by the <code>STM</code>.</p>
+<code class='language-csharp'>Ref</code> values.  <code class='language-csharp'>Ref</code> just wrap up access to a value, and allows the state changes to be tracked by the <code class='language-csharp'>STM</code>.</p>
 <p>See the <a href="https://github.com/louthy/language-ext/wiki/Concurrency">concurrency section</a> of the wiki for more info.</p>
 
 <div id="table-of-contents"><p class="caption">Contents</p>
@@ -292,12 +292,12 @@ Ref<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Prelude.Concurrency.cs#L68" class="link">Source</a>
 <a href="#Prelude_0_Ref_1" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Generates a new reference that can be used within a <code>sync</code> transaction</p>
-<p><code>Refs</code> ensure safe shared use of mutable storage locations via a software transactional
-memory (STM) system. <code>Refs</code> are bound to a single storage location for their lifetime,
+<div class="doc"><div><p>Generates a new reference that can be used within a <code class='language-csharp'>sync</code> transaction</p>
+<p><code class='language-csharp'>Refs</code> ensure safe shared use of mutable storage locations via a software transactional
+memory (STM) system. <code class='language-csharp'>Refs</code> are bound to a single storage location for their lifetime,
 and only allow mutation of that location to occur within a transaction.</p>
 </div>
-<div><p>Transactions (within a <code>sync(() =&gt; ...)</code>) should be easy to understand if you’ve ever used database
+<div><p>Transactions (within a <code class='language-csharp'>sync(() =&gt; ...)</code>) should be easy to understand if you’ve ever used database
 transactions - they ensure that all actions on Refs are atomic, consistent, and isolated.</p>
 <ul>
 <li class='markdown-bullet'><strong>Atomic</strong> - means that every change to Refs made within a transaction occurs or none do.</li>
@@ -327,9 +327,9 @@ by this transaction.</p>
 will be retried.</p>
 <p>If a constraint on the validity of a value of a Ref that is being changed depends upon the
 simultaneous value of a Ref that is not being changed, that second Ref can be protected from
-modification by running the <code>sync</code> transaction with <code>Isolation.Serialisable</code>.</p>
-<p>The language-ext STM is designed to work with the persistent collections (<code>Map</code>, <code>HashMap</code>,
-<code>Seq</code>, <code>Lst</code>, <code>Set, </code>HashSet` etc.), and it is strongly recommended that you use the language-ext
+modification by running the <code class='language-csharp'>sync</code> transaction with <code class='language-csharp'>Isolation.Serialisable</code>.</p>
+<p>The language-ext STM is designed to work with the persistent collections (<code class='language-csharp'>Map</code>, <code class='language-csharp'>HashMap</code>,
+<code class='language-csharp'>Seq</code>, <code class='language-csharp'>Lst</code>, <code class='language-csharp'>Set, </code>HashSet` etc.), and it is strongly recommended that you use the language-ext
 collections as the values of your Refs. Since all work done in an STM transaction is speculative,
 it is imperative that there be a low cost to making copies and modifications. Persistent collections
 have free copies (just use the original, it can’t be changed), and 'modifications' share structure
@@ -346,7 +346,7 @@ efficiently. In any case:</p>
 <tr><td class="src clearfix"><span class="keyword">param</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">validator</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Validator that is called on the ref value just
-before any transaction is committed (within a <code>sync</code>)</p>
+before any transaction is committed (within a <code class='language-csharp'>sync</code>)</p>
 </span></td></tr></tbody></table></div></div>
 </div>
 
@@ -380,19 +380,19 @@ are <em>read-from or written-to within the transaction</em>.  If anything does r
 within the transaction, then it is rolled back and retried (using the latest 'world' state).</p>
 <p>It is the strictest form of isolation, and the most likely to conflict; but protects against cross read/write
 inconsistencies.  For example, if you have:</p>
-<pre><code>var x = Ref(1);
+<pre class='language-csharp'><code class='language-csharp'>var x = Ref(1);
 var y = Ref(2);
 
 snapshot(() =&gt; x.Value = y.Value + 1);
 </code></pre>
-<p>Then something writing to <code>y</code> mid-way through the transaction would <em>not</em> cause the transaction to fail.
-Because <code>y</code> was only read-from, not written to.  However, this:</p>
-<pre><code>var x = Ref(1);
+<p>Then something writing to <code class='language-csharp'>y</code> mid-way through the transaction would <em>not</em> cause the transaction to fail.
+Because <code class='language-csharp'>y</code> was only read-from, not written to.  However, this:</p>
+<pre class='language-csharp'><code class='language-csharp'>var x = Ref(1);
 var y = Ref(2);
 
 serial(() =&gt; x.Value = y.Value + 1);
 </code></pre>
-<p>... would fail if something wrote to <code>y</code>.</p>
+<p>... would fail if something wrote to <code class='language-csharp'>y</code>.</p>
 </div>
 
 </div>
@@ -429,19 +429,19 @@ are <em>read-from or written-to within the transaction</em>.  If anything does r
 within the transaction, then it is rolled back and retried (using the latest 'world' state).</p>
 <p>It is the strictest form of isolation, and the most likely to conflict; but protects against cross read/write
 inconsistencies.  For example, if you have:</p>
-<pre><code>var x = Ref(1);
+<pre class='language-csharp'><code class='language-csharp'>var x = Ref(1);
 var y = Ref(2);
 
 snapshot(() =&gt; x.Value = y.Value + 1);
 </code></pre>
-<p>Then something writing to <code>y</code> mid-way through the transaction would <em>not</em> cause the transaction to fail.
-Because <code>y</code> was only read-from, not written to.  However, this:</p>
-<pre><code>var x = Ref(1);
+<p>Then something writing to <code class='language-csharp'>y</code> mid-way through the transaction would <em>not</em> cause the transaction to fail.
+Because <code class='language-csharp'>y</code> was only read-from, not written to.  However, this:</p>
+<pre class='language-csharp'><code class='language-csharp'>var x = Ref(1);
 var y = Ref(2);
 
 serial(() =&gt; x.Value = y.Value + 1);
 </code></pre>
-<p>... would fail if something wrote to <code>y</code>.</p>
+<p>... would fail if something wrote to <code class='language-csharp'>y</code>.</p>
 </div>
 
 </div>
@@ -534,19 +534,19 @@ are <em>read-from or written-to within the transaction</em>.  If anything does r
 within the transaction, then it is rolled back and retried (using the latest 'world' state).</p>
 <p>It is the strictest form of isolation, and the most likely to conflict; but protects against cross read/write
 inconsistencies.  For example, if you have:</p>
-<pre><code>var x = Ref(1);
+<pre class='language-csharp'><code class='language-csharp'>var x = Ref(1);
 var y = Ref(2);
 
 snapshot(() =&gt; x.Value = y.Value + 1);
 </code></pre>
-<p>Then something writing to <code>y</code> mid-way through the transaction would <em>not</em> cause the transaction to fail.
-Because <code>y</code> was only read-from, not written to.  However, this:</p>
-<pre><code>var x = Ref(1);
+<p>Then something writing to <code class='language-csharp'>y</code> mid-way through the transaction would <em>not</em> cause the transaction to fail.
+Because <code class='language-csharp'>y</code> was only read-from, not written to.  However, this:</p>
+<pre class='language-csharp'><code class='language-csharp'>var x = Ref(1);
 var y = Ref(2);
 
 serial(() =&gt; x.Value = y.Value + 1);
 </code></pre>
-<p>... would fail if something wrote to <code>y</code>.</p>
+<p>... would fail if something wrote to <code class='language-csharp'>y</code>.</p>
 </div>
 
 </div>
@@ -579,19 +579,19 @@ are <em>read-from or written-to within the transaction</em>.  If anything does r
 within the transaction, then it is rolled back and retried (using the latest 'world' state).</p>
 <p>It is the strictest form of isolation, and the most likely to conflict; but protects against cross read/write
 inconsistencies.  For example, if you have:</p>
-<pre><code>var x = Ref(1);
+<pre class='language-csharp'><code class='language-csharp'>var x = Ref(1);
 var y = Ref(2);
 
 snapshot(() =&gt; x.Value = y.Value + 1);
 </code></pre>
-<p>Then something writing to <code>y</code> mid-way through the transaction would <em>not</em> cause the transaction to fail.
-Because <code>y</code> was only read-from, not written to.  However, this:</p>
-<pre><code>var x = Ref(1);
+<p>Then something writing to <code class='language-csharp'>y</code> mid-way through the transaction would <em>not</em> cause the transaction to fail.
+Because <code class='language-csharp'>y</code> was only read-from, not written to.  However, this:</p>
+<pre class='language-csharp'><code class='language-csharp'>var x = Ref(1);
 var y = Ref(2);
 
 serial(() =&gt; x.Value = y.Value + 1);
 </code></pre>
-<p>... would fail if something wrote to <code>y</code>.</p>
+<p>... would fail if something wrote to <code class='language-csharp'>y</code>.</p>
 </div>
 
 </div>
@@ -616,21 +616,21 @@ A
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Prelude.Concurrency.cs#L235" class="link">Source</a>
 <a href="#Prelude_0_swap_1" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Swap the old value for the new returned by <code>f</code>
-Must be run within a <code>sync</code> transaction</p>
+<div class="doc"><div><p>Swap the old value for the new returned by <code class='language-csharp'>f</code>
+Must be run within a <code class='language-csharp'>sync</code> transaction</p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
 <div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">r</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p><code>Ref</code> to process</p>
+<td class="src clearfix"><span class="instruction inst-left"><p><code class='language-csharp'>Ref</code> to process</p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">param</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Function to update the <code>Ref</code></p>
+<td class="src clearfix"><span class="instruction inst-left"><p>Function to update the <code class='language-csharp'>Ref</code></p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The value returned from <code>f</code></p>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The value returned from <code class='language-csharp'>f</code></p>
 </span></td></tr></tbody></table></div></div>
 </div>
 
@@ -656,14 +656,14 @@ A
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Must be called in a transaction. Sets the in-transaction-value of
 ref to:</p>
-<pre><code>`f(in-transaction-value-of-ref)`
+<pre class='language-csharp'><code class='language-csharp'>`f(in-transaction-value-of-ref)`
 </code></pre>
 <p>and returns the in-transaction-value when complete.</p>
-<p>At the commit point of the transaction, <code>f</code> is run <em>AGAIN</em> with the
+<p>At the commit point of the transaction, <code class='language-csharp'>f</code> is run <em>AGAIN</em> with the
 most recently committed value:</p>
-<pre><code>`f(most-recently-committed-value-of-ref)`
+<pre class='language-csharp'><code class='language-csharp'>`f(most-recently-committed-value-of-ref)`
 </code></pre>
-<p>Thus <code>f</code> should be commutative, or, failing that, you must accept
+<p>Thus <code class='language-csharp'>f</code> should be commutative, or, failing that, you must accept
 last-one-in-wins behavior.</p>
 <p>Commute allows for more concurrency than just setting the Ref's value</p>
 </div>
@@ -696,9 +696,9 @@ locks.</p>
 </div>
 <div><p>The intended use of atom is to hold one an immutable data structure. You change
 the value by applying a function to the old value. This is done in an atomic
-manner by <code>Swap</code>.</p>
-<p>Internally, <code>Swap</code> reads the current value, applies the function to it, and
-attempts to <code>CompareExchange</code> it in. Since another thread may have changed the
+manner by <code class='language-csharp'>Swap</code>.</p>
+<p>Internally, <code class='language-csharp'>Swap</code> reads the current value, applies the function to it, and
+attempts to <code class='language-csharp'>CompareExchange</code> it in. Since another thread may have changed the
 value in the intervening time, it may have to retry, and does so in a spin loop.</p>
 <p>The net effect is that the value will always be the result of the application
 of the supplied function to a current value, atomically. However, because the
@@ -741,9 +741,9 @@ locks.</p>
 </div>
 <div><p>The intended use of atom is to hold one an immutable data structure. You change
 the value by applying a function to the old value. This is done in an atomic
-manner by <code>Swap</code>.</p>
-<p>Internally, <code>Swap</code> reads the current value, applies the function to it, and
-attempts to <code>CompareExchange</code> it in. Since another thread may have changed the
+manner by <code class='language-csharp'>Swap</code>.</p>
+<p>Internally, <code class='language-csharp'>Swap</code> reads the current value, applies the function to it, and
+attempts to <code class='language-csharp'>CompareExchange</code> it in. Since another thread may have changed the
 value in the intervening time, it may have to retry, and does so in a spin loop.</p>
 <p>The net effect is that the value will always be the result of the application
 of the supplied function to a current value, atomically. However, because the
@@ -759,13 +759,13 @@ coordinated with any other, and for which you wish to make synchronous changes.<
 <tr><td class="src clearfix"><span class="keyword">param</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">validator</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Function to run on the value after each state change.</p>
-<p>If the function returns false for any proposed new state, then the <code>swap</code>
-function will return <code>false</code>, else it will return <code>true</code> on successful setting
+<p>If the function returns false for any proposed new state, then the <code class='language-csharp'>swap</code>
+function will return <code class='language-csharp'>false</code>, else it will return <code class='language-csharp'>true</code> on successful setting
 of the atom's state</p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">returns</span></td>
 <td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The constructed Atom or None if the validation faled for the initial
-<code>value</code></p>
+<code class='language-csharp'>value</code></p>
 </span></td></tr></tbody></table></div></div>
 </div>
 
@@ -794,9 +794,9 @@ locks.</p>
 </div>
 <div><p>The intended use of atom is to hold one an immutable data structure. You change
 the value by applying a function to the old value. This is done in an atomic
-manner by <code>Swap</code>.</p>
-<p>Internally, <code>Swap</code> reads the current value, applies the function to it, and
-attempts to <code>CompareExchange</code> it in. Since another thread may have changed the
+manner by <code class='language-csharp'>Swap</code>.</p>
+<p>Internally, <code class='language-csharp'>Swap</code> reads the current value, applies the function to it, and
+attempts to <code class='language-csharp'>CompareExchange</code> it in. Since another thread may have changed the
 value in the intervening time, it may have to retry, and does so in a spin loop.</p>
 <p>The net effect is that the value will always be the result of the application
 of the supplied function to a current value, atomically. However, because the
@@ -843,9 +843,9 @@ locks.</p>
 </div>
 <div><p>The intended use of atom is to hold one an immutable data structure. You change
 the value by applying a function to the old value. This is done in an atomic
-manner by <code>Swap</code>.</p>
-<p>Internally, <code>Swap</code> reads the current value, applies the function to it, and
-attempts to <code>CompareExchange</code> it in. Since another thread may have changed the
+manner by <code class='language-csharp'>Swap</code>.</p>
+<p>Internally, <code class='language-csharp'>Swap</code> reads the current value, applies the function to it, and
+attempts to <code class='language-csharp'>CompareExchange</code> it in. Since another thread may have changed the
 value in the intervening time, it may have to retry, and does so in a spin loop.</p>
 <p>The net effect is that the value will always be the result of the application
 of the supplied function to a current value, atomically. However, because the
@@ -865,13 +865,13 @@ coordinated with any other, and for which you wish to make synchronous changes.<
 <tr><td class="src clearfix"><span class="keyword">param</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">validator</span></span></td>
 <td class="src clearfix"><span class="instruction inst-left"><p>Function to run on the value after each state change.</p>
-<p>If the function returns false for any proposed new state, then the <code>swap</code>
-function will return <code>false</code>, else it will return <code>true</code> on successful setting
+<p>If the function returns false for any proposed new state, then the <code class='language-csharp'>swap</code>
+function will return <code class='language-csharp'>false</code>, else it will return <code class='language-csharp'>true</code> on successful setting
 of the atom's state</p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">returns</span></td>
 <td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The constructed Atom or None if the validation faled for the initial
-<code>value</code></p>
+<code class='language-csharp'>value</code></p>
 </span></td></tr></tbody></table></div></div>
 </div>
 
@@ -895,8 +895,8 @@ A
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Prelude.Concurrency.cs#L394" class="link">Source</a>
 <a href="#Prelude_0_swap_1" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
-the atom with the result.  Note: <code>f</code> may be called multiple times, so it
+<div class="doc"><div><p>Atomically updates the value by passing the old value to <code class='language-csharp'>f</code> and updating
+the atom with the result.  Note: <code class='language-csharp'>f</code> may be called multiple times, so it
 should be free of side effects.</p>
 </div>
 <div></div>
@@ -910,7 +910,7 @@ should be free of side effects.</p>
 If the swap operation fails (which can only happen due to its validator returning false),
 then a snapshot of the current value within the Atom is returned.
 If there is no validator for the Atom then the return value is always the snapshot of
-the successful <code>f</code> function.</p>
+the successful <code class='language-csharp'>f</code> function.</p>
 </span></td></tr></tbody></table></div></div>
 </div>
 
@@ -934,8 +934,8 @@ A
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Prelude.Concurrency.cs#L412" class="link">Source</a>
 <a href="#Prelude_0_swap_1" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
-the atom with the result.  Note: <code>f</code> may be called multiple times, so it
+<div class="doc"><div><p>Atomically updates the value by passing the old value to <code class='language-csharp'>f</code> and updating
+the atom with the result.  Note: <code class='language-csharp'>f</code> may be called multiple times, so it
 should be free of side effects.</p>
 </div>
 <div></div>
@@ -946,13 +946,13 @@ should be free of side effects.</p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">returns</span></td>
 <td colspan="2" class="src clearfix"><span class="instruction inst-left"><ul>
-<li class='markdown-bullet'>If <code>f</code> returns <code>None</code> then no update occurs and the result of the call
-to <code>Swap</code> will be the latest (unchanged) value of <code>A</code>.</li>
+<li class='markdown-bullet'>If <code class='language-csharp'>f</code> returns <code class='language-csharp'>None</code> then no update occurs and the result of the call
+to <code class='language-csharp'>Swap</code> will be the latest (unchanged) value of <code class='language-csharp'>A</code>.</li>
 <li class='markdown-bullet'>If the swap operation fails, due to its validator returning false, then a snapshot of
 the current value within the Atom is returned.</li>
 <li class='markdown-bullet'>If the swap operation succeeded then a snapshot of the value that was set is returned.</li>
 <li class='markdown-bullet'>If there is no validator for the Atom then the return value is always the snapshot of
-the successful <code>f</code> function.</li>
+the successful <code class='language-csharp'>f</code> function.</li>
 </ul>
 </span></td></tr></tbody></table></div></div>
 </div>
@@ -977,8 +977,8 @@ A
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Prelude.Concurrency.cs#L428" class="link">Source</a>
 <a href="#Prelude_0_swap_2" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
-the atom with the result.  Note: <code>f</code> may be called multiple times, so it
+<div class="doc"><div><p>Atomically updates the value by passing the old value to <code class='language-csharp'>f</code> and updating
+the atom with the result.  Note: <code class='language-csharp'>f</code> may be called multiple times, so it
 should be free of side effects.</p>
 </div>
 <div></div>
@@ -992,7 +992,7 @@ should be free of side effects.</p>
 If the swap operation fails (which can only happen due to its validator returning false),
 then a snapshot of the current value within the Atom is returned.
 If there is no validator for the Atom then the return value is always the snapshot of
-the successful <code>f</code> function.</p>
+the successful <code class='language-csharp'>f</code> function.</p>
 </span></td></tr></tbody></table></div></div>
 </div>
 
@@ -1016,8 +1016,8 @@ A
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Prelude.Concurrency.cs#L446" class="link">Source</a>
 <a href="#Prelude_0_swap_2" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
-the atom with the result.  Note: <code>f</code> may be called multiple times, so it
+<div class="doc"><div><p>Atomically updates the value by passing the old value to <code class='language-csharp'>f</code> and updating
+the atom with the result.  Note: <code class='language-csharp'>f</code> may be called multiple times, so it
 should be free of side effects.</p>
 </div>
 <div></div>
@@ -1028,13 +1028,13 @@ should be free of side effects.</p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">returns</span></td>
 <td colspan="2" class="src clearfix"><span class="instruction inst-left"><ul>
-<li class='markdown-bullet'>If <code>f</code> returns <code>None</code> then no update occurs and the result of the call
-to <code>Swap</code> will be the latest (unchanged) value of <code>A</code>.</li>
+<li class='markdown-bullet'>If <code class='language-csharp'>f</code> returns <code class='language-csharp'>None</code> then no update occurs and the result of the call
+to <code class='language-csharp'>Swap</code> will be the latest (unchanged) value of <code class='language-csharp'>A</code>.</li>
 <li class='markdown-bullet'>If the swap operation fails, due to its validator returning false, then a snapshot of
 the current value within the Atom is returned.</li>
 <li class='markdown-bullet'>If the swap operation succeeded then a snapshot of the value that was set is returned.</li>
 <li class='markdown-bullet'>If there is no validator for the Atom then the return value is always the snapshot of
-the successful <code>f</code> function.</li>
+the successful <code class='language-csharp'>f</code> function.</li>
 </ul>
 </span></td></tr></tbody></table></div></div>
 </div>
@@ -1055,4 +1055,6 @@ the successful <code>f</code> function.</li>
 
 
 
-</div></div></div></body></html>
+</div></div></div></body>
+<script/>
+<script/></html>
