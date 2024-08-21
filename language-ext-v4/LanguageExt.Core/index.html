@@ -1,0 +1,1248 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>LanguageExt.Core</title>
+<link href="style.css" rel="stylesheet" type="text/css"/></head>
+<body class="js-enabled"><div id="package-header"><ul class="links" id="page-menu"><li><a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core" class="link">Source</a></li>
+<li><a href="../index.html" class="link">Contents</a></li>
+<li><a href="../index.html" class="link">Index</a></li></ul>
+<p class="caption">LanguageExt.Core</p></div>
+<div id="content"><div id="module-header"><p class="caption"><a href="index.html" class="link">LanguageExt.Core</a></p></div>
+<p>If you're new to this library, you may need a few pointers of where to look for features:</p>
+<ul>
+<li class='markdown-bullet'><p><a href="Prelude"><code>Prelude</code></a> is a
+<code>static partial class</code>, this type is loaded with functions for constructing the key data types, as well
+as many of the things you'd expect in a functional programming language's prelude.  Note, the <code>Prelude</code> type
+extends into many other parts of the source-tree.  It's the same type, but spread all over the code-base.
+And so, you may see <code>Prelude</code> in other areas of the documentation: it's the same type.</p>
+<p>Because it's so fundamental, you'll want to add this to the top of every code file:</p>
+<pre class='language-csharp'><code>using static LanguageExt.Prelude;
+</code></pre>
+<p>This makes all of the functions in the <code>Prelude</code> available as though they were local.</p>
+</li>
+<li class='markdown-bullet'><p><a href="Monads"><code>Monads</code></a> contains the common monads like <code>Option&lt;A&gt;</code> and <code>Either&lt;L, R&gt;</code>, as well as state-managing monads like <code>Reader</code>, <code>Writer</code>, and <code>State</code>.</p>
+</li>
+<li class='markdown-bullet'><p><a href="Immutable%20Collections"><code>Immutable Collections</code></a> contains the high-performance functional collection types this library is famous for.</p>
+</li>
+<li class='markdown-bullet'><p><a href="Effects"><code>Effects</code></a> is where the pure IO functionality of language-ext resides.  It is also where you'll find
+the <code>Pipes</code> compositional streaming functionality.  To understand more about how to deal with side-effects,
+<a href="https://github.com/louthy/language-ext/wiki/How-to-deal-with-side-effects">check the wiki</a>.</p>
+</li>
+<li class='markdown-bullet'><p><a href="Concurrency"><code>Concurrency</code></a> is where you'll find lots of help in atomically managing shared data without locks.</p>
+</li>
+</ul>
+
+<div id="table-of-contents"><p class="caption">Contents</p>
+<ul><li><a href="#LanguageExt_0_CatchValue_1" class="link"><div class="nowrap">CatchValue
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#CatchValue_1_Match_0" class="link"><div class="nowrap">Match</div></a></li>
+<li><a href="#CatchValue_1_Value_0" class="link"><div class="nowrap">Value</div></a></li>
+<li><a href="#CatchValue_1_CatchValue_0" class="link"><div class="nowrap">CatchValue
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> match<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>A<span class='generics'>&gt;</span> value<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#LanguageExt_0_CatchError_0" class="link"><div class="nowrap">CatchError
+</div></a></li>
+<ul><li><a href="#CatchError_0_Match_0" class="link"><div class="nowrap">Match</div></a></li>
+<li><a href="#CatchError_0_Value_0" class="link"><div class="nowrap">Value</div></a></li>
+<li><a href="#CatchError_0_CatchError_0" class="link"><div class="nowrap">CatchError
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> match<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Error<span class='generics'>&gt;</span> value<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#LanguageExt_0_CombinatorsDynamic_0" class="link"><div class="nowrap">CombinatorsDynamic
+</div></a></li>
+<ul><li><a href="#CombinatorsDynamic_0_I =
+            (dynamic x) =>
+                x_0" class="link"><div class="nowrap">I =
+            (dynamic x) =&gt;
+                x</div></a></li>
+<li><a href="#CombinatorsDynamic_0_M =
+            (dynamic x) =>
+                (dynamic a) =>
+                    x(x(a))_0" class="link"><div class="nowrap">M =
+            (dynamic x) =&gt;
+                (dynamic a) =&gt;
+                    x(x(a))</div></a></li>
+<li><a href="#CombinatorsDynamic_0_K =
+            (dynamic x) =>
+                (dynamic y) =>
+                    x_0" class="link"><div class="nowrap">K =
+            (dynamic x) =&gt;
+                (dynamic y) =&gt;
+                    x</div></a></li>
+<li><a href="#CombinatorsDynamic_0_T =
+            (dynamic x) =>
+                (dynamic y) =>
+                    y(x)_0" class="link"><div class="nowrap">T =
+            (dynamic x) =&gt;
+                (dynamic y) =&gt;
+                    y(x)</div></a></li>
+<li><a href="#CombinatorsDynamic_0_Q =
+            (dynamic x) =>
+                (dynamic y) =>
+                    (dynamic z) =>
+                        y(x(z))_0" class="link"><div class="nowrap">Q =
+            (dynamic x) =&gt;
+                (dynamic y) =&gt;
+                    (dynamic z) =&gt;
+                        y(x(z))</div></a></li>
+<li><a href="#CombinatorsDynamic_0_S =
+            (dynamic x) =>
+                (dynamic y) =>
+                    (dynamic z) =>
+                        x(z)(y(z))_0" class="link"><div class="nowrap">S =
+            (dynamic x) =&gt;
+                (dynamic y) =&gt;
+                    (dynamic z) =&gt;
+                        x(z)(y(z))</div></a></li>
+<li><a href="#CombinatorsDynamic_0_Y =
+            (dynamic f) =>
+                (dynamic x) =>
+                    f(Y(f), x)_0" class="link"><div class="nowrap">Y =
+            (dynamic f) =&gt;
+                (dynamic x) =&gt;
+                    f(Y(f), x)</div></a></li></ul>
+<li><a href="#LanguageExt_0_Combinators_1" class="link"><div class="nowrap">Combinators
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#Combinators_1_I = 
+            (A x) => 
+                x_0" class="link"><div class="nowrap">I = 
+            (A x) =&gt; 
+                x</div></a></li>
+<li><a href="#Combinators_1_M = 
+            (Func<A, A> x) =>
+                a => 
+                    x(x(a))_0" class="link"><div class="nowrap">M = 
+            (Func&lt;A, A&gt; x) =&gt;
+                a =&gt; 
+                    x(x(a))</div></a></li></ul>
+<li><a href="#LanguageExt_0_Combinators_2" class="link"><div class="nowrap">Combinators
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#Combinators_2_K =
+            (A x) =>
+                (B y) =>
+                    x_0" class="link"><div class="nowrap">K =
+            (A x) =&gt;
+                (B y) =&gt;
+                    x</div></a></li>
+<li><a href="#Combinators_2_T =
+            (A x) =>
+                (Func<A, B> y) =>
+                    y(x)_0" class="link"><div class="nowrap">T =
+            (A x) =&gt;
+                (Func&lt;A, B&gt; y) =&gt;
+                    y(x)</div></a></li></ul>
+<li><a href="#LanguageExt_0_Combinators_3" class="link"><div class="nowrap">Combinators
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#Combinators_3_Q = 
+            (Func<A, B> x) => 
+                (Func<B, C> y) => 
+                    (A z) =>
+                        y(x(z))_0" class="link"><div class="nowrap">Q = 
+            (Func&lt;A, B&gt; x) =&gt; 
+                (Func&lt;B, C&gt; y) =&gt; 
+                    (A z) =&gt;
+                        y(x(z))</div></a></li>
+<li><a href="#Combinators_3_S = 
+            (Func<A, Func<B, C>> x) => 
+                (Func<A, B> y) => 
+                    (A z) =>
+                        x(z)(y(z))_0" class="link"><div class="nowrap">S = 
+            (Func&lt;A, Func&lt;B, C&gt;&gt; x) =&gt; 
+                (Func&lt;A, B&gt; y) =&gt; 
+                    (A z) =&gt;
+                        x(z)(y(z))</div></a></li>
+<li><a href="#Combinators_3_Y = 
+            (Func<Func<A, B>, A, B> f) => 
+                (A x) =>
+                    f(Y(f), x)_0" class="link"><div class="nowrap">Y = 
+            (Func&lt;Func&lt;A, B&gt;, A, B&gt; f) =&gt; 
+                (A x) =&gt;
+                    f(Y(f), x)</div></a></li></ul>
+<li><a href="#LanguageExt_0_Combinators_0" class="link"><div class="nowrap">Combinators
+</div></a></li>
+<ul><li><a href="#Combinators_0_I_1" class="link"><div class="nowrap">I
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A x<span class='parens'>)</span></div></a></li>
+<li><a href="#Combinators_0_K_2" class="link"><div class="nowrap">K
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A x<span class='parens'>)</span></div></a></li>
+<li><a href="#Combinators_0_M_1" class="link"><div class="nowrap">M
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> x<span class='parens'>)</span></div></a></li>
+<li><a href="#Combinators_0_T_2" class="link"><div class="nowrap">T
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A x<span class='parens'>)</span></div></a></li>
+<li><a href="#Combinators_0_Q_3" class="link"><div class="nowrap">Q
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> x<span class='parens'>)</span></div></a></li>
+<li><a href="#Combinators_0_S_3" class="link"><div class="nowrap">S
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> x<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#LanguageExt_0_Guard_1" class="link"><div class="nowrap">Guard
+<span class='generics'>&lt;</span>E<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#Guard_1_Flag_0" class="link"><div class="nowrap">Flag</div></a></li>
+<li><a href="#Guard_1_Guard_0" class="link"><div class="nowrap">Guard
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Func<span class='generics'>&lt;</span>E<span class='generics'>&gt;</span> onFalse<span class='parens'>)</span></div></a></li>
+<li><a href="#Guard_1_Guard_0" class="link"><div class="nowrap">Guard
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>E onFalse<span class='parens'>)</span></div></a></li>
+<li><a href="#Guard_1_OnFalse_0" class="link"><div class="nowrap">OnFalse</div></a></li></ul>
+
+</ul></div>
+<div class="interface"><H1>Sub modules</H1>
+<table><tbody><tr><td class="src clearfix"><span class="inst-left"><a href="Class Instances/index.html" class="link">Class Instances</a></span></td></tr>
+<tr><td class="src clearfix"><span class="inst-left"><a href="Common/index.html" class="link">Common</a></span></td></tr>
+<tr><td class="src clearfix"><span class="inst-left"><a href="Concurrency/index.html" class="link">Concurrency</a></span></td></tr>
+<tr><td class="src clearfix"><span class="inst-left"><a href="DataTypes/index.html" class="link">DataTypes</a></span></td></tr>
+<tr><td class="src clearfix"><span class="inst-left"><a href="Effects/index.html" class="link">Effects</a></span></td></tr>
+<tr><td class="src clearfix"><span class="inst-left"><a href="Exceptions/index.html" class="link">Exceptions</a></span></td></tr>
+<tr><td class="src clearfix"><span class="inst-left"><a href="Extensions/index.html" class="link">Extensions</a></span></td></tr>
+<tr><td class="src clearfix"><span class="inst-left"><a href="Immutable Collections/index.html" class="link">Immutable Collections</a></span></td></tr>
+<tr><td class="src clearfix"><span class="inst-left"><a href="Lens/index.html" class="link">Lens</a></span></td></tr>
+<tr><td class="src clearfix"><span class="inst-left"><a href="Monads/index.html" class="link">Monads</a></span></td></tr>
+<tr><td class="src clearfix"><span class="inst-left"><a href="Prelude/index.html" class="link">Prelude</a></span></td></tr>
+<tr><td class="src clearfix"><span class="inst-left"><a href="Pretty/index.html" class="link">Pretty</a></span></td></tr>
+<tr><td class="src clearfix"><span class="inst-left"><a href="Prism/index.html" class="link">Prism</a></span></td></tr>
+<tr><td class="src clearfix"><span class="inst-left"><a href="Thunks/index.html" class="link">Thunks</a></span></td></tr>
+<tr><td class="src clearfix"><span class="inst-left"><a href="Transformer/index.html" class="link">Transformer</a></span></td></tr>
+<tr><td class="src clearfix"><span class="inst-left"><a href="Type Classes/index.html" class="link">Type Classes</a></span></td></tr>
+<tr><td class="src clearfix"><span class="inst-left"><a href="Units of Measure/index.html" class="link">Units of Measure</a></span></td></tr>
+<tr><td class="src clearfix"><span class="inst-left"><a href="Utility/index.html" class="link">Utility</a></span></td></tr></tbody></table>
+<div class="top"><p class="src"><span class="keyword">struct</span>
+<a id="LanguageExt_0_CatchValue_1" class="def">CatchValue</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Catch.cs#L6" class="link">Source</a>
+<a href="#LanguageExt_0_CatchValue_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+<div class="subs methods"><p class="caption">Fields</p>
+<div class="top"><p class="src"><span class="keyword">field</span>
+Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span>
+<a id="CatchValue_1_Match_0" class="def">Match</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Catch.cs#L8" class="link">Source</a>
+<a href="#CatchValue_1_Match_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">field</span>
+Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="CatchValue_1_Value_0" class="def">Value</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Catch.cs#L9" class="link">Source</a>
+<a href="#CatchValue_1_Value_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+<div class="subs methods"><p class="caption">Constructors</p>
+<div class="top"><p class="src"><span class="keyword">constructor</span>
+<a id="CatchValue_1_CatchValue_0" class="def">CatchValue</a>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> match<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>A<span class='generics'>&gt;</span> value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Catch.cs#L11" class="link">Source</a>
+<a href="#CatchValue_1_CatchValue_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">struct</span>
+<a id="LanguageExt_0_CatchError_0" class="def">CatchError</a>
+
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Catch.cs#L15" class="link">Source</a>
+<a href="#LanguageExt_0_CatchError_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+<div class="subs methods"><p class="caption">Fields</p>
+<div class="top"><p class="src"><span class="keyword">field</span>
+Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span>
+<a id="CatchError_0_Match_0" class="def">Match</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Catch.cs#L17" class="link">Source</a>
+<a href="#CatchError_0_Match_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">field</span>
+Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Error<span class='generics'>&gt;</span>
+<a id="CatchError_0_Value_0" class="def">Value</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Catch.cs#L18" class="link">Source</a>
+<a href="#CatchError_0_Value_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+<div class="subs methods"><p class="caption">Constructors</p>
+<div class="top"><p class="src"><span class="keyword">constructor</span>
+<a id="CatchError_0_CatchError_0" class="def">CatchError</a>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> match<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Error<span class='generics'>&gt;</span> value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Catch.cs#L20" class="link">Source</a>
+<a href="#CatchError_0_CatchError_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="LanguageExt_0_CombinatorsDynamic_0" class="def">CombinatorsDynamic</a>
+
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Combinators.cs#L6" class="link">Source</a>
+<a href="#LanguageExt_0_CombinatorsDynamic_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+<div class="subs methods"><p class="caption">Fields</p>
+<div class="top"><p class="src"><span class="keyword">field</span>
+Func<span class='generics'>&lt;</span>dynamic<span class='comma'>, </span>dynamic<span class='generics'>&gt;</span>
+<a id="CombinatorsDynamic_0_I =
+            (dynamic x) =>
+                x_0" class="def">I =
+            (dynamic x) =&gt;
+                x</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Combinators.cs#L11" class="link">Source</a>
+<a href="#CombinatorsDynamic_0_I =
+            (dynamic x) =>
+                x_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Identity function, or the Idiot bird <a href="http://dkeenan.com/Lambda/">dkeenan.com/Lambda/</a></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">field</span>
+Func<span class='generics'>&lt;</span>dynamic<span class='comma'>, </span>Func<span class='generics'>&lt;</span>dynamic<span class='comma'>, </span>dynamic<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="CombinatorsDynamic_0_M =
+            (dynamic x) =>
+                (dynamic a) =>
+                    x(x(a))_0" class="def">M =
+            (dynamic x) =&gt;
+                (dynamic a) =&gt;
+                    x(x(a))</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Combinators.cs#L18" class="link">Source</a>
+<a href="#CombinatorsDynamic_0_M =
+            (dynamic x) =>
+                (dynamic a) =>
+                    x(x(a))_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>The Mockingbird <a href="http://dkeenan.com/Lambda/">dkeenan.com/Lambda/</a></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">field</span>
+Func<span class='generics'>&lt;</span>dynamic<span class='comma'>, </span>Func<span class='generics'>&lt;</span>dynamic<span class='comma'>, </span>dynamic<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="CombinatorsDynamic_0_K =
+            (dynamic x) =>
+                (dynamic y) =>
+                    x_0" class="def">K =
+            (dynamic x) =&gt;
+                (dynamic y) =&gt;
+                    x</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Combinators.cs#L26" class="link">Source</a>
+<a href="#CombinatorsDynamic_0_K =
+            (dynamic x) =>
+                (dynamic y) =>
+                    x_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>The Kestrel <a href="http://dkeenan.com/Lambda/">dkeenan.com/Lambda/</a></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">field</span>
+Func<span class='generics'>&lt;</span>dynamic<span class='comma'>, </span>Func<span class='generics'>&lt;</span>dynamic<span class='comma'>, </span>dynamic<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="CombinatorsDynamic_0_T =
+            (dynamic x) =>
+                (dynamic y) =>
+                    y(x)_0" class="def">T =
+            (dynamic x) =&gt;
+                (dynamic y) =&gt;
+                    y(x)</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Combinators.cs#L34" class="link">Source</a>
+<a href="#CombinatorsDynamic_0_T =
+            (dynamic x) =>
+                (dynamic y) =>
+                    y(x)_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>The Thrush <a href="http://dkeenan.com/Lambda/">dkeenan.com/Lambda/</a></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">field</span>
+Func<span class='generics'>&lt;</span>dynamic<span class='comma'>, </span>Func<span class='generics'>&lt;</span>dynamic<span class='comma'>, </span>Func<span class='generics'>&lt;</span>dynamic<span class='comma'>, </span>dynamic<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="CombinatorsDynamic_0_Q =
+            (dynamic x) =>
+                (dynamic y) =>
+                    (dynamic z) =>
+                        y(x(z))_0" class="def">Q =
+            (dynamic x) =&gt;
+                (dynamic y) =&gt;
+                    (dynamic z) =&gt;
+                        y(x(z))</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Combinators.cs#L42" class="link">Source</a>
+<a href="#CombinatorsDynamic_0_Q =
+            (dynamic x) =>
+                (dynamic y) =>
+                    (dynamic z) =>
+                        y(x(z))_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>The Queer bird <a href="http://dkeenan.com/Lambda/">dkeenan.com/Lambda/</a></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">field</span>
+Func<span class='generics'>&lt;</span>dynamic<span class='comma'>, </span>Func<span class='generics'>&lt;</span>dynamic<span class='comma'>, </span>Func<span class='generics'>&lt;</span>dynamic<span class='comma'>, </span>dynamic<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="CombinatorsDynamic_0_S =
+            (dynamic x) =>
+                (dynamic y) =>
+                    (dynamic z) =>
+                        x(z)(y(z))_0" class="def">S =
+            (dynamic x) =&gt;
+                (dynamic y) =&gt;
+                    (dynamic z) =&gt;
+                        x(z)(y(z))</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Combinators.cs#L51" class="link">Source</a>
+<a href="#CombinatorsDynamic_0_S =
+            (dynamic x) =>
+                (dynamic y) =>
+                    (dynamic z) =>
+                        x(z)(y(z))_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>The Starling <a href="http://dkeenan.com/Lambda/">dkeenan.com/Lambda/</a></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">field</span>
+Func<span class='generics'>&lt;</span>dynamic<span class='comma'>, </span>Func<span class='generics'>&lt;</span>dynamic<span class='comma'>, </span>dynamic<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="CombinatorsDynamic_0_Y =
+            (dynamic f) =>
+                (dynamic x) =>
+                    f(Y(f), x)_0" class="def">Y =
+            (dynamic f) =&gt;
+                (dynamic x) =&gt;
+                    f(Y(f), x)</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Combinators.cs#L60" class="link">Source</a>
+<a href="#CombinatorsDynamic_0_Y =
+            (dynamic f) =>
+                (dynamic x) =>
+                    f(Y(f), x)_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>The infamous Y-combinator, or Sage bird <a href="http://dkeenan.com/Lambda/">dkeenan.com/Lambda/</a></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="LanguageExt_0_Combinators_1" class="def">Combinators</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Combinators.cs#L66" class="link">Source</a>
+<a href="#LanguageExt_0_Combinators_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+<div class="subs methods"><p class="caption">Fields</p>
+<div class="top"><p class="src"><span class="keyword">field</span>
+Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Combinators_1_I = 
+            (A x) => 
+                x_0" class="def">I = 
+            (A x) =&gt; 
+                x</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Combinators.cs#L71" class="link">Source</a>
+<a href="#Combinators_1_I = 
+            (A x) => 
+                x_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Identity function, or the Idiot bird <a href="http://dkeenan.com/Lambda/">dkeenan.com/Lambda/</a></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">field</span>
+Func<span class='generics'>&lt;</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Combinators_1_M = 
+            (Func<A, A> x) =>
+                a => 
+                    x(x(a))_0" class="def">M = 
+            (Func&lt;A, A&gt; x) =&gt;
+                a =&gt; 
+                    x(x(a))</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Combinators.cs#L78" class="link">Source</a>
+<a href="#Combinators_1_M = 
+            (Func<A, A> x) =>
+                a => 
+                    x(x(a))_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>The Mockingbird <a href="http://dkeenan.com/Lambda/">dkeenan.com/Lambda/</a></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="LanguageExt_0_Combinators_2" class="def">Combinators</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Combinators.cs#L84" class="link">Source</a>
+<a href="#LanguageExt_0_Combinators_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+<div class="subs methods"><p class="caption">Fields</p>
+<div class="top"><p class="src"><span class="keyword">field</span>
+Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Combinators_2_K =
+            (A x) =>
+                (B y) =>
+                    x_0" class="def">K =
+            (A x) =&gt;
+                (B y) =&gt;
+                    x</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Combinators.cs#L89" class="link">Source</a>
+<a href="#Combinators_2_K =
+            (A x) =>
+                (B y) =>
+                    x_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>The Kestrel <a href="http://dkeenan.com/Lambda/">dkeenan.com/Lambda/</a></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">field</span>
+Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Combinators_2_T =
+            (A x) =>
+                (Func<A, B> y) =>
+                    y(x)_0" class="def">T =
+            (A x) =&gt;
+                (Func&lt;A, B&gt; y) =&gt;
+                    y(x)</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Combinators.cs#L97" class="link">Source</a>
+<a href="#Combinators_2_T =
+            (A x) =>
+                (Func<A, B> y) =>
+                    y(x)_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>The Thrush <a href="http://dkeenan.com/Lambda/">dkeenan.com/Lambda/</a></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="LanguageExt_0_Combinators_3" class="def">Combinators</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Combinators.cs#L103" class="link">Source</a>
+<a href="#LanguageExt_0_Combinators_3" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+<div class="subs methods"><p class="caption">Fields</p>
+<div class="top"><p class="src"><span class="keyword">field</span>
+Func<span class='generics'>&lt;</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='comma'>, </span>Func<span class='generics'>&lt;</span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Combinators_3_Q = 
+            (Func<A, B> x) => 
+                (Func<B, C> y) => 
+                    (A z) =>
+                        y(x(z))_0" class="def">Q = 
+            (Func&lt;A, B&gt; x) =&gt; 
+                (Func&lt;B, C&gt; y) =&gt; 
+                    (A z) =&gt;
+                        y(x(z))</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Combinators.cs#L108" class="link">Source</a>
+<a href="#Combinators_3_Q = 
+            (Func<A, B> x) => 
+                (Func<B, C> y) => 
+                    (A z) =>
+                        y(x(z))_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>The Queer bird <a href="http://dkeenan.com/Lambda/">dkeenan.com/Lambda/</a></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">field</span>
+Func<span class='generics'>&lt;</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='comma'>, </span>Func<span class='generics'>&lt;</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Combinators_3_S = 
+            (Func<A, Func<B, C>> x) => 
+                (Func<A, B> y) => 
+                    (A z) =>
+                        x(z)(y(z))_0" class="def">S = 
+            (Func&lt;A, Func&lt;B, C&gt;&gt; x) =&gt; 
+                (Func&lt;A, B&gt; y) =&gt; 
+                    (A z) =&gt;
+                        x(z)(y(z))</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Combinators.cs#L117" class="link">Source</a>
+<a href="#Combinators_3_S = 
+            (Func<A, Func<B, C>> x) => 
+                (Func<A, B> y) => 
+                    (A z) =>
+                        x(z)(y(z))_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>The Starling <a href="http://dkeenan.com/Lambda/">dkeenan.com/Lambda/</a></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">field</span>
+Func<span class='generics'>&lt;</span>Func<span class='generics'>&lt;</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Combinators_3_Y = 
+            (Func<Func<A, B>, A, B> f) => 
+                (A x) =>
+                    f(Y(f), x)_0" class="def">Y = 
+            (Func&lt;Func&lt;A, B&gt;, A, B&gt; f) =&gt; 
+                (A x) =&gt;
+                    f(Y(f), x)</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Combinators.cs#L126" class="link">Source</a>
+<a href="#Combinators_3_Y = 
+            (Func<Func<A, B>, A, B> f) => 
+                (A x) =>
+                    f(Y(f), x)_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>The infamous Y-combinator, or Sage bird <a href="http://dkeenan.com/Lambda/">dkeenan.com/Lambda/</a></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="LanguageExt_0_Combinators_0" class="def">Combinators</a>
+
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Combinators.cs#L132" class="link">Source</a>
+<a href="#LanguageExt_0_Combinators_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+A
+<a id="Combinators_0_I_1" class="def">I</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A x<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Combinators.cs#L137" class="link">Source</a>
+<a href="#Combinators_0_I_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Identity function, or the Idiot bird <a href="http://dkeenan.com/Lambda/">dkeenan.com/Lambda/</a></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Combinators_0_K_2" class="def">K</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A x<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Combinators.cs#L142" class="link">Source</a>
+<a href="#Combinators_0_K_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>The Kestrel <a href="http://dkeenan.com/Lambda/">dkeenan.com/Lambda/</a></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Combinators_0_M_1" class="def">M</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> x<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Combinators.cs#L147" class="link">Source</a>
+<a href="#Combinators_0_M_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>The Mockingbird <a href="http://dkeenan.com/Lambda/">dkeenan.com/Lambda/</a></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Func<span class='generics'>&lt;</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Combinators_0_T_2" class="def">T</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A x<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Combinators.cs#L153" class="link">Source</a>
+<a href="#Combinators_0_T_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>The Thrush <a href="http://dkeenan.com/Lambda/">dkeenan.com/Lambda/</a></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Func<span class='generics'>&lt;</span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Combinators_0_Q_3" class="def">Q</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> x<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Combinators.cs#L159" class="link">Source</a>
+<a href="#Combinators_0_Q_3" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>The Queer bird <a href="http://dkeenan.com/Lambda/">dkeenan.com/Lambda/</a></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Func<span class='generics'>&lt;</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Combinators_0_S_3" class="def">S</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> x<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Combinators.cs#L165" class="link">Source</a>
+<a href="#Combinators_0_S_3" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>The Starling <a href="http://dkeenan.com/Lambda/">dkeenan.com/Lambda/</a></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">struct</span>
+<a id="LanguageExt_0_Guard_1" class="def">Guard</a>
+<span class='generics'>&lt;</span>E<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Guard.cs#L14" class="link">Source</a>
+<a href="#LanguageExt_0_Guard_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Used by various error producing monads to have a contextual <code>where</code></p>
+</div>
+<div><p>See <code>Prelude.guard(...)</code></p>
+</div>
+
+</div>
+
+
+
+<div class="subs methods"><p class="caption">Fields</p>
+<div class="top"><p class="src"><span class="keyword">field</span>
+bool
+<a id="Guard_1_Flag_0" class="def">Flag</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Guard.cs#L16" class="link">Source</a>
+<a href="#Guard_1_Flag_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+<div class="subs methods"><p class="caption">Properties</p>
+<div class="top"><p class="src"><span class="keyword">property</span>
+Func<span class='generics'>&lt;</span>E<span class='generics'>&gt;</span>
+<a id="Guard_1_OnFalse_0" class="def">OnFalse</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Guard.cs#L28" class="link">Source</a>
+<a href="#Guard_1_OnFalse_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+<div class="subs methods"><p class="caption">Constructors</p>
+<div class="top"><p class="src"><span class="keyword">constructor</span>
+<a id="Guard_1_Guard_0" class="def">Guard</a>
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Func<span class='generics'>&lt;</span>E<span class='generics'>&gt;</span> onFalse<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Guard.cs#L19" class="link">Source</a>
+<a href="#Guard_1_Guard_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">constructor</span>
+<a id="Guard_1_Guard_0" class="def">Guard</a>
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>E onFalse<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Guard.cs#L22" class="link">Source</a>
+<a href="#Guard_1_Guard_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+
+</div>
+
+</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js" integrity="sha512-9khQRAUBYEJDCDVP2yw3LRUQvjJ0Pjx0EShmaQjcHa6AXiOv6qHQu9lCAIR8O+/D8FtaCoJ2c0Tf9Xo7hYH01Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-fTl/qcO1VgvKtOMApX2PdZzkziyr2stM65GYPLGuYMnuMm1z2JLJG6XVU7C/mR+E7xBUqCivykuhlzfqxXBXbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script></body></html>

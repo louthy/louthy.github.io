@@ -1,0 +1,2310 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>LanguageExt.Parsec/ParserIOs</title>
+<link href="style.css" rel="stylesheet" type="text/css"/></head>
+<body class="js-enabled"><div id="package-header"><ul class="links" id="page-menu"><li><a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs" class="link">Source</a></li>
+<li><a href="../index.html" class="link">Contents</a></li>
+<li><a href="../../index.html" class="link">Index</a></li></ul>
+<p class="caption">LanguageExt.Parsec</p></div>
+<div id="content"><div id="module-header"><p class="caption"><a href="../index.html" class="link">LanguageExt.Parsec</a>
+<span> ► </span>
+<a href="index.html" class="link">ParserIOs</a></p></div>
+
+<div id="table-of-contents"><p class="caption">Contents</p>
+<ul><li><a href="#LanguageExt.Parsec_0_ExprIO_0" class="link"><div class="nowrap">ExprIO
+</div></a></li>
+<ul><li><a href="#ExprIO_0_buildExpressionParser_2" class="link"><div class="nowrap">buildExpressionParser
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            Operator<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>[][] operators,
+            Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> simpleExpr<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#LanguageExt.Parsec_0_IndentIO_0" class="link"><div class="nowrap">IndentIO
+</div></a></li>
+<ul><li><a href="#IndentIO_0_indented_2" class="link"><div class="nowrap">indented
+<span class='generics'>&lt;</span>TOKEN<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>int offset<span class='comma'>, </span>Parser<span class='generics'>&lt;</span>TOKEN<span class='comma'>, </span>A<span class='generics'>&gt;</span> p<span class='parens'>)</span></div></a></li>
+<li><a href="#IndentIO_0_indented_2" class="link"><div class="nowrap">indented
+<span class='generics'>&lt;</span>TOKEN<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>TOKEN<span class='comma'>, </span>A<span class='generics'>&gt;</span> p<span class='parens'>)</span></div></a></li>
+<li><a href="#IndentIO_0_indented1_2" class="link"><div class="nowrap">indented1
+<span class='generics'>&lt;</span>TOKEN<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>TOKEN<span class='comma'>, </span>A<span class='generics'>&gt;</span> p<span class='parens'>)</span></div></a></li>
+<li><a href="#IndentIO_0_indented2_2" class="link"><div class="nowrap">indented2
+<span class='generics'>&lt;</span>TOKEN<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>TOKEN<span class='comma'>, </span>A<span class='generics'>&gt;</span> p<span class='parens'>)</span></div></a></li>
+<li><a href="#IndentIO_0_indented4_2" class="link"><div class="nowrap">indented4
+<span class='generics'>&lt;</span>TOKEN<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>TOKEN<span class='comma'>, </span>A<span class='generics'>&gt;</span> p<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#LanguageExt.Parsec_0_ItemIO_0" class="link"><div class="nowrap">ItemIO
+</div></a></li>
+<ul><li><a href="#ItemIO_0_item_1" class="link"><div class="nowrap">item
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A c<span class='parens'>)</span></div></a></li>
+<li><a href="#ItemIO_0_satisfy_1" class="link"><div class="nowrap">satisfy
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span></div></a></li>
+<li><a href="#ItemIO_0_oneOf_1" class="link"><div class="nowrap">oneOf
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> str<span class='parens'>)</span></div></a></li>
+<li><a href="#ItemIO_0_noneOf_1" class="link"><div class="nowrap">noneOf
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> str<span class='parens'>)</span></div></a></li>
+<li><a href="#ItemIO_0_anyItem_1" class="link"><div class="nowrap">anyItem
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#ItemIO_0_str_1" class="link"><div class="nowrap">str
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> s<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#LanguageExt.Parsec_0_PrimIO_0" class="link"><div class="nowrap">PrimIO
+</div></a></li>
+<ul><li><a href="#PrimIO_0_parse_2" class="link"><div class="nowrap">parse
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='comma'>, </span>PString<span class='generics'>&lt;</span>I<span class='generics'>&gt;</span> input<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_parse_2" class="link"><div class="nowrap">parse
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>I<span class='generics'>&gt;</span> input<span class='comma'>, </span>Func<span class='generics'>&lt;</span>I<span class='comma'>, </span>Pos<span class='generics'>&gt;</span> tokenPos<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_lazyp_2" class="link"><div class="nowrap">lazyp
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span><span class='generics'>&gt;</span> fn<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_unitp_1" class="link"><div class="nowrap">unitp
+<span class='generics'>&lt;</span>I<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_setState_2" class="link"><div class="nowrap">setState
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>S state<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_getState_2" class="link"><div class="nowrap">getState
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_getPos_1" class="link"><div class="nowrap">getPos
+<span class='generics'>&lt;</span>I<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_getIndex_1" class="link"><div class="nowrap">getIndex
+<span class='generics'>&lt;</span>I<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_unexpected_2" class="link"><div class="nowrap">unexpected
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>string msg<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_failure_2" class="link"><div class="nowrap">failure
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>string msg<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_result_2" class="link"><div class="nowrap">result
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>O value<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_zero_2" class="link"><div class="nowrap">zero
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_either_2" class="link"><div class="nowrap">either
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='comma'>, </span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> q<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_choice_2" class="link"><div class="nowrap">choice
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>params Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>[] ps<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_choice_2" class="link"><div class="nowrap">choice
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ps<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_chain_2" class="link"><div class="nowrap">chain
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>params Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>[] ps<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_chain_2" class="link"><div class="nowrap">chain
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ps<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_attempt_2" class="link"><div class="nowrap">attempt
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_lookAhead_2" class="link"><div class="nowrap">lookAhead
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_many_2" class="link"><div class="nowrap">many
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_many1_2" class="link"><div class="nowrap">many1
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_skipMany_2" class="link"><div class="nowrap">skipMany
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_skipMany1_2" class="link"><div class="nowrap">skipMany1
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_optionOrElse_2" class="link"><div class="nowrap">optionOrElse
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>O x<span class='comma'>, </span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_optional_2" class="link"><div class="nowrap">optional
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_optionalSeq_2" class="link"><div class="nowrap">optionalSeq
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_optionalList_2" class="link"><div class="nowrap">optionalList
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_optionalArray_2" class="link"><div class="nowrap">optionalArray
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_between_4" class="link"><div class="nowrap">between
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>R<span class='comma'>, </span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>L<span class='generics'>&gt;</span> open<span class='comma'>, </span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>R<span class='generics'>&gt;</span> close<span class='comma'>, </span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> inner<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_sepBy1_3" class="link"><div class="nowrap">sepBy1
+<span class='generics'>&lt;</span>S<span class='comma'>, </span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='comma'>, </span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>S<span class='generics'>&gt;</span> sep<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_sepBy_3" class="link"><div class="nowrap">sepBy
+<span class='generics'>&lt;</span>S<span class='comma'>, </span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='comma'>, </span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>S<span class='generics'>&gt;</span> sep<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_sepEndBy1_3" class="link"><div class="nowrap">sepEndBy1
+<span class='generics'>&lt;</span>S<span class='comma'>, </span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='comma'>, </span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>S<span class='generics'>&gt;</span> sep<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_sepEndBy_3" class="link"><div class="nowrap">sepEndBy
+<span class='generics'>&lt;</span>S<span class='comma'>, </span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='comma'>, </span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>S<span class='generics'>&gt;</span> sep<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_endBy1_3" class="link"><div class="nowrap">endBy1
+<span class='generics'>&lt;</span>S<span class='comma'>, </span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='comma'>, </span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>S<span class='generics'>&gt;</span> sep<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_endBy_3" class="link"><div class="nowrap">endBy
+<span class='generics'>&lt;</span>S<span class='comma'>, </span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='comma'>, </span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>S<span class='generics'>&gt;</span> sep<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_count_3" class="link"><div class="nowrap">count
+<span class='generics'>&lt;</span>S<span class='comma'>, </span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>int n<span class='comma'>, </span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_chainr_2" class="link"><div class="nowrap">chainr
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='comma'>, </span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Func<span class='generics'>&lt;</span>O<span class='comma'>, </span>O<span class='comma'>, </span>O<span class='generics'>&gt;</span><span class='generics'>&gt;</span> op<span class='comma'>, </span>O x<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_chainl_2" class="link"><div class="nowrap">chainl
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='comma'>, </span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Func<span class='generics'>&lt;</span>O<span class='comma'>, </span>O<span class='comma'>, </span>O<span class='generics'>&gt;</span><span class='generics'>&gt;</span> op<span class='comma'>, </span>O x<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_chainr1_2" class="link"><div class="nowrap">chainr1
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='comma'>, </span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Func<span class='generics'>&lt;</span>O<span class='comma'>, </span>O<span class='comma'>, </span>O<span class='generics'>&gt;</span><span class='generics'>&gt;</span> op<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_chainl1_2" class="link"><div class="nowrap">chainl1
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='comma'>, </span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Func<span class='generics'>&lt;</span>O<span class='comma'>, </span>O<span class='comma'>, </span>O<span class='generics'>&gt;</span><span class='generics'>&gt;</span> op<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_eof_1" class="link"><div class="nowrap">eof
+<span class='generics'>&lt;</span>I<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_notFollowedBy_2" class="link"><div class="nowrap">notFollowedBy
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_asString_1" class="link"><div class="nowrap">asString
+<span class='generics'>&lt;</span>I<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>char<span class='generics'>&gt;</span><span class='generics'>&gt;</span> p<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_asString_2" class="link"><div class="nowrap">asString
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>O<span class='generics'>&gt;</span><span class='generics'>&gt;</span> p<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_asString_2" class="link"><div class="nowrap">asString
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_asInteger_1" class="link"><div class="nowrap">asInteger
+<span class='generics'>&lt;</span>I<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>char<span class='generics'>&gt;</span><span class='generics'>&gt;</span> p<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_asInteger_1" class="link"><div class="nowrap">asInteger
+<span class='generics'>&lt;</span>I<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>string<span class='generics'>&gt;</span> p<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_asInteger_1" class="link"><div class="nowrap">asInteger
+<span class='generics'>&lt;</span>I<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>char<span class='generics'>&gt;</span><span class='generics'>&gt;</span> p<span class='comma'>, </span>int fromBase<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_asInteger_1" class="link"><div class="nowrap">asInteger
+<span class='generics'>&lt;</span>I<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>string<span class='generics'>&gt;</span> p<span class='comma'>, </span>int fromBase<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_asDouble_1" class="link"><div class="nowrap">asDouble
+<span class='generics'>&lt;</span>I<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>char<span class='generics'>&gt;</span><span class='generics'>&gt;</span> p<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_asDouble_1" class="link"><div class="nowrap">asDouble
+<span class='generics'>&lt;</span>I<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>string<span class='generics'>&gt;</span> p<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_asFloat_1" class="link"><div class="nowrap">asFloat
+<span class='generics'>&lt;</span>I<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>char<span class='generics'>&gt;</span><span class='generics'>&gt;</span> p<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_asFloat_1" class="link"><div class="nowrap">asFloat
+<span class='generics'>&lt;</span>I<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>string<span class='generics'>&gt;</span> p<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_manyUntil_3" class="link"><div class="nowrap">manyUntil
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='comma'>, </span>U<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='comma'>, </span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>U<span class='generics'>&gt;</span> end<span class='parens'>)</span></div></a></li>
+<li><a href="#PrimIO_0_children_2" class="link"><div class="nowrap">children
+<span class='generics'>&lt;</span>TOKEN<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>TOKEN<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>TOKEN<span class='generics'>&gt;</span><span class='generics'>&gt;</span> children<span class='comma'>, </span>Parser<span class='generics'>&lt;</span>TOKEN<span class='comma'>, </span>A<span class='generics'>&gt;</span> p<span class='parens'>)</span></div></a></li></ul></ul></div>
+<div class="interface">
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="LanguageExt.Parsec_0_ExprIO_0" class="def">ExprIO</a>
+
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Expr.cs#L8" class="link">Source</a>
+<a href="#LanguageExt.Parsec_0_ExprIO_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<a id="ExprIO_0_buildExpressionParser_2" class="def">buildExpressionParser</a>
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+            Operator<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>[][] operators,
+            Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> simpleExpr<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Expr.cs#L57" class="link">Source</a>
+<a href="#ExprIO_0_buildExpressionParser_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Convert an OperatorTable and basic term parser into a fully fledged
+expression parser</p>
+<p>buildExpressionParser(table,term) builds an expression parser for
+terms term with operators from table, taking the associativity
+and precedence specified in table into account.  Prefix and postfix
+operators of the same precedence can only occur once (i.e. --2 is
+not allowed if '-' is prefix negate).  Prefix and postfix operators
+of the same precedence associate to the left  (i.e. if ++ is
+postfix increment, than -2++ equals -1, not -3).</p>
+<p>The buildExpressionParser function takes care of all the complexity
+involved in building expression parser.</p>
+<p>See remarks.</p>
+</div>
+<div></div>
+
+<div class="methods"><p class="caption">Examples</p>
+<p>This is an example of an expression parser that handles prefix signs,
+postfix increment and basic arithmetic.</p>
+<p>Parser<int> expr = null;</p>
+<p>var binary = fun((string name, Func&lt;int,int,int&gt; f, Assoc assoc) =&gt;
+Operator.Infix<int>( assoc,
+from x in reservedOp(name)
+select fun );</p>
+<p>var prefix = fun((string name, Func&lt;int,int&gt; f) =&gt;
+Operator.Prefix<int>(from x in reservedOp(name)
+select fun );</p>
+<p>var postfix = fun((string name, Func&lt;int,int&gt; f) =&gt;
+Operator.Postfix<int>(from x in reservedOp(name)
+select fun );</p>
+<p>Operator<int>[][] table = { { prefix(&quot;-&quot;,negate), prefix(&quot;+&quot;,id) }
+, { postfix(&quot;++&quot;, incr) }
+, { binary(&quot;*&quot;, mult) Assoc.Left), binary(&quot;/&quot;, div, Assoc.Left) }
+, { binary(&quot;+&quot;, add, Assoc.Left), binary(&quot;-&quot;, subtr, Assoc.Left) } };
+]
+var term              = either(parens(expr),natural).label(&quot;simple expression&quot;)</p>
+<p>expr                  = buildExpressionParser(table,term).label(&quot;expression&quot;)</p>
+<p>var res = parse(expr, &quot;(50 + 20) / 2&quot;);</p>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="LanguageExt.Parsec_0_IndentIO_0" class="def">IndentIO</a>
+
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Indent.cs#L5" class="link">Source</a>
+<a href="#LanguageExt.Parsec_0_IndentIO_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>TOKEN<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="IndentIO_0_indented_2" class="def">indented</a>
+<span class='generics'>&lt;</span>TOKEN<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>int offset<span class='comma'>, </span>Parser<span class='generics'>&lt;</span>TOKEN<span class='comma'>, </span>A<span class='generics'>&gt;</span> p<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Indent.cs#L14" class="link">Source</a>
+<a href="#IndentIO_0_indented_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Parses only when indented past the level of the reference</p>
+</div>
+<div><p>You must have provided a TokenPos to the initial PString<TOKEN> that gives accurate
+column and line values for this function to work.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>TOKEN<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="IndentIO_0_indented_2" class="def">indented</a>
+<span class='generics'>&lt;</span>TOKEN<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>TOKEN<span class='comma'>, </span>A<span class='generics'>&gt;</span> p<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Indent.cs#L44" class="link">Source</a>
+<a href="#IndentIO_0_indented_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Parses only when indented zero or more characters past the level of the reference</p>
+</div>
+<div><p>You must have provided a TokenPos to the initial PString<TOKEN> that gives accurate
+column and line values for this function to work.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>TOKEN<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="IndentIO_0_indented1_2" class="def">indented1</a>
+<span class='generics'>&lt;</span>TOKEN<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>TOKEN<span class='comma'>, </span>A<span class='generics'>&gt;</span> p<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Indent.cs#L54" class="link">Source</a>
+<a href="#IndentIO_0_indented1_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Parses only when indented one or more characters past the level of the reference</p>
+</div>
+<div><p>You must have provided a TokenPos to the initial PString<TOKEN> that gives accurate
+column and line values for this function to work.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>TOKEN<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="IndentIO_0_indented2_2" class="def">indented2</a>
+<span class='generics'>&lt;</span>TOKEN<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>TOKEN<span class='comma'>, </span>A<span class='generics'>&gt;</span> p<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Indent.cs#L64" class="link">Source</a>
+<a href="#IndentIO_0_indented2_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Parses only when indented two or more characters past the level of the reference</p>
+</div>
+<div><p>You must have provided a TokenPos to the initial PString<TOKEN> that gives accurate
+column and line values for this function to work.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>TOKEN<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="IndentIO_0_indented4_2" class="def">indented4</a>
+<span class='generics'>&lt;</span>TOKEN<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>TOKEN<span class='comma'>, </span>A<span class='generics'>&gt;</span> p<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Indent.cs#L74" class="link">Source</a>
+<a href="#IndentIO_0_indented4_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Parses only when indented four or more characters past the level of the reference</p>
+</div>
+<div><p>You must have provided a TokenPos to the initial PString<TOKEN> that gives accurate
+column and line values for this function to work.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="LanguageExt.Parsec_0_ItemIO_0" class="def">ItemIO</a>
+
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Item.cs#L13" class="link">Source</a>
+<a href="#LanguageExt.Parsec_0_ItemIO_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Commonly used character parsers.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="ItemIO_0_item_1" class="def">item</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A c<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Item.cs#L19" class="link">Source</a>
+<a href="#ItemIO_0_item_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>item(c) parses a single I</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The parsed character</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="ItemIO_0_satisfy_1" class="def">satisfy</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> pred<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Item.cs#L28" class="link">Source</a>
+<a href="#ItemIO_0_satisfy_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>The parser satisfy(pred) succeeds for any character for which the
+supplied function pred returns 'True'.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The character that is actually parsed.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="ItemIO_0_oneOf_1" class="def">oneOf</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> str<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Item.cs#L61" class="link">Source</a>
+<a href="#ItemIO_0_oneOf_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>oneOf(str) succeeds if the current character is in the supplied list of
+characters str. Returns the parsed character. See also satisfy</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="ItemIO_0_noneOf_1" class="def">noneOf</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> str<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Item.cs#L72" class="link">Source</a>
+<a href="#ItemIO_0_noneOf_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>As the dual of 'oneOf', noneOf(str) succeeds if the current
+character not in the supplied list of characters str.</p>
+<pre class='language-csharp'><code>var consonant = noneOf(&quot;aeiou&quot;)
+</code></pre>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The parsed character.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="ItemIO_0_anyItem_1" class="def">anyItem</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Item.cs#L78" class="link">Source</a>
+<a href="#ItemIO_0_anyItem_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>The parser anyChar accepts any kind of character.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>A<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="ItemIO_0_str_1" class="def">str</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> s<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Item.cs#L84" class="link">Source</a>
+<a href="#ItemIO_0_str_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Parse a string</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="LanguageExt.Parsec_0_PrimIO_0" class="def">PrimIO</a>
+
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L16" class="link">Source</a>
+<a href="#LanguageExt.Parsec_0_PrimIO_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>The primitive parser combinators</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ParserResult<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<a id="PrimIO_0_parse_2" class="def">parse</a>
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='comma'>, </span>PString<span class='generics'>&lt;</span>I<span class='generics'>&gt;</span> input<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L21" class="link">Source</a>
+<a href="#PrimIO_0_parse_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Run the parser p with the input provided</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ParserResult<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<a id="PrimIO_0_parse_2" class="def">parse</a>
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>I<span class='generics'>&gt;</span> input<span class='comma'>, </span>Func<span class='generics'>&lt;</span>I<span class='comma'>, </span>Pos<span class='generics'>&gt;</span> tokenPos<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L27" class="link">Source</a>
+<a href="#PrimIO_0_parse_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Run the parser p with the input provided</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<a id="PrimIO_0_lazyp_2" class="def">lazyp</a>
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span><span class='generics'>&gt;</span> fn<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L33" class="link">Source</a>
+<a href="#PrimIO_0_lazyp_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Lazy parser - useful in recursive scenarios.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="PrimIO_0_unitp_1" class="def">unitp</a>
+<span class='generics'>&lt;</span>I<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L41" class="link">Source</a>
+<a href="#PrimIO_0_unitp_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>This parser is useful to put at the top of LINQ expressions, it
+makes it easier to put breakpoints on the actual first parser
+in an expression.  It returns unit</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="PrimIO_0_setState_2" class="def">setState</a>
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>S state<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L48" class="link">Source</a>
+<a href="#PrimIO_0_setState_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Special parser for setting user-state that propagates
+through the computation.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<a id="PrimIO_0_getState_2" class="def">getState</a>
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L55" class="link">Source</a>
+<a href="#PrimIO_0_getState_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Special parser for getting user-state that was previously
+set with setState</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Pos<span class='generics'>&gt;</span>
+<a id="PrimIO_0_getPos_1" class="def">getPos</a>
+<span class='generics'>&lt;</span>I<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L67" class="link">Source</a>
+<a href="#PrimIO_0_getPos_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Get the current position of the parser in the source as a line
+and column index (starting at 1 for both)</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>int<span class='generics'>&gt;</span>
+<a id="PrimIO_0_getIndex_1" class="def">getIndex</a>
+<span class='generics'>&lt;</span>I<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L73" class="link">Source</a>
+<a href="#PrimIO_0_getIndex_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Get the current index into the source</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<a id="PrimIO_0_unexpected_2" class="def">unexpected</a>
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>string msg<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L87" class="link">Source</a>
+<a href="#PrimIO_0_unexpected_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>The parser unexpected(msg) always fails with an Unexpect error
+message msg without consuming any input.</p>
+</div>
+<div><p>The parsers 'failure', 'label' and 'unexpected' are the three parsers
+used to generate error messages.  Of these, only 'label' is commonly
+used.  For an example of the use of unexpected, see the definition
+of 'notFollowedBy'.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">msg</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Error message to use when parsed</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<a id="PrimIO_0_failure_2" class="def">failure</a>
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>string msg<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L100" class="link">Source</a>
+<a href="#PrimIO_0_failure_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>The parser failure(msg) always fails with a Message error
+without consuming any input.</p>
+<p>The parsers 'failure', 'label' and 'unexpected' are the three parsers
+used to generate error messages.  Of these, only 'label' is commonly
+used.  For an example of the use of unexpected, see the definition
+of 'notFollowedBy'.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">msg</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Error message to use when parsed</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<a id="PrimIO_0_result_2" class="def">result</a>
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>O value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L107" class="link">Source</a>
+<a href="#PrimIO_0_result_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Always success parser.  Returns the value provided.
+This is monad return for the Parser monad</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<a id="PrimIO_0_zero_2" class="def">zero</a>
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L113" class="link">Source</a>
+<a href="#PrimIO_0_zero_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Always fails (with an Unknown error) without consuming any input</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<a id="PrimIO_0_either_2" class="def">either</a>
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='comma'>, </span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> q<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L131" class="link">Source</a>
+<a href="#PrimIO_0_either_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>This combinator implements choice. The parser either(p,q) first
+applies p.  If it succeeds, the value of p is returned.  If p
+fails /without consuming any input/, parser q is tried.</p>
+</div>
+<div><p>This combinator is the mplus behaviour of the Parser monad.</p>
+<p>The parser is called /predictive/ since q is only tried when
+parser p didn't consume any input (i.e.. the look ahead is 1).</p>
+<p>This non-backtracking behaviour allows for both an efficient
+implementation of the parser combinators and the generation of good
+error messages.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<a id="PrimIO_0_choice_2" class="def">choice</a>
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>params Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>[] ps<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L168" class="link">Source</a>
+<a href="#PrimIO_0_choice_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>choice(ps) tries to apply the parsers in the list ps in order, until one
+of them succeeds.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The value of the succeeding parser.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<a id="PrimIO_0_choice_2" class="def">choice</a>
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ps<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L178" class="link">Source</a>
+<a href="#PrimIO_0_choice_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>choice(ps) tries to apply the parsers in the list ps in order, until one
+of them succeeds.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The value of the succeeding parser.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>O<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="PrimIO_0_chain_2" class="def">chain</a>
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>params Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>[] ps<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L188" class="link">Source</a>
+<a href="#PrimIO_0_chain_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Runs a sequence of parsers, if any fail then the failure state is
+returned immediately and subsequence parsers are not run.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The result of each parser as an enumerable.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>O<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="PrimIO_0_chain_2" class="def">chain</a>
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ps<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L198" class="link">Source</a>
+<a href="#PrimIO_0_chain_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Runs a sequence of parsers, if any fail then the failure state is
+returned immediately and subsequence parsers are not run.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The result of each parser as an enumerable.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<a id="PrimIO_0_attempt_2" class="def">attempt</a>
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L243" class="link">Source</a>
+<a href="#PrimIO_0_attempt_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>The parser attempt(p) behaves like parser p, except that it
+pretends that it hasn't consumed any input when an error occurs.</p>
+<p>This combinator is used whenever arbitrary look ahead is needed.
+Since it pretends that it hasn't consumed any input when p fails,
+the either combinator will try its second alternative even when the
+first parser failed while consuming input.</p>
+<p>See remarks.</p>
+</div>
+<div><p>The attempt combinator can for example be used to distinguish
+identifiers and reserved words.  Both reserved words and identifiers
+are a sequence of letters.  Whenever we expect a certain reserved
+word where we can also expect an identifier we have to use the attempt
+combinator.  Suppose we write:</p>
+<p>var expr        = either(letExpr, identifier).label(&quot;expression&quot;);</p>
+<p>var letExpr     = from x in str(&quot;let&quot;)
+...
+select ...;</p>
+<p>var identifier  = many1(letter);</p>
+<p>If the user writes &quot;lexical&quot;, the parser fails with: unexpected
+&quot;x&quot;, expecting &quot;t&quot; in &quot;let&quot;.  Indeed, since the either combinator
+only tries alternatives when the first alternative hasn't consumed
+input, the identifier parser is never tried  (because the prefix
+&quot;le&quot; of the str(&quot;let&quot;) parser is already consumed). The right behaviour
+can be obtained by adding the attempt combinator:</p>
+<p>var expr        = either(letExpr, identifier).label(&quot;expression&quot;);</p>
+<p>var letExpr     = from x in attempt(str(&quot;let&quot;))
+...
+select ...;</p>
+<p>var identifier  = many1(letter);</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<a id="PrimIO_0_lookAhead_2" class="def">lookAhead</a>
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L263" class="link">Source</a>
+<a href="#PrimIO_0_lookAhead_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>lookAhead(p) parses p without consuming any input.</p>
+<p>If p fails and consumes some input, so does lookAhead(p). Combine with
+'attempt' if this is undesirable.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>O<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="PrimIO_0_many_2" class="def">many</a>
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L288" class="link">Source</a>
+<a href="#PrimIO_0_many_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>many(p) applies the parser p zero or more times.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Enumerable of the returned values of p.</p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<pre class='language-csharp'><code>var identifier  = from c in letter
+                  from cs in many(letterOrDigit)
+                  select c.Cons(cs)
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>O<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="PrimIO_0_many1_2" class="def">many1</a>
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L332" class="link">Source</a>
+<a href="#PrimIO_0_many1_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>many1(p) applies the parser p one or more times.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Enumerable of the returned values of p.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="PrimIO_0_skipMany_2" class="def">skipMany</a>
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L341" class="link">Source</a>
+<a href="#PrimIO_0_skipMany_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>skipMany(p) applies the parser p zero or more times, skipping
+its result.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="PrimIO_0_skipMany1_2" class="def">skipMany1</a>
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L348" class="link">Source</a>
+<a href="#PrimIO_0_skipMany1_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>skipMany(p) applies the parser p one or more times, skipping
+its result.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<a id="PrimIO_0_optionOrElse_2" class="def">optionOrElse</a>
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>O x<span class='comma'>, </span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L358" class="link">Source</a>
+<a href="#PrimIO_0_optionOrElse_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>optionOrElse(x, p) tries to apply parser p. If p fails without
+consuming input, it returns the value x, otherwise the value
+returned by p.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Option<span class='generics'>&lt;</span>O<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="PrimIO_0_optional_2" class="def">optional</a>
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L366" class="link">Source</a>
+<a href="#PrimIO_0_optional_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>optional(p) tries to apply parser p.  If p fails without
+consuming input, it return 'None', otherwise it returns
+'Some' the value returned by p.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>O<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="PrimIO_0_optionalSeq_2" class="def">optionalSeq</a>
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L381" class="link">Source</a>
+<a href="#PrimIO_0_optionalSeq_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>optionalSeq(p) tries to apply parser p.  If p fails without
+consuming input, it return an empty IEnumerable, otherwise it returns
+a one item IEnumerable with the result of p.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A list of 0 or 1 parsed items</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Lst<span class='generics'>&lt;</span>O<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="PrimIO_0_optionalList_2" class="def">optionalList</a>
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L396" class="link">Source</a>
+<a href="#PrimIO_0_optionalList_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>optionalList(p) tries to apply parser p.  If p fails without
+consuming input, it return [], otherwise it returns a one
+item Lst with the result of p.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A list of 0 or 1 parsed items</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O[]<span class='generics'>&gt;</span>
+<a id="PrimIO_0_optionalArray_2" class="def">optionalArray</a>
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L411" class="link">Source</a>
+<a href="#PrimIO_0_optionalArray_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>optionalArray(p) tries to apply parser p.  If p fails without
+consuming input, it return [], otherwise it returns a one
+item array with the result of p.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A list of 0 or 1 parsed items</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<a id="PrimIO_0_between_4" class="def">between</a>
+<span class='generics'>&lt;</span>L<span class='comma'>, </span>R<span class='comma'>, </span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>L<span class='generics'>&gt;</span> open<span class='comma'>, </span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>R<span class='generics'>&gt;</span> close<span class='comma'>, </span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> inner<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L426" class="link">Source</a>
+<a href="#PrimIO_0_between_4" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>between(open,close,p) parses open, followed by p and close.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The value returned by p.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>O<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="PrimIO_0_sepBy1_3" class="def">sepBy1</a>
+<span class='generics'>&lt;</span>S<span class='comma'>, </span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='comma'>, </span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>S<span class='generics'>&gt;</span> sep<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L439" class="link">Source</a>
+<a href="#PrimIO_0_sepBy1_3" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>sepBy1(p,sep) parses one or more occurrences of p, separated
+by sep.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A list of values returned by p.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>O<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="PrimIO_0_sepBy_3" class="def">sepBy</a>
+<span class='generics'>&lt;</span>S<span class='comma'>, </span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='comma'>, </span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>S<span class='generics'>&gt;</span> sep<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L453" class="link">Source</a>
+<a href="#PrimIO_0_sepBy_3" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>sepBy(p,sep) parses zero or more occurrences of p, separated
+by sep.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A list of values returned by p.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>O<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="PrimIO_0_sepEndBy1_3" class="def">sepEndBy1</a>
+<span class='generics'>&lt;</span>S<span class='comma'>, </span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='comma'>, </span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>S<span class='generics'>&gt;</span> sep<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L463" class="link">Source</a>
+<a href="#PrimIO_0_sepEndBy1_3" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>sepEndBy1(p,sep) parses one or more occurrences of p,
+separated and optionally ended by sep.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A list of values returned by p.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>O<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="PrimIO_0_sepEndBy_3" class="def">sepEndBy</a>
+<span class='generics'>&lt;</span>S<span class='comma'>, </span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='comma'>, </span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>S<span class='generics'>&gt;</span> sep<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L478" class="link">Source</a>
+<a href="#PrimIO_0_sepEndBy_3" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>sepEndBy(p,sep) parses zero or more occurrences of p,
+separated and optionally ended by sep.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A list of values returned by p.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>O<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="PrimIO_0_endBy1_3" class="def">endBy1</a>
+<span class='generics'>&lt;</span>S<span class='comma'>, </span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='comma'>, </span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>S<span class='generics'>&gt;</span> sep<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L488" class="link">Source</a>
+<a href="#PrimIO_0_endBy1_3" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>endBy1(p,sep) parses one or more occurrences of p, separated
+and ended by sep.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A list of values returned by p.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>O<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="PrimIO_0_endBy_3" class="def">endBy</a>
+<span class='generics'>&lt;</span>S<span class='comma'>, </span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='comma'>, </span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>S<span class='generics'>&gt;</span> sep<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L500" class="link">Source</a>
+<a href="#PrimIO_0_endBy_3" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>endBy(p,sep) parses zerp or more occurrences of p, separated
+and ended by sep.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A list of values returned by p.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>O<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="PrimIO_0_count_3" class="def">count</a>
+<span class='generics'>&lt;</span>S<span class='comma'>, </span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>int n<span class='comma'>, </span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L512" class="link">Source</a>
+<a href="#PrimIO_0_count_3" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>count(n,p) parses n occurrences of p. If n is smaller or
+equal to zero, the parser equals to result([]).</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A list of values returned by p.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<a id="PrimIO_0_chainr_2" class="def">chainr</a>
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='comma'>, </span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Func<span class='generics'>&lt;</span>O<span class='comma'>, </span>O<span class='comma'>, </span>O<span class='generics'>&gt;</span><span class='generics'>&gt;</span> op<span class='comma'>, </span>O x<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L522" class="link">Source</a>
+<a href="#PrimIO_0_chainr_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>chainr(p,op,x) parses zero or more occurrences of p, separated by op</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>a value obtained by a right associative application of all functions
+returned by op to the values returned by p. If there are no occurrences
+of p, the value x is returned.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<a id="PrimIO_0_chainl_2" class="def">chainl</a>
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='comma'>, </span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Func<span class='generics'>&lt;</span>O<span class='comma'>, </span>O<span class='comma'>, </span>O<span class='generics'>&gt;</span><span class='generics'>&gt;</span> op<span class='comma'>, </span>O x<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L532" class="link">Source</a>
+<a href="#PrimIO_0_chainl_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>chainl(p,op,x) parses zero or more occurrences of p, separated by op</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>a value obtained by a left associative application of all functions
+returned by op to the values returned by p. If there are no occurrences
+of p, the value x is returned.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<a id="PrimIO_0_chainr1_2" class="def">chainr1</a>
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='comma'>, </span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Func<span class='generics'>&lt;</span>O<span class='comma'>, </span>O<span class='comma'>, </span>O<span class='generics'>&gt;</span><span class='generics'>&gt;</span> op<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L542" class="link">Source</a>
+<a href="#PrimIO_0_chainr1_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>chainr1(p,op) parses one or more occurrences of p, separated by op.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A value obtained by a right associative application of all functions
+returned by op to the values returned by p</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<a id="PrimIO_0_chainl1_2" class="def">chainl1</a>
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='comma'>, </span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Func<span class='generics'>&lt;</span>O<span class='comma'>, </span>O<span class='comma'>, </span>O<span class='generics'>&gt;</span><span class='generics'>&gt;</span> op<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L565" class="link">Source</a>
+<a href="#PrimIO_0_chainl1_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>chainl1(p,op) parses one or more occurrences of p, separated by op.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A value obtained by a left associative application of all functions
+returned by op to the values returned by p</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="PrimIO_0_eof_1" class="def">eof</a>
+<span class='generics'>&lt;</span>I<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L584" class="link">Source</a>
+<a href="#PrimIO_0_eof_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>This parser only succeeds at the end of the input. This is not a
+primitive parser but it is defined using 'notFollowedBy'.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="PrimIO_0_notFollowedBy_2" class="def">notFollowedBy</a>
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L603" class="link">Source</a>
+<a href="#PrimIO_0_notFollowedBy_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>notFollowedBy(p) only succeeds when parser p fails. This parser
+does not consume any input.This parser can be used to implement the
+'longest match' rule.</p>
+</div>
+<div></div>
+
+<div class="methods"><p class="caption">Examples</p>
+<p>For example, when recognizing keywords (for
+example 'let'), we want to make sure that a keyword is not followed
+by a legal identifier character, in which case the keyword is
+actually an identifier(for example 'lets'). We can program this
+behaviour as follows:</p>
+<pre class='language-csharp'><code>var keywordLet  = attempt (from x in str(&quot;let&quot;)
+                           from _ in notFollowedBy letterOrDigit
+                           select x);
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>string<span class='generics'>&gt;</span>
+<a id="PrimIO_0_asString_1" class="def">asString</a>
+<span class='generics'>&lt;</span>I<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>char<span class='generics'>&gt;</span><span class='generics'>&gt;</span> p<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L613" class="link">Source</a>
+<a href="#PrimIO_0_asString_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Parse a char list and convert into a string</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>string<span class='generics'>&gt;</span>
+<a id="PrimIO_0_asString_2" class="def">asString</a>
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>O<span class='generics'>&gt;</span><span class='generics'>&gt;</span> p<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L619" class="link">Source</a>
+<a href="#PrimIO_0_asString_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Parse a T list and convert into a string</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>string<span class='generics'>&gt;</span>
+<a id="PrimIO_0_asString_2" class="def">asString</a>
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L625" class="link">Source</a>
+<a href="#PrimIO_0_asString_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Parse a T list and convert into a string</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Option<span class='generics'>&lt;</span>int<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="PrimIO_0_asInteger_1" class="def">asInteger</a>
+<span class='generics'>&lt;</span>I<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>char<span class='generics'>&gt;</span><span class='generics'>&gt;</span> p<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L631" class="link">Source</a>
+<a href="#PrimIO_0_asInteger_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Parse a char list and convert into an integer</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Option<span class='generics'>&lt;</span>int<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="PrimIO_0_asInteger_1" class="def">asInteger</a>
+<span class='generics'>&lt;</span>I<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>string<span class='generics'>&gt;</span> p<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L637" class="link">Source</a>
+<a href="#PrimIO_0_asInteger_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Parse a char list and convert into an integer</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Option<span class='generics'>&lt;</span>int<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="PrimIO_0_asInteger_1" class="def">asInteger</a>
+<span class='generics'>&lt;</span>I<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>char<span class='generics'>&gt;</span><span class='generics'>&gt;</span> p<span class='comma'>, </span>int fromBase<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L643" class="link">Source</a>
+<a href="#PrimIO_0_asInteger_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Parse a char list and convert into an integer</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Option<span class='generics'>&lt;</span>int<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="PrimIO_0_asInteger_1" class="def">asInteger</a>
+<span class='generics'>&lt;</span>I<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>string<span class='generics'>&gt;</span> p<span class='comma'>, </span>int fromBase<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L649" class="link">Source</a>
+<a href="#PrimIO_0_asInteger_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Parse a char list and convert into an integer</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Option<span class='generics'>&lt;</span>double<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="PrimIO_0_asDouble_1" class="def">asDouble</a>
+<span class='generics'>&lt;</span>I<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>char<span class='generics'>&gt;</span><span class='generics'>&gt;</span> p<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L655" class="link">Source</a>
+<a href="#PrimIO_0_asDouble_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Parse a char list and convert into an double precision floating point value</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Option<span class='generics'>&lt;</span>double<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="PrimIO_0_asDouble_1" class="def">asDouble</a>
+<span class='generics'>&lt;</span>I<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>string<span class='generics'>&gt;</span> p<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L661" class="link">Source</a>
+<a href="#PrimIO_0_asDouble_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Parse a char list and convert into an double precision floating point value</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Option<span class='generics'>&lt;</span>float<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="PrimIO_0_asFloat_1" class="def">asFloat</a>
+<span class='generics'>&lt;</span>I<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>char<span class='generics'>&gt;</span><span class='generics'>&gt;</span> p<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L667" class="link">Source</a>
+<a href="#PrimIO_0_asFloat_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Parse a char list and convert into an double precision floating point value</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Option<span class='generics'>&lt;</span>float<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="PrimIO_0_asFloat_1" class="def">asFloat</a>
+<span class='generics'>&lt;</span>I<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>string<span class='generics'>&gt;</span> p<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L673" class="link">Source</a>
+<a href="#PrimIO_0_asFloat_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Parse a char list and convert into an double precision floating point value</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>O<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="PrimIO_0_manyUntil_3" class="def">manyUntil</a>
+<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='comma'>, </span>U<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>O<span class='generics'>&gt;</span> p<span class='comma'>, </span>Parser<span class='generics'>&lt;</span>I<span class='comma'>, </span>U<span class='generics'>&gt;</span> end<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L676" class="link">Source</a>
+<a href="#PrimIO_0_manyUntil_3" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Parser<span class='generics'>&lt;</span>TOKEN<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="PrimIO_0_children_2" class="def">children</a>
+<span class='generics'>&lt;</span>TOKEN<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Parser<span class='generics'>&lt;</span>TOKEN<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>TOKEN<span class='generics'>&gt;</span><span class='generics'>&gt;</span> children<span class='comma'>, </span>Parser<span class='generics'>&lt;</span>TOKEN<span class='comma'>, </span>A<span class='generics'>&gt;</span> p<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Parsec/ParserIOs/Prim.cs#L698" class="link">Source</a>
+<a href="#PrimIO_0_children_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Parse child tokens</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">TOKEN</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Token type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Type of the value to parse</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">children</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Parser that gets the child tokens</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">p</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Parser to run on the child tokens</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Parser that parses a set of tokens then uses them as a new stream to parse</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js" integrity="sha512-9khQRAUBYEJDCDVP2yw3LRUQvjJ0Pjx0EShmaQjcHa6AXiOv6qHQu9lCAIR8O+/D8FtaCoJ2c0Tf9Xo7hYH01Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-fTl/qcO1VgvKtOMApX2PdZzkziyr2stM65GYPLGuYMnuMm1z2JLJG6XVU7C/mR+E7xBUqCivykuhlzfqxXBXbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script></body></html>

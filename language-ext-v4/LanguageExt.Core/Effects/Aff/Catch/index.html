@@ -1,0 +1,751 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>LanguageExt.Core/Effects/Aff/Catch</title>
+<link href="style.css" rel="stylesheet" type="text/css"/></head>
+<body class="js-enabled"><div id="package-header"><ul class="links" id="page-menu"><li><a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Aff/Catch" class="link">Source</a></li>
+<li><a href="../index.html" class="link">Contents</a></li>
+<li><a href="../../../../index.html" class="link">Index</a></li></ul>
+<p class="caption">LanguageExt.Core</p></div>
+<div id="content"><div id="module-header"><p class="caption"><a href="../../../index.html" class="link">LanguageExt.Core</a>
+<span> ► </span>
+<a href="../../index.html" class="link">Effects</a>
+<span> ► </span>
+<a href="../index.html" class="link">Aff</a>
+<span> ► </span>
+<a href="index.html" class="link">Catch</a></p></div>
+
+<div id="table-of-contents"><p class="caption">Contents</p>
+<ul><li><a href="#LanguageExt_0_AffCatch_1" class="link"><div class="nowrap">AffCatch
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#AffCatch_1_AffCatch_0" class="link"><div class="nowrap">AffCatch
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Aff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> fail<span class='parens'>)</span></div></a></li>
+<li><a href="#AffCatch_1_AffCatch_0" class="link"><div class="nowrap">AffCatch
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Aff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> fail<span class='parens'>)</span></div></a></li>
+<li><a href="#AffCatch_1_Run_0" class="link"><div class="nowrap">Run
+
+<span class='parens'>(</span>Error error<span class='parens'>)</span></div></a></li>
+<li><a href="#AffCatch_1_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>CatchValue<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>AffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#AffCatch_1_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>CatchError ma<span class='comma'>, </span>AffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#AffCatch_1_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>AffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>CatchValue<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#AffCatch_1_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>AffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>CatchError mb<span class='parens'>)</span></div></a></li>
+<li><a href="#AffCatch_1_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>AffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>AffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#AffCatch_1_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>AffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>EffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#AffCatch_1_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>EffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>AffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#LanguageExt_0_AffCatch_2" class="link"><div class="nowrap">AffCatch
+<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#AffCatch_2_AffCatch_0" class="link"><div class="nowrap">AffCatch
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Aff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> fail<span class='parens'>)</span></div></a></li>
+<li><a href="#AffCatch_2_AffCatch_0" class="link"><div class="nowrap">AffCatch
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Aff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> fail<span class='parens'>)</span></div></a></li>
+<li><a href="#AffCatch_2_Run_0" class="link"><div class="nowrap">Run
+
+<span class='parens'>(</span>RT env<span class='comma'>, </span>Error error<span class='parens'>)</span></div></a></li>
+<li><a href="#AffCatch_2_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>CatchValue<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>AffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#AffCatch_2_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>CatchError ma<span class='comma'>, </span>AffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#AffCatch_2_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>AffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>CatchValue<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#AffCatch_2_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>AffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>CatchError mb<span class='parens'>)</span></div></a></li>
+<li><a href="#AffCatch_2_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>AffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>AffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#AffCatch_2_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>AffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>EffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#AffCatch_2_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>AffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>EffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#AffCatch_2_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>EffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>AffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#AffCatch_2_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>EffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>AffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#AffCatch_2_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>AffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>AffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#AffCatch_2_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>AffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>AffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#AffCatch_2_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>Aff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>AffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#AffCatch_2_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>AffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#AffCatch_2_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>AffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li></ul></ul></div>
+<div class="interface">
+<div class="top"><p class="src"><span class="keyword">struct</span>
+<a id="LanguageExt_0_AffCatch_1" class="def">AffCatch</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Aff/Catch/AffCatch.cs#L10" class="link">Source</a>
+<a href="#LanguageExt_0_AffCatch_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Constructors</p>
+<div class="top"><p class="src"><span class="keyword">constructor</span>
+<a id="AffCatch_1_AffCatch_0" class="def">AffCatch</a>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Aff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Aff/Catch/AffCatch.cs#L14" class="link">Source</a>
+<a href="#AffCatch_1_AffCatch_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">constructor</span>
+<a id="AffCatch_1_AffCatch_0" class="def">AffCatch</a>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Aff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Aff/Catch/AffCatch.cs#L17" class="link">Source</a>
+<a href="#AffCatch_1_AffCatch_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ValueTask<span class='generics'>&lt;</span>Fin<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="AffCatch_1_Run_0" class="def">Run</a>
+
+<span class='parens'>(</span>Error error<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Aff/Catch/AffCatch.cs#L21" class="link">Source</a>
+<a href="#AffCatch_1_Run_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+<div class="subs methods"><p class="caption">Operators</p>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="AffCatch_1_|_0" class="def">|</a>
+<span class='parens'>(</span>CatchValue<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>AffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Aff/Catch/AffCatch.cs#L24" class="link">Source</a>
+<a href="#AffCatch_1_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="AffCatch_1_|_0" class="def">|</a>
+<span class='parens'>(</span>CatchError ma<span class='comma'>, </span>AffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Aff/Catch/AffCatch.cs#L27" class="link">Source</a>
+<a href="#AffCatch_1_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="AffCatch_1_|_0" class="def">|</a>
+<span class='parens'>(</span>AffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>CatchValue<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Aff/Catch/AffCatch.cs#L30" class="link">Source</a>
+<a href="#AffCatch_1_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="AffCatch_1_|_0" class="def">|</a>
+<span class='parens'>(</span>AffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>CatchError mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Aff/Catch/AffCatch.cs#L36" class="link">Source</a>
+<a href="#AffCatch_1_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="AffCatch_1_|_0" class="def">|</a>
+<span class='parens'>(</span>AffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>AffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Aff/Catch/AffCatch.cs#L42" class="link">Source</a>
+<a href="#AffCatch_1_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="AffCatch_1_|_0" class="def">|</a>
+<span class='parens'>(</span>AffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>EffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Aff/Catch/AffCatch.cs#L45" class="link">Source</a>
+<a href="#AffCatch_1_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="AffCatch_1_|_0" class="def">|</a>
+<span class='parens'>(</span>EffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>AffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Aff/Catch/AffCatch.cs#L48" class="link">Source</a>
+<a href="#AffCatch_1_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">struct</span>
+<a id="LanguageExt_0_AffCatch_2" class="def">AffCatch</a>
+<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Aff/Catch/AffCatch.cs#L52" class="link">Source</a>
+<a href="#LanguageExt_0_AffCatch_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Constructors</p>
+<div class="top"><p class="src"><span class="keyword">constructor</span>
+<a id="AffCatch_2_AffCatch_0" class="def">AffCatch</a>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Aff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Aff/Catch/AffCatch.cs#L56" class="link">Source</a>
+<a href="#AffCatch_2_AffCatch_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">constructor</span>
+<a id="AffCatch_2_AffCatch_0" class="def">AffCatch</a>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Aff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Aff/Catch/AffCatch.cs#L59" class="link">Source</a>
+<a href="#AffCatch_2_AffCatch_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ValueTask<span class='generics'>&lt;</span>Fin<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="AffCatch_2_Run_0" class="def">Run</a>
+
+<span class='parens'>(</span>RT env<span class='comma'>, </span>Error error<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Aff/Catch/AffCatch.cs#L63" class="link">Source</a>
+<a href="#AffCatch_2_Run_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+<div class="subs methods"><p class="caption">Operators</p>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="AffCatch_2_|_0" class="def">|</a>
+<span class='parens'>(</span>CatchValue<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>AffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Aff/Catch/AffCatch.cs#L66" class="link">Source</a>
+<a href="#AffCatch_2_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="AffCatch_2_|_0" class="def">|</a>
+<span class='parens'>(</span>CatchError ma<span class='comma'>, </span>AffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Aff/Catch/AffCatch.cs#L69" class="link">Source</a>
+<a href="#AffCatch_2_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="AffCatch_2_|_0" class="def">|</a>
+<span class='parens'>(</span>AffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>CatchValue<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Aff/Catch/AffCatch.cs#L72" class="link">Source</a>
+<a href="#AffCatch_2_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="AffCatch_2_|_0" class="def">|</a>
+<span class='parens'>(</span>AffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>CatchError mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Aff/Catch/AffCatch.cs#L78" class="link">Source</a>
+<a href="#AffCatch_2_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="AffCatch_2_|_0" class="def">|</a>
+<span class='parens'>(</span>AffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>AffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Aff/Catch/AffCatch.cs#L84" class="link">Source</a>
+<a href="#AffCatch_2_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="AffCatch_2_|_0" class="def">|</a>
+<span class='parens'>(</span>AffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>EffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Aff/Catch/AffCatch.cs#L87" class="link">Source</a>
+<a href="#AffCatch_2_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="AffCatch_2_|_0" class="def">|</a>
+<span class='parens'>(</span>AffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>EffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Aff/Catch/AffCatch.cs#L90" class="link">Source</a>
+<a href="#AffCatch_2_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="AffCatch_2_|_0" class="def">|</a>
+<span class='parens'>(</span>EffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>AffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Aff/Catch/AffCatch.cs#L93" class="link">Source</a>
+<a href="#AffCatch_2_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="AffCatch_2_|_0" class="def">|</a>
+<span class='parens'>(</span>EffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>AffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Aff/Catch/AffCatch.cs#L96" class="link">Source</a>
+<a href="#AffCatch_2_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="AffCatch_2_|_0" class="def">|</a>
+<span class='parens'>(</span>AffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>AffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Aff/Catch/AffCatch.cs#L99" class="link">Source</a>
+<a href="#AffCatch_2_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="AffCatch_2_|_0" class="def">|</a>
+<span class='parens'>(</span>AffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>AffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Aff/Catch/AffCatch.cs#L102" class="link">Source</a>
+<a href="#AffCatch_2_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="AffCatch_2_|_0" class="def">|</a>
+<span class='parens'>(</span>Aff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>AffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Aff/Catch/AffCatch.cs#L105" class="link">Source</a>
+<a href="#AffCatch_2_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="AffCatch_2_|_0" class="def">|</a>
+<span class='parens'>(</span>Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>AffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Aff/Catch/AffCatch.cs#L114" class="link">Source</a>
+<a href="#AffCatch_2_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="AffCatch_2_|_0" class="def">|</a>
+<span class='parens'>(</span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>AffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Aff/Catch/AffCatch.cs#L123" class="link">Source</a>
+<a href="#AffCatch_2_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+</div></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js" integrity="sha512-9khQRAUBYEJDCDVP2yw3LRUQvjJ0Pjx0EShmaQjcHa6AXiOv6qHQu9lCAIR8O+/D8FtaCoJ2c0Tf9Xo7hYH01Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-fTl/qcO1VgvKtOMApX2PdZzkziyr2stM65GYPLGuYMnuMm1z2JLJG6XVU7C/mR+E7xBUqCivykuhlzfqxXBXbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script></body></html>

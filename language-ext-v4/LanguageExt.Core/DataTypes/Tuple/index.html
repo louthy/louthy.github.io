@@ -1,0 +1,656 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>LanguageExt.Core/DataTypes/Tuple</title>
+<link href="style.css" rel="stylesheet" type="text/css"/></head>
+<body class="js-enabled"><div id="package-header"><ul class="links" id="page-menu"><li><a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/DataTypes/Tuple" class="link">Source</a></li>
+<li><a href="../index.html" class="link">Contents</a></li>
+<li><a href="../../../index.html" class="link">Index</a></li></ul>
+<p class="caption">LanguageExt.Core</p></div>
+<div id="content"><div id="module-header"><p class="caption"><a href="../../index.html" class="link">LanguageExt.Core</a>
+<span> ► </span>
+<a href="../index.html" class="link">DataTypes</a>
+<span> ► </span>
+<a href="index.html" class="link">Tuple</a></p></div>
+
+<div id="table-of-contents"><p class="caption">Contents</p>
+<ul><li><a href="#LanguageExt_0_Prelude_0" class="link"><div class="nowrap">Prelude
+</div></a></li>
+<ul><li><a href="#Prelude_0_AsEnumerable_0" class="link"><div class="nowrap">AsEnumerable
+
+<span class='parens'>(</span>this <span class='parens'>(</span>int from<span class='comma'>, </span>int count<span class='parens'>)</span> range<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_ToSeq_0" class="link"><div class="nowrap">ToSeq
+
+<span class='parens'>(</span>this <span class='parens'>(</span>int from<span class='comma'>, </span>int count<span class='parens'>)</span> range<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_Map_1" class="link"><div class="nowrap">Map
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this <span class='parens'>(</span>int from<span class='comma'>, </span>int count<span class='parens'>)</span> range<span class='comma'>, </span>Func<span class='generics'>&lt;</span>int<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_Select_1" class="link"><div class="nowrap">Select
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this <span class='parens'>(</span>int from<span class='comma'>, </span>int count<span class='parens'>)</span> range<span class='comma'>, </span>Func<span class='generics'>&lt;</span>int<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_Bind_1" class="link"><div class="nowrap">Bind
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this <span class='parens'>(</span>int from<span class='comma'>, </span>int count<span class='parens'>)</span> range<span class='comma'>, </span>Func<span class='generics'>&lt;</span>int<span class='comma'>, </span>IEnumerable<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_SelectMany_1" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this <span class='parens'>(</span>int from<span class='comma'>, </span>int count<span class='parens'>)</span> range<span class='comma'>, </span>Func<span class='generics'>&lt;</span>int<span class='comma'>, </span>IEnumerable<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_SelectMany_2" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this <span class='parens'>(</span>int from<span class='comma'>, </span>int count<span class='parens'>)</span> range<span class='comma'>, </span>Func<span class='generics'>&lt;</span>int<span class='comma'>, </span>IEnumerable<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind,
+            Func<span class='generics'>&lt;</span>int<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_Filter_0" class="link"><div class="nowrap">Filter
+
+<span class='parens'>(</span>this <span class='parens'>(</span>int from<span class='comma'>, </span>int count<span class='parens'>)</span> range<span class='comma'>, </span>Func<span class='generics'>&lt;</span>int<span class='comma'>, </span>bool<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_Where_0" class="link"><div class="nowrap">Where
+
+<span class='parens'>(</span>this <span class='parens'>(</span>int from<span class='comma'>, </span>int count<span class='parens'>)</span> range<span class='comma'>, </span>Func<span class='generics'>&lt;</span>int<span class='comma'>, </span>bool<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_Fold_1" class="link"><div class="nowrap">Fold
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this <span class='parens'>(</span>int from<span class='comma'>, </span>int count<span class='parens'>)</span> range<span class='comma'>, </span>S state<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>int<span class='comma'>, </span>S<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_FoldBack_1" class="link"><div class="nowrap">FoldBack
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this <span class='parens'>(</span>int from<span class='comma'>, </span>int count<span class='parens'>)</span> range<span class='comma'>, </span>S state<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>int<span class='comma'>, </span>S<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_Exists_0" class="link"><div class="nowrap">Exists
+
+<span class='parens'>(</span>this <span class='parens'>(</span>int from<span class='comma'>, </span>int count<span class='parens'>)</span> range<span class='comma'>, </span>Func<span class='generics'>&lt;</span>int<span class='comma'>, </span>bool<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_ForAll_0" class="link"><div class="nowrap">ForAll
+
+<span class='parens'>(</span>this <span class='parens'>(</span>int from<span class='comma'>, </span>int count<span class='parens'>)</span> range<span class='comma'>, </span>Func<span class='generics'>&lt;</span>int<span class='comma'>, </span>bool<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#LanguageExt_0_Prelude_0" class="link"><div class="nowrap">Prelude
+</div></a></li>
+<ul><li><a href="#Prelude_0_Tuple_1" class="link"><div class="nowrap">Tuple
+<span class='generics'>&lt;</span>T1<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T1 item1<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_Tuple_2" class="link"><div class="nowrap">Tuple
+<span class='generics'>&lt;</span>T1<span class='comma'>, </span>T2<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T1 item1<span class='comma'>, </span>T2 item2<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_Tuple_3" class="link"><div class="nowrap">Tuple
+<span class='generics'>&lt;</span>T1<span class='comma'>, </span>T2<span class='comma'>, </span>T3<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T1 item1<span class='comma'>, </span>T2 item2<span class='comma'>, </span>T3 item3<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_Tuple_4" class="link"><div class="nowrap">Tuple
+<span class='generics'>&lt;</span>T1<span class='comma'>, </span>T2<span class='comma'>, </span>T3<span class='comma'>, </span>T4<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T1 item1<span class='comma'>, </span>T2 item2<span class='comma'>, </span>T3 item3<span class='comma'>, </span>T4 item4<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_Tuple_5" class="link"><div class="nowrap">Tuple
+<span class='generics'>&lt;</span>T1<span class='comma'>, </span>T2<span class='comma'>, </span>T3<span class='comma'>, </span>T4<span class='comma'>, </span>T5<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T1 item1<span class='comma'>, </span>T2 item2<span class='comma'>, </span>T3 item3<span class='comma'>, </span>T4 item4<span class='comma'>, </span>T5 item5<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_Tuple_6" class="link"><div class="nowrap">Tuple
+<span class='generics'>&lt;</span>T1<span class='comma'>, </span>T2<span class='comma'>, </span>T3<span class='comma'>, </span>T4<span class='comma'>, </span>T5<span class='comma'>, </span>T6<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T1 item1<span class='comma'>, </span>T2 item2<span class='comma'>, </span>T3 item3<span class='comma'>, </span>T4 item4<span class='comma'>, </span>T5 item5<span class='comma'>, </span>T6 item6<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_Tuple_7" class="link"><div class="nowrap">Tuple
+<span class='generics'>&lt;</span>T1<span class='comma'>, </span>T2<span class='comma'>, </span>T3<span class='comma'>, </span>T4<span class='comma'>, </span>T5<span class='comma'>, </span>T6<span class='comma'>, </span>T7<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T1 item1<span class='comma'>, </span>T2 item2<span class='comma'>, </span>T3 item3<span class='comma'>, </span>T4 item4<span class='comma'>, </span>T5 item5<span class='comma'>, </span>T6 item6<span class='comma'>, </span>T7 item7<span class='parens'>)</span></div></a></li></ul></ul></div>
+<div class="interface"><H1>Sub modules</H1>
+<table><tbody><tr><td class="src clearfix"><span class="inst-left"><a href="Tuple1/index.html" class="link">Tuple1</a></span></td></tr>
+<tr><td class="src clearfix"><span class="inst-left"><a href="Tuple2/index.html" class="link">Tuple2</a></span></td></tr>
+<tr><td class="src clearfix"><span class="inst-left"><a href="Tuple3/index.html" class="link">Tuple3</a></span></td></tr>
+<tr><td class="src clearfix"><span class="inst-left"><a href="Tuple4/index.html" class="link">Tuple4</a></span></td></tr>
+<tr><td class="src clearfix"><span class="inst-left"><a href="Tuple5/index.html" class="link">Tuple5</a></span></td></tr>
+<tr><td class="src clearfix"><span class="inst-left"><a href="Tuple6/index.html" class="link">Tuple6</a></span></td></tr>
+<tr><td class="src clearfix"><span class="inst-left"><a href="Tuple7/index.html" class="link">Tuple7</a></span></td></tr></tbody></table>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="LanguageExt_0_Prelude_0" class="def">Prelude</a>
+
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/DataTypes/Tuple/Prelude_TupleRange.cs#L6" class="link">Source</a>
+<a href="#LanguageExt_0_Prelude_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IEnumerable<span class='generics'>&lt;</span>int<span class='generics'>&gt;</span>
+<a id="Prelude_0_AsEnumerable_0" class="def">AsEnumerable</a>
+
+<span class='parens'>(</span>this <span class='parens'>(</span>int from<span class='comma'>, </span>int count<span class='parens'>)</span> range<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/DataTypes/Tuple/Prelude_TupleRange.cs#L11" class="link">Source</a>
+<a href="#Prelude_0_AsEnumerable_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>As an enumerable</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Seq<span class='generics'>&lt;</span>int<span class='generics'>&gt;</span>
+<a id="Prelude_0_ToSeq_0" class="def">ToSeq</a>
+
+<span class='parens'>(</span>this <span class='parens'>(</span>int from<span class='comma'>, </span>int count<span class='parens'>)</span> range<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/DataTypes/Tuple/Prelude_TupleRange.cs#L17" class="link">Source</a>
+<a href="#Prelude_0_ToSeq_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Convert to a lazy seq</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IEnumerable<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<a id="Prelude_0_Map_1" class="def">Map</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this <span class='parens'>(</span>int from<span class='comma'>, </span>int count<span class='parens'>)</span> range<span class='comma'>, </span>Func<span class='generics'>&lt;</span>int<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/DataTypes/Tuple/Prelude_TupleRange.cs#L23" class="link">Source</a>
+<a href="#Prelude_0_Map_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Functor map</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IEnumerable<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<a id="Prelude_0_Select_1" class="def">Select</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this <span class='parens'>(</span>int from<span class='comma'>, </span>int count<span class='parens'>)</span> range<span class='comma'>, </span>Func<span class='generics'>&lt;</span>int<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/DataTypes/Tuple/Prelude_TupleRange.cs#L29" class="link">Source</a>
+<a href="#Prelude_0_Select_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Functor map</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IEnumerable<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<a id="Prelude_0_Bind_1" class="def">Bind</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this <span class='parens'>(</span>int from<span class='comma'>, </span>int count<span class='parens'>)</span> range<span class='comma'>, </span>Func<span class='generics'>&lt;</span>int<span class='comma'>, </span>IEnumerable<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/DataTypes/Tuple/Prelude_TupleRange.cs#L35" class="link">Source</a>
+<a href="#Prelude_0_Bind_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monadic bind</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IEnumerable<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<a id="Prelude_0_SelectMany_1" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this <span class='parens'>(</span>int from<span class='comma'>, </span>int count<span class='parens'>)</span> range<span class='comma'>, </span>Func<span class='generics'>&lt;</span>int<span class='comma'>, </span>IEnumerable<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/DataTypes/Tuple/Prelude_TupleRange.cs#L41" class="link">Source</a>
+<a href="#Prelude_0_SelectMany_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monadic bind</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IEnumerable<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<a id="Prelude_0_SelectMany_2" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this <span class='parens'>(</span>int from<span class='comma'>, </span>int count<span class='parens'>)</span> range<span class='comma'>, </span>Func<span class='generics'>&lt;</span>int<span class='comma'>, </span>IEnumerable<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind,
+            Func<span class='generics'>&lt;</span>int<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/DataTypes/Tuple/Prelude_TupleRange.cs#L47" class="link">Source</a>
+<a href="#Prelude_0_SelectMany_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Combination of monadic bind and functor map</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IEnumerable<span class='generics'>&lt;</span>int<span class='generics'>&gt;</span>
+<a id="Prelude_0_Filter_0" class="def">Filter</a>
+
+<span class='parens'>(</span>this <span class='parens'>(</span>int from<span class='comma'>, </span>int count<span class='parens'>)</span> range<span class='comma'>, </span>Func<span class='generics'>&lt;</span>int<span class='comma'>, </span>bool<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/DataTypes/Tuple/Prelude_TupleRange.cs#L62" class="link">Source</a>
+<a href="#Prelude_0_Filter_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Removes items from the sequence that return false when the predicate is applied</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IEnumerable<span class='generics'>&lt;</span>int<span class='generics'>&gt;</span>
+<a id="Prelude_0_Where_0" class="def">Where</a>
+
+<span class='parens'>(</span>this <span class='parens'>(</span>int from<span class='comma'>, </span>int count<span class='parens'>)</span> range<span class='comma'>, </span>Func<span class='generics'>&lt;</span>int<span class='comma'>, </span>bool<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/DataTypes/Tuple/Prelude_TupleRange.cs#L68" class="link">Source</a>
+<a href="#Prelude_0_Where_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Removes items from the sequence that return false when the predicate is applied</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+S
+<a id="Prelude_0_Fold_1" class="def">Fold</a>
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this <span class='parens'>(</span>int from<span class='comma'>, </span>int count<span class='parens'>)</span> range<span class='comma'>, </span>S state<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>int<span class='comma'>, </span>S<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/DataTypes/Tuple/Prelude_TupleRange.cs#L74" class="link">Source</a>
+<a href="#Prelude_0_Fold_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Creates an aggregate value from all items in the sequence, starting at the first item</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+S
+<a id="Prelude_0_FoldBack_1" class="def">FoldBack</a>
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this <span class='parens'>(</span>int from<span class='comma'>, </span>int count<span class='parens'>)</span> range<span class='comma'>, </span>S state<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>int<span class='comma'>, </span>S<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/DataTypes/Tuple/Prelude_TupleRange.cs#L80" class="link">Source</a>
+<a href="#Prelude_0_FoldBack_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Creates an aggregate value from all items in the sequence, starting at the last item</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="Prelude_0_Exists_0" class="def">Exists</a>
+
+<span class='parens'>(</span>this <span class='parens'>(</span>int from<span class='comma'>, </span>int count<span class='parens'>)</span> range<span class='comma'>, </span>Func<span class='generics'>&lt;</span>int<span class='comma'>, </span>bool<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/DataTypes/Tuple/Prelude_TupleRange.cs#L86" class="link">Source</a>
+<a href="#Prelude_0_Exists_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Does the predicate hold for any item</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="Prelude_0_ForAll_0" class="def">ForAll</a>
+
+<span class='parens'>(</span>this <span class='parens'>(</span>int from<span class='comma'>, </span>int count<span class='parens'>)</span> range<span class='comma'>, </span>Func<span class='generics'>&lt;</span>int<span class='comma'>, </span>bool<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/DataTypes/Tuple/Prelude_TupleRange.cs#L92" class="link">Source</a>
+<a href="#Prelude_0_ForAll_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Does the predicate hold for all items</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="LanguageExt_0_Prelude_0" class="def">Prelude</a>
+
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/DataTypes/Tuple/Tuple.Prelude.cs#L6" class="link">Source</a>
+<a href="#LanguageExt_0_Prelude_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Tuple<span class='generics'>&lt;</span>T1<span class='generics'>&gt;</span>
+<a id="Prelude_0_Tuple_1" class="def">Tuple</a>
+<span class='generics'>&lt;</span>T1<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T1 item1<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/DataTypes/Tuple/Tuple.Prelude.cs#L11" class="link">Source</a>
+<a href="#Prelude_0_Tuple_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Tuple constructor</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Tuple<span class='generics'>&lt;</span>T1<span class='comma'>, </span>T2<span class='generics'>&gt;</span>
+<a id="Prelude_0_Tuple_2" class="def">Tuple</a>
+<span class='generics'>&lt;</span>T1<span class='comma'>, </span>T2<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T1 item1<span class='comma'>, </span>T2 item2<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/DataTypes/Tuple/Tuple.Prelude.cs#L18" class="link">Source</a>
+<a href="#Prelude_0_Tuple_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Tuple constructor</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Tuple<span class='generics'>&lt;</span>T1<span class='comma'>, </span>T2<span class='comma'>, </span>T3<span class='generics'>&gt;</span>
+<a id="Prelude_0_Tuple_3" class="def">Tuple</a>
+<span class='generics'>&lt;</span>T1<span class='comma'>, </span>T2<span class='comma'>, </span>T3<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T1 item1<span class='comma'>, </span>T2 item2<span class='comma'>, </span>T3 item3<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/DataTypes/Tuple/Tuple.Prelude.cs#L25" class="link">Source</a>
+<a href="#Prelude_0_Tuple_3" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Tuple constructor</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Tuple<span class='generics'>&lt;</span>T1<span class='comma'>, </span>T2<span class='comma'>, </span>T3<span class='comma'>, </span>T4<span class='generics'>&gt;</span>
+<a id="Prelude_0_Tuple_4" class="def">Tuple</a>
+<span class='generics'>&lt;</span>T1<span class='comma'>, </span>T2<span class='comma'>, </span>T3<span class='comma'>, </span>T4<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T1 item1<span class='comma'>, </span>T2 item2<span class='comma'>, </span>T3 item3<span class='comma'>, </span>T4 item4<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/DataTypes/Tuple/Tuple.Prelude.cs#L32" class="link">Source</a>
+<a href="#Prelude_0_Tuple_4" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Tuple constructor</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Tuple<span class='generics'>&lt;</span>T1<span class='comma'>, </span>T2<span class='comma'>, </span>T3<span class='comma'>, </span>T4<span class='comma'>, </span>T5<span class='generics'>&gt;</span>
+<a id="Prelude_0_Tuple_5" class="def">Tuple</a>
+<span class='generics'>&lt;</span>T1<span class='comma'>, </span>T2<span class='comma'>, </span>T3<span class='comma'>, </span>T4<span class='comma'>, </span>T5<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T1 item1<span class='comma'>, </span>T2 item2<span class='comma'>, </span>T3 item3<span class='comma'>, </span>T4 item4<span class='comma'>, </span>T5 item5<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/DataTypes/Tuple/Tuple.Prelude.cs#L39" class="link">Source</a>
+<a href="#Prelude_0_Tuple_5" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Tuple constructor</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Tuple<span class='generics'>&lt;</span>T1<span class='comma'>, </span>T2<span class='comma'>, </span>T3<span class='comma'>, </span>T4<span class='comma'>, </span>T5<span class='comma'>, </span>T6<span class='generics'>&gt;</span>
+<a id="Prelude_0_Tuple_6" class="def">Tuple</a>
+<span class='generics'>&lt;</span>T1<span class='comma'>, </span>T2<span class='comma'>, </span>T3<span class='comma'>, </span>T4<span class='comma'>, </span>T5<span class='comma'>, </span>T6<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T1 item1<span class='comma'>, </span>T2 item2<span class='comma'>, </span>T3 item3<span class='comma'>, </span>T4 item4<span class='comma'>, </span>T5 item5<span class='comma'>, </span>T6 item6<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/DataTypes/Tuple/Tuple.Prelude.cs#L46" class="link">Source</a>
+<a href="#Prelude_0_Tuple_6" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Tuple constructor</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Tuple<span class='generics'>&lt;</span>T1<span class='comma'>, </span>T2<span class='comma'>, </span>T3<span class='comma'>, </span>T4<span class='comma'>, </span>T5<span class='comma'>, </span>T6<span class='comma'>, </span>T7<span class='generics'>&gt;</span>
+<a id="Prelude_0_Tuple_7" class="def">Tuple</a>
+<span class='generics'>&lt;</span>T1<span class='comma'>, </span>T2<span class='comma'>, </span>T3<span class='comma'>, </span>T4<span class='comma'>, </span>T5<span class='comma'>, </span>T6<span class='comma'>, </span>T7<span class='generics'>&gt;</span>
+<span class='parens'>(</span>T1 item1<span class='comma'>, </span>T2 item2<span class='comma'>, </span>T3 item3<span class='comma'>, </span>T4 item4<span class='comma'>, </span>T5 item5<span class='comma'>, </span>T6 item6<span class='comma'>, </span>T7 item7<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/DataTypes/Tuple/Tuple.Prelude.cs#L53" class="link">Source</a>
+<a href="#Prelude_0_Tuple_7" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Tuple constructor</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js" integrity="sha512-9khQRAUBYEJDCDVP2yw3LRUQvjJ0Pjx0EShmaQjcHa6AXiOv6qHQu9lCAIR8O+/D8FtaCoJ2c0Tf9Xo7hYH01Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-fTl/qcO1VgvKtOMApX2PdZzkziyr2stM65GYPLGuYMnuMm1z2JLJG6XVU7C/mR+E7xBUqCivykuhlzfqxXBXbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script></body></html>

@@ -1,0 +1,4437 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>LanguageExt.Core/Common</title>
+<link href="style.css" rel="stylesheet" type="text/css"/></head>
+<body class="js-enabled"><div id="package-header"><ul class="links" id="page-menu"><li><a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common" class="link">Source</a></li>
+<li><a href="../index.html" class="link">Contents</a></li>
+<li><a href="../../index.html" class="link">Index</a></li></ul>
+<p class="caption">LanguageExt.Core</p></div>
+<div id="content"><div id="module-header"><p class="caption"><a href="../index.html" class="link">LanguageExt.Core</a>
+<span> ► </span>
+<a href="index.html" class="link">Common</a></p></div>
+<h2><code>Error</code></h2>
+<p>The <code>Error</code> type works like a discriminated-union, it is an <code>abstract record</code> type with many sub-cases
+(which are listed below).  It is used extensively with various monadic types, like <code>Fin&lt;A&gt;</code>, the
+<em>Effect System</em> monads of <code>Eff&lt;A&gt;</code>, <code>Eff&lt;RT, A&gt;</code>, <code>Aff&lt;A&gt;</code>, <code>Aff&lt;RT, A&gt;</code> and the compositional
+streaming Pipes features.</p>
+<blockquote>
+<p>The reason they're buried in the <code>Common</code> namespace is because, <code>Error</code> is a common type name.  And so, this gives
+the programmer a chance to not include it when <code>using LanguageExt;</code></p>
+</blockquote>
+<p><code>Error</code> exists because <code>Exception</code> is really only meant for <em>exceptional</em> errors. However, in C#-land we've been trained
+to throw them even for <em>expected</em> errors.</p>
+<p>Instead we use <code>Error</code> to represent three key types of error:</p>
+<ul>
+<li class='markdown-bullet'><code>Exceptional</code> - An unexpected error</li>
+<li class='markdown-bullet'><code>Expected</code>    - An expected error</li>
+<li class='markdown-bullet'><code>ManyErrors</code>  - Many errors (possibly zero)</li>
+</ul>
+<p>These are the key base-types that indicate the <em>'flavour'</em> of the error.  For example, a 'user not found' error isn't
+something exceptional, it's something we expect <em>might</em> happen.  An <code>OutOfMemoryException</code> however, <em>is</em>
+exceptional - it should never happen, and we should treat it as such.</p>
+<p>Most of the time we want sensible handling of expected errors, and bail out completely for something exceptional.  We also want
+to protect ourselves from information leakage.  Leaking exceptional errors via public APIs is a surefire way to open up more
+information to hackers than you would like.  The <code>Error</code> derived types all try to protect against this kind of leakage without
+losing the context of the type of error thrown.</p>
+<p>Essentially an error is either created from an <code>Exception</code> or it isn't.  This allows for expected errors to be
+represented without throwing exceptions, but also it allows for more principled error handling.  We can pattern-match on the
+type, or use some of the built-in properties and methods to inspect the <code>Error</code>:</p>
+<ul>
+<li class='markdown-bullet'><code>IsExceptional</code> - <code>true</code> for exceptional errors.  For <code>ManyErrors</code> this is <code>true</code> if <em>any</em> of the errors are exceptional.</li>
+<li class='markdown-bullet'><code>IsExpected</code> - <code>true</code> for non-exceptional/expected errors.  For <code>ManyErrors</code> this is <code>true</code> if <em>all</em> of the errors are expected.</li>
+<li class='markdown-bullet'><code>Is&lt;E&gt;(E exception)</code> - <code>true</code> if the <code>Error</code> is exceptional and any of the the internal <code>Exception</code> values are of type <code>E</code>.</li>
+<li class='markdown-bullet'><code>Is(Error error)</code> - <code>true</code> if the <code>Error</code> matches the one provided.  i.e. <code>error.Is(Errors.TimedOut)</code>.</li>
+</ul>
+<p>The <code>Error</code> type can be constructed to be exceptional or expected.  For example, this is an expected error:</p>
+<pre class='language-csharp'><code>Error.New(&quot;This error was expected&quot;)
+</code></pre>
+<p>When expected errors are used with codes then equality and matching is done via the code only:</p>
+<pre class='language-csharp'><code>Error.New(404, &quot;Page not found&quot;);
+</code></pre>
+<p>And this is an exceptional error:</p>
+<pre class='language-csharp'><code>try
+{
+    // This wraps up the exceptional error
+}
+catch(Exception e)
+{
+    return Error.New(e);
+}
+</code></pre>
+<p>Finally, you can collect many errors:</p>
+<pre class='language-csharp'><code>Error.Many(Error.New(&quot;error one&quot;), Error.New(&quot;error two&quot;));
+</code></pre>
+<p>Or more simply:</p>
+<pre class='language-csharp'><code>Error.New(&quot;error one&quot;) + Error.New(&quot;error two&quot;)
+</code></pre>
+<p>You can extend the set of error types (perhaps for passing through extra data) by creating a new
+record inherits <code>Exceptional</code> or <code>Expected</code>:</p>
+<pre class='language-csharp'><code>public record BespokeError(bool MyData) 
+    : Expected(&quot;Something bespoke&quot;, 100, None); 
+</code></pre>
+<p>By default the properties of the new error-type won't be serialised.  So, if you want to pass a
+payload over the wire, add the <code>[property: DataMember]</code> attribute to each member:</p>
+<pre class='language-csharp'><code>public record BespokeError([property: DataMember] bool MyData) 
+    : Expected(&quot;Something bespoke&quot;, 100, None); 
+</code></pre>
+<p>Using this technique it's trivial to create new error-types when additional data needs to be moved
+around, but also there's a ton of built-in functionality for the most common use-cases.</p>
+
+<div id="table-of-contents"><p class="caption">Contents</p>
+<ul><li><a href="#_0_Error_0" class="link"><div class="nowrap">Error
+</div></a></li>
+<ul><li><a href="#Error_0_Code_0" class="link"><div class="nowrap">Code</div></a></li>
+<li><a href="#Error_0_Message_0" class="link"><div class="nowrap">Message</div></a></li>
+<li><a href="#Error_0_Inner_0" class="link"><div class="nowrap">Inner</div></a></li>
+<li><a href="#Error_0_Is_1" class="link"><div class="nowrap">Is
+<span class='generics'>&lt;</span>E<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Error_0_Is_0" class="link"><div class="nowrap">Is
+
+<span class='parens'>(</span>Error error<span class='parens'>)</span></div></a></li>
+<li><a href="#Error_0_IsExceptional_0" class="link"><div class="nowrap">IsExceptional</div></a></li>
+<li><a href="#Error_0_IsExpected_0" class="link"><div class="nowrap">IsExpected</div></a></li>
+<li><a href="#Error_0_Head_0" class="link"><div class="nowrap">Head
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Error_0_Tail_0" class="link"><div class="nowrap">Tail
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Error_0_IsEmpty_0" class="link"><div class="nowrap">IsEmpty</div></a></li>
+<li><a href="#Error_0_Count_0" class="link"><div class="nowrap">Count</div></a></li>
+<li><a href="#Error_0_ToException_0" class="link"><div class="nowrap">ToException
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Error_0_Exception_0" class="link"><div class="nowrap">Exception</div></a></li>
+<li><a href="#Error_0_ToErrorException_0" class="link"><div class="nowrap">ToErrorException
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Error_0_Append_0" class="link"><div class="nowrap">Append
+
+<span class='parens'>(</span>Error error<span class='parens'>)</span></div></a></li>
+<li><a href="#Error_0_+_0" class="link"><div class="nowrap">+
+<span class='parens'>(</span>Error lhs<span class='comma'>, </span>Error rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#Error_0_AsEnumerable_0" class="link"><div class="nowrap">AsEnumerable
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Error_0_ToString_0" class="link"><div class="nowrap">ToString
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Error_0_New_0" class="link"><div class="nowrap">New
+
+<span class='parens'>(</span>Exception thisException<span class='parens'>)</span></div></a></li>
+<li><a href="#Error_0_New_0" class="link"><div class="nowrap">New
+
+<span class='parens'>(</span>string message<span class='comma'>, </span>Exception thisException<span class='parens'>)</span></div></a></li>
+<li><a href="#Error_0_New_0" class="link"><div class="nowrap">New
+
+<span class='parens'>(</span>string message<span class='parens'>)</span></div></a></li>
+<li><a href="#Error_0_New_0" class="link"><div class="nowrap">New
+
+<span class='parens'>(</span>int code<span class='comma'>, </span>string message<span class='parens'>)</span></div></a></li>
+<li><a href="#Error_0_New_0" class="link"><div class="nowrap">New
+
+<span class='parens'>(</span>int code<span class='comma'>, </span>string message<span class='comma'>, </span>Error inner<span class='parens'>)</span></div></a></li>
+<li><a href="#Error_0_New_0" class="link"><div class="nowrap">New
+
+<span class='parens'>(</span>string message<span class='comma'>, </span>Error inner<span class='parens'>)</span></div></a></li>
+<li><a href="#Error_0_Many_0" class="link"><div class="nowrap">Many
+
+<span class='parens'>(</span>params Error[] errors<span class='parens'>)</span></div></a></li>
+<li><a href="#Error_0_Many_0" class="link"><div class="nowrap">Many
+
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span> errors<span class='parens'>)</span></div></a></li>
+<li><a href="#Error_0_FromObject_0" class="link"><div class="nowrap">FromObject
+
+<span class='parens'>(</span>object value<span class='parens'>)</span></div></a></li>
+<li><a href="#Error_0_Throw_0" class="link"><div class="nowrap">Throw
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_Expected_0" class="link"><div class="nowrap">Expected
+
+<span class='parens'>(</span>string Message<span class='comma'>, </span>int Code<span class='comma'>, </span>Option<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span> Inner = default<span class='parens'>)</span></div></a></li>
+<ul><li><a href="#Expected_0_Message_0" class="link"><div class="nowrap">Message</div></a></li>
+<li><a href="#Expected_0_Code_0" class="link"><div class="nowrap">Code</div></a></li>
+<li><a href="#Expected_0_Inner_0" class="link"><div class="nowrap">Inner</div></a></li>
+<li><a href="#Expected_0_ToString_0" class="link"><div class="nowrap">ToString
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Expected_0_ToErrorException_0" class="link"><div class="nowrap">ToErrorException
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Expected_0_Is_1" class="link"><div class="nowrap">Is
+<span class='generics'>&lt;</span>E<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Expected_0_IsExceptional_0" class="link"><div class="nowrap">IsExceptional</div></a></li>
+<li><a href="#Expected_0_IsExpected_0" class="link"><div class="nowrap">IsExpected</div></a></li></ul>
+<li><a href="#_0_Exceptional_0" class="link"><div class="nowrap">Exceptional
+
+<span class='parens'>(</span>string Message<span class='comma'>, </span>int Code<span class='parens'>)</span></div></a></li>
+<ul><li><a href="#Exceptional_0_Message_0" class="link"><div class="nowrap">Message</div></a></li>
+<li><a href="#Exceptional_0_Code_0" class="link"><div class="nowrap">Code</div></a></li>
+<li><a href="#Exceptional_0_ToString_0" class="link"><div class="nowrap">ToString
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Exceptional_0_Inner_0" class="link"><div class="nowrap">Inner</div></a></li>
+<li><a href="#Exceptional_0_ToException_0" class="link"><div class="nowrap">ToException
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Exceptional_0_ToErrorException_0" class="link"><div class="nowrap">ToErrorException
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Exceptional_0_Is_1" class="link"><div class="nowrap">Is
+<span class='generics'>&lt;</span>E<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Exceptional_0_Is_0" class="link"><div class="nowrap">Is
+
+<span class='parens'>(</span>Error error<span class='parens'>)</span></div></a></li>
+<li><a href="#Exceptional_0_IsExceptional_0" class="link"><div class="nowrap">IsExceptional</div></a></li>
+<li><a href="#Exceptional_0_IsExpected_0" class="link"><div class="nowrap">IsExpected</div></a></li></ul>
+<li><a href="#_0_BottomError_0" class="link"><div class="nowrap">BottomError
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<ul><li><a href="#BottomError_0_Default = new BottomError()_0" class="link"><div class="nowrap">Default = new BottomError()</div></a></li>
+<li><a href="#BottomError_0_Code_0" class="link"><div class="nowrap">Code</div></a></li>
+<li><a href="#BottomError_0_Message_0" class="link"><div class="nowrap">Message</div></a></li>
+<li><a href="#BottomError_0_ToString_0" class="link"><div class="nowrap">ToString
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#BottomError_0_ToException_0" class="link"><div class="nowrap">ToException
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#BottomError_0_ToErrorException_0" class="link"><div class="nowrap">ToErrorException
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#BottomError_0_Is_1" class="link"><div class="nowrap">Is
+<span class='generics'>&lt;</span>E<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#BottomError_0_Is_0" class="link"><div class="nowrap">Is
+
+<span class='parens'>(</span>Error error<span class='parens'>)</span></div></a></li>
+<li><a href="#BottomError_0_IsExceptional_0" class="link"><div class="nowrap">IsExceptional</div></a></li>
+<li><a href="#BottomError_0_IsExpected_0" class="link"><div class="nowrap">IsExpected</div></a></li></ul>
+<li><a href="#_0_ManyErrors_0" class="link"><div class="nowrap">ManyErrors
+
+<span class='parens'>(</span>[property: DataMember] Seq<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span> Errors<span class='parens'>)</span></div></a></li>
+<ul><li><a href="#ManyErrors_0_Code_0" class="link"><div class="nowrap">Code</div></a></li>
+<li><a href="#ManyErrors_0_Message_0" class="link"><div class="nowrap">Message</div></a></li>
+<li><a href="#ManyErrors_0_ToString_0" class="link"><div class="nowrap">ToString
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#ManyErrors_0_ToException_0" class="link"><div class="nowrap">ToException
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#ManyErrors_0_ToErrorException_0" class="link"><div class="nowrap">ToErrorException
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#ManyErrors_0_Is_1" class="link"><div class="nowrap">Is
+<span class='generics'>&lt;</span>E<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#ManyErrors_0_Is_0" class="link"><div class="nowrap">Is
+
+<span class='parens'>(</span>Error error<span class='parens'>)</span></div></a></li>
+<li><a href="#ManyErrors_0_IsExceptional_0" class="link"><div class="nowrap">IsExceptional</div></a></li>
+<li><a href="#ManyErrors_0_IsExpected_0" class="link"><div class="nowrap">IsExpected</div></a></li>
+<li><a href="#ManyErrors_0_Head_0" class="link"><div class="nowrap">Head
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#ManyErrors_0_Tail_0" class="link"><div class="nowrap">Tail
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#ManyErrors_0_IsEmpty_0" class="link"><div class="nowrap">IsEmpty</div></a></li>
+<li><a href="#ManyErrors_0_Count_0" class="link"><div class="nowrap">Count</div></a></li>
+<li><a href="#ManyErrors_0_AsEnumerable_0" class="link"><div class="nowrap">AsEnumerable
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_ErrorException_0" class="link"><div class="nowrap">ErrorException
+</div></a></li>
+<ul><li><a href="#ErrorException_0_Code_0" class="link"><div class="nowrap">Code</div></a></li>
+<li><a href="#ErrorException_0_Inner_0" class="link"><div class="nowrap">Inner</div></a></li>
+<li><a href="#ErrorException_0_ToError_0" class="link"><div class="nowrap">ToError
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#ErrorException_0_IsEmpty_0" class="link"><div class="nowrap">IsEmpty</div></a></li>
+<li><a href="#ErrorException_0_IsExceptional_0" class="link"><div class="nowrap">IsExceptional</div></a></li>
+<li><a href="#ErrorException_0_IsExpected_0" class="link"><div class="nowrap">IsExpected</div></a></li>
+<li><a href="#ErrorException_0_Append_0" class="link"><div class="nowrap">Append
+
+<span class='parens'>(</span>ErrorException error<span class='parens'>)</span></div></a></li>
+<li><a href="#ErrorException_0_+_0" class="link"><div class="nowrap">+
+<span class='parens'>(</span>ErrorException lhs<span class='comma'>, </span>ErrorException rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#ErrorException_0_GetEnumerator_0" class="link"><div class="nowrap">GetEnumerator
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#ErrorException_0_ToString_0" class="link"><div class="nowrap">ToString
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#ErrorException_0_New_0" class="link"><div class="nowrap">New
+
+<span class='parens'>(</span>Exception thisException<span class='parens'>)</span></div></a></li>
+<li><a href="#ErrorException_0_New_0" class="link"><div class="nowrap">New
+
+<span class='parens'>(</span>string message<span class='comma'>, </span>Exception thisException<span class='parens'>)</span></div></a></li>
+<li><a href="#ErrorException_0_New_0" class="link"><div class="nowrap">New
+
+<span class='parens'>(</span>string message<span class='parens'>)</span></div></a></li>
+<li><a href="#ErrorException_0_New_0" class="link"><div class="nowrap">New
+
+<span class='parens'>(</span>int code<span class='comma'>, </span>string message<span class='parens'>)</span></div></a></li>
+<li><a href="#ErrorException_0_New_0" class="link"><div class="nowrap">New
+
+<span class='parens'>(</span>int code<span class='comma'>, </span>string message<span class='comma'>, </span>ErrorException inner<span class='parens'>)</span></div></a></li>
+<li><a href="#ErrorException_0_New_0" class="link"><div class="nowrap">New
+
+<span class='parens'>(</span>string message<span class='comma'>, </span>ErrorException inner<span class='parens'>)</span></div></a></li>
+<li><a href="#ErrorException_0_Many_0" class="link"><div class="nowrap">Many
+
+<span class='parens'>(</span>params ErrorException[] errors<span class='parens'>)</span></div></a></li>
+<li><a href="#ErrorException_0_Many_0" class="link"><div class="nowrap">Many
+
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>ErrorException<span class='generics'>&gt;</span> errors<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_ExpectedException_0" class="link"><div class="nowrap">ExpectedException
+</div></a></li>
+<ul><li><a href="#ExpectedException_0_ExpectedException_0" class="link"><div class="nowrap">ExpectedException
+<span class='parens'>(</span>string message<span class='comma'>, </span>int code<span class='comma'>, </span>Option<span class='generics'>&lt;</span>ErrorException<span class='generics'>&gt;</span> inner<span class='parens'>)</span></div></a></li>
+<li><a href="#ExpectedException_0_Code_0" class="link"><div class="nowrap">Code</div></a></li>
+<li><a href="#ExpectedException_0_Message_0" class="link"><div class="nowrap">Message</div></a></li>
+<li><a href="#ExpectedException_0_Inner_0" class="link"><div class="nowrap">Inner</div></a></li>
+<li><a href="#ExpectedException_0_ToError_0" class="link"><div class="nowrap">ToError
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#ExpectedException_0_IsExceptional_0" class="link"><div class="nowrap">IsExceptional</div></a></li>
+<li><a href="#ExpectedException_0_IsExpected_0" class="link"><div class="nowrap">IsExpected</div></a></li>
+<li><a href="#ExpectedException_0_Append_0" class="link"><div class="nowrap">Append
+
+<span class='parens'>(</span>ErrorException error<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_ExceptionalException_0" class="link"><div class="nowrap">ExceptionalException
+</div></a></li>
+<ul><li><a href="#ExceptionalException_0_ExceptionalException_0" class="link"><div class="nowrap">ExceptionalException
+<span class='parens'>(</span>Exception Exception<span class='parens'>)</span></div></a></li>
+<li><a href="#ExceptionalException_0_ExceptionalException_0" class="link"><div class="nowrap">ExceptionalException
+<span class='parens'>(</span>string Message<span class='comma'>, </span>int Code<span class='parens'>)</span></div></a></li>
+<li><a href="#ExceptionalException_0_ExceptionalException_0" class="link"><div class="nowrap">ExceptionalException
+<span class='parens'>(</span>string Message<span class='comma'>, </span>Exception Exception<span class='parens'>)</span></div></a></li>
+<li><a href="#ExceptionalException_0_Exception_0" class="link"><div class="nowrap">Exception</div></a></li>
+<li><a href="#ExceptionalException_0_Code_0" class="link"><div class="nowrap">Code</div></a></li>
+<li><a href="#ExceptionalException_0_Message_0" class="link"><div class="nowrap">Message</div></a></li>
+<li><a href="#ExceptionalException_0_Inner_0" class="link"><div class="nowrap">Inner</div></a></li>
+<li><a href="#ExceptionalException_0_ToError_0" class="link"><div class="nowrap">ToError
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#ExceptionalException_0_IsExceptional_0" class="link"><div class="nowrap">IsExceptional</div></a></li>
+<li><a href="#ExceptionalException_0_IsExpected_0" class="link"><div class="nowrap">IsExpected</div></a></li>
+<li><a href="#ExceptionalException_0_Append_0" class="link"><div class="nowrap">Append
+
+<span class='parens'>(</span>ErrorException error<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_ManyExceptions_0" class="link"><div class="nowrap">ManyExceptions
+</div></a></li>
+<ul><li><a href="#ManyExceptions_0_ManyExceptions_0" class="link"><div class="nowrap">ManyExceptions
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>ErrorException<span class='generics'>&gt;</span> errors<span class='parens'>)</span></div></a></li>
+<li><a href="#ManyExceptions_0_Errors_0" class="link"><div class="nowrap">Errors</div></a></li>
+<li><a href="#ManyExceptions_0_Code_0" class="link"><div class="nowrap">Code</div></a></li>
+<li><a href="#ManyExceptions_0_Message_0" class="link"><div class="nowrap">Message</div></a></li>
+<li><a href="#ManyExceptions_0_Inner_0" class="link"><div class="nowrap">Inner</div></a></li>
+<li><a href="#ManyExceptions_0_ToError_0" class="link"><div class="nowrap">ToError
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#ManyExceptions_0_IsEmpty_0" class="link"><div class="nowrap">IsEmpty</div></a></li>
+<li><a href="#ManyExceptions_0_IsExceptional_0" class="link"><div class="nowrap">IsExceptional</div></a></li>
+<li><a href="#ManyExceptions_0_IsExpected_0" class="link"><div class="nowrap">IsExpected</div></a></li>
+<li><a href="#ManyExceptions_0_Append_0" class="link"><div class="nowrap">Append
+
+<span class='parens'>(</span>ErrorException error<span class='parens'>)</span></div></a></li>
+<li><a href="#ManyExceptions_0_GetEnumerator_0" class="link"><div class="nowrap">GetEnumerator
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_BottomException_0" class="link"><div class="nowrap">BottomException
+</div></a></li>
+<ul><li><a href="#BottomException_0_Default_0" class="link"><div class="nowrap">Default</div></a></li>
+<li><a href="#BottomException_0_BottomException_0" class="link"><div class="nowrap">BottomException
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#BottomException_0_Message_0" class="link"><div class="nowrap">Message</div></a></li>
+<li><a href="#BottomException_0_Code_0" class="link"><div class="nowrap">Code</div></a></li>
+<li><a href="#BottomException_0_Inner_0" class="link"><div class="nowrap">Inner</div></a></li>
+<li><a href="#BottomException_0_ToError_0" class="link"><div class="nowrap">ToError
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#BottomException_0_Append_0" class="link"><div class="nowrap">Append
+
+<span class='parens'>(</span>ErrorException error<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#LanguageExt.Common_0_Errors_0" class="link"><div class="nowrap">Errors
+</div></a></li>
+<ul><li><a href="#Errors_0_None = new ManyErrors(Seq<Error>.Empty)_0" class="link"><div class="nowrap">None = new ManyErrors(Seq&lt;Error&gt;.Empty)</div></a></li>
+<li><a href="#Errors_0_BottomText =
+            "In a bottom state and therefore cannot proceed.  This can happen when an expression couldn't " +
+            "evaluate to a value.  This might be due to filter/where, or sometimes if a `struct` wasn't initialised " +
+            "properly (i.e. via `default(T)` or an uninitialised member)."_0" class="link"><div class="nowrap">BottomText =
+            &quot;In a bottom state and therefore cannot proceed.  This can happen when an expression couldn&#39;t &quot; +
+            &quot;evaluate to a value.  This might be due to filter/where, or sometimes if a `struct` wasn&#39;t initialised &quot; +
+            &quot;properly (i.e. via `default(T)` or an uninitialised member).&quot;</div></a></li>
+<li><a href="#Errors_0_BottomCode = -2000000001_0" class="link"><div class="nowrap">BottomCode = -2000000001</div></a></li>
+<li><a href="#Errors_0_Bottom = BottomError.Default_0" class="link"><div class="nowrap">Bottom = BottomError.Default</div></a></li>
+<li><a href="#Errors_0_CancelledText = "cancelled"_0" class="link"><div class="nowrap">CancelledText = &quot;cancelled&quot;</div></a></li>
+<li><a href="#Errors_0_CancelledCode = -2000000000_0" class="link"><div class="nowrap">CancelledCode = -2000000000</div></a></li>
+<li><a href="#Errors_0_Cancelled = (CancelledCode, CancelledText)_0" class="link"><div class="nowrap">Cancelled = (CancelledCode, CancelledText)</div></a></li>
+<li><a href="#Errors_0_TimedOutText = "timed out"_0" class="link"><div class="nowrap">TimedOutText = &quot;timed out&quot;</div></a></li>
+<li><a href="#Errors_0_TimedOutCode = -2000000002_0" class="link"><div class="nowrap">TimedOutCode = -2000000002</div></a></li>
+<li><a href="#Errors_0_TimedOut = (TimedOutCode, TimedOutText)_0" class="link"><div class="nowrap">TimedOut = (TimedOutCode, TimedOutText)</div></a></li>
+<li><a href="#Errors_0_SequenceEmptyText = "sequence empty"_0" class="link"><div class="nowrap">SequenceEmptyText = &quot;sequence empty&quot;</div></a></li>
+<li><a href="#Errors_0_SequenceEmptyCode = -2000000003_0" class="link"><div class="nowrap">SequenceEmptyCode = -2000000003</div></a></li>
+<li><a href="#Errors_0_SequenceEmpty = (SequenceEmptyCode, SequenceEmptyText)_0" class="link"><div class="nowrap">SequenceEmpty = (SequenceEmptyCode, SequenceEmptyText)</div></a></li>
+<li><a href="#Errors_0_ClosedText = "closed"_0" class="link"><div class="nowrap">ClosedText = &quot;closed&quot;</div></a></li>
+<li><a href="#Errors_0_ClosedCode = -2000000004_0" class="link"><div class="nowrap">ClosedCode = -2000000004</div></a></li>
+<li><a href="#Errors_0_Closed = (ClosedCode, ClosedText)_0" class="link"><div class="nowrap">Closed = (ClosedCode, ClosedText)</div></a></li>
+<li><a href="#Errors_0_ParseErrorCode = -2000000005_0" class="link"><div class="nowrap">ParseErrorCode = -2000000005</div></a></li>
+<li><a href="#Errors_0_ParseError_0" class="link"><div class="nowrap">ParseError
+
+<span class='parens'>(</span>string msg<span class='parens'>)</span></div></a></li>
+<li><a href="#Errors_0_ManyErrorsCode = -2000000006_0" class="link"><div class="nowrap">ManyErrorsCode = -2000000006</div></a></li></ul></ul></div>
+<div class="interface"><H1>Sub modules</H1>
+<table><tbody><tr><td class="src clearfix"><span class="inst-left"><a href="Result/index.html" class="link">Result</a></span></td></tr></tbody></table>
+<div class="top"><p class="src"><span class="keyword">record</span>
+<a id="_0_Error_0" class="def">Error</a>
+
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L15" class="link">Source</a>
+<a href="#_0_Error_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Abstract error value</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+<div class="subs methods"><p class="caption">Properties</p>
+<div class="top"><p class="src"><span class="keyword">property</span>
+int
+<a id="Error_0_Code_0" class="def">Code</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L20" class="link">Source</a>
+<a href="#Error_0_Code_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Error code</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+string
+<a id="Error_0_Message_0" class="def">Message</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L27" class="link">Source</a>
+<a href="#Error_0_Message_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Error message</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+Option<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span>
+<a id="Error_0_Inner_0" class="def">Inner</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L33" class="link">Source</a>
+<a href="#Error_0_Inner_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Inner error</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+bool
+<a id="Error_0_IsExceptional_0" class="def">IsExceptional</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L57" class="link">Source</a>
+<a href="#Error_0_IsExceptional_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>True if the error is exceptional</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+bool
+<a id="Error_0_IsExpected_0" class="def">IsExpected</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L63" class="link">Source</a>
+<a href="#Error_0_IsExpected_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>True if the error is expected</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+bool
+<a id="Error_0_IsEmpty_0" class="def">IsEmpty</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L86" class="link">Source</a>
+<a href="#Error_0_IsEmpty_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>This type can contain zero or more errors.</p>
+<p>If <code>IsEmpty</code> is <code>true</code> then this is like <code>None</code> in <code>Option</code>: still an error, but without any specific
+information about the error.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+int
+<a id="Error_0_Count_0" class="def">Count</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L96" class="link">Source</a>
+<a href="#Error_0_Count_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>This type can contain zero or more errors.  This property returns the number of information carrying errors.</p>
+<p>If <code>Count</code> is <code>0</code> then this is like <code>None</code> in <code>Option</code>: still an error, but without any specific information
+about the error.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+Option<span class='generics'>&lt;</span>Exception<span class='generics'>&gt;</span>
+<a id="Error_0_Exception_0" class="def">Exception</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L111" class="link">Source</a>
+<a href="#Error_0_Exception_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>If this error represents an exceptional error, then this will return that exception, otherwise <code>None</code></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="Error_0_Is_1" class="def">Is</a>
+<span class='generics'>&lt;</span>E<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L40" class="link">Source</a>
+<a href="#Error_0_Is_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> E : Exception</span></div></div></p>
+<div class="doc"><div><p>If this error represents an exceptional error, then this will return true if the exceptional error is of type E</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="Error_0_Is_0" class="def">Is</a>
+
+<span class='parens'>(</span>Error error<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L46" class="link">Source</a>
+<a href="#Error_0_Is_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Return true if this error contains or <em>is</em> the <code>error</code> provided</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Error
+<a id="Error_0_Head_0" class="def">Head</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L69" class="link">Source</a>
+<a href="#Error_0_Head_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Get the first error (this will be <code>Errors.None</code> if there are zero errors)</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Error
+<a id="Error_0_Tail_0" class="def">Tail</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L76" class="link">Source</a>
+<a href="#Error_0_Tail_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Get the errors with the head removed (this may be <code>Errors.None</code> if there are zero errors in the tail)</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Exception
+<a id="Error_0_ToException_0" class="def">ToException</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L104" class="link">Source</a>
+<a href="#Error_0_ToException_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>If this error represents an exceptional error, then this will return that exception, otherwise it will
+generate a new ErrorException that contains the code, message, and inner of this Error.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ErrorException
+<a id="Error_0_ToErrorException_0" class="def">ToErrorException</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L120" class="link">Source</a>
+<a href="#Error_0_ToErrorException_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Convert to an <code>ErrorException</code> which is like <code>Error</code> but derived from the <code>Exception</code> hierarchy</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Error
+<a id="Error_0_Append_0" class="def">Append</a>
+
+<span class='parens'>(</span>Error error<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L129" class="link">Source</a>
+<a href="#Error_0_Append_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Append an error to this error</p>
+</div>
+<div><p>Single errors will be converted to <code>ManyErrors</code>;  <code>ManyErrors</code> will have their collection updated</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">error</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Error</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IEnumerable<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span>
+<a id="Error_0_AsEnumerable_0" class="def">AsEnumerable</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L147" class="link">Source</a>
+<a href="#Error_0_AsEnumerable_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+string
+<a id="Error_0_ToString_0" class="def">ToString</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L156" class="link">Source</a>
+<a href="#Error_0_ToString_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Convert the error to a string</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Error
+<a id="Error_0_New_0" class="def">New</a>
+
+<span class='parens'>(</span>Exception thisException<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L164" class="link">Source</a>
+<a href="#Error_0_New_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Create an <code>Exceptional</code> error</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">thisException</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Exception</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Error
+<a id="Error_0_New_0" class="def">New</a>
+
+<span class='parens'>(</span>string message<span class='comma'>, </span>Exception thisException<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L174" class="link">Source</a>
+<a href="#Error_0_New_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Create a <code>Exceptional</code> error with an overriden message.  This can be useful for sanitising the display message
+when internally we're carrying the exception.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">message</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Error message</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">thisException</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Exception</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Error
+<a id="Error_0_New_0" class="def">New</a>
+
+<span class='parens'>(</span>string message<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L182" class="link">Source</a>
+<a href="#Error_0_New_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Create an <code>Expected</code> error</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">message</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Error message</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Error
+<a id="Error_0_New_0" class="def">New</a>
+
+<span class='parens'>(</span>int code<span class='comma'>, </span>string message<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L191" class="link">Source</a>
+<a href="#Error_0_New_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Create an <code>Expected</code> error</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">code</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Error code</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">message</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Error message</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Error
+<a id="Error_0_New_0" class="def">New</a>
+
+<span class='parens'>(</span>int code<span class='comma'>, </span>string message<span class='comma'>, </span>Error inner<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L201" class="link">Source</a>
+<a href="#Error_0_New_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Create an <code>Expected</code> error</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">code</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Error code</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">message</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Error message</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">inner</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>The inner error to this error</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Error
+<a id="Error_0_New_0" class="def">New</a>
+
+<span class='parens'>(</span>string message<span class='comma'>, </span>Error inner<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L210" class="link">Source</a>
+<a href="#Error_0_New_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Create an <code>Expected</code> error</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">message</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Error message</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">inner</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>The inner error to this error</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Error
+<a id="Error_0_Many_0" class="def">Many</a>
+
+<span class='parens'>(</span>params Error[] errors<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L220" class="link">Source</a>
+<a href="#Error_0_Many_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Create a <code>ManyErrors</code> error</p>
+</div>
+<div><p>Collects many errors into a single <code>Error</code> type, called <code>ManyErrors</code></p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">code</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Error code</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">inner</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>The inner error to this error</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Error
+<a id="Error_0_Many_0" class="def">Many</a>
+
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span> errors<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L233" class="link">Source</a>
+<a href="#Error_0_Many_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Create a new error</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">code</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Error code</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">inner</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>The inner error to this error</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Error
+<a id="Error_0_FromObject_0" class="def">FromObject</a>
+
+<span class='parens'>(</span>object value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L262" class="link">Source</a>
+<a href="#Error_0_FromObject_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Attempt to recover an error from an object.
+Will accept Error, ErrorException, Exception, string, Option<Error>
+If it fails, Errors.Bottom is returned</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<a id="Error_0_Throw_0" class="def">Throw</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L292" class="link">Source</a>
+<a href="#Error_0_Throw_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Throw the error as an exception</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+<div class="subs methods"><p class="caption">Operators</p>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="Error_0_+_0" class="def">+</a>
+<span class='parens'>(</span>Error lhs<span class='comma'>, </span>Error rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L143" class="link">Source</a>
+<a href="#Error_0_+_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Append an error to this error</p>
+</div>
+<div><p>Single errors will be converted to <code>ManyErrors</code>;  <code>ManyErrors</code> will have their collection updated</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">record</span>
+<a id="_0_Expected_0" class="def">Expected</a>
+
+<span class='parens'>(</span>string Message<span class='comma'>, </span>int Code<span class='comma'>, </span>Option<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span> Inner = default<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L315" class="link">Source</a>
+<a href="#_0_Expected_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Contains the following:</p>
+<ul>
+<li class='markdown-bullet'><code>Code</code> - an integer value</li>
+<li class='markdown-bullet'><code>Message</code> - display text</li>
+<li class='markdown-bullet'><code>Option&lt;Error&gt;</code> - a nested inner error</li>
+</ul>
+<p>It returns <code>false</code> when <code>IsExceptional</code> is called against it; and <code>true</code> when <code>IsExpected</code> is
+called against it.</p>
+<p>Equality is done via the <code>Code</code>, so any two <code>Expected</code> errors with the same <code>Code</code> will be considered
+the same.  This is useful when using the <code>@catch</code> behaviours with the <code>Aff</code> and <code>Eff</code> monads.  If the
+<code>Code</code> is <code>0</code> then equality is done by comparing <code>Message</code>.</p>
+<blockquote>
+<p>This allows for localised error messages where the message is ignored when matching/catching</p>
+</blockquote>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Message</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Error message</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Code</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Error code</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Inner</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Optional inner error</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+<div class="subs methods"><p class="caption">Properties</p>
+<div class="top"><p class="src"><span class="keyword">property</span>
+string
+<a id="Expected_0_Message_0" class="def">Message</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L321" class="link">Source</a>
+<a href="#Expected_0_Message_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Error message</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+int
+<a id="Expected_0_Code_0" class="def">Code</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L329" class="link">Source</a>
+<a href="#Expected_0_Code_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Error code</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+Option<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span>
+<a id="Expected_0_Inner_0" class="def">Inner</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L337" class="link">Source</a>
+<a href="#Expected_0_Inner_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Inner error</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+bool
+<a id="Expected_0_IsExceptional_0" class="def">IsExceptional</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L361" class="link">Source</a>
+<a href="#Expected_0_IsExceptional_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>True if the error is exceptional</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+bool
+<a id="Expected_0_IsExpected_0" class="def">IsExpected</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L368" class="link">Source</a>
+<a href="#Expected_0_IsExpected_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>True if the error is expected</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+string
+<a id="Expected_0_ToString_0" class="def">ToString</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L341" class="link">Source</a>
+<a href="#Expected_0_ToString_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ErrorException
+<a id="Expected_0_ToErrorException_0" class="def">ToErrorException</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L347" class="link">Source</a>
+<a href="#Expected_0_ToErrorException_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Generates a new <code>ErrorException</code> that contains the <code>Code</code>, <code>Message</code>, and <code>Inner</code> of this <code>Error</code>.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="Expected_0_Is_1" class="def">Is</a>
+<span class='generics'>&lt;</span>E<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L354" class="link">Source</a>
+<a href="#Expected_0_Is_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns false because this type isn't exceptional</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">record</span>
+<a id="_0_Exceptional_0" class="def">Exceptional</a>
+
+<span class='parens'>(</span>string Message<span class='comma'>, </span>int Code<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L383" class="link">Source</a>
+<a href="#_0_Exceptional_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>This contains an <code>Exception</code> is the classic sense.  This also returns <code>true</code> when <code>IsExceptional</code> is
+called against it; and <code>false</code> when <code>IsExpected</code> is called against it.</p>
+</div>
+<div><p>If this record is constructed via deserialisation, or the default constructor then the internal <code>Exception</code> will
+will be <code>null</code>.  This is intentional to stop exceptions leaking over application boundaries.  The type will
+gracefully handle that, but all stack-trace information (and the like) will be erased.  It is still considered
+an exceptional error however.</p>
+</div>
+
+</div>
+
+
+
+
+
+<div class="subs methods"><p class="caption">Properties</p>
+<div class="top"><p class="src"><span class="keyword">property</span>
+string
+<a id="Exceptional_0_Message_0" class="def">Message</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L407" class="link">Source</a>
+<a href="#Exceptional_0_Message_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+int
+<a id="Exceptional_0_Code_0" class="def">Code</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L410" class="link">Source</a>
+<a href="#Exceptional_0_Code_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+Option<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span>
+<a id="Exceptional_0_Inner_0" class="def">Inner</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L419" class="link">Source</a>
+<a href="#Exceptional_0_Inner_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns the inner exception as an <code>Error</code> (if one exists), <code>None</code> otherwise</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+bool
+<a id="Exceptional_0_IsExceptional_0" class="def">IsExceptional</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L461" class="link">Source</a>
+<a href="#Exceptional_0_IsExceptional_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>True if the error is exceptional</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+bool
+<a id="Exceptional_0_IsExpected_0" class="def">IsExpected</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L468" class="link">Source</a>
+<a href="#Exceptional_0_IsExpected_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>True if the error is expected</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+string
+<a id="Exceptional_0_ToString_0" class="def">ToString</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L413" class="link">Source</a>
+<a href="#Exceptional_0_ToString_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Exception
+<a id="Exceptional_0_ToException_0" class="def">ToException</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L429" class="link">Source</a>
+<a href="#Exceptional_0_ToException_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Gets the <code>Exception</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ErrorException
+<a id="Exceptional_0_ToErrorException_0" class="def">ToErrorException</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L437" class="link">Source</a>
+<a href="#Exceptional_0_ToErrorException_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Gets the <code>ErrorException</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="Exceptional_0_Is_1" class="def">Is</a>
+<span class='generics'>&lt;</span>E<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L446" class="link">Source</a>
+<a href="#Exceptional_0_Is_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Return true if the exceptional error is of type E</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="Exceptional_0_Is_0" class="def">Is</a>
+
+<span class='parens'>(</span>Error error<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L450" class="link">Source</a>
+<a href="#Exceptional_0_Is_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">record</span>
+<a id="_0_BottomError_0" class="def">BottomError</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L476" class="link">Source</a>
+<a href="#_0_BottomError_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Bottom error</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+<div class="subs methods"><p class="caption">Fields</p>
+<div class="top"><p class="src"><span class="keyword">field</span>
+Error
+<a id="BottomError_0_Default = new BottomError()_0" class="def">Default = new BottomError()</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L479" class="link">Source</a>
+<a href="#BottomError_0_Default = new BottomError()_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+<div class="subs methods"><p class="caption">Properties</p>
+<div class="top"><p class="src"><span class="keyword">property</span>
+int
+<a id="BottomError_0_Code_0" class="def">Code</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L481" class="link">Source</a>
+<a href="#BottomError_0_Code_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+string
+<a id="BottomError_0_Message_0" class="def">Message</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L484" class="link">Source</a>
+<a href="#BottomError_0_Message_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+bool
+<a id="BottomError_0_IsExceptional_0" class="def">IsExceptional</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L523" class="link">Source</a>
+<a href="#BottomError_0_IsExceptional_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>True if the error is exceptional</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+bool
+<a id="BottomError_0_IsExpected_0" class="def">IsExpected</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L530" class="link">Source</a>
+<a href="#BottomError_0_IsExpected_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>True if the error is expected</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+string
+<a id="BottomError_0_ToString_0" class="def">ToString</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L487" class="link">Source</a>
+<a href="#BottomError_0_ToString_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Exception
+<a id="BottomError_0_ToException_0" class="def">ToException</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L494" class="link">Source</a>
+<a href="#BottomError_0_ToException_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Gets the Exception</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ErrorException
+<a id="BottomError_0_ToErrorException_0" class="def">ToErrorException</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L501" class="link">Source</a>
+<a href="#BottomError_0_ToErrorException_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Gets the <code>ErrorException</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="BottomError_0_Is_1" class="def">Is</a>
+<span class='generics'>&lt;</span>E<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L507" class="link">Source</a>
+<a href="#BottomError_0_Is_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Return true if the exceptional error is of type E</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="BottomError_0_Is_0" class="def">Is</a>
+
+<span class='parens'>(</span>Error error<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L514" class="link">Source</a>
+<a href="#BottomError_0_Is_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Return true this error contains or <em>is</em> the <code>error</code> provided</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">record</span>
+<a id="_0_ManyErrors_0" class="def">ManyErrors</a>
+
+<span class='parens'>(</span>[property: DataMember] Seq<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span> Errors<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L541" class="link">Source</a>
+<a href="#_0_ManyErrors_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p><code>ManyErrors</code> allows for zero or more errors to be collected.  This is useful for applicative behaviours
+like validation.  It effectively turns the <code>Error</code> type into a monoid, with 'zero' being <code>Errors.None</code>,
+and 'append' coming from the <code>Append</code> method or use of <code>operator+</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Errors</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Errors</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+<div class="subs methods"><p class="caption">Properties</p>
+<div class="top"><p class="src"><span class="keyword">property</span>
+int
+<a id="ManyErrors_0_Code_0" class="def">Code</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L544" class="link">Source</a>
+<a href="#ManyErrors_0_Code_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+string
+<a id="ManyErrors_0_Message_0" class="def">Message</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L547" class="link">Source</a>
+<a href="#ManyErrors_0_Message_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+bool
+<a id="ManyErrors_0_IsExceptional_0" class="def">IsExceptional</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L582" class="link">Source</a>
+<a href="#ManyErrors_0_IsExceptional_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>True if any of the the errors are exceptional</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+bool
+<a id="ManyErrors_0_IsExpected_0" class="def">IsExpected</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L589" class="link">Source</a>
+<a href="#ManyErrors_0_IsExpected_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>True if all of the the errors are expected</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+bool
+<a id="ManyErrors_0_IsEmpty_0" class="def">IsEmpty</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L615" class="link">Source</a>
+<a href="#ManyErrors_0_IsEmpty_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>This type can contain zero or more errors.  If <code>IsEmpty</code> is <code>true</code> then this is like <code>None</code> in <code>Option</code>:  still
+an error, but without any specific information about the error.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+int
+<a id="ManyErrors_0_Count_0" class="def">Count</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L625" class="link">Source</a>
+<a href="#ManyErrors_0_Count_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>This type can contain zero or more errors.  This property returns the number of information carrying errors.</p>
+<p>If <code>Count</code> is <code>0</code> then this is like <code>None</code> in <code>Option</code>: still an error, but without any specific information
+about the error.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+string
+<a id="ManyErrors_0_ToString_0" class="def">ToString</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L550" class="link">Source</a>
+<a href="#ManyErrors_0_ToString_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Exception
+<a id="ManyErrors_0_ToException_0" class="def">ToException</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L556" class="link">Source</a>
+<a href="#ManyErrors_0_ToException_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Gets the <code>Exception</code></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ErrorException
+<a id="ManyErrors_0_ToErrorException_0" class="def">ToErrorException</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L562" class="link">Source</a>
+<a href="#ManyErrors_0_ToErrorException_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Gets the <code>ErrorException</code></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="ManyErrors_0_Is_1" class="def">Is</a>
+<span class='generics'>&lt;</span>E<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L568" class="link">Source</a>
+<a href="#ManyErrors_0_Is_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>False</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="ManyErrors_0_Is_0" class="def">Is</a>
+
+<span class='parens'>(</span>Error error<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L575" class="link">Source</a>
+<a href="#ManyErrors_0_Is_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Return true this error contains or <em>is</em> the <code>error</code> provided</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Error
+<a id="ManyErrors_0_Head_0" class="def">Head</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L596" class="link">Source</a>
+<a href="#ManyErrors_0_Head_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Get the first error (this may be <code>Errors.None</code> if there are zero errors)</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Error
+<a id="ManyErrors_0_Tail_0" class="def">Tail</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L605" class="link">Source</a>
+<a href="#ManyErrors_0_Tail_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Get the errors with the head removed (this may be <code>Errors.None</code> if there are zero errors in the tail)</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IEnumerable<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span>
+<a id="ManyErrors_0_AsEnumerable_0" class="def">AsEnumerable</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Error.cs#L629" class="link">Source</a>
+<a href="#ManyErrors_0_AsEnumerable_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_ErrorException_0" class="def">ErrorException</a>
+
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L26" class="link">Source</a>
+<a href="#_0_ErrorException_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Error value</p>
+</div>
+<div><p>Unlike exceptions, <code>Error</code> can be either:</p>
+<ul>
+<li class='markdown-bullet'><code>Exceptional</code>         - representing an unexpected error</li>
+<li class='markdown-bullet'><code>LabelledExceptional</code> - representing an unexpected error with additional context (a message)</li>
+<li class='markdown-bullet'><code>Expected</code>            - representing an expected error</li>
+<li class='markdown-bullet'><code>ManyErrors</code>          - representing an many errors</li>
+</ul>
+<p>i.e. it is either created from an exception or it isn't.  This allows for expected errors to be represented
+without throwing exceptions.</p>
+</div>
+
+</div>
+
+
+
+
+
+<div class="subs methods"><p class="caption">Properties</p>
+<div class="top"><p class="src"><span class="keyword">property</span>
+int
+<a id="ErrorException_0_Code_0" class="def">Code</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L34" class="link">Source</a>
+<a href="#ErrorException_0_Code_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Error code</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+Option<span class='generics'>&lt;</span>ErrorException<span class='generics'>&gt;</span>
+<a id="ErrorException_0_Inner_0" class="def">Inner</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L40" class="link">Source</a>
+<a href="#ErrorException_0_Inner_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Inner error</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+bool
+<a id="ErrorException_0_IsEmpty_0" class="def">IsEmpty</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L53" class="link">Source</a>
+<a href="#ErrorException_0_IsEmpty_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>This type can contain zero or more errors.  If <code>IsEmpty</code> is <code>true</code> then this is like <code>None</code> in <code>Option</code>:  still
+an error, but without any specific information about the error.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+bool
+<a id="ErrorException_0_IsExceptional_0" class="def">IsExceptional</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L60" class="link">Source</a>
+<a href="#ErrorException_0_IsExceptional_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>True if the error is exceptional</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+bool
+<a id="ErrorException_0_IsExpected_0" class="def">IsExpected</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L66" class="link">Source</a>
+<a href="#ErrorException_0_IsExpected_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>True if the error is expected</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Error
+<a id="ErrorException_0_ToError_0" class="def">ToError</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L46" class="link">Source</a>
+<a href="#ErrorException_0_ToError_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Convert to an <code>Error</code></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ErrorException
+<a id="ErrorException_0_Append_0" class="def">Append</a>
+
+<span class='parens'>(</span>ErrorException error<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L73" class="link">Source</a>
+<a href="#ErrorException_0_Append_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Append an error to this error</p>
+</div>
+<div><p>Single errors will be converted to <code>ManyErrors</code>;  <code>ManyErrors</code> will have their collection updated</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IEnumerator<span class='generics'>&lt;</span>ErrorException<span class='generics'>&gt;</span>
+<a id="ErrorException_0_GetEnumerator_0" class="def">GetEnumerator</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L84" class="link">Source</a>
+<a href="#ErrorException_0_GetEnumerator_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+string
+<a id="ErrorException_0_ToString_0" class="def">ToString</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L96" class="link">Source</a>
+<a href="#ErrorException_0_ToString_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Convert the error to a string</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ErrorException
+<a id="ErrorException_0_New_0" class="def">New</a>
+
+<span class='parens'>(</span>Exception thisException<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L105" class="link">Source</a>
+<a href="#ErrorException_0_New_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Create a new error</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">message</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Error message</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ErrorException
+<a id="ErrorException_0_New_0" class="def">New</a>
+
+<span class='parens'>(</span>string message<span class='comma'>, </span>Exception thisException<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L114" class="link">Source</a>
+<a href="#ErrorException_0_New_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Create a new error</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">message</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Error message</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">thisException</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>The exception this error represents</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ErrorException
+<a id="ErrorException_0_New_0" class="def">New</a>
+
+<span class='parens'>(</span>string message<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L122" class="link">Source</a>
+<a href="#ErrorException_0_New_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Create a new error</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">message</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Error message</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ErrorException
+<a id="ErrorException_0_New_0" class="def">New</a>
+
+<span class='parens'>(</span>int code<span class='comma'>, </span>string message<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L131" class="link">Source</a>
+<a href="#ErrorException_0_New_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Create a new error</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">code</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Error code</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">message</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Error message</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ErrorException
+<a id="ErrorException_0_New_0" class="def">New</a>
+
+<span class='parens'>(</span>int code<span class='comma'>, </span>string message<span class='comma'>, </span>ErrorException inner<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L141" class="link">Source</a>
+<a href="#ErrorException_0_New_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Create a new error</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">code</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Error code</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">message</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Error message</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">inner</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>The inner error to this error</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ErrorException
+<a id="ErrorException_0_New_0" class="def">New</a>
+
+<span class='parens'>(</span>string message<span class='comma'>, </span>ErrorException inner<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L150" class="link">Source</a>
+<a href="#ErrorException_0_New_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Create a new error</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">code</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Error code</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">inner</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>The inner error to this error</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ErrorException
+<a id="ErrorException_0_Many_0" class="def">Many</a>
+
+<span class='parens'>(</span>params ErrorException[] errors<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L159" class="link">Source</a>
+<a href="#ErrorException_0_Many_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Create a new error</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">code</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Error code</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">inner</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>The inner error to this error</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ErrorException
+<a id="ErrorException_0_Many_0" class="def">Many</a>
+
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>ErrorException<span class='generics'>&gt;</span> errors<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L168" class="link">Source</a>
+<a href="#ErrorException_0_Many_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Create a new error</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">code</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Error code</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">inner</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>The inner error to this error</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+<div class="subs methods"><p class="caption">Operators</p>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="ErrorException_0_+_0" class="def">+</a>
+<span class='parens'>(</span>ErrorException lhs<span class='comma'>, </span>ErrorException rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L80" class="link">Source</a>
+<a href="#ErrorException_0_+_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Append an error to this error</p>
+</div>
+<div><p>Single errors will be converted to <code>ManyErrors</code>;  <code>ManyErrors</code> will have their collection updated</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_ExpectedException_0" class="def">ExpectedException</a>
+
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L176" class="link">Source</a>
+<a href="#_0_ExpectedException_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Represents expected errors</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+<div class="subs methods"><p class="caption">Properties</p>
+<div class="top"><p class="src"><span class="keyword">property</span>
+int
+<a id="ExpectedException_0_Code_0" class="def">Code</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L184" class="link">Source</a>
+<a href="#ExpectedException_0_Code_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Error code</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+string
+<a id="ExpectedException_0_Message_0" class="def">Message</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L190" class="link">Source</a>
+<a href="#ExpectedException_0_Message_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Error message</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+Option<span class='generics'>&lt;</span>ErrorException<span class='generics'>&gt;</span>
+<a id="ExpectedException_0_Inner_0" class="def">Inner</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L196" class="link">Source</a>
+<a href="#ExpectedException_0_Inner_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Inner error</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+bool
+<a id="ExpectedException_0_IsExceptional_0" class="def">IsExceptional</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L209" class="link">Source</a>
+<a href="#ExpectedException_0_IsExceptional_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>True if the error is exceptional</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+bool
+<a id="ExpectedException_0_IsExpected_0" class="def">IsExpected</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L216" class="link">Source</a>
+<a href="#ExpectedException_0_IsExpected_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>True if the error is expected</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+<div class="subs methods"><p class="caption">Constructors</p>
+<div class="top"><p class="src"><span class="keyword">constructor</span>
+<a id="ExpectedException_0_ExpectedException_0" class="def">ExpectedException</a>
+<span class='parens'>(</span>string message<span class='comma'>, </span>int code<span class='comma'>, </span>Option<span class='generics'>&lt;</span>ErrorException<span class='generics'>&gt;</span> inner<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L178" class="link">Source</a>
+<a href="#ExpectedException_0_ExpectedException_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Error
+<a id="ExpectedException_0_ToError_0" class="def">ToError</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L202" class="link">Source</a>
+<a href="#ExpectedException_0_ToError_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Generates a new <code>Error</code> that contains the <code>Code</code>, <code>Message</code>, and <code>Inner</code> of this <code>ErrorException</code>.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ErrorException
+<a id="ExpectedException_0_Append_0" class="def">Append</a>
+
+<span class='parens'>(</span>ErrorException error<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L224" class="link">Source</a>
+<a href="#ExpectedException_0_Append_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Append an error to this error</p>
+</div>
+<div><p>Single errors will be converted to <code>ManyErrors</code>;  <code>ManyErrors</code> will have their collection updated</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_ExceptionalException_0" class="def">ExceptionalException</a>
+
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L235" class="link">Source</a>
+<a href="#_0_ExceptionalException_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Represents an exceptional (unexpected) error</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Exception</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Exceptional error</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+<div class="subs methods"><p class="caption">Fields</p>
+<div class="top"><p class="src"><span class="keyword">field</span>
+Exception?
+<a id="ExceptionalException_0_Exception_0" class="def">Exception</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L256" class="link">Source</a>
+<a href="#ExceptionalException_0_Exception_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+<div class="subs methods"><p class="caption">Properties</p>
+<div class="top"><p class="src"><span class="keyword">property</span>
+int
+<a id="ExceptionalException_0_Code_0" class="def">Code</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L257" class="link">Source</a>
+<a href="#ExceptionalException_0_Code_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+string
+<a id="ExceptionalException_0_Message_0" class="def">Message</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L258" class="link">Source</a>
+<a href="#ExceptionalException_0_Message_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+Option<span class='generics'>&lt;</span>ErrorException<span class='generics'>&gt;</span>
+<a id="ExceptionalException_0_Inner_0" class="def">Inner</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L263" class="link">Source</a>
+<a href="#ExceptionalException_0_Inner_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns the inner exception as an <code>Error</code> (if one exists), None otherwise</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+bool
+<a id="ExceptionalException_0_IsExceptional_0" class="def">IsExceptional</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L281" class="link">Source</a>
+<a href="#ExceptionalException_0_IsExceptional_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>True if the error is exceptional</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+bool
+<a id="ExceptionalException_0_IsExpected_0" class="def">IsExpected</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L288" class="link">Source</a>
+<a href="#ExceptionalException_0_IsExpected_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>True if the error is expected</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+<div class="subs methods"><p class="caption">Constructors</p>
+<div class="top"><p class="src"><span class="keyword">constructor</span>
+<a id="ExceptionalException_0_ExceptionalException_0" class="def">ExceptionalException</a>
+<span class='parens'>(</span>Exception Exception<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L237" class="link">Source</a>
+<a href="#ExceptionalException_0_ExceptionalException_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">constructor</span>
+<a id="ExceptionalException_0_ExceptionalException_0" class="def">ExceptionalException</a>
+<span class='parens'>(</span>string Message<span class='comma'>, </span>int Code<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L244" class="link">Source</a>
+<a href="#ExceptionalException_0_ExceptionalException_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">constructor</span>
+<a id="ExceptionalException_0_ExceptionalException_0" class="def">ExceptionalException</a>
+<span class='parens'>(</span>string Message<span class='comma'>, </span>Exception Exception<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L250" class="link">Source</a>
+<a href="#ExceptionalException_0_ExceptionalException_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Error
+<a id="ExceptionalException_0_ToError_0" class="def">ToError</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L273" class="link">Source</a>
+<a href="#ExceptionalException_0_ToError_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Gets the <code>Error</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ErrorException
+<a id="ExceptionalException_0_Append_0" class="def">Append</a>
+
+<span class='parens'>(</span>ErrorException error<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L298" class="link">Source</a>
+<a href="#ExceptionalException_0_Append_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Append an error to this error</p>
+</div>
+<div><p>Single errors will be converted to <code>ManyErrors</code>;  <code>ManyErrors</code> will have their collection updated</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">error</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Error</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_ManyExceptions_0" class="def">ManyExceptions</a>
+
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L309" class="link">Source</a>
+<a href="#_0_ManyExceptions_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Represents multiple errors</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Errors</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Errors</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+<div class="subs methods"><p class="caption">Fields</p>
+<div class="top"><p class="src"><span class="keyword">field</span>
+Seq<span class='generics'>&lt;</span>ErrorException<span class='generics'>&gt;</span>
+<a id="ManyExceptions_0_Errors_0" class="def">Errors</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L314" class="link">Source</a>
+<a href="#ManyExceptions_0_Errors_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+<div class="subs methods"><p class="caption">Properties</p>
+<div class="top"><p class="src"><span class="keyword">property</span>
+int
+<a id="ManyExceptions_0_Code_0" class="def">Code</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L316" class="link">Source</a>
+<a href="#ManyExceptions_0_Code_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+string
+<a id="ManyExceptions_0_Message_0" class="def">Message</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L319" class="link">Source</a>
+<a href="#ManyExceptions_0_Message_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+Option<span class='generics'>&lt;</span>ErrorException<span class='generics'>&gt;</span>
+<a id="ManyExceptions_0_Inner_0" class="def">Inner</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L325" class="link">Source</a>
+<a href="#ManyExceptions_0_Inner_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns the inner exception as an <code>Error</code> (if one exists), None otherwise</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+bool
+<a id="ManyExceptions_0_IsEmpty_0" class="def">IsEmpty</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L339" class="link">Source</a>
+<a href="#ManyExceptions_0_IsEmpty_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>This type can contain zero or more errors.  If <code>IsEmpty</code> is <code>true</code> then this is like <code>None</code> in <code>Option</code>:  still
+an error, but without any specific information about the error.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+bool
+<a id="ManyExceptions_0_IsExceptional_0" class="def">IsExceptional</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L346" class="link">Source</a>
+<a href="#ManyExceptions_0_IsExceptional_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>True if any of the the errors are exceptional</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+bool
+<a id="ManyExceptions_0_IsExpected_0" class="def">IsExpected</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L353" class="link">Source</a>
+<a href="#ManyExceptions_0_IsExpected_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>True if all of the the errors are expected</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+<div class="subs methods"><p class="caption">Constructors</p>
+<div class="top"><p class="src"><span class="keyword">constructor</span>
+<a id="ManyExceptions_0_ManyExceptions_0" class="def">ManyExceptions</a>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>ErrorException<span class='generics'>&gt;</span> errors<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L311" class="link">Source</a>
+<a href="#ManyExceptions_0_ManyExceptions_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Error
+<a id="ManyExceptions_0_ToError_0" class="def">ToError</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L332" class="link">Source</a>
+<a href="#ManyExceptions_0_ToError_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Gets the Exception</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ErrorException
+<a id="ManyExceptions_0_Append_0" class="def">Append</a>
+
+<span class='parens'>(</span>ErrorException error<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L363" class="link">Source</a>
+<a href="#ManyExceptions_0_Append_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Append an error to this error</p>
+</div>
+<div><p>Single errors will be converted to <code>ManyErrors</code>;  <code>ManyErrors</code> will have their collection updated</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">error</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Error</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IEnumerator<span class='generics'>&lt;</span>ErrorException<span class='generics'>&gt;</span>
+<a id="ManyExceptions_0_GetEnumerator_0" class="def">GetEnumerator</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L369" class="link">Source</a>
+<a href="#ManyExceptions_0_GetEnumerator_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_BottomException_0" class="def">BottomException</a>
+
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L379" class="link">Source</a>
+<a href="#_0_BottomException_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Value is bottom</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+<div class="subs methods"><p class="caption">Fields</p>
+<div class="top"><p class="src"><span class="keyword">field</span>
+BottomException
+<a id="BottomException_0_Default_0" class="def">Default</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L382" class="link">Source</a>
+<a href="#BottomException_0_Default_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+<div class="subs methods"><p class="caption">Properties</p>
+<div class="top"><p class="src"><span class="keyword">property</span>
+string
+<a id="BottomException_0_Message_0" class="def">Message</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L393" class="link">Source</a>
+<a href="#BottomException_0_Message_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+int
+<a id="BottomException_0_Code_0" class="def">Code</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L396" class="link">Source</a>
+<a href="#BottomException_0_Code_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+Option<span class='generics'>&lt;</span>ErrorException<span class='generics'>&gt;</span>
+<a id="BottomException_0_Inner_0" class="def">Inner</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L399" class="link">Source</a>
+<a href="#BottomException_0_Inner_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+<div class="subs methods"><p class="caption">Constructors</p>
+<div class="top"><p class="src"><span class="keyword">constructor</span>
+<a id="BottomException_0_BottomException_0" class="def">BottomException</a>
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L389" class="link">Source</a>
+<a href="#BottomException_0_BottomException_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Error
+<a id="BottomException_0_ToError_0" class="def">ToError</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L402" class="link">Source</a>
+<a href="#BottomException_0_ToError_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ErrorException
+<a id="BottomException_0_Append_0" class="def">Append</a>
+
+<span class='parens'>(</span>ErrorException error<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/ErrorException.cs#L405" class="link">Source</a>
+<a href="#BottomException_0_Append_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="LanguageExt.Common_0_Errors_0" class="def">Errors</a>
+
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Errors.cs#L4" class="link">Source</a>
+<a href="#LanguageExt.Common_0_Errors_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+<div class="subs methods"><p class="caption">Fields</p>
+<div class="top"><p class="src"><span class="keyword">field</span>
+Error
+<a id="Errors_0_None = new ManyErrors(Seq<Error>.Empty)_0" class="def">None = new ManyErrors(Seq&lt;Error&gt;.Empty)</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Errors.cs#L9" class="link">Source</a>
+<a href="#Errors_0_None = new ManyErrors(Seq<Error>.Empty)_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>An error state without any error values</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">field</span>
+string
+<a id="Errors_0_BottomText =
+            "In a bottom state and therefore cannot proceed.  This can happen when an expression couldn't " +
+            "evaluate to a value.  This might be due to filter/where, or sometimes if a `struct` wasn't initialised " +
+            "properly (i.e. via `default(T)` or an uninitialised member)."_0" class="def">BottomText =
+            &quot;In a bottom state and therefore cannot proceed.  This can happen when an expression couldn&#39;t &quot; +
+            &quot;evaluate to a value.  This might be due to filter/where, or sometimes if a `struct` wasn&#39;t initialised &quot; +
+            &quot;properly (i.e. via `default(T)` or an uninitialised member).&quot;</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Errors.cs#L14" class="link">Source</a>
+<a href="#Errors_0_BottomText =
+            "In a bottom state and therefore cannot proceed.  This can happen when an expression couldn't " +
+            "evaluate to a value.  This might be due to filter/where, or sometimes if a `struct` wasn't initialised " +
+            "properly (i.e. via `default(T)` or an uninitialised member)."_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Bottom error text</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">field</span>
+int
+<a id="Errors_0_BottomCode = -2000000001_0" class="def">BottomCode = -2000000001</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Errors.cs#L22" class="link">Source</a>
+<a href="#Errors_0_BottomCode = -2000000001_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Bottom error code</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">field</span>
+Error
+<a id="Errors_0_Bottom = BottomError.Default_0" class="def">Bottom = BottomError.Default</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Errors.cs#L28" class="link">Source</a>
+<a href="#Errors_0_Bottom = BottomError.Default_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>An error that indicates a value from an operation couldn't be evaluated.  This is a hard
+fail for systems that depend on expressions to produce results.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">field</span>
+string
+<a id="Errors_0_CancelledText = "cancelled"_0" class="def">CancelledText = &quot;cancelled&quot;</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Errors.cs#L33" class="link">Source</a>
+<a href="#Errors_0_CancelledText = "cancelled"_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Cancelled error text</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">field</span>
+int
+<a id="Errors_0_CancelledCode = -2000000000_0" class="def">CancelledCode = -2000000000</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Errors.cs#L38" class="link">Source</a>
+<a href="#Errors_0_CancelledCode = -2000000000_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Cancelled error code</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">field</span>
+Error
+<a id="Errors_0_Cancelled = (CancelledCode, CancelledText)_0" class="def">Cancelled = (CancelledCode, CancelledText)</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Errors.cs#L43" class="link">Source</a>
+<a href="#Errors_0_Cancelled = (CancelledCode, CancelledText)_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Cancelled error</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">field</span>
+string
+<a id="Errors_0_TimedOutText = "timed out"_0" class="def">TimedOutText = &quot;timed out&quot;</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Errors.cs#L48" class="link">Source</a>
+<a href="#Errors_0_TimedOutText = "timed out"_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Timed-out error text</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">field</span>
+int
+<a id="Errors_0_TimedOutCode = -2000000002_0" class="def">TimedOutCode = -2000000002</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Errors.cs#L53" class="link">Source</a>
+<a href="#Errors_0_TimedOutCode = -2000000002_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Timed-out error code</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">field</span>
+Error
+<a id="Errors_0_TimedOut = (TimedOutCode, TimedOutText)_0" class="def">TimedOut = (TimedOutCode, TimedOutText)</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Errors.cs#L58" class="link">Source</a>
+<a href="#Errors_0_TimedOut = (TimedOutCode, TimedOutText)_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Timed-out error</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">field</span>
+string
+<a id="Errors_0_SequenceEmptyText = "sequence empty"_0" class="def">SequenceEmptyText = &quot;sequence empty&quot;</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Errors.cs#L63" class="link">Source</a>
+<a href="#Errors_0_SequenceEmptyText = "sequence empty"_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Sequence-empty error text</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">field</span>
+int
+<a id="Errors_0_SequenceEmptyCode = -2000000003_0" class="def">SequenceEmptyCode = -2000000003</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Errors.cs#L68" class="link">Source</a>
+<a href="#Errors_0_SequenceEmptyCode = -2000000003_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Sequence-empty error code</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">field</span>
+Error
+<a id="Errors_0_SequenceEmpty = (SequenceEmptyCode, SequenceEmptyText)_0" class="def">SequenceEmpty = (SequenceEmptyCode, SequenceEmptyText)</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Errors.cs#L73" class="link">Source</a>
+<a href="#Errors_0_SequenceEmpty = (SequenceEmptyCode, SequenceEmptyText)_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Sequence-empty error</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">field</span>
+string
+<a id="Errors_0_ClosedText = "closed"_0" class="def">ClosedText = &quot;closed&quot;</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Errors.cs#L78" class="link">Source</a>
+<a href="#Errors_0_ClosedText = "closed"_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Closed error text</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">field</span>
+int
+<a id="Errors_0_ClosedCode = -2000000004_0" class="def">ClosedCode = -2000000004</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Errors.cs#L83" class="link">Source</a>
+<a href="#Errors_0_ClosedCode = -2000000004_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Closed error code</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">field</span>
+Error
+<a id="Errors_0_Closed = (ClosedCode, ClosedText)_0" class="def">Closed = (ClosedCode, ClosedText)</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Errors.cs#L88" class="link">Source</a>
+<a href="#Errors_0_Closed = (ClosedCode, ClosedText)_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Closed error</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">field</span>
+int
+<a id="Errors_0_ParseErrorCode = -2000000005_0" class="def">ParseErrorCode = -2000000005</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Errors.cs#L93" class="link">Source</a>
+<a href="#Errors_0_ParseErrorCode = -2000000005_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Parse error code</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">field</span>
+int
+<a id="Errors_0_ManyErrorsCode = -2000000006_0" class="def">ManyErrorsCode = -2000000006</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Errors.cs#L103" class="link">Source</a>
+<a href="#Errors_0_ManyErrorsCode = -2000000006_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Many errors code</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Error
+<a id="Errors_0_ParseError_0" class="def">ParseError</a>
+
+<span class='parens'>(</span>string msg<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Common/Errors.cs#L98" class="link">Source</a>
+<a href="#Errors_0_ParseError_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Parse error</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js" integrity="sha512-9khQRAUBYEJDCDVP2yw3LRUQvjJ0Pjx0EShmaQjcHa6AXiOv6qHQu9lCAIR8O+/D8FtaCoJ2c0Tf9Xo7hYH01Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-fTl/qcO1VgvKtOMApX2PdZzkziyr2stM65GYPLGuYMnuMm1z2JLJG6XVU7C/mR+E7xBUqCivykuhlzfqxXBXbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script></body></html>

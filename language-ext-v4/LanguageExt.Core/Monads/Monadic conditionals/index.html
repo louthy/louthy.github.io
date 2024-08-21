@@ -1,0 +1,2154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>LanguageExt.Core/Monads/Monadic conditionals</title>
+<link href="style.css" rel="stylesheet" type="text/css"/></head>
+<body class="js-enabled"><div id="package-header"><ul class="links" id="page-menu"><li><a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals" class="link">Source</a></li>
+<li><a href="../index.html" class="link">Contents</a></li>
+<li><a href="../../../index.html" class="link">Index</a></li></ul>
+<p class="caption">LanguageExt.Core</p></div>
+<div id="content"><div id="module-header"><p class="caption"><a href="../../index.html" class="link">LanguageExt.Core</a>
+<span> ► </span>
+<a href="../index.html" class="link">Monads</a>
+<span> ► </span>
+<a href="index.html" class="link">Monadic conditionals</a></p></div>
+<p><code>guard</code>, <code>when</code>, and <code>unless</code> allow for conditional operations and short-cutting in monadic expressions.</p>
+<h2>Guards</h2>
+<p>Guards are used to stop the monadic expression continuing if a flag is <code>true</code> (for <code>guard</code>) or <code>false</code> (for <code>guardnot</code>).</p>
+<p>They only work with monads that have an <em>'alternative value'</em> (which is usually used as the error condition: <code>Left</code> in
+<code>Either</code> for example).  An alternative value is provided when the guard triggers:</p>
+<pre class='language-csharp'><code>from x in ma
+from _ in guard(x == 100, Error.New(&quot;x should be 100&quot;))
+select x;
+</code></pre>
+<p>Supported monads are:</p>
+<pre class='language-csharp'><code>Either
+EitherUnsafe
+EitherAsync
+Fin
+Validation
+Aff
+Eff
+</code></pre>
+<h2>When and Unless</h2>
+<p><code>when</code> and <code>unless</code> are similar to guards, but instead of providing <em>the</em> alternative value, you provide an alternative monad
+to run.  This monad could be in a failed state, or it could run a successful <em>side effect</em> (an <code>Aff</code> calling <code>Console&lt;RT&gt;.writeLine()</code>
+for example).</p>
+<pre class='language-csharp'><code>from x in ma
+from _ in when(x == 100, Console.writeLine&lt;RT&gt;(&quot;x is 100, finally!&quot;))
+select x;
+</code></pre>
+
+<div id="table-of-contents"><p class="caption">Contents</p>
+<ul><li><a href="#LanguageExt_0_Prelude_0" class="link"><div class="nowrap">Prelude
+</div></a></li>
+<ul><li><a href="#Prelude_0_guard_1" class="link"><div class="nowrap">guard
+<span class='generics'>&lt;</span>E<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Func<span class='generics'>&lt;</span>E<span class='generics'>&gt;</span> False<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_guard_1" class="link"><div class="nowrap">guard
+<span class='generics'>&lt;</span>E<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>E False<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_guard_0" class="link"><div class="nowrap">guard
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span> False<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_guard_0" class="link"><div class="nowrap">guard
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Error False<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_guardnot_1" class="link"><div class="nowrap">guardnot
+<span class='generics'>&lt;</span>E<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Func<span class='generics'>&lt;</span>E<span class='generics'>&gt;</span> True<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_guardnot_1" class="link"><div class="nowrap">guardnot
+<span class='generics'>&lt;</span>E<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>E True<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_guardnot_0" class="link"><div class="nowrap">guardnot
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span> True<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_guardnot_0" class="link"><div class="nowrap">guardnot
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Error True<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#LanguageExt_0_Prelude_0" class="link"><div class="nowrap">Prelude
+</div></a></li>
+<ul><li><a href="#Prelude_0_unless_1" class="link"><div class="nowrap">unless
+<span class='generics'>&lt;</span>RT<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Aff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_unless_1" class="link"><div class="nowrap">unless
+<span class='generics'>&lt;</span>RT<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_unless_0" class="link"><div class="nowrap">unless
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Aff<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_unless_0" class="link"><div class="nowrap">unless
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_unless_0" class="link"><div class="nowrap">unless
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Try<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_unless_0" class="link"><div class="nowrap">unless
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>TryAsync<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_unless_0" class="link"><div class="nowrap">unless
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>TryOption<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_unless_0" class="link"><div class="nowrap">unless
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>TryOptionAsync<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_unless_0" class="link"><div class="nowrap">unless
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Option<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_unless_0" class="link"><div class="nowrap">unless
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>OptionUnsafe<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_unless_0" class="link"><div class="nowrap">unless
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>OptionAsync<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_unless_1" class="link"><div class="nowrap">unless
+<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Either<span class='generics'>&lt;</span>L<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_unless_1" class="link"><div class="nowrap">unless
+<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>EitherUnsafe<span class='generics'>&lt;</span>L<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_unless_1" class="link"><div class="nowrap">unless
+<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>EitherAsync<span class='generics'>&lt;</span>L<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_unless_0" class="link"><div class="nowrap">unless
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Fin<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_unless_0" class="link"><div class="nowrap">unless
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Task<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_unless_0" class="link"><div class="nowrap">unless
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_unless_1" class="link"><div class="nowrap">unless
+<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>L<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_unless_2" class="link"><div class="nowrap">unless
+<span class='generics'>&lt;</span>MonoidL<span class='comma'>, </span>L<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>MonoidL<span class='comma'>, </span>L<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#LanguageExt_0_Prelude_0" class="link"><div class="nowrap">Prelude
+</div></a></li>
+<ul><li><a href="#Prelude_0_when_1" class="link"><div class="nowrap">when
+<span class='generics'>&lt;</span>RT<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Aff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_when_1" class="link"><div class="nowrap">when
+<span class='generics'>&lt;</span>RT<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_when_0" class="link"><div class="nowrap">when
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Aff<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_when_0" class="link"><div class="nowrap">when
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_when_0" class="link"><div class="nowrap">when
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Try<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_when_0" class="link"><div class="nowrap">when
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>TryAsync<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_when_0" class="link"><div class="nowrap">when
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>TryOption<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_when_0" class="link"><div class="nowrap">when
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>TryOptionAsync<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_when_0" class="link"><div class="nowrap">when
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Option<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_when_0" class="link"><div class="nowrap">when
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>OptionUnsafe<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_when_0" class="link"><div class="nowrap">when
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>OptionAsync<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_when_1" class="link"><div class="nowrap">when
+<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Either<span class='generics'>&lt;</span>L<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_when_1" class="link"><div class="nowrap">when
+<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>EitherUnsafe<span class='generics'>&lt;</span>L<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_when_1" class="link"><div class="nowrap">when
+<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>EitherAsync<span class='generics'>&lt;</span>L<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_when_0" class="link"><div class="nowrap">when
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Fin<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_when_0" class="link"><div class="nowrap">when
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Task<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_when_0" class="link"><div class="nowrap">when
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_when_1" class="link"><div class="nowrap">when
+<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>L<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_when_2" class="link"><div class="nowrap">when
+<span class='generics'>&lt;</span>MonoidL<span class='comma'>, </span>L<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>MonoidL<span class='comma'>, </span>L<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span></div></a></li></ul></ul></div>
+<div class="interface">
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="LanguageExt_0_Prelude_0" class="def">Prelude</a>
+
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_guards.cs#L11" class="link">Source</a>
+<a href="#LanguageExt_0_Prelude_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Guard<span class='generics'>&lt;</span>E<span class='generics'>&gt;</span>
+<a id="Prelude_0_guard_1" class="def">guard</a>
+<span class='generics'>&lt;</span>E<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Func<span class='generics'>&lt;</span>E<span class='generics'>&gt;</span> False<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_guards.cs#L19" class="link">Source</a>
+<a href="#Prelude_0_guard_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Guard against continuing a monadic expression</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Flag for continuing</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">False</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If the flag is false, this provides the error</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Guard</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Guard<span class='generics'>&lt;</span>E<span class='generics'>&gt;</span>
+<a id="Prelude_0_guard_1" class="def">guard</a>
+<span class='generics'>&lt;</span>E<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>E False<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_guards.cs#L30" class="link">Source</a>
+<a href="#Prelude_0_guard_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Guard against continuing a monadic expression</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Flag for continuing</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">False</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If the flag is false, this provides the error</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Guard</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Guard<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span>
+<a id="Prelude_0_guard_0" class="def">guard</a>
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span> False<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_guards.cs#L41" class="link">Source</a>
+<a href="#Prelude_0_guard_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Guard against continuing a monadic expression</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Flag for continuing</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">False</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If the flag is false, this provides the error</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Guard</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Guard<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span>
+<a id="Prelude_0_guard_0" class="def">guard</a>
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Error False<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_guards.cs#L52" class="link">Source</a>
+<a href="#Prelude_0_guard_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Guard against continuing a monadic expression</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Flag for continuing</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">False</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If the flag is false, this provides the error</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Guard</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Guard<span class='generics'>&lt;</span>E<span class='generics'>&gt;</span>
+<a id="Prelude_0_guardnot_1" class="def">guardnot</a>
+<span class='generics'>&lt;</span>E<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Func<span class='generics'>&lt;</span>E<span class='generics'>&gt;</span> True<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_guards.cs#L63" class="link">Source</a>
+<a href="#Prelude_0_guardnot_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Guard against continuing a monadic expression</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Flag for continuing</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">True</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If the flag is false, this provides the error</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Guard</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Guard<span class='generics'>&lt;</span>E<span class='generics'>&gt;</span>
+<a id="Prelude_0_guardnot_1" class="def">guardnot</a>
+<span class='generics'>&lt;</span>E<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>E True<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_guards.cs#L74" class="link">Source</a>
+<a href="#Prelude_0_guardnot_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Guard against continuing a monadic expression</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Flag for continuing</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">True</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If the flag is false, this provides the error</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Guard</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Guard<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span>
+<a id="Prelude_0_guardnot_0" class="def">guardnot</a>
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span> True<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_guards.cs#L85" class="link">Source</a>
+<a href="#Prelude_0_guardnot_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Guard against continuing a monadic expression</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Flag for continuing</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">True</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If the flag is false, this provides the error</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Guard</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Guard<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span>
+<a id="Prelude_0_guardnot_0" class="def">guardnot</a>
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Error True<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_guards.cs#L96" class="link">Source</a>
+<a href="#Prelude_0_guardnot_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Guard against continuing a monadic expression</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Flag for continuing</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">True</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If the flag is false, this provides the error</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Guard</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="LanguageExt_0_Prelude_0" class="def">Prelude</a>
+
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_unless.cs#L9" class="link">Source</a>
+<a href="#LanguageExt_0_Prelude_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Aff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_unless_1" class="def">unless</a>
+<span class='generics'>&lt;</span>RT<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Aff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_unless.cs#L24" class="link">Source</a>
+<a href="#Prelude_0_unless_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
+<div class="doc"><div><p>Run the <code>alternative</code> when the <code>flag</code> is <code>false</code>, return <code>Pure Unit</code> when <code>true</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If <code>false</code> the <code>alternative</code> is run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">alternative</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to run if the flag is <code>false</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Either the result of the <code>alternative</code> computation if the <code>flag</code> is <code>false</code> or <code>Unit</code></p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<pre class='language-csharp'><code>from x in ma
+from _ in unless(x == 100, Console.writeLine&lt;RT&gt;(&quot;x should be 100!&quot;))
+select x;
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_unless_1" class="def">unless</a>
+<span class='generics'>&lt;</span>RT<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_unless.cs#L40" class="link">Source</a>
+<a href="#Prelude_0_unless_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
+<div class="doc"><div><p>Run the <code>alternative</code> when the <code>flag</code> is <code>false</code>, return <code>Pure Unit</code> when <code>true</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If <code>false</code> the <code>alternative</code> is run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">alternative</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to run if the flag is <code>false</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Either the result of the <code>alternative</code> computation if the <code>flag</code> is <code>false</code> or <code>Unit</code></p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<pre class='language-csharp'><code>from x in ma
+from _ in unless(x == 100, Console.writeLine&lt;RT&gt;(&quot;x should be 100!&quot;))
+select x;
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Aff<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_unless_0" class="def">unless</a>
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Aff<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_unless.cs#L56" class="link">Source</a>
+<a href="#Prelude_0_unless_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Run the <code>alternative</code> when the <code>flag</code> is <code>false</code>, return <code>Pure Unit</code> when <code>true</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If <code>false</code> the <code>alternative</code> is run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">alternative</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to run if the flag is <code>false</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Either the result of the <code>alternative</code> computation if the <code>flag</code> is <code>false</code> or <code>Unit</code></p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<pre class='language-csharp'><code>from x in ma
+from _ in unless(x == 100, Console.writeLine&lt;RT&gt;(&quot;x should be 100!&quot;))
+select x;
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Eff<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_unless_0" class="def">unless</a>
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_unless.cs#L72" class="link">Source</a>
+<a href="#Prelude_0_unless_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Run the <code>alternative</code> when the <code>flag</code> is <code>false</code>, return <code>Pure Unit</code> when <code>true</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If <code>false</code> the <code>alternative</code> is run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">alternative</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to run if the flag is <code>false</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Either the result of the <code>alternative</code> computation if the <code>flag</code> is <code>false</code> or <code>Unit</code></p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<pre class='language-csharp'><code>from x in ma
+from _ in unless(x == 100, Console.writeLine&lt;RT&gt;(&quot;x should be 100!&quot;))
+select x;
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Try<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_unless_0" class="def">unless</a>
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Try<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_unless.cs#L88" class="link">Source</a>
+<a href="#Prelude_0_unless_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Run the <code>alternative</code> when the <code>flag</code> is <code>false</code>, return <code>Pure Unit</code> when <code>true</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If <code>false</code> the <code>alternative</code> is run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">alternative</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to run if the flag is <code>false</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Either the result of the <code>alternative</code> computation if the <code>flag</code> is <code>false</code> or <code>Unit</code></p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<pre class='language-csharp'><code>from x in ma
+from _ in unless(x == 100, Try(() =&gt; WriteLineAsync&lt;RT&gt;(&quot;x should be 100!&quot;)))
+select x;
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+TryAsync<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_unless_0" class="def">unless</a>
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>TryAsync<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_unless.cs#L104" class="link">Source</a>
+<a href="#Prelude_0_unless_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Run the <code>alternative</code> when the <code>flag</code> is <code>false</code>, return <code>Pure Unit</code> when <code>true</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If <code>false</code> the <code>alternative</code> is run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">alternative</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to run if the flag is <code>false</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Either the result of the <code>alternative</code> computation if the <code>flag</code> is <code>false</code> or <code>Unit</code></p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<pre class='language-csharp'><code>from x in ma
+from _ in unless(x == 100, TryAsync(() =&gt; WriteLineAsync&lt;RT&gt;(&quot;x should be 100!&quot;)))
+select x;
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+TryOption<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_unless_0" class="def">unless</a>
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>TryOption<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_unless.cs#L120" class="link">Source</a>
+<a href="#Prelude_0_unless_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Run the <code>alternative</code> when the <code>flag</code> is <code>false</code>, return <code>Pure Unit</code> when <code>true</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If <code>false</code> the <code>alternative</code> is run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">alternative</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to run if the flag is <code>false</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Either the result of the <code>alternative</code> computation if the <code>flag</code> is <code>false</code> or <code>Unit</code></p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<pre class='language-csharp'><code>from x in ma
+from _ in unless(x == 100, TryOption(() =&gt; WriteLineAsync&lt;RT&gt;(&quot;x should be 100!&quot;)))
+select x;
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+TryOptionAsync<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_unless_0" class="def">unless</a>
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>TryOptionAsync<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_unless.cs#L136" class="link">Source</a>
+<a href="#Prelude_0_unless_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Run the <code>alternative</code> when the <code>flag</code> is <code>false</code>, return <code>Pure Unit</code> when <code>true</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If <code>false</code> the <code>alternative</code> is run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">alternative</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to run if the flag is <code>false</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Either the result of the <code>alternative</code> computation if the <code>flag</code> is <code>false</code> or <code>Unit</code></p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<pre class='language-csharp'><code>from x in ma
+from _ in unless(x == 100, TryOptionAsync(() =&gt; WriteLineAsync&lt;RT&gt;(&quot;x should be 100!&quot;)))
+select x;
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Option<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_unless_0" class="def">unless</a>
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Option<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_unless.cs#L152" class="link">Source</a>
+<a href="#Prelude_0_unless_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Run the <code>alternative</code> when the <code>flag</code> is <code>false</code>, return <code>Pure Unit</code> when <code>true</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If <code>false</code> the <code>alternative</code> is run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">alternative</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to run if the flag is <code>false</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Either the result of the <code>alternative</code> computation if the <code>flag</code> is <code>false</code> or <code>Unit</code></p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<pre class='language-csharp'><code>from x in ma
+from _ in unless(x == 100, None)
+select x;
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionUnsafe<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_unless_0" class="def">unless</a>
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>OptionUnsafe<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_unless.cs#L168" class="link">Source</a>
+<a href="#Prelude_0_unless_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Run the <code>alternative</code> when the <code>flag</code> is <code>false</code>, return <code>Pure Unit</code> when <code>true</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If <code>false</code> the <code>alternative</code> is run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">alternative</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to run if the flag is <code>false</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Either the result of the <code>alternative</code> computation if the <code>flag</code> is <code>false</code> or <code>Unit</code></p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<pre class='language-csharp'><code>from x in ma
+from _ in unless(x == 100, None)
+select x;
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionAsync<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_unless_0" class="def">unless</a>
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>OptionAsync<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_unless.cs#L184" class="link">Source</a>
+<a href="#Prelude_0_unless_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Run the <code>alternative</code> when the <code>flag</code> is <code>false</code>, return <code>Pure Unit</code> when <code>true</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If <code>false</code> the <code>alternative</code> is run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">alternative</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to run if the flag is <code>false</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Either the result of the <code>alternative</code> computation if the <code>flag</code> is <code>false</code> or <code>Unit</code></p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<pre class='language-csharp'><code>from x in ma
+from _ in unless(x == 100, None)
+select x;
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Either<span class='generics'>&lt;</span>L<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_unless_1" class="def">unless</a>
+<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Either<span class='generics'>&lt;</span>L<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_unless.cs#L200" class="link">Source</a>
+<a href="#Prelude_0_unless_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Run the <code>alternative</code> when the <code>flag</code> is <code>false</code>, return <code>Pure Unit</code> when <code>true</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If <code>false</code> the <code>alternative</code> is run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">alternative</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to run if the flag is <code>false</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Either the result of the <code>alternative</code> computation if the <code>flag</code> is <code>false</code> or <code>Unit</code></p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<pre class='language-csharp'><code>from x in ma
+from _ in unless(x == 100, Left&lt;string, int&gt;(&quot;100 is the only value accepted&quot;))
+select x;
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherUnsafe<span class='generics'>&lt;</span>L<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_unless_1" class="def">unless</a>
+<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>EitherUnsafe<span class='generics'>&lt;</span>L<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_unless.cs#L216" class="link">Source</a>
+<a href="#Prelude_0_unless_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Run the <code>alternative</code> when the <code>flag</code> is <code>false</code>, return <code>Pure Unit</code> when <code>true</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If <code>false</code> the <code>alternative</code> is run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">alternative</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to run if the flag is <code>false</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Either the result of the <code>alternative</code> computation if the <code>flag</code> is <code>false</code> or <code>Unit</code></p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<pre class='language-csharp'><code>from x in ma
+from _ in unless(x == 100, LeftUnsafe&lt;string, int&gt;(&quot;100 is the only value accepted&quot;))
+select x;
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherAsync<span class='generics'>&lt;</span>L<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_unless_1" class="def">unless</a>
+<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>EitherAsync<span class='generics'>&lt;</span>L<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_unless.cs#L232" class="link">Source</a>
+<a href="#Prelude_0_unless_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Run the <code>alternative</code> when the <code>flag</code> is <code>false</code>, return <code>Pure Unit</code> when <code>true</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If <code>false</code> the <code>alternative</code> is run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">alternative</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to run if the flag is <code>false</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Either the result of the <code>alternative</code> computation if the <code>flag</code> is <code>false</code> or <code>Unit</code></p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<pre class='language-csharp'><code>from x in ma
+from _ in unless(x == 100, LeftAsync&lt;string, int&gt;(&quot;100 is the only value accepted&quot;))
+select x;
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Fin<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_unless_0" class="def">unless</a>
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Fin<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_unless.cs#L248" class="link">Source</a>
+<a href="#Prelude_0_unless_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Run the <code>alternative</code> when the <code>flag</code> is <code>false</code>, return <code>Pure Unit</code> when <code>true</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If <code>false</code> the <code>alternative</code> is run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">alternative</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to run if the flag is <code>false</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Either the result of the <code>alternative</code> computation if the <code>flag</code> is <code>false</code> or <code>Unit</code></p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<pre class='language-csharp'><code>from x in ma
+from _ in unless(x == 100, FinFail(Error.New(&quot;100 is the only value accepted&quot;))
+select x;
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Task<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_unless_0" class="def">unless</a>
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Task<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_unless.cs#L264" class="link">Source</a>
+<a href="#Prelude_0_unless_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Run the <code>alternative</code> when the <code>flag</code> is <code>false</code>, return <code>Pure Unit</code> when <code>true</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If <code>false</code> the <code>alternative</code> is run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">alternative</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to run if the flag is <code>false</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Either the result of the <code>alternative</code> computation if the <code>flag</code> is <code>false</code> or <code>Unit</code></p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<pre class='language-csharp'><code>from x in ma
+from _ in unless(x == 100, async () =&gt; await LaunchMissiles())
+select x;
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ValueTask<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_unless_0" class="def">unless</a>
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_unless.cs#L280" class="link">Source</a>
+<a href="#Prelude_0_unless_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Run the <code>alternative</code> when the <code>flag</code> is <code>false</code>, return <code>Pure Unit</code> when <code>true</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If <code>false</code> the <code>alternative</code> is run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">alternative</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to run if the flag is <code>false</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Either the result of the <code>alternative</code> computation if the <code>flag</code> is <code>false</code> or <code>Unit</code></p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<pre class='language-csharp'><code>from x in ma
+from _ in unless(x == 100, async () =&gt; await LaunchMissiles())
+select x;
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Validation<span class='generics'>&lt;</span>L<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_unless_1" class="def">unless</a>
+<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>L<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_unless.cs#L296" class="link">Source</a>
+<a href="#Prelude_0_unless_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Run the <code>alternative</code> when the <code>flag</code> is <code>false</code>, return <code>Pure Unit</code> when <code>true</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If <code>false</code> the <code>alternative</code> is run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">alternative</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to run if the flag is <code>false</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Either the result of the <code>alternative</code> computation if the <code>flag</code> is <code>false</code> or <code>Unit</code></p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<pre class='language-csharp'><code>from x in ma
+from _ in unless(x == 100, Fail&lt;string, Unit&gt;(&quot;100 is the only value accepted&quot;))
+select x;
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Validation<span class='generics'>&lt;</span>MonoidL<span class='comma'>, </span>L<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_unless_2" class="def">unless</a>
+<span class='generics'>&lt;</span>MonoidL<span class='comma'>, </span>L<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>MonoidL<span class='comma'>, </span>L<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_unless.cs#L312" class="link">Source</a>
+<a href="#Prelude_0_unless_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> MonoidL : struct, Monoid&lt;L&gt;, Eq&lt;L&gt;</span></div></div></p>
+<div class="doc"><div><p>Run the <code>alternative</code> when the <code>flag</code> is <code>false</code>, return <code>Pure Unit</code> when <code>true</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If <code>false</code> the <code>alternative</code> is run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">alternative</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to run if the flag is <code>false</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Either the result of the <code>alternative</code> computation if the <code>flag</code> is <code>false</code> or <code>Unit</code></p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<pre class='language-csharp'><code>from x in ma
+from _ in unless(x == 100, Fail&lt;MString, string, Unit&gt;(&quot;100 is the only value accepted&quot;))
+select x;
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="LanguageExt_0_Prelude_0" class="def">Prelude</a>
+
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_when.cs#L9" class="link">Source</a>
+<a href="#LanguageExt_0_Prelude_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Aff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_when_1" class="def">when</a>
+<span class='generics'>&lt;</span>RT<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Aff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_when.cs#L24" class="link">Source</a>
+<a href="#Prelude_0_when_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
+<div class="doc"><div><p>Run the <code>alternative</code> when the <code>flag</code> is <code>true</code>, return <code>Pure Unit</code> when <code>false</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If <code>true</code> the <code>alternative</code> is run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">alternative</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to run if the <code>flag</code> is <code>true</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Either the result of the <code>alternative</code> computation if the <code>flag</code> is <code>true</code> or <code>Unit</code></p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<pre class='language-csharp'><code>from x in ma
+from _ in when(x == 100, Console.writeLine&lt;RT&gt;(&quot;x is 100, finally!&quot;))
+select x;
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_when_1" class="def">when</a>
+<span class='generics'>&lt;</span>RT<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_when.cs#L42" class="link">Source</a>
+<a href="#Prelude_0_when_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
+<div class="doc"><div><p>Run the <code>alternative</code> when the <code>flag</code> is <code>true</code>, return <code>Pure Unit</code> when <code>false</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If <code>true</code> the <code>alternative</code> is run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">alternative</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to run if the <code>flag</code> is <code>true</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Either the result of the <code>alternative</code> computation if the <code>flag</code> is <code>true</code> or <code>Unit</code></p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<pre class='language-csharp'><code>from x in ma
+from _ in when(x == 100, Console.writeLine&lt;RT&gt;(&quot;x is 100, finally!&quot;))
+select x;
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Aff<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_when_0" class="def">when</a>
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Aff<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_when.cs#L60" class="link">Source</a>
+<a href="#Prelude_0_when_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Run the <code>alternative</code> when the <code>flag</code> is <code>true</code>, return <code>Pure Unit</code> when <code>false</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If <code>true</code> the <code>alternative</code> is run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">alternative</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to run if the <code>flag</code> is <code>true</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Either the result of the <code>alternative</code> computation if the <code>flag</code> is <code>true</code> or <code>Unit</code></p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<pre class='language-csharp'><code>from x in ma
+from _ in when(x == 100, Console.writeLine&lt;RT&gt;(&quot;x is 100, finally!&quot;))
+select x;
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Eff<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_when_0" class="def">when</a>
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_when.cs#L78" class="link">Source</a>
+<a href="#Prelude_0_when_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Run the <code>alternative</code> when the <code>flag</code> is <code>true</code>, return <code>Pure Unit</code> when <code>false</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If <code>true</code> the <code>alternative</code> is run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">alternative</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to run if the <code>flag</code> is <code>true</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Either the result of the <code>alternative</code> computation if the <code>flag</code> is <code>true</code> or <code>Unit</code></p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<pre class='language-csharp'><code>from x in ma
+from _ in when(x == 100, Console.writeLine&lt;RT&gt;(&quot;x is 100, finally!&quot;))
+select x;
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Try<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_when_0" class="def">when</a>
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Try<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_when.cs#L96" class="link">Source</a>
+<a href="#Prelude_0_when_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Run the <code>alternative</code> when the <code>flag</code> is <code>true</code>, return <code>Pure Unit</code> when <code>false</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If <code>true</code> the <code>alternative</code> is run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">alternative</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to run if the <code>flag</code> is <code>true</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Either the result of the <code>alternative</code> computation if the <code>flag</code> is <code>true</code> or <code>Unit</code></p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<pre class='language-csharp'><code>from x in ma
+from _ in when(x == 100, Try(() =&gt; WriteLine&lt;RT&gt;(&quot;x is 100, finally!&quot;)))
+select x;
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+TryAsync<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_when_0" class="def">when</a>
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>TryAsync<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_when.cs#L114" class="link">Source</a>
+<a href="#Prelude_0_when_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Run the <code>alternative</code> when the <code>flag</code> is <code>true</code>, return <code>Pure Unit</code> when <code>false</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If <code>true</code> the <code>alternative</code> is run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">alternative</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to run if the <code>flag</code> is <code>true</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Either the result of the <code>alternative</code> computation if the <code>flag</code> is <code>true</code> or <code>Unit</code></p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<pre class='language-csharp'><code>from x in ma
+from _ in when(x == 100, TryAsync(() =&gt; WriteLineAsync&lt;RT&gt;(&quot;x is 100, finally!&quot;)))
+select x;
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+TryOption<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_when_0" class="def">when</a>
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>TryOption<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_when.cs#L132" class="link">Source</a>
+<a href="#Prelude_0_when_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Run the <code>alternative</code> when the <code>flag</code> is <code>true</code>, return <code>Pure Unit</code> when <code>false</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If <code>true</code> the <code>alternative</code> is run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">alternative</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to run if the <code>flag</code> is <code>true</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Either the result of the <code>alternative</code> computation if the <code>flag</code> is <code>true</code> or <code>Unit</code></p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<pre class='language-csharp'><code>from x in ma
+from _ in when(x == 100, TryOptionAsync(() =&gt; WriteLineAsync&lt;RT&gt;(&quot;x is 100, finally!&quot;)))
+select x;
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+TryOptionAsync<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_when_0" class="def">when</a>
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>TryOptionAsync<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_when.cs#L150" class="link">Source</a>
+<a href="#Prelude_0_when_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Run the <code>alternative</code> when the <code>flag</code> is <code>true</code>, return <code>Pure Unit</code> when <code>false</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If <code>true</code> the <code>alternative</code> is run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">alternative</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to run if the <code>flag</code> is <code>true</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Either the result of the <code>alternative</code> computation if the <code>flag</code> is <code>true</code> or <code>Unit</code></p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<pre class='language-csharp'><code>from x in ma
+from _ in when(x == 100, TryOptionAsync(() =&gt; WriteLineAsync&lt;RT&gt;(&quot;x is 100, finally!&quot;)))
+select x;
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Option<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_when_0" class="def">when</a>
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Option<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_when.cs#L168" class="link">Source</a>
+<a href="#Prelude_0_when_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Run the <code>alternative</code> when the <code>flag</code> is <code>true</code>, return <code>Pure Unit</code> when <code>false</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If <code>true</code> the <code>alternative</code> is run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">alternative</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to run if the <code>flag</code> is <code>true</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Either the result of the <code>alternative</code> computation if the <code>flag</code> is <code>true</code> or <code>Unit</code></p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<pre class='language-csharp'><code>from x in ma
+from _ in when(x == 100, None)
+select x;
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionUnsafe<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_when_0" class="def">when</a>
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>OptionUnsafe<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_when.cs#L186" class="link">Source</a>
+<a href="#Prelude_0_when_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Run the <code>alternative</code> when the <code>flag</code> is <code>true</code>, return <code>Pure Unit</code> when <code>false</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If <code>true</code> the <code>alternative</code> is run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">alternative</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to run if the <code>flag</code> is <code>true</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Either the result of the <code>alternative</code> computation if the <code>flag</code> is <code>true</code> or <code>Unit</code></p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<pre class='language-csharp'><code>from x in ma
+from _ in when(x == 100, None)
+select x;
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OptionAsync<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_when_0" class="def">when</a>
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>OptionAsync<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_when.cs#L204" class="link">Source</a>
+<a href="#Prelude_0_when_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Run the <code>alternative</code> when the <code>flag</code> is <code>true</code>, return <code>Pure Unit</code> when <code>false</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If <code>true</code> the <code>alternative</code> is run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">alternative</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to run if the <code>flag</code> is <code>true</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Either the result of the <code>alternative</code> computation if the <code>flag</code> is <code>true</code> or <code>Unit</code></p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<pre class='language-csharp'><code>from x in ma
+from _ in when(x == 100, None)
+select x;
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Either<span class='generics'>&lt;</span>L<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_when_1" class="def">when</a>
+<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Either<span class='generics'>&lt;</span>L<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_when.cs#L222" class="link">Source</a>
+<a href="#Prelude_0_when_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Run the <code>alternative</code> when the <code>flag</code> is <code>true</code>, return <code>Pure Unit</code> when <code>false</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If <code>true</code> the <code>alternative</code> is run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">alternative</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to run if the <code>flag</code> is <code>true</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Either the result of the <code>alternative</code> computation if the <code>flag</code> is <code>true</code> or <code>Unit</code></p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<pre class='language-csharp'><code>from x in ma
+from _ in when(x == 100, Left&lt;string, int&gt;(&quot;Won't accept 100&quot;))
+select x;
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherUnsafe<span class='generics'>&lt;</span>L<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_when_1" class="def">when</a>
+<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>EitherUnsafe<span class='generics'>&lt;</span>L<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_when.cs#L240" class="link">Source</a>
+<a href="#Prelude_0_when_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Run the <code>alternative</code> when the <code>flag</code> is <code>true</code>, return <code>Pure Unit</code> when <code>false</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If <code>true</code> the <code>alternative</code> is run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">alternative</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to run if the <code>flag</code> is <code>true</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Either the result of the <code>alternative</code> computation if the <code>flag</code> is <code>true</code> or <code>Unit</code></p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<pre class='language-csharp'><code>from x in ma
+from _ in when(x == 100, LeftUnsafe&lt;string, int&gt;(&quot;Won't accept 100&quot;))
+select x;
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EitherAsync<span class='generics'>&lt;</span>L<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_when_1" class="def">when</a>
+<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>EitherAsync<span class='generics'>&lt;</span>L<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_when.cs#L258" class="link">Source</a>
+<a href="#Prelude_0_when_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Run the <code>alternative</code> when the <code>flag</code> is <code>true</code>, return <code>Pure Unit</code> when <code>false</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If <code>true</code> the <code>alternative</code> is run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">alternative</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to run if the <code>flag</code> is <code>true</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Either the result of the <code>alternative</code> computation if the <code>flag</code> is <code>true</code> or <code>Unit</code></p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<pre class='language-csharp'><code>from x in ma
+from _ in when(x == 100, LeftAsync&lt;string, int&gt;(&quot;Won't accept 100&quot;))
+select x;
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Fin<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_when_0" class="def">when</a>
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Fin<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_when.cs#L276" class="link">Source</a>
+<a href="#Prelude_0_when_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Run the <code>alternative</code> when the <code>flag</code> is <code>true</code>, return <code>Pure Unit</code> when <code>false</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If <code>true</code> the <code>alternative</code> is run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">alternative</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to run if the <code>flag</code> is <code>true</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Either the result of the <code>alternative</code> computation if the <code>flag</code> is <code>true</code> or <code>Unit</code></p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<pre class='language-csharp'><code>from x in ma
+from _ in when(x == 100, FinFail(Error.New(&quot;Won't accept 100&quot;)))
+select x;
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Task<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_when_0" class="def">when</a>
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Task<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_when.cs#L294" class="link">Source</a>
+<a href="#Prelude_0_when_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Run the <code>alternative</code> when the <code>flag</code> is <code>true</code>, return <code>Pure Unit</code> when <code>false</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If <code>true</code> the <code>alternative</code> is run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">alternative</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to run if the <code>flag</code> is <code>true</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Either the result of the <code>alternative</code> computation if the <code>flag</code> is <code>true</code> or <code>Unit</code></p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<pre class='language-csharp'><code>from x in ma
+from _ in when(x == 100, async () =&gt; await LaunchMissiles())
+select x;
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ValueTask<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_when_0" class="def">when</a>
+
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>ValueTask<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_when.cs#L313" class="link">Source</a>
+<a href="#Prelude_0_when_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Run the <code>alternative</code> when the <code>flag</code> is <code>true</code>, return <code>Pure Unit</code> when <code>false</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If <code>true</code> the <code>alternative</code> is run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">alternative</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to run if the <code>flag</code> is <code>true</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Either the result of the <code>alternative</code> computation if the <code>flag</code> is <code>true</code> or <code>Unit</code></p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<pre class='language-csharp'><code>from x in ma
+from _ in when(x == 100, async () =&gt; await LaunchMissiles())
+select x;
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Validation<span class='generics'>&lt;</span>L<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_when_1" class="def">when</a>
+<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>L<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_when.cs#L331" class="link">Source</a>
+<a href="#Prelude_0_when_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Run the <code>alternative</code> when the <code>flag</code> is <code>true</code>, return <code>Pure Unit</code> when <code>false</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If <code>true</code> the <code>alternative</code> is run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">alternative</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to run if the <code>flag</code> is <code>true</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Either the result of the <code>alternative</code> computation if the <code>flag</code> is <code>true</code> or <code>Unit</code></p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<pre class='language-csharp'><code>from x in ma
+from _ in when(x == 100, Fail&lt;string, Unit&gt;(&quot;100 isn't accepted&quot;))
+select x;
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Validation<span class='generics'>&lt;</span>MonoidL<span class='comma'>, </span>L<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_when_2" class="def">when</a>
+<span class='generics'>&lt;</span>MonoidL<span class='comma'>, </span>L<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool flag<span class='comma'>, </span>Validation<span class='generics'>&lt;</span>MonoidL<span class='comma'>, </span>L<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> alternative<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Monads/Monadic conditionals/Prelude_when.cs#L349" class="link">Source</a>
+<a href="#Prelude_0_when_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> MonoidL : struct, Monoid&lt;L&gt;, Eq&lt;L&gt;</span></div></div></p>
+<div class="doc"><div><p>Run the <code>alternative</code> when the <code>flag</code> is <code>true</code>, return <code>Pure Unit</code> when <code>false</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">flag</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>If <code>true</code> the <code>alternative</code> is run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">alternative</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to run if the <code>flag</code> is <code>true</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Either the result of the <code>alternative</code> computation if the <code>flag</code> is <code>true</code> or <code>Unit</code></p>
+</span></td></tr></tbody></table></div></div>
+<div class="methods"><p class="caption">Examples</p>
+<pre class='language-csharp'><code>from x in ma
+from _ in when(x == 100, Fail&lt;MString, string, Unit&gt;(&quot;100 isn't accepted&quot;))
+select x;
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js" integrity="sha512-9khQRAUBYEJDCDVP2yw3LRUQvjJ0Pjx0EShmaQjcHa6AXiOv6qHQu9lCAIR8O+/D8FtaCoJ2c0Tf9Xo7hYH01Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-fTl/qcO1VgvKtOMApX2PdZzkziyr2stM65GYPLGuYMnuMm1z2JLJG6XVU7C/mR+E7xBUqCivykuhlzfqxXBXbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script></body></html>

@@ -1,0 +1,884 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>LanguageExt.Core/Prelude/Catch</title>
+<link href="style.css" rel="stylesheet" type="text/css"/></head>
+<body class="js-enabled"><div id="package-header"><ul class="links" id="page-menu"><li><a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Catch" class="link">Source</a></li>
+<li><a href="../index.html" class="link">Contents</a></li>
+<li><a href="../../../index.html" class="link">Index</a></li></ul>
+<p class="caption">LanguageExt.Core</p></div>
+<div id="content"><div id="module-header"><p class="caption"><a href="../../index.html" class="link">LanguageExt.Core</a>
+<span> ► </span>
+<a href="../index.html" class="link">Prelude</a>
+<span> ► </span>
+<a href="index.html" class="link">Catch</a></p></div>
+
+<div id="table-of-contents"><p class="caption">Contents</p>
+<ul><li><a href="#LanguageExt_0_Prelude_0" class="link"><div class="nowrap">Prelude
+</div></a></li>
+<ul><li><a href="#Prelude_0_@catch_1" class="link"><div class="nowrap">@catch
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Error error<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>A<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_@catch_0" class="link"><div class="nowrap">@catch
+
+<span class='parens'>(</span>Error error<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Error<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_@catch_1" class="link"><div class="nowrap">@catch
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Error error<span class='comma'>, </span>A Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_@catch_0" class="link"><div class="nowrap">@catch
+
+<span class='parens'>(</span>Error error<span class='comma'>, </span>Error Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_@catch_1" class="link"><div class="nowrap">@catch
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>int errorCode<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>A<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_@catch_0" class="link"><div class="nowrap">@catch
+
+<span class='parens'>(</span>int errorCode<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Error<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_@catch_1" class="link"><div class="nowrap">@catch
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>int errorCode<span class='comma'>, </span>A Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_@catch_0" class="link"><div class="nowrap">@catch
+
+<span class='parens'>(</span>int errorCode<span class='comma'>, </span>Error Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_@catch_1" class="link"><div class="nowrap">@catch
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>string errorText<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>A<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_@catch_0" class="link"><div class="nowrap">@catch
+
+<span class='parens'>(</span>string errorText<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Error<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_@catch_1" class="link"><div class="nowrap">@catch
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>string errorText<span class='comma'>, </span>A Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_@catch_0" class="link"><div class="nowrap">@catch
+
+<span class='parens'>(</span>string errorText<span class='comma'>, </span>Error Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_@catch_1" class="link"><div class="nowrap">@catch
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Exception<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Exception<span class='comma'>, </span>A<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_@catch_0" class="link"><div class="nowrap">@catch
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Exception<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Exception<span class='comma'>, </span>Error<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_@catch_1" class="link"><div class="nowrap">@catch
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Exception<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='comma'>, </span>A Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_@catch_0" class="link"><div class="nowrap">@catch
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Exception<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='comma'>, </span>Error Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_@catch_0" class="link"><div class="nowrap">@catch
+
+<span class='parens'>(</span>Error Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_@catch_1" class="link"><div class="nowrap">@catch
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_@catchOf_2" class="link"><div class="nowrap">@catchOf
+<span class='generics'>&lt;</span>E<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>E<span class='comma'>, </span>A<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_@catchOf_1" class="link"><div class="nowrap">@catchOf
+<span class='generics'>&lt;</span>E<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>E<span class='comma'>, </span>Error<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_@expected_1" class="link"><div class="nowrap">@expected
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Expected<span class='comma'>, </span>A<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_@expected_0" class="link"><div class="nowrap">@expected
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Expected<span class='comma'>, </span>Error<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_@expectedOf_2" class="link"><div class="nowrap">@expectedOf
+<span class='generics'>&lt;</span>E<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>E<span class='comma'>, </span>A<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_@expectedOf_1" class="link"><div class="nowrap">@expectedOf
+<span class='generics'>&lt;</span>E<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>E<span class='comma'>, </span>Error<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_@exceptional_1" class="link"><div class="nowrap">@exceptional
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Exceptional<span class='comma'>, </span>A<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_@exceptional_0" class="link"><div class="nowrap">@exceptional
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Exceptional<span class='comma'>, </span>Error<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_@exceptionalOf_2" class="link"><div class="nowrap">@exceptionalOf
+<span class='generics'>&lt;</span>E<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>E<span class='comma'>, </span>A<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_@exceptionalOf_1" class="link"><div class="nowrap">@exceptionalOf
+<span class='generics'>&lt;</span>E<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>E<span class='comma'>, </span>Error<span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li></ul></ul></div>
+<div class="interface">
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="LanguageExt_0_Prelude_0" class="def">Prelude</a>
+
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Catch/Prelude_Catch.cs#L33" class="link">Source</a>
+<a href="#LanguageExt_0_Prelude_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>The <code>@catch</code> functions produce a <code>CatchError</code> or <code>CatchValue</code> type. These can be composed together with the
+<code>Aff</code> and <code>Eff</code> monads (and maybe more in the future), to create a functional-programming equivalent to
+exception catching and matching.</p>
+</div>
+<div></div>
+
+<div class="methods"><p class="caption">Examples</p>
+<pre class='language-csharp'><code> public class TimeoutExample&lt;RT&gt;
+     where RT : struct,
+     HasTime&lt;RT&gt;,
+     HasCancel&lt;RT&gt;,
+     HasConsole&lt;RT&gt;
+ {
+     public static Aff&lt;RT, Unit&gt; main =&gt;
+         from _1 in timeout(60 * seconds, longRunning)
+                  | @catch(Errors.TimedOut, unit)
+         from _2 in Console&lt;RT&gt;.writeLine(&quot;done&quot;)
+         select unit;
+
+     static Aff&lt;RT, Unit&gt; longRunning =&gt;
+         (from tm in Time&lt;RT&gt;.now
+          from _1 in Console&lt;RT&gt;.writeLine(tm.ToLongTimeString())
+          select unit)
+        .ToAff()
+        .Repeat(Schedule.Fibonacci(1 * second));
+ }
+</code></pre>
+</div></div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+CatchValue<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_@catch_1" class="def">@catch</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Error error<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>A<span class='generics'>&gt;</span> Fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Catch/Prelude_Catch.cs#L63" class="link">Source</a>
+<a href="#Prelude_0_@catch_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Catch an error if the error matches the argument provided</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+CatchError
+<a id="Prelude_0_@catch_0" class="def">@catch</a>
+
+<span class='parens'>(</span>Error error<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Error<span class='generics'>&gt;</span> Fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Catch/Prelude_Catch.cs#L69" class="link">Source</a>
+<a href="#Prelude_0_@catch_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Catch an error if the error matches the argument provided</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+CatchValue<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_@catch_1" class="def">@catch</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Error error<span class='comma'>, </span>A Fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Catch/Prelude_Catch.cs#L75" class="link">Source</a>
+<a href="#Prelude_0_@catch_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Catch an error if the error matches the argument provided</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+CatchError
+<a id="Prelude_0_@catch_0" class="def">@catch</a>
+
+<span class='parens'>(</span>Error error<span class='comma'>, </span>Error Fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Catch/Prelude_Catch.cs#L81" class="link">Source</a>
+<a href="#Prelude_0_@catch_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Catch an error if the error matches the argument provided</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+CatchValue<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_@catch_1" class="def">@catch</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>int errorCode<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>A<span class='generics'>&gt;</span> Fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Catch/Prelude_Catch.cs#L88" class="link">Source</a>
+<a href="#Prelude_0_@catch_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Catch an error if the error <code>Code</code> matches the <code>errorCode</code> argument provided</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+CatchError
+<a id="Prelude_0_@catch_0" class="def">@catch</a>
+
+<span class='parens'>(</span>int errorCode<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Error<span class='generics'>&gt;</span> Fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Catch/Prelude_Catch.cs#L94" class="link">Source</a>
+<a href="#Prelude_0_@catch_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Catch an error if the error <code>Code</code> matches the <code>errorCode</code> argument provided</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+CatchValue<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_@catch_1" class="def">@catch</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>int errorCode<span class='comma'>, </span>A Fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Catch/Prelude_Catch.cs#L100" class="link">Source</a>
+<a href="#Prelude_0_@catch_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Catch an error if the error <code>Code</code> matches the <code>errorCode</code> argument provided</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+CatchError
+<a id="Prelude_0_@catch_0" class="def">@catch</a>
+
+<span class='parens'>(</span>int errorCode<span class='comma'>, </span>Error Fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Catch/Prelude_Catch.cs#L106" class="link">Source</a>
+<a href="#Prelude_0_@catch_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Catch an error if the error <code>Code</code> matches the <code>errorCode</code> argument provided</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+CatchValue<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_@catch_1" class="def">@catch</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>string errorText<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>A<span class='generics'>&gt;</span> Fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Catch/Prelude_Catch.cs#L113" class="link">Source</a>
+<a href="#Prelude_0_@catch_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Catch an error if the error message matches the <code>errorText</code> argument provided</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+CatchError
+<a id="Prelude_0_@catch_0" class="def">@catch</a>
+
+<span class='parens'>(</span>string errorText<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Error<span class='generics'>&gt;</span> Fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Catch/Prelude_Catch.cs#L119" class="link">Source</a>
+<a href="#Prelude_0_@catch_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Catch an error if the error message matches the <code>errorText</code> argument provided</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+CatchValue<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_@catch_1" class="def">@catch</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>string errorText<span class='comma'>, </span>A Fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Catch/Prelude_Catch.cs#L125" class="link">Source</a>
+<a href="#Prelude_0_@catch_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Catch an error if the error message matches the <code>errorText</code> argument provided</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+CatchError
+<a id="Prelude_0_@catch_0" class="def">@catch</a>
+
+<span class='parens'>(</span>string errorText<span class='comma'>, </span>Error Fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Catch/Prelude_Catch.cs#L131" class="link">Source</a>
+<a href="#Prelude_0_@catch_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Catch an error if the error message matches the <code>errorText</code> argument provided</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+CatchValue<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_@catch_1" class="def">@catch</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Exception<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Exception<span class='comma'>, </span>A<span class='generics'>&gt;</span> Fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Catch/Prelude_Catch.cs#L138" class="link">Source</a>
+<a href="#Prelude_0_@catch_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Catch an error if it's of a specific exception type</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+CatchError
+<a id="Prelude_0_@catch_0" class="def">@catch</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Exception<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Exception<span class='comma'>, </span>Error<span class='generics'>&gt;</span> Fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Catch/Prelude_Catch.cs#L144" class="link">Source</a>
+<a href="#Prelude_0_@catch_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Catch an error if it's of a specific exception type</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+CatchValue<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_@catch_1" class="def">@catch</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Exception<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='comma'>, </span>A Fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Catch/Prelude_Catch.cs#L150" class="link">Source</a>
+<a href="#Prelude_0_@catch_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Catch an error if it's of a specific exception type</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+CatchError
+<a id="Prelude_0_@catch_0" class="def">@catch</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Exception<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='comma'>, </span>Error Fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Catch/Prelude_Catch.cs#L156" class="link">Source</a>
+<a href="#Prelude_0_@catch_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Catch an error if it's of a specific exception type</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+CatchError
+<a id="Prelude_0_@catch_0" class="def">@catch</a>
+
+<span class='parens'>(</span>Error Fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Catch/Prelude_Catch.cs#L162" class="link">Source</a>
+<a href="#Prelude_0_@catch_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Catch all errors and return Fail</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+CatchValue<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_@catch_1" class="def">@catch</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A Fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Catch/Prelude_Catch.cs#L168" class="link">Source</a>
+<a href="#Prelude_0_@catch_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Catch all errors and return Fail</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+CatchValue<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_@catchOf_2" class="def">@catchOf</a>
+<span class='generics'>&lt;</span>E<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>E<span class='comma'>, </span>A<span class='generics'>&gt;</span> Fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Catch/Prelude_Catch.cs#L174" class="link">Source</a>
+<a href="#Prelude_0_@catchOf_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> E : Error</span></div></div></p>
+<div class="doc"><div><p>Catch errors</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+CatchError
+<a id="Prelude_0_@catchOf_1" class="def">@catchOf</a>
+<span class='generics'>&lt;</span>E<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>E<span class='comma'>, </span>Error<span class='generics'>&gt;</span> Fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Catch/Prelude_Catch.cs#L180" class="link">Source</a>
+<a href="#Prelude_0_@catchOf_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> E : Error</span></div></div></p>
+<div class="doc"><div><p>Catch errors</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+CatchValue<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_@expected_1" class="def">@expected</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Expected<span class='comma'>, </span>A<span class='generics'>&gt;</span> Fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Catch/Prelude_Catch.cs#L186" class="link">Source</a>
+<a href="#Prelude_0_@expected_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Catch expected errors</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+CatchError
+<a id="Prelude_0_@expected_0" class="def">@expected</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Expected<span class='comma'>, </span>Error<span class='generics'>&gt;</span> Fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Catch/Prelude_Catch.cs#L192" class="link">Source</a>
+<a href="#Prelude_0_@expected_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Catch expected errors</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+CatchValue<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_@expectedOf_2" class="def">@expectedOf</a>
+<span class='generics'>&lt;</span>E<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>E<span class='comma'>, </span>A<span class='generics'>&gt;</span> Fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Catch/Prelude_Catch.cs#L198" class="link">Source</a>
+<a href="#Prelude_0_@expectedOf_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> E : Expected</span></div></div></p>
+<div class="doc"><div><p>Catch expected errors</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+CatchError
+<a id="Prelude_0_@expectedOf_1" class="def">@expectedOf</a>
+<span class='generics'>&lt;</span>E<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>E<span class='comma'>, </span>Error<span class='generics'>&gt;</span> Fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Catch/Prelude_Catch.cs#L204" class="link">Source</a>
+<a href="#Prelude_0_@expectedOf_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> E : Expected</span></div></div></p>
+<div class="doc"><div><p>Catch expected errors</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+CatchValue<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_@exceptional_1" class="def">@exceptional</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Exceptional<span class='comma'>, </span>A<span class='generics'>&gt;</span> Fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Catch/Prelude_Catch.cs#L211" class="link">Source</a>
+<a href="#Prelude_0_@exceptional_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Catch exceptional errors</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+CatchError
+<a id="Prelude_0_@exceptional_0" class="def">@exceptional</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Exceptional<span class='comma'>, </span>Error<span class='generics'>&gt;</span> Fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Catch/Prelude_Catch.cs#L217" class="link">Source</a>
+<a href="#Prelude_0_@exceptional_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Catch exceptional errors</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+CatchValue<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_@exceptionalOf_2" class="def">@exceptionalOf</a>
+<span class='generics'>&lt;</span>E<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>E<span class='comma'>, </span>A<span class='generics'>&gt;</span> Fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Catch/Prelude_Catch.cs#L223" class="link">Source</a>
+<a href="#Prelude_0_@exceptionalOf_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> E : Exceptional</span></div></div></p>
+<div class="doc"><div><p>Catch exceptional errors</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+CatchError
+<a id="Prelude_0_@exceptionalOf_1" class="def">@exceptionalOf</a>
+<span class='generics'>&lt;</span>E<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>E<span class='comma'>, </span>Error<span class='generics'>&gt;</span> Fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Catch/Prelude_Catch.cs#L229" class="link">Source</a>
+<a href="#Prelude_0_@exceptionalOf_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> E : Exceptional</span></div></div></p>
+<div class="doc"><div><p>Catch exceptional errors</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js" integrity="sha512-9khQRAUBYEJDCDVP2yw3LRUQvjJ0Pjx0EShmaQjcHa6AXiOv6qHQu9lCAIR8O+/D8FtaCoJ2c0Tf9Xo7hYH01Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-fTl/qcO1VgvKtOMApX2PdZzkziyr2stM65GYPLGuYMnuMm1z2JLJG6XVU7C/mR+E7xBUqCivykuhlzfqxXBXbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script></body></html>

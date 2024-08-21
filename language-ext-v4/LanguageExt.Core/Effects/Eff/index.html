@@ -1,0 +1,1263 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>LanguageExt.Core/Effects/Eff</title>
+<link href="style.css" rel="stylesheet" type="text/css"/></head>
+<body class="js-enabled"><div id="package-header"><ul class="links" id="page-menu"><li><a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff" class="link">Source</a></li>
+<li><a href="../index.html" class="link">Contents</a></li>
+<li><a href="../../../index.html" class="link">Index</a></li></ul>
+<p class="caption">LanguageExt.Core</p></div>
+<div id="content"><div id="module-header"><p class="caption"><a href="../../index.html" class="link">LanguageExt.Core</a>
+<span> ► </span>
+<a href="../index.html" class="link">Effects</a>
+<span> ► </span>
+<a href="index.html" class="link">Eff</a></p></div>
+
+<div id="table-of-contents"><p class="caption">Contents</p>
+<ul><li><a href="#LanguageExt_0_Eff_2" class="link"><div class="nowrap">Eff
+<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#Eff_2_Run_0" class="link"><div class="nowrap">Run
+
+<span class='parens'>(</span>RT env<span class='parens'>)</span></div></a></li>
+<li><a href="#Eff_2_RunUnit_0" class="link"><div class="nowrap">RunUnit
+
+<span class='parens'>(</span>RT env<span class='parens'>)</span></div></a></li>
+<li><a href="#Eff_2_Memo_0" class="link"><div class="nowrap">Memo
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Eff_2_EffectMaybe_0" class="link"><div class="nowrap">EffectMaybe
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Fin<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Eff_2_Effect_0" class="link"><div class="nowrap">Effect
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Eff_2_Success_0" class="link"><div class="nowrap">Success
+
+<span class='parens'>(</span>A value<span class='parens'>)</span></div></a></li>
+<li><a href="#Eff_2_Fail_0" class="link"><div class="nowrap">Fail
+
+<span class='parens'>(</span>Error error<span class='parens'>)</span></div></a></li>
+<li><a href="#Eff_2_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#Eff_2_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#Eff_2_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#Eff_2_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>EffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#Eff_2_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>EffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#Eff_2_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>CatchValue<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> value<span class='parens'>)</span></div></a></li>
+<li><a href="#Eff_2_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>CatchError value<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#LanguageExt_0_EffGuards_0" class="link"><div class="nowrap">EffGuards
+</div></a></li>
+<ul><li><a href="#EffGuards_0_SelectMany_1" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Guard<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#EffGuards_0_SelectMany_2" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>RT<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Guard<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#EffGuards_0_SelectMany_2" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Guard<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#EffGuards_0_SelectMany_3" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>RT<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Guard<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#EffGuards_0_ToEff_0" class="link"><div class="nowrap">ToEff
+
+<span class='parens'>(</span>this Guard<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#EffGuards_0_ToEff_1" class="link"><div class="nowrap">ToEff
+<span class='generics'>&lt;</span>RT<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Guard<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#EffGuards_0_SelectMany_1" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Guard<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#EffGuards_0_SelectMany_2" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Guard<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#EffGuards_0_SelectMany_2" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Guard<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Unit<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#EffGuards_0_SelectMany_3" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Guard<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Unit<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#LanguageExt_0_Eff_1" class="link"><div class="nowrap">Eff
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#Eff_1_Run_0" class="link"><div class="nowrap">Run
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Eff_1_RunUnit_0" class="link"><div class="nowrap">RunUnit
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Eff_1_Memo_0" class="link"><div class="nowrap">Memo
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Eff_1_EffectMaybe_0" class="link"><div class="nowrap">EffectMaybe
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Fin<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Eff_1_Effect_0" class="link"><div class="nowrap">Effect
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Eff_1_Success_0" class="link"><div class="nowrap">Success
+
+<span class='parens'>(</span>A value<span class='parens'>)</span></div></a></li>
+<li><a href="#Eff_1_Fail_0" class="link"><div class="nowrap">Fail
+
+<span class='parens'>(</span>Error error<span class='parens'>)</span></div></a></li>
+<li><a href="#Eff_1_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#Eff_1_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>EffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#Eff_1_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>AffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#Eff_1_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>CatchValue<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> value<span class='parens'>)</span></div></a></li>
+<li><a href="#Eff_1_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>CatchError value<span class='parens'>)</span></div></a></li>
+<li><a href="#Eff_1_WithRuntime_1" class="link"><div class="nowrap">WithRuntime
+<span class='generics'>&lt;</span>RT<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Eff_1_ToAff_0" class="link"><div class="nowrap">ToAff
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Eff_1_ToAffWithRuntime_1" class="link"><div class="nowrap">ToAffWithRuntime
+<span class='generics'>&lt;</span>RT<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Eff_1_Fold_1" class="link"><div class="nowrap">Fold
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>S state<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Eff_1_Exists_0" class="link"><div class="nowrap">Exists
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Eff_1_ForAll_0" class="link"><div class="nowrap">ForAll
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li></ul>
+</ul></div>
+<div class="interface"><H1>Sub modules</H1>
+<table><tbody><tr><td class="src clearfix"><span class="inst-left"><a href="Catch/index.html" class="link">Catch</a></span></td></tr>
+<tr><td class="src clearfix"><span class="inst-left"><a href="Extensions/index.html" class="link">Extensions</a></span></td></tr>
+<tr><td class="src clearfix"><span class="inst-left"><a href="Prelude/index.html" class="link">Prelude</a></span></td></tr></tbody></table>
+<div class="top"><p class="src"><span class="keyword">struct</span>
+<a id="LanguageExt_0_Eff_2" class="def">Eff</a>
+<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/Eff.cs#L12" class="link">Source</a>
+<a href="#LanguageExt_0_Eff_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> RT : struct</span></div></div></p>
+<div class="doc"><div><p>Synchronous IO monad</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Fin<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Eff_2_Run_0" class="def">Run</a>
+
+<span class='parens'>(</span>RT env<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/Eff.cs#L28" class="link">Source</a>
+<a href="#Eff_2_Run_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Invoke the effect</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<a id="Eff_2_RunUnit_0" class="def">RunUnit</a>
+
+<span class='parens'>(</span>RT env<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/Eff.cs#L47" class="link">Source</a>
+<a href="#Eff_2_RunUnit_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Invoke the effect</p>
+</div>
+<div><p>Throws on error</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Eff_2_Memo_0" class="def">Memo</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/Eff.cs#L59" class="link">Source</a>
+<a href="#Eff_2_Memo_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Memoise the result, so subsequent calls don't invoke the side-effect</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Eff_2_EffectMaybe_0" class="def">EffectMaybe</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Fin<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/Eff.cs#L76" class="link">Source</a>
+<a href="#Eff_2_EffectMaybe_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Lift a synchronous effect into the IO monad</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Eff_2_Effect_0" class="def">Effect</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/Eff.cs#L83" class="link">Source</a>
+<a href="#Eff_2_Effect_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Lift a synchronous effect into the IO monad</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Eff_2_Success_0" class="def">Success</a>
+
+<span class='parens'>(</span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/Eff.cs#L90" class="link">Source</a>
+<a href="#Eff_2_Success_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Lift a value into the IO monad</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Eff_2_Fail_0" class="def">Fail</a>
+
+<span class='parens'>(</span>Error error<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/Eff.cs#L97" class="link">Source</a>
+<a href="#Eff_2_Fail_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Lift a failure into the IO monad</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+<div class="subs methods"><p class="caption">Operators</p>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="Eff_2_|_0" class="def">|</a>
+<span class='parens'>(</span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/Eff.cs#L101" class="link">Source</a>
+<a href="#Eff_2_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="Eff_2_|_0" class="def">|</a>
+<span class='parens'>(</span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/Eff.cs#L111" class="link">Source</a>
+<a href="#Eff_2_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="Eff_2_|_0" class="def">|</a>
+<span class='parens'>(</span>Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/Eff.cs#L121" class="link">Source</a>
+<a href="#Eff_2_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="Eff_2_|_0" class="def">|</a>
+<span class='parens'>(</span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>EffCatch<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/Eff.cs#L131" class="link">Source</a>
+<a href="#Eff_2_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="Eff_2_|_0" class="def">|</a>
+<span class='parens'>(</span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>EffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/Eff.cs#L141" class="link">Source</a>
+<a href="#Eff_2_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="Eff_2_|_0" class="def">|</a>
+<span class='parens'>(</span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>CatchValue<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/Eff.cs#L151" class="link">Source</a>
+<a href="#Eff_2_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="Eff_2_|_0" class="def">|</a>
+<span class='parens'>(</span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>CatchError value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/Eff.cs#L163" class="link">Source</a>
+<a href="#Eff_2_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="LanguageExt_0_EffGuards_0" class="def">EffGuards</a>
+
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/Eff.Guard.cs#L8" class="link">Source</a>
+<a href="#LanguageExt_0_EffGuards_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Eff<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<a id="EffGuards_0_SelectMany_1" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Guard<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/Eff.Guard.cs#L10" class="link">Source</a>
+<a href="#EffGuards_0_SelectMany_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="EffGuards_0_SelectMany_2" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>RT<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Guard<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/Eff.Guard.cs#L15" class="link">Source</a>
+<a href="#EffGuards_0_SelectMany_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> RT : struct</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Eff<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<a id="EffGuards_0_SelectMany_2" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Guard<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/Eff.Guard.cs#L20" class="link">Source</a>
+<a href="#EffGuards_0_SelectMany_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="EffGuards_0_SelectMany_3" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>RT<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Guard<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/Eff.Guard.cs#L25" class="link">Source</a>
+<a href="#EffGuards_0_SelectMany_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> RT : struct</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Eff<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
+<a id="EffGuards_0_ToEff_0" class="def">ToEff</a>
+
+<span class='parens'>(</span>this Guard<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/Eff.Guard.cs#L30" class="link">Source</a>
+<a href="#EffGuards_0_ToEff_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="EffGuards_0_ToEff_1" class="def">ToEff</a>
+<span class='generics'>&lt;</span>RT<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Guard<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/Eff.Guard.cs#L35" class="link">Source</a>
+<a href="#EffGuards_0_ToEff_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> RT : struct</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Eff<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
+<a id="EffGuards_0_SelectMany_1" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Guard<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/Eff.Guard.cs#L40" class="link">Source</a>
+<a href="#EffGuards_0_SelectMany_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="EffGuards_0_SelectMany_2" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Guard<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/Eff.Guard.cs#L43" class="link">Source</a>
+<a href="#EffGuards_0_SelectMany_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> RT : struct</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Eff<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<a id="EffGuards_0_SelectMany_2" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Guard<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Unit<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/Eff.Guard.cs#L46" class="link">Source</a>
+<a href="#EffGuards_0_SelectMany_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="EffGuards_0_SelectMany_3" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Guard<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Unit<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/Eff.Guard.cs#L49" class="link">Source</a>
+<a href="#EffGuards_0_SelectMany_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> RT : struct</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">struct</span>
+<a id="LanguageExt_0_Eff_1" class="def">Eff</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/EffPure.cs#L15" class="link">Source</a>
+<a href="#LanguageExt_0_Eff_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Synchronous IO monad</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Fin<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Eff_1_Run_0" class="def">Run</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/EffPure.cs#L30" class="link">Source</a>
+<a href="#Eff_1_Run_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Invoke the effect</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<a id="Eff_1_RunUnit_0" class="def">RunUnit</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/EffPure.cs#L49" class="link">Source</a>
+<a href="#Eff_1_RunUnit_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Invoke the effect</p>
+</div>
+<div><p>Throws on error</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Eff_1_Memo_0" class="def">Memo</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/EffPure.cs#L61" class="link">Source</a>
+<a href="#Eff_1_Memo_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Memoise the result, so subsequent calls don't invoke the side-effect</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Eff_1_EffectMaybe_0" class="def">EffectMaybe</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Fin<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/EffPure.cs#L78" class="link">Source</a>
+<a href="#Eff_1_EffectMaybe_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Lift a synchronous effect into the IO monad</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Eff_1_Effect_0" class="def">Effect</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/EffPure.cs#L85" class="link">Source</a>
+<a href="#Eff_1_Effect_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Lift a synchronous effect into the IO monad</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Eff_1_Success_0" class="def">Success</a>
+
+<span class='parens'>(</span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/EffPure.cs#L92" class="link">Source</a>
+<a href="#Eff_1_Success_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Lift a value into the IO monad</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Eff_1_Fail_0" class="def">Fail</a>
+
+<span class='parens'>(</span>Error error<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/EffPure.cs#L99" class="link">Source</a>
+<a href="#Eff_1_Fail_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Lift a failure into the IO monad</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Eff_1_WithRuntime_1" class="def">WithRuntime</a>
+<span class='generics'>&lt;</span>RT<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/EffPure.cs#L157" class="link">Source</a>
+<a href="#Eff_1_WithRuntime_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> RT : struct</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Aff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Eff_1_ToAff_0" class="def">ToAff</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/EffPure.cs#L164" class="link">Source</a>
+<a href="#Eff_1_ToAff_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Aff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Eff_1_ToAffWithRuntime_1" class="def">ToAffWithRuntime</a>
+<span class='generics'>&lt;</span>RT<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/EffPure.cs#L171" class="link">Source</a>
+<a href="#Eff_1_ToAffWithRuntime_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+S
+<a id="Eff_1_Fold_1" class="def">Fold</a>
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>S state<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/EffPure.cs#L178" class="link">Source</a>
+<a href="#Eff_1_Fold_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="Eff_1_Exists_0" class="def">Exists</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/EffPure.cs#L187" class="link">Source</a>
+<a href="#Eff_1_Exists_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="Eff_1_ForAll_0" class="def">ForAll</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/EffPure.cs#L194" class="link">Source</a>
+<a href="#Eff_1_ForAll_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+<div class="subs methods"><p class="caption">Operators</p>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="Eff_1_|_0" class="def">|</a>
+<span class='parens'>(</span>Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/EffPure.cs#L103" class="link">Source</a>
+<a href="#Eff_1_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="Eff_1_|_0" class="def">|</a>
+<span class='parens'>(</span>Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>EffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/EffPure.cs#L113" class="link">Source</a>
+<a href="#Eff_1_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="Eff_1_|_0" class="def">|</a>
+<span class='parens'>(</span>Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>AffCatch<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/EffPure.cs#L123" class="link">Source</a>
+<a href="#Eff_1_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="Eff_1_|_0" class="def">|</a>
+<span class='parens'>(</span>Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>CatchValue<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/EffPure.cs#L133" class="link">Source</a>
+<a href="#Eff_1_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="Eff_1_|_0" class="def">|</a>
+<span class='parens'>(</span>Eff<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>CatchError value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Eff/EffPure.cs#L145" class="link">Source</a>
+<a href="#Eff_1_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+</div>
+</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js" integrity="sha512-9khQRAUBYEJDCDVP2yw3LRUQvjJ0Pjx0EShmaQjcHa6AXiOv6qHQu9lCAIR8O+/D8FtaCoJ2c0Tf9Xo7hYH01Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-fTl/qcO1VgvKtOMApX2PdZzkziyr2stM65GYPLGuYMnuMm1z2JLJG6XVU7C/mR+E7xBUqCivykuhlzfqxXBXbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script></body></html>

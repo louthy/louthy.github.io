@@ -1,0 +1,660 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>LanguageExt.Core/Prelude/Value parsing</title>
+<link href="style.css" rel="stylesheet" type="text/css"/></head>
+<body class="js-enabled"><div id="package-header"><ul class="links" id="page-menu"><li><a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Value parsing" class="link">Source</a></li>
+<li><a href="../index.html" class="link">Contents</a></li>
+<li><a href="../../../index.html" class="link">Index</a></li></ul>
+<p class="caption">LanguageExt.Core</p></div>
+<div id="content"><div id="module-header"><p class="caption"><a href="../../index.html" class="link">LanguageExt.Core</a>
+<span> ► </span>
+<a href="../index.html" class="link">Prelude</a>
+<span> ► </span>
+<a href="index.html" class="link">Value parsing</a></p></div>
+
+<div id="table-of-contents"><p class="caption">Contents</p>
+<ul><li><a href="#LanguageExt_0_Prelude_0" class="link"><div class="nowrap">Prelude
+</div></a></li>
+<ul><li><a href="#Prelude_0_convert_1" class="link"><div class="nowrap">convert
+<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>object value<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_parseLong_0" class="link"><div class="nowrap">parseLong
+
+<span class='parens'>(</span>string value<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_parseInt_0" class="link"><div class="nowrap">parseInt
+
+<span class='parens'>(</span>string value<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_parseInt_0" class="link"><div class="nowrap">parseInt
+
+<span class='parens'>(</span>string value<span class='comma'>, </span>int fromBase<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_parseShort_0" class="link"><div class="nowrap">parseShort
+
+<span class='parens'>(</span>string value<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_parseChar_0" class="link"><div class="nowrap">parseChar
+
+<span class='parens'>(</span>string value<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_parseSByte_0" class="link"><div class="nowrap">parseSByte
+
+<span class='parens'>(</span>string value<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_parseByte_0" class="link"><div class="nowrap">parseByte
+
+<span class='parens'>(</span>string value<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_parseULong_0" class="link"><div class="nowrap">parseULong
+
+<span class='parens'>(</span>string value<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_parseUInt_0" class="link"><div class="nowrap">parseUInt
+
+<span class='parens'>(</span>string value<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_parseUShort_0" class="link"><div class="nowrap">parseUShort
+
+<span class='parens'>(</span>string value<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_parseFloat_0" class="link"><div class="nowrap">parseFloat
+
+<span class='parens'>(</span>string value<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_parseDouble_0" class="link"><div class="nowrap">parseDouble
+
+<span class='parens'>(</span>string value<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_parseDecimal_0" class="link"><div class="nowrap">parseDecimal
+
+<span class='parens'>(</span>string value<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_parseBool_0" class="link"><div class="nowrap">parseBool
+
+<span class='parens'>(</span>string value<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_parseGuid_0" class="link"><div class="nowrap">parseGuid
+
+<span class='parens'>(</span>string value<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_parseDateTime_0" class="link"><div class="nowrap">parseDateTime
+
+<span class='parens'>(</span>string value<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_parseDateTimeOffset_0" class="link"><div class="nowrap">parseDateTimeOffset
+
+<span class='parens'>(</span>string value<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_parseTimeSpan_0" class="link"><div class="nowrap">parseTimeSpan
+
+<span class='parens'>(</span>string value<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_parseEnum_1" class="link"><div class="nowrap">parseEnum
+<span class='generics'>&lt;</span>TEnum<span class='generics'>&gt;</span>
+<span class='parens'>(</span>string value<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_parseEnumIgnoreCase_1" class="link"><div class="nowrap">parseEnumIgnoreCase
+<span class='generics'>&lt;</span>TEnum<span class='generics'>&gt;</span>
+<span class='parens'>(</span>string value<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_parseIPAddress_0" class="link"><div class="nowrap">parseIPAddress
+
+<span class='parens'>(</span>string value<span class='parens'>)</span></div></a></li></ul></ul></div>
+<div class="interface">
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="LanguageExt_0_Prelude_0" class="def">Prelude</a>
+
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Value parsing/Prelude_Parse.cs#L7" class="link">Source</a>
+<a href="#LanguageExt_0_Prelude_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Option<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
+<a id="Prelude_0_convert_1" class="def">convert</a>
+<span class='generics'>&lt;</span>T<span class='generics'>&gt;</span>
+<span class='parens'>(</span>object value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Value parsing/Prelude_Parse.cs#L9" class="link">Source</a>
+<a href="#Prelude_0_convert_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Option<span class='generics'>&lt;</span>long<span class='generics'>&gt;</span>
+<a id="Prelude_0_parseLong_0" class="def">parseLong</a>
+
+<span class='parens'>(</span>string value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Value parsing/Prelude_Parse.cs#L28" class="link">Source</a>
+<a href="#Prelude_0_parseLong_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Option<span class='generics'>&lt;</span>int<span class='generics'>&gt;</span>
+<a id="Prelude_0_parseInt_0" class="def">parseInt</a>
+
+<span class='parens'>(</span>string value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Value parsing/Prelude_Parse.cs#L32" class="link">Source</a>
+<a href="#Prelude_0_parseInt_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Option<span class='generics'>&lt;</span>int<span class='generics'>&gt;</span>
+<a id="Prelude_0_parseInt_0" class="def">parseInt</a>
+
+<span class='parens'>(</span>string value<span class='comma'>, </span>int fromBase<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Value parsing/Prelude_Parse.cs#L36" class="link">Source</a>
+<a href="#Prelude_0_parseInt_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Option<span class='generics'>&lt;</span>short<span class='generics'>&gt;</span>
+<a id="Prelude_0_parseShort_0" class="def">parseShort</a>
+
+<span class='parens'>(</span>string value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Value parsing/Prelude_Parse.cs#L49" class="link">Source</a>
+<a href="#Prelude_0_parseShort_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Option<span class='generics'>&lt;</span>char<span class='generics'>&gt;</span>
+<a id="Prelude_0_parseChar_0" class="def">parseChar</a>
+
+<span class='parens'>(</span>string value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Value parsing/Prelude_Parse.cs#L53" class="link">Source</a>
+<a href="#Prelude_0_parseChar_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Option<span class='generics'>&lt;</span>sbyte<span class='generics'>&gt;</span>
+<a id="Prelude_0_parseSByte_0" class="def">parseSByte</a>
+
+<span class='parens'>(</span>string value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Value parsing/Prelude_Parse.cs#L57" class="link">Source</a>
+<a href="#Prelude_0_parseSByte_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Option<span class='generics'>&lt;</span>byte<span class='generics'>&gt;</span>
+<a id="Prelude_0_parseByte_0" class="def">parseByte</a>
+
+<span class='parens'>(</span>string value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Value parsing/Prelude_Parse.cs#L61" class="link">Source</a>
+<a href="#Prelude_0_parseByte_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Option<span class='generics'>&lt;</span>ulong<span class='generics'>&gt;</span>
+<a id="Prelude_0_parseULong_0" class="def">parseULong</a>
+
+<span class='parens'>(</span>string value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Value parsing/Prelude_Parse.cs#L65" class="link">Source</a>
+<a href="#Prelude_0_parseULong_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Option<span class='generics'>&lt;</span>uint<span class='generics'>&gt;</span>
+<a id="Prelude_0_parseUInt_0" class="def">parseUInt</a>
+
+<span class='parens'>(</span>string value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Value parsing/Prelude_Parse.cs#L69" class="link">Source</a>
+<a href="#Prelude_0_parseUInt_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Option<span class='generics'>&lt;</span>ushort<span class='generics'>&gt;</span>
+<a id="Prelude_0_parseUShort_0" class="def">parseUShort</a>
+
+<span class='parens'>(</span>string value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Value parsing/Prelude_Parse.cs#L73" class="link">Source</a>
+<a href="#Prelude_0_parseUShort_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Option<span class='generics'>&lt;</span>float<span class='generics'>&gt;</span>
+<a id="Prelude_0_parseFloat_0" class="def">parseFloat</a>
+
+<span class='parens'>(</span>string value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Value parsing/Prelude_Parse.cs#L77" class="link">Source</a>
+<a href="#Prelude_0_parseFloat_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Option<span class='generics'>&lt;</span>double<span class='generics'>&gt;</span>
+<a id="Prelude_0_parseDouble_0" class="def">parseDouble</a>
+
+<span class='parens'>(</span>string value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Value parsing/Prelude_Parse.cs#L81" class="link">Source</a>
+<a href="#Prelude_0_parseDouble_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Option<span class='generics'>&lt;</span>decimal<span class='generics'>&gt;</span>
+<a id="Prelude_0_parseDecimal_0" class="def">parseDecimal</a>
+
+<span class='parens'>(</span>string value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Value parsing/Prelude_Parse.cs#L85" class="link">Source</a>
+<a href="#Prelude_0_parseDecimal_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Option<span class='generics'>&lt;</span>bool<span class='generics'>&gt;</span>
+<a id="Prelude_0_parseBool_0" class="def">parseBool</a>
+
+<span class='parens'>(</span>string value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Value parsing/Prelude_Parse.cs#L89" class="link">Source</a>
+<a href="#Prelude_0_parseBool_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Option<span class='generics'>&lt;</span>Guid<span class='generics'>&gt;</span>
+<a id="Prelude_0_parseGuid_0" class="def">parseGuid</a>
+
+<span class='parens'>(</span>string value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Value parsing/Prelude_Parse.cs#L93" class="link">Source</a>
+<a href="#Prelude_0_parseGuid_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Option<span class='generics'>&lt;</span>DateTime<span class='generics'>&gt;</span>
+<a id="Prelude_0_parseDateTime_0" class="def">parseDateTime</a>
+
+<span class='parens'>(</span>string value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Value parsing/Prelude_Parse.cs#L97" class="link">Source</a>
+<a href="#Prelude_0_parseDateTime_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Option<span class='generics'>&lt;</span>DateTimeOffset<span class='generics'>&gt;</span>
+<a id="Prelude_0_parseDateTimeOffset_0" class="def">parseDateTimeOffset</a>
+
+<span class='parens'>(</span>string value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Value parsing/Prelude_Parse.cs#L101" class="link">Source</a>
+<a href="#Prelude_0_parseDateTimeOffset_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Option<span class='generics'>&lt;</span>TimeSpan<span class='generics'>&gt;</span>
+<a id="Prelude_0_parseTimeSpan_0" class="def">parseTimeSpan</a>
+
+<span class='parens'>(</span>string value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Value parsing/Prelude_Parse.cs#L105" class="link">Source</a>
+<a href="#Prelude_0_parseTimeSpan_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Option<span class='generics'>&lt;</span>TEnum<span class='generics'>&gt;</span>
+<a id="Prelude_0_parseEnum_1" class="def">parseEnum</a>
+<span class='generics'>&lt;</span>TEnum<span class='generics'>&gt;</span>
+<span class='parens'>(</span>string value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Value parsing/Prelude_Parse.cs#L109" class="link">Source</a>
+<a href="#Prelude_0_parseEnum_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> TEnum : struct</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Option<span class='generics'>&lt;</span>TEnum<span class='generics'>&gt;</span>
+<a id="Prelude_0_parseEnumIgnoreCase_1" class="def">parseEnumIgnoreCase</a>
+<span class='generics'>&lt;</span>TEnum<span class='generics'>&gt;</span>
+<span class='parens'>(</span>string value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Value parsing/Prelude_Parse.cs#L114" class="link">Source</a>
+<a href="#Prelude_0_parseEnumIgnoreCase_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> TEnum : struct</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Option<span class='generics'>&lt;</span>IPAddress<span class='generics'>&gt;</span>
+<a id="Prelude_0_parseIPAddress_0" class="def">parseIPAddress</a>
+
+<span class='parens'>(</span>string value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Prelude/Value parsing/Prelude_Parse.cs#L119" class="link">Source</a>
+<a href="#Prelude_0_parseIPAddress_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js" integrity="sha512-9khQRAUBYEJDCDVP2yw3LRUQvjJ0Pjx0EShmaQjcHa6AXiOv6qHQu9lCAIR8O+/D8FtaCoJ2c0Tf9Xo7hYH01Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-fTl/qcO1VgvKtOMApX2PdZzkziyr2stM65GYPLGuYMnuMm1z2JLJG6XVU7C/mR+E7xBUqCivykuhlzfqxXBXbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script></body></html>

@@ -1,0 +1,544 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>LanguageExt.Core/Effects/Pipes/Queue</title>
+<link href="style.css" rel="stylesheet" type="text/css"/></head>
+<body class="js-enabled"><div id="package-header"><ul class="links" id="page-menu"><li><a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Pipes/Queue" class="link">Source</a></li>
+<li><a href="../index.html" class="link">Contents</a></li>
+<li><a href="../../../../index.html" class="link">Index</a></li></ul>
+<p class="caption">LanguageExt.Core</p></div>
+<div id="content"><div id="module-header"><p class="caption"><a href="../../../index.html" class="link">LanguageExt.Core</a>
+<span> ► </span>
+<a href="../../index.html" class="link">Effects</a>
+<span> ► </span>
+<a href="../index.html" class="link">Pipes</a>
+<span> ► </span>
+<a href="index.html" class="link">Queue</a></p></div>
+
+<div id="table-of-contents"><p class="caption">Contents</p>
+<ul><li><a href="#LanguageExt.Pipes_0_Queue_3" class="link"><div class="nowrap">Queue
+<span class='generics'>&lt;</span>RT<span class='comma'>, </span>OUT<span class='comma'>, </span>A<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#Queue_3_Enqueue_0" class="link"><div class="nowrap">Enqueue
+
+<span class='parens'>(</span>OUT value<span class='parens'>)</span></div></a></li>
+<li><a href="#Queue_3_EnqueueEff_0" class="link"><div class="nowrap">EnqueueEff
+
+<span class='parens'>(</span>OUT value<span class='parens'>)</span></div></a></li>
+<li><a href="#Queue_3_Done_0" class="link"><div class="nowrap">Done
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Queue_3_DoneEff_0" class="link"><div class="nowrap">DoneEff</div></a></li>
+<li><a href="#Queue_3_ToProxy_0" class="link"><div class="nowrap">ToProxy
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Queue_3_Bind_1" class="link"><div class="nowrap">Bind
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Void<span class='comma'>, </span>Unit<span class='comma'>, </span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Queue_3_Map_1" class="link"><div class="nowrap">Map
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Queue_3_Select_1" class="link"><div class="nowrap">Select
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Queue_3_For_2" class="link"><div class="nowrap">For
+<span class='generics'>&lt;</span>C1<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Void<span class='comma'>, </span>Unit<span class='comma'>, </span>C1<span class='comma'>, </span>C<span class='comma'>, </span>Unit<span class='generics'>&gt;</span><span class='generics'>&gt;</span> body<span class='parens'>)</span></div></a></li>
+<li><a href="#Queue_3_Action_1" class="link"><div class="nowrap">Action
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Void<span class='comma'>, </span>Unit<span class='comma'>, </span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>B<span class='generics'>&gt;</span> r<span class='parens'>)</span></div></a></li>
+<li><a href="#Queue_3_PairEachRequestWithRespond_2" class="link"><div class="nowrap">PairEachRequestWithRespond
+<span class='generics'>&lt;</span>UOutA<span class='comma'>, </span>AUInA<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Void<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOutA<span class='comma'>, </span>AUInA<span class='comma'>, </span>Void<span class='comma'>, </span>Unit<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> lhs<span class='parens'>)</span></div></a></li>
+<li><a href="#Queue_3_ReplaceRequest_2" class="link"><div class="nowrap">ReplaceRequest
+<span class='generics'>&lt;</span>UOutA<span class='comma'>, </span>AUInA<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Void<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOutA<span class='comma'>, </span>AUInA<span class='comma'>, </span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>Unit<span class='generics'>&gt;</span><span class='generics'>&gt;</span> lhs<span class='parens'>)</span></div></a></li>
+<li><a href="#Queue_3_PairEachRespondWithRequest_2" class="link"><div class="nowrap">PairEachRespondWithRequest
+<span class='generics'>&lt;</span>DInC<span class='comma'>, </span>DOutC<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>DInC<span class='comma'>, </span>DOutC<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#Queue_3_ReplaceRespond_2" class="link"><div class="nowrap">ReplaceRespond
+<span class='generics'>&lt;</span>DInC<span class='comma'>, </span>DOutC<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Void<span class='comma'>, </span>Unit<span class='comma'>, </span>DInC<span class='comma'>, </span>DOutC<span class='comma'>, </span>Unit<span class='generics'>&gt;</span><span class='generics'>&gt;</span> rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#Queue_3_Reflect_0" class="link"><div class="nowrap">Reflect
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Queue_3_Observe_0" class="link"><div class="nowrap">Observe
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Queue_3_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>Queue<span class='generics'>&lt;</span>RT<span class='comma'>, </span>OUT<span class='comma'>, </span>A<span class='generics'>&gt;</span> p1<span class='comma'>, </span>Consumer<span class='generics'>&lt;</span>RT<span class='comma'>, </span>OUT<span class='comma'>, </span>A<span class='generics'>&gt;</span> p2<span class='parens'>)</span></div></a></li>
+<li><a href="#Queue_3_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>Queue<span class='generics'>&lt;</span>RT<span class='comma'>, </span>OUT<span class='comma'>, </span>A<span class='generics'>&gt;</span> p1<span class='comma'>, </span>Consumer<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>A<span class='generics'>&gt;</span> p2<span class='parens'>)</span></div></a></li></ul></ul></div>
+<div class="interface">
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="LanguageExt.Pipes_0_Queue_3" class="def">Queue</a>
+<span class='generics'>&lt;</span>RT<span class='comma'>, </span>OUT<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Pipes/Queue/CoreTypes.cs#L13" class="link">Source</a>
+<a href="#LanguageExt.Pipes_0_Queue_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> RT : struct, HasCancel&lt;RT&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+<div class="subs methods"><p class="caption">Properties</p>
+<div class="top"><p class="src"><span class="keyword">property</span>
+Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="Queue_3_DoneEff_0" class="def">DoneEff</a>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Pipes/Queue/CoreTypes.cs#L42" class="link">Source</a>
+<a href="#Queue_3_DoneEff_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Mark the Queue as done and cancel any Effect that it is in</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<a id="Queue_3_Enqueue_0" class="def">Enqueue</a>
+
+<span class='parens'>(</span>OUT value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Pipes/Queue/CoreTypes.cs#L24" class="link">Source</a>
+<a href="#Queue_3_Enqueue_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Enqueue an item</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="Queue_3_EnqueueEff_0" class="def">EnqueueEff</a>
+
+<span class='parens'>(</span>OUT value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Pipes/Queue/CoreTypes.cs#L30" class="link">Source</a>
+<a href="#Queue_3_EnqueueEff_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Enqueue an item</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<a id="Queue_3_Done_0" class="def">Done</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Pipes/Queue/CoreTypes.cs#L36" class="link">Source</a>
+<a href="#Queue_3_Done_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Mark the Queue as done and cancel any Effect that it is in</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Void<span class='comma'>, </span>Unit<span class='comma'>, </span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Queue_3_ToProxy_0" class="def">ToProxy</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Pipes/Queue/CoreTypes.cs#L48" class="link">Source</a>
+<a href="#Queue_3_ToProxy_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Void<span class='comma'>, </span>Unit<span class='comma'>, </span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<a id="Queue_3_Bind_1" class="def">Bind</a>
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Void<span class='comma'>, </span>Unit<span class='comma'>, </span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Pipes/Queue/CoreTypes.cs#L52" class="link">Source</a>
+<a href="#Queue_3_Bind_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Void<span class='comma'>, </span>Unit<span class='comma'>, </span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Queue_3_Map_1" class="def">Map</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Pipes/Queue/CoreTypes.cs#L56" class="link">Source</a>
+<a href="#Queue_3_Map_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Producer<span class='generics'>&lt;</span>RT<span class='comma'>, </span>OUT<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Queue_3_Select_1" class="def">Select</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Pipes/Queue/CoreTypes.cs#L60" class="link">Source</a>
+<a href="#Queue_3_Select_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Void<span class='comma'>, </span>Unit<span class='comma'>, </span>C1<span class='comma'>, </span>C<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Queue_3_For_2" class="def">For</a>
+<span class='generics'>&lt;</span>C1<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Void<span class='comma'>, </span>Unit<span class='comma'>, </span>C1<span class='comma'>, </span>C<span class='comma'>, </span>Unit<span class='generics'>&gt;</span><span class='generics'>&gt;</span> body<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Pipes/Queue/CoreTypes.cs#L64" class="link">Source</a>
+<a href="#Queue_3_For_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Void<span class='comma'>, </span>Unit<span class='comma'>, </span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Queue_3_Action_1" class="def">Action</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Void<span class='comma'>, </span>Unit<span class='comma'>, </span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>B<span class='generics'>&gt;</span> r<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Pipes/Queue/CoreTypes.cs#L68" class="link">Source</a>
+<a href="#Queue_3_Action_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOutA<span class='comma'>, </span>AUInA<span class='comma'>, </span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Queue_3_PairEachRequestWithRespond_2" class="def">PairEachRequestWithRespond</a>
+<span class='generics'>&lt;</span>UOutA<span class='comma'>, </span>AUInA<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Void<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOutA<span class='comma'>, </span>AUInA<span class='comma'>, </span>Void<span class='comma'>, </span>Unit<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> lhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Pipes/Queue/CoreTypes.cs#L75" class="link">Source</a>
+<a href="#Queue_3_PairEachRequestWithRespond_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div><p>(f +&gt;&gt; p) pairs each 'request' in <code>this</code> with a 'respond' in <code>lhs</code>.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOutA<span class='comma'>, </span>AUInA<span class='comma'>, </span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Queue_3_ReplaceRequest_2" class="def">ReplaceRequest</a>
+<span class='generics'>&lt;</span>UOutA<span class='comma'>, </span>AUInA<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Void<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>UOutA<span class='comma'>, </span>AUInA<span class='comma'>, </span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>Unit<span class='generics'>&gt;</span><span class='generics'>&gt;</span> lhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Pipes/Queue/CoreTypes.cs#L79" class="link">Source</a>
+<a href="#Queue_3_ReplaceRequest_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Void<span class='comma'>, </span>Unit<span class='comma'>, </span>DInC<span class='comma'>, </span>DOutC<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Queue_3_PairEachRespondWithRequest_2" class="def">PairEachRespondWithRequest</a>
+<span class='generics'>&lt;</span>DInC<span class='comma'>, </span>DOutC<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>DInC<span class='comma'>, </span>DOutC<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Pipes/Queue/CoreTypes.cs#L83" class="link">Source</a>
+<a href="#Queue_3_PairEachRespondWithRequest_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Void<span class='comma'>, </span>Unit<span class='comma'>, </span>DInC<span class='comma'>, </span>DOutC<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Queue_3_ReplaceRespond_2" class="def">ReplaceRespond</a>
+<span class='generics'>&lt;</span>DInC<span class='comma'>, </span>DOutC<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Void<span class='comma'>, </span>Unit<span class='comma'>, </span>DInC<span class='comma'>, </span>DOutC<span class='comma'>, </span>Unit<span class='generics'>&gt;</span><span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Pipes/Queue/CoreTypes.cs#L87" class="link">Source</a>
+<a href="#Queue_3_ReplaceRespond_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>OUT<span class='comma'>, </span>Unit<span class='comma'>, </span>Unit<span class='comma'>, </span>Void<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Queue_3_Reflect_0" class="def">Reflect</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Pipes/Queue/CoreTypes.cs#L91" class="link">Source</a>
+<a href="#Queue_3_Reflect_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>RT<span class='comma'>, </span>Void<span class='comma'>, </span>Unit<span class='comma'>, </span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Queue_3_Observe_0" class="def">Observe</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Pipes/Queue/CoreTypes.cs#L95" class="link">Source</a>
+<a href="#Queue_3_Observe_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+<div class="subs methods"><p class="caption">Operators</p>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="Queue_3_|_0" class="def">|</a>
+<span class='parens'>(</span>Queue<span class='generics'>&lt;</span>RT<span class='comma'>, </span>OUT<span class='comma'>, </span>A<span class='generics'>&gt;</span> p1<span class='comma'>, </span>Consumer<span class='generics'>&lt;</span>RT<span class='comma'>, </span>OUT<span class='comma'>, </span>A<span class='generics'>&gt;</span> p2<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Pipes/Queue/CoreTypes.cs#L99" class="link">Source</a>
+<a href="#Queue_3_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="Queue_3_|_0" class="def">|</a>
+<span class='parens'>(</span>Queue<span class='generics'>&lt;</span>RT<span class='comma'>, </span>OUT<span class='comma'>, </span>A<span class='generics'>&gt;</span> p1<span class='comma'>, </span>Consumer<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>A<span class='generics'>&gt;</span> p2<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/v4-latest/LanguageExt.Core/Effects/Pipes/Queue/CoreTypes.cs#L103" class="link">Source</a>
+<a href="#Queue_3_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+</div></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js" integrity="sha512-9khQRAUBYEJDCDVP2yw3LRUQvjJ0Pjx0EShmaQjcHa6AXiOv6qHQu9lCAIR8O+/D8FtaCoJ2c0Tf9Xo7hYH01Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-fTl/qcO1VgvKtOMApX2PdZzkziyr2stM65GYPLGuYMnuMm1z2JLJG6XVU7C/mR+E7xBUqCivykuhlzfqxXBXbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script></body></html>
