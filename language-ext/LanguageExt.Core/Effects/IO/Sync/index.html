@@ -1,0 +1,669 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>LanguageExt.Core/Effects/IO/Sync</title>
+<link href="style.css" rel="stylesheet" type="text/css"/></head>
+<body class="js-enabled"><div id="package-header"><ul class="links" id="page-menu"><li><a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Sync" class="link">Source</a></li>
+<li><a href="../index.html" class="link">Contents</a></li>
+<li><a href="../../../../index.html" class="link">Index</a></li></ul>
+<p class="caption">LanguageExt.Core</p></div>
+<div id="content"><div id="module-header"><p class="caption"><a href="../../../index.html" class="link">LanguageExt.Core</a>
+<span> ► </span>
+<a href="../../index.html" class="link">Effects</a>
+<span> ► </span>
+<a href="../index.html" class="link">IO</a>
+<span> ► </span>
+<a href="index.html" class="link">Sync</a></p></div>
+
+<div id="table-of-contents"><p class="caption">Contents</p>
+<ul><li><a href="#_0_IOSync_1" class="link"><div class="nowrap">IOSync
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>EnvIO<span class='comma'>, </span>IOResponse<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> runIO<span class='parens'>)</span></div></a></li>
+<ul><li><a href="#IOSync_1_ToAsync_0" class="link"><div class="nowrap">ToAsync
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#IOSync_1_Map_1" class="link"><div class="nowrap">Map
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#IOSync_1_FoldUntil_1" class="link"><div class="nowrap">FoldUntil
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Schedule schedule,
+        S initialState,
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> folder,
+        Func<span class='generics'>&lt;</span><span class='parens'>(</span>S State<span class='comma'>, </span>A Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span></div></a></li>
+<li><a href="#IOSync_1_Post_0" class="link"><div class="nowrap">Post
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#IOSync_1_Bind_1" class="link"><div class="nowrap">Bind
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#IOSync_1_Bracket_0" class="link"><div class="nowrap">Bracket
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#IOSync_1_Bracket_2" class="link"><div class="nowrap">Bracket
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> Use<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>IO<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> Catch<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> Finally<span class='parens'>)</span></div></a></li>
+<li><a href="#IOSync_1_Local_0" class="link"><div class="nowrap">Local
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#IOSync_1_Fork_0" class="link"><div class="nowrap">Fork
+
+<span class='parens'>(</span>Option<span class='generics'>&lt;</span>TimeSpan<span class='generics'>&gt;</span> timeout = default<span class='parens'>)</span></div></a></li>
+<li><a href="#IOSync_1_RunAsync_0" class="link"><div class="nowrap">RunAsync
+
+<span class='parens'>(</span>EnvIO? envIO = null<span class='parens'>)</span></div></a></li>
+<li><a href="#IOSync_1_Run_0" class="link"><div class="nowrap">Run
+
+<span class='parens'>(</span>EnvIO? envIO = null<span class='parens'>)</span></div></a></li>
+<li><a href="#IOSync_1_RepeatUntil_0" class="link"><div class="nowrap">RepeatUntil
+
+<span class='parens'>(</span>
+        Schedule schedule,
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span></div></a></li>
+<li><a href="#IOSync_1_RepeatUntil_0" class="link"><div class="nowrap">RepeatUntil
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span></div></a></li>
+<li><a href="#IOSync_1_RetryUntil_0" class="link"><div class="nowrap">RetryUntil
+
+<span class='parens'>(</span>
+        Schedule schedule,
+        Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span></div></a></li>
+<li><a href="#IOSync_1_RetryUntil_0" class="link"><div class="nowrap">RetryUntil
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span></div></a></li>
+<li><a href="#IOSync_1_Catch_0" class="link"><div class="nowrap">Catch
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Predicate<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> Fail<span class='parens'>)</span></div></a></li>
+<li><a href="#IOSync_1_ToString_0" class="link"><div class="nowrap">ToString
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li></ul></ul></div>
+<div class="interface">
+<div class="top"><p class="src"><span class="keyword">record</span>
+<a id="_0_IOSync_1" class="def">IOSync</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>EnvIO<span class='comma'>, </span>IOResponse<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> runIO<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Sync/IO.cs#L29" class="link">Source</a>
+<a href="#_0_IOSync_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>A value of type <code>IO</code> is a computation which, when performed, does some I/O before returning
+a value of type <code>A</code>.</p>
+<p>There is really only one way you should <em>&quot;perform&quot;</em> an I/O action: bind it to <code>Main</code> in your
+program:  When your program is run, the I/O will be performed. It shouldn't be possible to
+perform I/O from an arbitrary function, unless that function is itself in the <code>IO</code> monad and
+called at some point, directly or indirectly, from <code>Main</code>.</p>
+<p>Obviously, as this is C#, the above restrictions are for you to enforce. It would be reasonable
+to relax that approach and have I/O invoked from, say, web-request handlers - or any other 'edges'
+of your application.</p>
+<p><code>IO</code> is a monad, so <code>IO</code> actions can be combined using either the LINQ-notation or the <code>bind</code>
+operations from the <code>Monad</code> class.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">runIO</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>The lifted thunk that is the IO operation</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="IOSync_1_ToAsync_0" class="def">ToAsync</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Sync/IO.cs#L31" class="link">Source</a>
+<a href="#IOSync_1_ToAsync_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<a id="IOSync_1_Map_1" class="def">Map</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Sync/IO.cs#L39" class="link">Source</a>
+<a href="#IOSync_1_Map_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<a id="IOSync_1_FoldUntil_1" class="def">FoldUntil</a>
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Schedule schedule,
+        S initialState,
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> folder,
+        Func<span class='generics'>&lt;</span><span class='parens'>(</span>S State<span class='comma'>, </span>A Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Sync/IO.cs#L51" class="link">Source</a>
+<a href="#IOSync_1_FoldUntil_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="IOSync_1_Post_0" class="def">Post</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Sync/IO.cs#L68" class="link">Source</a>
+<a href="#IOSync_1_Post_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Make this IO computation run on the <code>SynchronizationContext</code> that was captured at the start
+of the IO chain (i.e. the one embedded within the <code>EnvIO</code> environment that is passed through
+all IO computations)</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<a id="IOSync_1_Bind_1" class="def">Bind</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Sync/IO.cs#L76" class="link">Source</a>
+<a href="#IOSync_1_Bind_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="IOSync_1_Bracket_0" class="def">Bracket</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Sync/IO.cs#L93" class="link">Source</a>
+<a href="#IOSync_1_Bracket_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>The IO monad tracks resources automatically, this creates a local resource environment
+to run this computation in.  Once the computation has completed any resources acquired
+are automatically released.  Imagine this as the ultimate <code>using</code> statement.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<a id="IOSync_1_Bracket_2" class="def">Bracket</a>
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> Use<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>IO<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> Catch<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> Finally<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Sync/IO.cs#L110" class="link">Source</a>
+<a href="#IOSync_1_Bracket_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>When acquiring, using, and releasing various resources, it can be quite convenient to write a function to manage
+the acquisition and releasing, taking a function of the acquired value that specifies an action to be performed
+in between.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Use</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Function to use the acquired resource</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Catch</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Function to run to handle any exceptions</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Finally</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Function to invoke to release the resource</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="IOSync_1_Local_0" class="def">Local</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Sync/IO.cs#L136" class="link">Source</a>
+<a href="#IOSync_1_Local_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Create a local cancellation environment</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="IOSync_1_Fork_0" class="def">Fork</a>
+
+<span class='parens'>(</span>Option<span class='generics'>&lt;</span>TimeSpan<span class='generics'>&gt;</span> timeout = default<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Sync/IO.cs#L163" class="link">Source</a>
+<a href="#IOSync_1_Fork_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Queues the specified work to run on the thread pool</p>
+</div>
+<div><p>Any resources acquired within a forked IO computation will automatically be released upon the forked
+computation's completion (successful or otherwise).  Resources acquired in the parent thread will be
+available to the forked thread, and can be released from there, but they are shared resources at that
+point and should be treated with care.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">timeout</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Optional timeout</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>Fork</code> record that contains members for cancellation and optional awaiting</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="IOSync_1_RunAsync_0" class="def">RunAsync</a>
+
+<span class='parens'>(</span>EnvIO? envIO = null<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Sync/IO.cs#L183" class="link">Source</a>
+<a href="#IOSync_1_RunAsync_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Run the <code>IO</code> monad to get its result</p>
+</div>
+<div><p>This forks the operation to run on a new task that is then awaited.</p>
+<p>Any lifted asynchronous operations will yield to the thread-scheduler, allowing other queued
+operations to run concurrently.  So, even though this call isn't awaitable it still plays
+nicely and doesn't block the thread.</p>
+
+<p>NOTE: An exception will always be thrown if the IO operation fails.  Lift this monad into
+other error handling monads to leverage more declarative error handling.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Result of the IO operation</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+A
+<a id="IOSync_1_Run_0" class="def">Run</a>
+
+<span class='parens'>(</span>EnvIO? envIO = null<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Sync/IO.cs#L228" class="link">Source</a>
+<a href="#IOSync_1_Run_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Run the <code>IO</code> monad to get its result</p>
+</div>
+<div><p>Any lifted asynchronous operations will yield to the thread-scheduler, allowing other queued
+operations to run concurrently.  So, even though this call isn't awaitable it still plays
+nicely and doesn't block the thread.</p>
+
+<p>NOTE: An exception will always be thrown if the IO operation fails.  Lift this monad into
+other error handling monads to leverage more declarative error handling.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">envIO</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>IO environment</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Result of the IO operation</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="IOSync_1_RepeatUntil_0" class="def">RepeatUntil</a>
+
+<span class='parens'>(</span>
+        Schedule schedule,
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Sync/IO.cs#L246" class="link">Source</a>
+<a href="#IOSync_1_RepeatUntil_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Keeps repeating the computation, until the scheduler expires, or the predicate returns true, or an error occurs</p>
+</div>
+<div><p>Any resources acquired within a repeated IO computation will automatically be released.  This also means you can't
+acquire resources and return them from within a repeated computation.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">schedule</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Scheduler strategy for repeating</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">predicate</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Keep repeating until this predicate returns <code>true</code> for each computed value</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The result of the last invocation</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="IOSync_1_RepeatUntil_0" class="def">RepeatUntil</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Sync/IO.cs#L261" class="link">Source</a>
+<a href="#IOSync_1_RepeatUntil_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Keeps repeating the computation, until the scheduler expires, or the predicate returns true, or an error occurs</p>
+</div>
+<div><p>Any resources acquired within a repeated IO computation will automatically be released.  This also means you can't
+acquire resources and return them from within a repeated computation.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">schedule</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Scheduler strategy for repeating</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">predicate</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Keep repeating until this predicate returns <code>true</code> for each computed value</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The result of the last invocation</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="IOSync_1_RetryUntil_0" class="def">RetryUntil</a>
+
+<span class='parens'>(</span>
+        Schedule schedule,
+        Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Sync/IO.cs#L303" class="link">Source</a>
+<a href="#IOSync_1_RetryUntil_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Retry if the IO computation fails</p>
+</div>
+<div><p>This variant will keep retrying until the predicate returns <code>true</code> for the error generated at each iteration;
+or, until the schedule expires; at which point the last raised error will be thrown.</p>
+
+<p>Any resources acquired within a retrying IO computation will automatically be released <em>if</em> the operation fails.
+So, successive retries will not grow the acquired resources on each retry iteration.  Any successful operation that
+acquires resources will have them tracked in the usual way.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="IOSync_1_RetryUntil_0" class="def">RetryUntil</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Sync/IO.cs#L320" class="link">Source</a>
+<a href="#IOSync_1_RetryUntil_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Retry if the IO computation fails</p>
+</div>
+<div><p>This variant will keep retrying until the predicate returns <code>true</code> for the error generated at each iteration;
+or, until the schedule expires; at which point the last raised error will be thrown.</p>
+
+<p>Any resources acquired within a retrying IO computation will automatically be released <em>if</em> the operation fails.
+So, successive retries will not grow the acquired resources on each retry iteration.  Any successful operation that
+acquires resources will have them tracked in the usual way.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="IOSync_1_Catch_0" class="def">Catch</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Predicate<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> Fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Sync/IO.cs#L355" class="link">Source</a>
+<a href="#IOSync_1_Catch_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Catches any error thrown by invoking this IO computation, passes it through a predicate,
+and if that returns true, returns the result of invoking the Fail function, otherwise
+this is returned.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Predicate</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Fail</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Fail functions</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+string
+<a id="IOSync_1_ToString_0" class="def">ToString</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Sync/IO.cs#L375" class="link">Source</a>
+<a href="#IOSync_1_ToString_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js" integrity="sha512-9khQRAUBYEJDCDVP2yw3LRUQvjJ0Pjx0EShmaQjcHa6AXiOv6qHQu9lCAIR8O+/D8FtaCoJ2c0Tf9Xo7hYH01Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-fTl/qcO1VgvKtOMApX2PdZzkziyr2stM65GYPLGuYMnuMm1z2JLJG6XVU7C/mR+E7xBUqCivykuhlzfqxXBXbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script></body></html>
