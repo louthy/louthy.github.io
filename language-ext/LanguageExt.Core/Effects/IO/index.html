@@ -42,15 +42,15 @@
 <ul></ul>
 <li><a href="#_0_IO_1" class="link"><div class="nowrap">IO
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span></div></a></li>
-<ul><li><a href="#IO_1_pure_0" class="link"><div class="nowrap">pure
+<ul><li><a href="#IO_1_Pure_0" class="link"><div class="nowrap">Pure
 
 <span class='parens'>(</span>A value<span class='parens'>)</span></div></a></li>
-<li><a href="#IO_1_fail_0" class="link"><div class="nowrap">fail
+<li><a href="#IO_1_Fail_0" class="link"><div class="nowrap">Fail
 
 <span class='parens'>(</span>Error value<span class='parens'>)</span></div></a></li>
 <li><a href="#IO_1_Empty =
-        new IOSync<A>(_ => throw new ManyExceptions([]))_0" class="link"><div class="nowrap">Empty =
-        new IOSync&lt;A&gt;(_ =&gt; throw new ManyExceptions([]))</div></a></li>
+        new IOFail<A>(Errors.None)_0" class="link"><div class="nowrap">Empty =
+        new IOFail&lt;A&gt;(Errors.None)</div></a></li>
 <li><a href="#IO_1_Lift_0" class="link"><div class="nowrap">Lift
 
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
@@ -78,6 +78,9 @@
 <li><a href="#IO_1_Map_1" class="link"><div class="nowrap">Map
 <span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#IO_1_Map_1" class="link"><div class="nowrap">Map
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>B value<span class='parens'>)</span></div></a></li>
 <li><a href="#IO_1_MapFail_0" class="link"><div class="nowrap">MapFail
 
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Error<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
@@ -369,16 +372,10 @@
 <span class='parens'>(</span>this K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
 <li><a href="#IOExtensions_0_Run_1" class="link"><div class="nowrap">Run
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>this K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>EnvIO envIO<span class='parens'>)</span></div></a></li>
-<li><a href="#IOExtensions_0_Run_1" class="link"><div class="nowrap">Run
-<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>this K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>EnvIO? envIO = null<span class='parens'>)</span></div></a></li>
 <li><a href="#IOExtensions_0_RunAsync_1" class="link"><div class="nowrap">RunAsync
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>this K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>EnvIO envIO<span class='parens'>)</span></div></a></li>
-<li><a href="#IOExtensions_0_RunAsync_1" class="link"><div class="nowrap">RunAsync
-<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>this K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>EnvIO? envIO = null<span class='parens'>)</span></div></a></li>
 <li><a href="#IOExtensions_0_Flatten_1" class="link"><div class="nowrap">Flatten
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this Task<span class='generics'>&lt;</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> tma<span class='parens'>)</span></div></a></li>
@@ -801,8 +798,8 @@
                 throw new TaskCanceledException();
             })</div></a></li>
 <li><a href="#Prelude_0_unitIO = 
-        IO<Unit>.pure(default)_0" class="link"><div class="nowrap">unitIO = 
-        IO&lt;Unit&gt;.pure(default)</div></a></li>
+        IO<Unit>.Pure(default)_0" class="link"><div class="nowrap">unitIO = 
+        IO&lt;Unit&gt;.Pure(default)</div></a></li>
 <li><a href="#Prelude_0_envIO = 
         IO<EnvIO>.Lift(e => e)_0" class="link"><div class="nowrap">envIO = 
         IO&lt;EnvIO&gt;.Lift(e =&gt; e)</div></a></li>
@@ -815,6 +812,9 @@
 <li><a href="#Prelude_0_forkIO_2" class="link"><div class="nowrap">forkIO
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>StreamT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Option<span class='generics'>&lt;</span>TimeSpan<span class='generics'>&gt;</span> timeout = default<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_awaitIO_2" class="link"><div class="nowrap">awaitIO
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
 <li><a href="#Prelude_0_yieldIO_0" class="link"><div class="nowrap">yieldIO
 
 <span class='parens'>(</span>double milliseconds<span class='parens'>)</span></div></a></li>
@@ -1336,11 +1336,11 @@ operations from the <code>Monad</code> class.</p>
 <div class="top"><p class="src"><span class="keyword">field</span>
 IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="IO_1_Empty =
-        new IOSync<A>(_ => throw new ManyExceptions([]))_0" class="def">Empty =
-        new IOSync&lt;A&gt;(_ =&gt; throw new ManyExceptions([]))</a>
+        new IOFail<A>(Errors.None)_0" class="def">Empty =
+        new IOFail&lt;A&gt;(Errors.None)</a>
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L42" class="link">Source</a>
 <a href="#IO_1_Empty =
-        new IOSync<A>(_ => throw new ManyExceptions([]))_0" class="selflink">#</a>
+        new IOFail<A>(Errors.None)_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
 <div></div>
@@ -1365,11 +1365,11 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <div class="subs methods"><p class="caption">Methods</p>
 <div class="top"><p class="src"><span class="keyword">method</span>
 IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<a id="IO_1_pure_0" class="def">pure</a>
+<a id="IO_1_Pure_0" class="def">Pure</a>
 
 <span class='parens'>(</span>A value<span class='parens'>)</span>
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L36" class="link">Source</a>
-<a href="#IO_1_pure_0" class="selflink">#</a>
+<a href="#IO_1_Pure_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
 <div></div>
@@ -1390,11 +1390,11 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 </div>
 <div class="top"><p class="src"><span class="keyword">method</span>
 IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<a id="IO_1_fail_0" class="def">fail</a>
+<a id="IO_1_Fail_0" class="def">Fail</a>
 
 <span class='parens'>(</span>Error value<span class='parens'>)</span>
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L39" class="link">Source</a>
-<a href="#IO_1_fail_0" class="selflink">#</a>
+<a href="#IO_1_Fail_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
 <div></div>
@@ -1639,11 +1639,36 @@ IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 
 </div>
 <div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<a id="IO_1_Map_1" class="def">Map</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>B value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L81" class="link">Source</a>
+<a href="#IO_1_Map_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
 IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="IO_1_MapFail_0" class="def">MapFail</a>
 
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Error<span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L81" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L84" class="link">Source</a>
 <a href="#IO_1_MapFail_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -1668,7 +1693,7 @@ IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <a id="IO_1_BiMap_1" class="def">BiMap</a>
 <span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> Succ<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Error<span class='generics'>&gt;</span> Fail<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L84" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L87" class="link">Source</a>
 <a href="#IO_1_BiMap_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -1693,7 +1718,7 @@ IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <a id="IO_1_Match_1" class="def">Match</a>
 <span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> Succ<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>B<span class='generics'>&gt;</span> Fail<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L87" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L90" class="link">Source</a>
 <a href="#IO_1_Match_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -1718,31 +1743,6 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="IO_1_IfFail_0" class="def">IfFail</a>
 
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>A<span class='generics'>&gt;</span> Fail<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L90" class="link">Source</a>
-<a href="#IO_1_IfFail_0" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<a id="IO_1_IfFail_0" class="def">IfFail</a>
-
-<span class='parens'>(</span>A Fail<span class='parens'>)</span>
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L93" class="link">Source</a>
 <a href="#IO_1_IfFail_0" class="selflink">#</a>
 <div class="constraints"></div></p>
@@ -1767,7 +1767,7 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="IO_1_IfFail_0" class="def">IfFail</a>
 
-<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> Fail<span class='parens'>)</span>
+<span class='parens'>(</span>A Fail<span class='parens'>)</span>
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L96" class="link">Source</a>
 <a href="#IO_1_IfFail_0" class="selflink">#</a>
 <div class="constraints"></div></p>
@@ -1792,8 +1792,33 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="IO_1_IfFail_0" class="def">IfFail</a>
 
-<span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> Fail<span class='parens'>)</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> Fail<span class='parens'>)</span>
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L99" class="link">Source</a>
+<a href="#IO_1_IfFail_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="IO_1_IfFail_0" class="def">IfFail</a>
+
+<span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> Fail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L102" class="link">Source</a>
 <a href="#IO_1_IfFail_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -1821,7 +1846,7 @@ IO<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
         Schedule schedule,
         S initialState,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> folder<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L107" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L110" class="link">Source</a>
 <a href="#IO_1_Fold_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -1848,7 +1873,7 @@ IO<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
 <span class='parens'>(</span>
         S initialState,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> folder<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L113" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L116" class="link">Source</a>
 <a href="#IO_1_Fold_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -1877,7 +1902,7 @@ IO<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
         S initialState,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> folder,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>bool<span class='generics'>&gt;</span> stateIs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L118" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L121" class="link">Source</a>
 <a href="#IO_1_FoldWhile_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -1905,7 +1930,7 @@ IO<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
         S initialState,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> folder,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>bool<span class='generics'>&gt;</span> stateIs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L125" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L128" class="link">Source</a>
 <a href="#IO_1_FoldWhile_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -1934,7 +1959,7 @@ IO<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
         S initialState,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> folder,
         Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> valueIs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L131" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L134" class="link">Source</a>
 <a href="#IO_1_FoldWhile_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -1962,7 +1987,7 @@ IO<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
         S initialState,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> folder,
         Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> valueIs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L138" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L141" class="link">Source</a>
 <a href="#IO_1_FoldWhile_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -1991,7 +2016,7 @@ IO<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
         S initialState,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> folder,
         Func<span class='generics'>&lt;</span><span class='parens'>(</span>S State<span class='comma'>, </span>A Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L144" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L147" class="link">Source</a>
 <a href="#IO_1_FoldWhile_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -2019,7 +2044,7 @@ IO<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
         S initialState,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> folder,
         Func<span class='generics'>&lt;</span><span class='parens'>(</span>S State<span class='comma'>, </span>A Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L151" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L154" class="link">Source</a>
 <a href="#IO_1_FoldWhile_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -2048,7 +2073,7 @@ IO<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
         S initialState,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> folder,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>bool<span class='generics'>&gt;</span> stateIs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L157" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L160" class="link">Source</a>
 <a href="#IO_1_FoldUntil_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -2076,7 +2101,7 @@ IO<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
         S initialState,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> folder,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>bool<span class='generics'>&gt;</span> stateIs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L164" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L167" class="link">Source</a>
 <a href="#IO_1_FoldUntil_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -2105,7 +2130,7 @@ IO<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
         S initialState,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> folder,
         Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> valueIs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L170" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L173" class="link">Source</a>
 <a href="#IO_1_FoldUntil_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -2133,7 +2158,7 @@ IO<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
         S initialState,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> folder,
         Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> valueIs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L177" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L180" class="link">Source</a>
 <a href="#IO_1_FoldUntil_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -2161,7 +2186,7 @@ IO<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
         S initialState,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> folder,
         Func<span class='generics'>&lt;</span><span class='parens'>(</span>S State<span class='comma'>, </span>A Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L183" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L186" class="link">Source</a>
 <a href="#IO_1_FoldUntil_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -2190,7 +2215,7 @@ IO<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
         S initialState,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> folder,
         Func<span class='generics'>&lt;</span><span class='parens'>(</span>S State<span class='comma'>, </span>A Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L189" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L192" class="link">Source</a>
 <a href="#IO_1_FoldUntil_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -2215,7 +2240,7 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="IO_1_Post_0" class="def">Post</a>
 
 <span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L205" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L208" class="link">Source</a>
 <a href="#IO_1_Post_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Make this IO computation run on the <code>SynchronizationContext</code> that was captured at the start
@@ -2243,7 +2268,7 @@ IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <a id="IO_1_Bind_1" class="def">Bind</a>
 <span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L212" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L215" class="link">Source</a>
 <a href="#IO_1_Bind_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -2268,7 +2293,7 @@ IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <a id="IO_1_Bind_1" class="def">Bind</a>
 <span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L214" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L217" class="link">Source</a>
 <a href="#IO_1_Bind_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -2293,7 +2318,7 @@ IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <a id="IO_1_Bind_1" class="def">Bind</a>
 <span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Pure<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L217" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L220" class="link">Source</a>
 <a href="#IO_1_Bind_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -2318,7 +2343,7 @@ IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <a id="IO_1_Select_1" class="def">Select</a>
 <span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L225" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L228" class="link">Source</a>
 <a href="#IO_1_Select_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -2343,31 +2368,6 @@ IO<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
 <a id="IO_1_SelectMany_2" class="def">SelectMany</a>
 <span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L228" class="link">Source</a>
-<a href="#IO_1_SelectMany_2" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-IO<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
-<a id="IO_1_SelectMany_2" class="def">SelectMany</a>
-<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
-<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L231" class="link">Source</a>
 <a href="#IO_1_SelectMany_2" class="selflink">#</a>
 <div class="constraints"></div></p>
@@ -2392,8 +2392,33 @@ IO<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
 IO<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
 <a id="IO_1_SelectMany_2" class="def">SelectMany</a>
 <span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
-<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Pure<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L234" class="link">Source</a>
+<a href="#IO_1_SelectMany_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<a id="IO_1_SelectMany_2" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Pure<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L237" class="link">Source</a>
 <a href="#IO_1_SelectMany_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -2418,7 +2443,7 @@ OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span cl
 <a id="IO_1_SelectMany_3" class="def">SelectMany</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L237" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L240" class="link">Source</a>
 <a href="#IO_1_SelectMany_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;, Alternative&lt;M&gt;</span></div></div></p>
@@ -2444,7 +2469,7 @@ TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span class
 <a id="IO_1_SelectMany_3" class="def">SelectMany</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>TryT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L241" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L244" class="link">Source</a>
 <a href="#IO_1_SelectMany_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;, Alternative&lt;M&gt;</span></div></div></p>
@@ -2470,7 +2495,7 @@ EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span cl
 <a id="IO_1_SelectMany_4" class="def">SelectMany</a>
 <span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L245" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L248" class="link">Source</a>
 <a href="#IO_1_SelectMany_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;, Alternative&lt;M&gt;</span></div></div></p>
@@ -2496,7 +2521,7 @@ FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span class
 <a id="IO_1_SelectMany_3" class="def">SelectMany</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L249" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L252" class="link">Source</a>
 <a href="#IO_1_SelectMany_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;, Alternative&lt;M&gt;</span></div></div></p>
@@ -2522,7 +2547,7 @@ ValidationT<span class='generics'>&lt;</span>F<span class='comma'>, </span>M<spa
 <a id="IO_1_SelectMany_4" class="def">SelectMany</a>
 <span class='generics'>&lt;</span>F<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>ValidationT<span class='generics'>&lt;</span>F<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L253" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L256" class="link">Source</a>
 <a href="#IO_1_SelectMany_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> F : Monoid&lt;F&gt;
@@ -2551,7 +2576,7 @@ ReaderT<span class='generics'>&lt;</span>Env<span class='comma'>, </span>M<span 
 <a id="IO_1_SelectMany_4" class="def">SelectMany</a>
 <span class='generics'>&lt;</span>Env<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>ReaderT<span class='generics'>&lt;</span>Env<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L258" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L261" class="link">Source</a>
 <a href="#IO_1_SelectMany_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;, Alternative&lt;M&gt;</span></div></div></p>
@@ -2577,7 +2602,7 @@ StateT<span class='generics'>&lt;</span>S<span class='comma'>, </span>M<span cla
 <a id="IO_1_SelectMany_4" class="def">SelectMany</a>
 <span class='generics'>&lt;</span>S<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>StateT<span class='generics'>&lt;</span>S<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L262" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L265" class="link">Source</a>
 <a href="#IO_1_SelectMany_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;, Alternative&lt;M&gt;</span></div></div></p>
@@ -2603,7 +2628,7 @@ Eff<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
 <a id="IO_1_SelectMany_2" class="def">SelectMany</a>
 <span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L266" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L269" class="link">Source</a>
 <a href="#IO_1_SelectMany_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -2628,7 +2653,7 @@ Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>C<span class
 <a id="IO_1_SelectMany_3" class="def">SelectMany</a>
 <span class='generics'>&lt;</span>RT<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>RT<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L269" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L272" class="link">Source</a>
 <a href="#IO_1_SelectMany_3" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -2653,7 +2678,7 @@ IO<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
 <a id="IO_1_SelectMany_1" class="def">SelectMany</a>
 <span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Guard<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Unit<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Unit<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L272" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L275" class="link">Source</a>
 <a href="#IO_1_SelectMany_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -2678,7 +2703,7 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="IO_1_Bracket_0" class="def">Bracket</a>
 
 <span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L351" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L354" class="link">Source</a>
 <a href="#IO_1_Bracket_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>The IO monad tracks resources automatically, this creates a local resource environment
@@ -2706,7 +2731,7 @@ IO<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
 <a id="IO_1_Bracket_2" class="def">Bracket</a>
 <span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> Use<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> Finally<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L362" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L365" class="link">Source</a>
 <a href="#IO_1_Bracket_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>When acquiring, using, and releasing various resources, it can be quite convenient to write a function to manage
@@ -2742,7 +2767,7 @@ IO<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
 <a id="IO_1_Bracket_2" class="def">Bracket</a>
 <span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> Use<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>IO<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> Catch<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> Finally<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L373" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L376" class="link">Source</a>
 <a href="#IO_1_Bracket_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>When acquiring, using, and releasing various resources, it can be quite convenient to write a function to manage
@@ -2782,7 +2807,7 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="IO_1_Timeout_0" class="def">Timeout</a>
 
 <span class='parens'>(</span>TimeSpan timeout<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L408" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L411" class="link">Source</a>
 <a href="#IO_1_Timeout_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Applies a time limit to the IO computation.  If exceeded an exception is thrown.</p>
@@ -2815,7 +2840,7 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="IO_1_Local_0" class="def">Local</a>
 
 <span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L414" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L417" class="link">Source</a>
 <a href="#IO_1_Local_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Create a local cancellation environment</p>
@@ -2841,7 +2866,7 @@ IO<span class='generics'>&lt;</span>ForkIO<span class='generics'>&lt;</span>A<sp
 <a id="IO_1_Fork_0" class="def">Fork</a>
 
 <span class='parens'>(</span>Option<span class='generics'>&lt;</span>TimeSpan<span class='generics'>&gt;</span> timeout = default<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L427" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L430" class="link">Source</a>
 <a href="#IO_1_Fork_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Queues the specified work to run on the thread pool</p>
@@ -2878,7 +2903,7 @@ ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="IO_1_RunAsync_0" class="def">RunAsync</a>
 
 <span class='parens'>(</span>EnvIO? envIO = null<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L446" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L449" class="link">Source</a>
 <a href="#IO_1_RunAsync_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Run the <code>IO</code> monad to get its result</p>
@@ -2914,7 +2939,7 @@ A
 <a id="IO_1_Run_0" class="def">Run</a>
 
 <span class='parens'>(</span>EnvIO? envIO = null<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L464" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L467" class="link">Source</a>
 <a href="#IO_1_Run_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Run the <code>IO</code> monad to get its result</p>
@@ -2953,7 +2978,7 @@ FinT<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span clas
 <a id="IO_1_Try_0" class="def">Try</a>
 
 <span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L470" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L473" class="link">Source</a>
 <a href="#IO_1_Try_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Run the <code>IO</code> monad to get its result.  Differs from <code>Run</code> in that it catches any exceptions and turns
@@ -2980,7 +3005,7 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="IO_1_Repeat_0" class="def">Repeat</a>
 
 <span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L486" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L489" class="link">Source</a>
 <a href="#IO_1_Repeat_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Keeps repeating the computation forever, or until an error occurs</p>
@@ -3011,7 +3036,7 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="IO_1_Repeat_0" class="def">Repeat</a>
 
 <span class='parens'>(</span>Schedule schedule<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L498" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L501" class="link">Source</a>
 <a href="#IO_1_Repeat_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Keeps repeating the computation, until the scheduler expires, or an error occurs</p>
@@ -3046,7 +3071,7 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="IO_1_RepeatWhile_0" class="def">RepeatWhile</a>
 
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L510" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L513" class="link">Source</a>
 <a href="#IO_1_RepeatWhile_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Keeps repeating the computation until the predicate returns false, or an error occurs</p>
@@ -3083,7 +3108,7 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>
         Schedule schedule,
         Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L523" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L526" class="link">Source</a>
 <a href="#IO_1_RepeatWhile_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Keeps repeating the computation, until the scheduler expires, or the predicate returns false, or an error occurs</p>
@@ -3123,7 +3148,7 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 
 <span class='parens'>(</span>
         Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L537" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L540" class="link">Source</a>
 <a href="#IO_1_RepeatUntil_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Keeps repeating the computation until the predicate returns true, or an error occurs</p>
@@ -3160,7 +3185,7 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>
         Schedule schedule,
         Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L550" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L553" class="link">Source</a>
 <a href="#IO_1_RepeatUntil_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Keeps repeating the computation, until the scheduler expires, or the predicate returns true, or an error occurs</p>
@@ -3199,7 +3224,7 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="IO_1_Retry_0" class="def">Retry</a>
 
 <span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L570" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L573" class="link">Source</a>
 <a href="#IO_1_Retry_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Retry if the IO computation fails</p>
@@ -3230,7 +3255,7 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="IO_1_Retry_0" class="def">Retry</a>
 
 <span class='parens'>(</span>Schedule schedule<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L584" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L587" class="link">Source</a>
 <a href="#IO_1_Retry_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Retry if the IO computation fails</p>
@@ -3261,7 +3286,7 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="IO_1_RetryWhile_0" class="def">RetryWhile</a>
 
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L599" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L602" class="link">Source</a>
 <a href="#IO_1_RetryWhile_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Retry if the IO computation fails</p>
@@ -3295,7 +3320,7 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>
         Schedule schedule,
         Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L614" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L617" class="link">Source</a>
 <a href="#IO_1_RetryWhile_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Retry if the IO computation fails</p>
@@ -3328,7 +3353,7 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 
 <span class='parens'>(</span>
         Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L631" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L634" class="link">Source</a>
 <a href="#IO_1_RetryUntil_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Retry if the IO computation fails</p>
@@ -3362,7 +3387,7 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>
         Schedule schedule,
         Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L646" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L649" class="link">Source</a>
 <a href="#IO_1_RetryUntil_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Retry if the IO computation fails</p>
@@ -3394,7 +3419,7 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="IO_1_Catch_0" class="def">Catch</a>
 
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Predicate<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> Fail<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L657" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L660" class="link">Source</a>
 <a href="#IO_1_Catch_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Catches any error thrown by invoking this IO computation, passes it through a predicate,
@@ -3430,7 +3455,7 @@ string
 <a id="IO_1_ToString_0" class="def">ToString</a>
 
 <span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L659" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L662" class="link">Source</a>
 <a href="#IO_1_ToString_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -3454,29 +3479,6 @@ string
 <div class="top"><p class="src"><span class="keyword">operator</span>
 <a id="IO_1_|_0" class="def">|</a>
 <span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L280" class="link">Source</a>
-<a href="#IO_1_|_0" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">operator</span>
-<a id="IO_1_|_0" class="def">|</a>
-<span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L283" class="link">Source</a>
 <a href="#IO_1_|_0" class="selflink">#</a>
 <div class="constraints"></div></p>
@@ -3499,7 +3501,7 @@ string
 </div>
 <div class="top"><p class="src"><span class="keyword">operator</span>
 <a id="IO_1_|_0" class="def">|</a>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
+<span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L286" class="link">Source</a>
 <a href="#IO_1_|_0" class="selflink">#</a>
 <div class="constraints"></div></p>
@@ -3522,7 +3524,7 @@ string
 </div>
 <div class="top"><p class="src"><span class="keyword">operator</span>
 <a id="IO_1_|_0" class="def">|</a>
-<span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>Pure<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L289" class="link">Source</a>
 <a href="#IO_1_|_0" class="selflink">#</a>
 <div class="constraints"></div></p>
@@ -3545,7 +3547,7 @@ string
 </div>
 <div class="top"><p class="src"><span class="keyword">operator</span>
 <a id="IO_1_|_0" class="def">|</a>
-<span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>Fail<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
+<span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>Pure<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L292" class="link">Source</a>
 <a href="#IO_1_|_0" class="selflink">#</a>
 <div class="constraints"></div></p>
@@ -3568,7 +3570,7 @@ string
 </div>
 <div class="top"><p class="src"><span class="keyword">operator</span>
 <a id="IO_1_|_0" class="def">|</a>
-<span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>CatchM<span class='generics'>&lt;</span>Error<span class='comma'>, </span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
+<span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>Fail<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L295" class="link">Source</a>
 <a href="#IO_1_|_0" class="selflink">#</a>
 <div class="constraints"></div></p>
@@ -3591,8 +3593,31 @@ string
 </div>
 <div class="top"><p class="src"><span class="keyword">operator</span>
 <a id="IO_1_|_0" class="def">|</a>
-<span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>A rhs<span class='parens'>)</span>
+<span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>CatchM<span class='generics'>&lt;</span>Error<span class='comma'>, </span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L298" class="link">Source</a>
+<a href="#IO_1_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="IO_1_|_0" class="def">|</a>
+<span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>A rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L301" class="link">Source</a>
 <a href="#IO_1_|_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -3615,7 +3640,7 @@ string
 <div class="top"><p class="src"><span class="keyword">operator</span>
 <a id="IO_1_>>_0" class="def">&gt;&gt;</a>
 <span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L308" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L311" class="link">Source</a>
 <a href="#IO_1_>>_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Sequentially compose two actions, discarding any value produced by the first, like sequencing operators (such
@@ -3651,7 +3676,7 @@ as the semicolon) in C#.</p>
 <div class="top"><p class="src"><span class="keyword">operator</span>
 <a id="IO_1_>>_0" class="def">&gt;&gt;</a>
 <span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L318" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L321" class="link">Source</a>
 <a href="#IO_1_>>_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Sequentially compose two actions, discarding any value produced by the first, like sequencing operators (such
@@ -3687,7 +3712,7 @@ as the semicolon) in C#.</p>
 <div class="top"><p class="src"><span class="keyword">operator</span>
 <a id="IO_1_>>_0" class="def">&gt;&gt;</a>
 <span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>IO<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L328" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L331" class="link">Source</a>
 <a href="#IO_1_>>_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Sequentially compose two actions.  The second action is a unit returning action, so the result of the
@@ -3723,7 +3748,7 @@ first action is propagated.</p>
 <div class="top"><p class="src"><span class="keyword">operator</span>
 <a id="IO_1_>>_0" class="def">&gt;&gt;</a>
 <span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L338" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.cs#L341" class="link">Source</a>
 <a href="#IO_1_>>_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Sequentially compose two actions.  The second action is a unit returning action, so the result of the
@@ -3962,7 +3987,7 @@ than manually casting.</p>
 A
 <a id="IOExtensions_0_Run_1" class="def">Run</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>this K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>EnvIO envIO<span class='parens'>)</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>EnvIO? envIO = null<span class='parens'>)</span>
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L27" class="link">Source</a>
 <a href="#IOExtensions_0_Run_1" class="selflink">#</a>
 <div class="constraints"></div></p>
@@ -3984,61 +4009,11 @@ A
 
 </div>
 <div class="top"><p class="src"><span class="keyword">method</span>
-A
-<a id="IOExtensions_0_Run_1" class="def">Run</a>
+ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="IOExtensions_0_RunAsync_1" class="def">RunAsync</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>this K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>EnvIO? envIO = null<span class='parens'>)</span>
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L32" class="link">Source</a>
-<a href="#IOExtensions_0_Run_1" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<a id="IOExtensions_0_RunAsync_1" class="def">RunAsync</a>
-<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>this K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>EnvIO envIO<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L37" class="link">Source</a>
-<a href="#IOExtensions_0_RunAsync_1" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<a id="IOExtensions_0_RunAsync_1" class="def">RunAsync</a>
-<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>this K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L42" class="link">Source</a>
 <a href="#IOExtensions_0_RunAsync_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -4063,7 +4038,7 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="IOExtensions_0_Flatten_1" class="def">Flatten</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this Task<span class='generics'>&lt;</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> tma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L50" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L40" class="link">Source</a>
 <a href="#IOExtensions_0_Flatten_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Get the outer task and wrap it up in a new IO within the IO</p>
@@ -4089,7 +4064,7 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="IOExtensions_0_Flatten_1" class="def">Flatten</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this IO<span class='generics'>&lt;</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L58" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L48" class="link">Source</a>
 <a href="#IOExtensions_0_Flatten_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Unwrap the inner IO to flatten the structure</p>
@@ -4115,7 +4090,7 @@ IO<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
 <a id="IOExtensions_0_SelectMany_3" class="def">SelectMany</a>
 <span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L63" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L53" class="link">Source</a>
 <a href="#IOExtensions_0_SelectMany_3" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -4140,7 +4115,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <a id="IOExtensions_0_LocalIO_2" class="def">LocalIO</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L81" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L71" class="link">Source</a>
 <a href="#IOExtensions_0_LocalIO_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -4182,7 +4157,7 @@ IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <a id="IOExtensions_0_Apply_2" class="def">Apply</a>
 <span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this IO<span class='generics'>&lt;</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ff<span class='comma'>, </span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> fa<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L85" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L75" class="link">Source</a>
 <a href="#IOExtensions_0_Apply_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -4207,7 +4182,7 @@ IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <a id="IOExtensions_0_Action_2" class="def">Action</a>
 <span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> fa<span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span> fb<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L94" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L84" class="link">Source</a>
 <a href="#IOExtensions_0_Action_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -4232,7 +4207,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <a id="IOExtensions_0_PostIO_2" class="def">PostIO</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L104" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L94" class="link">Source</a>
 <a href="#IOExtensions_0_PostIO_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -4261,7 +4236,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <a id="IOExtensions_0_Await_2" class="def">Await</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L113" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L103" class="link">Source</a>
 <a href="#IOExtensions_0_Await_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -4288,7 +4263,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>ForkIO<span cla
 <a id="IOExtensions_0_ForkIO_2" class="def">ForkIO</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Option<span class='generics'>&lt;</span>TimeSpan<span class='generics'>&gt;</span> timeout = default<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L126" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L116" class="link">Source</a>
 <a href="#IOExtensions_0_ForkIO_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -4323,7 +4298,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <a id="IOExtensions_0_TimeoutIO_2" class="def">TimeoutIO</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>TimeSpan timeout<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L135" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L125" class="link">Source</a>
 <a href="#IOExtensions_0_TimeoutIO_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;, MonadIO&lt;M&gt;</span></div></div></p>
@@ -4350,7 +4325,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <a id="IOExtensions_0_BracketIO_2" class="def">BracketIO</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L151" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L141" class="link">Source</a>
 <a href="#IOExtensions_0_BracketIO_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -4382,7 +4357,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span class='g
         this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> acq<span class='comma'>, </span>
         Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> Use<span class='comma'>, </span>
         Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> Finally<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L165" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L155" class="link">Source</a>
 <a href="#IOExtensions_0_BracketIO_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -4427,7 +4402,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span class='g
         Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> Use,
         Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>IO<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> Catch,
         Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> Finally<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L182" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L172" class="link">Source</a>
 <a href="#IOExtensions_0_BracketIO_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -4472,7 +4447,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <a id="IOExtensions_0_RepeatIO_2" class="def">RepeatIO</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L203" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L193" class="link">Source</a>
 <a href="#IOExtensions_0_RepeatIO_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -4506,7 +4481,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <span class='parens'>(</span>
         this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
         Schedule schedule<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L216" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L206" class="link">Source</a>
 <a href="#IOExtensions_0_RepeatIO_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -4544,7 +4519,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <span class='parens'>(</span>
         this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
         Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L231" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L221" class="link">Source</a>
 <a href="#IOExtensions_0_RepeatWhileIO_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -4583,7 +4558,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
         this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
         Schedule schedule,
         Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L247" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L237" class="link">Source</a>
 <a href="#IOExtensions_0_RepeatWhileIO_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -4625,7 +4600,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <span class='parens'>(</span>
         this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
         Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L263" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L253" class="link">Source</a>
 <a href="#IOExtensions_0_RepeatUntilIO_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -4664,7 +4639,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
         this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
         Schedule schedule,
         Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L279" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L269" class="link">Source</a>
 <a href="#IOExtensions_0_RepeatUntilIO_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -4704,7 +4679,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <a id="IOExtensions_0_RetryIO_2" class="def">RetryIO</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L302" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L292" class="link">Source</a>
 <a href="#IOExtensions_0_RetryIO_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -4738,7 +4713,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <span class='parens'>(</span>
         this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
         Schedule schedule<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L317" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L307" class="link">Source</a>
 <a href="#IOExtensions_0_RetryIO_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -4772,7 +4747,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <span class='parens'>(</span>
         this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
         Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L335" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L325" class="link">Source</a>
 <a href="#IOExtensions_0_RetryWhileIO_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -4808,7 +4783,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
         this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
         Schedule schedule,
         Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L353" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L343" class="link">Source</a>
 <a href="#IOExtensions_0_RetryWhileIO_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -4843,7 +4818,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <span class='parens'>(</span>
         this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
         Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L372" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L362" class="link">Source</a>
 <a href="#IOExtensions_0_RetryUntilIO_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -4879,7 +4854,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
         this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
         Schedule schedule,
         Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L390" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L380" class="link">Source</a>
 <a href="#IOExtensions_0_RetryUntilIO_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -4916,7 +4891,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span class='g
         Schedule schedule,
         S initialState,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> folder<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L402" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L392" class="link">Source</a>
 <a href="#IOExtensions_0_FoldIO_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -4945,7 +4920,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span class='g
         this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
         S initialState,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> folder<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L410" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L400" class="link">Source</a>
 <a href="#IOExtensions_0_FoldIO_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -4976,7 +4951,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span class='g
         S initialState,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> folder,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>bool<span class='generics'>&gt;</span> stateIs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L417" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L407" class="link">Source</a>
 <a href="#IOExtensions_0_FoldWhileIO_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -5006,7 +4981,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span class='g
         S initialState,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> folder,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>bool<span class='generics'>&gt;</span> stateIs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L426" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L416" class="link">Source</a>
 <a href="#IOExtensions_0_FoldWhileIO_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -5037,7 +5012,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span class='g
         S initialState,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> folder,
         Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> valueIs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L434" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L424" class="link">Source</a>
 <a href="#IOExtensions_0_FoldWhileIO_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -5067,7 +5042,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span class='g
         S initialState,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> folder,
         Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> valueIs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L443" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L433" class="link">Source</a>
 <a href="#IOExtensions_0_FoldWhileIO_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -5098,7 +5073,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span class='g
         S initialState,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> folder,
         Func<span class='generics'>&lt;</span><span class='parens'>(</span>S State<span class='comma'>, </span>A Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L451" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L441" class="link">Source</a>
 <a href="#IOExtensions_0_FoldWhileIO_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -5128,7 +5103,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span class='g
         S initialState,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> folder,
         Func<span class='generics'>&lt;</span><span class='parens'>(</span>S State<span class='comma'>, </span>A Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L460" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L450" class="link">Source</a>
 <a href="#IOExtensions_0_FoldWhileIO_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -5159,7 +5134,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span class='g
         S initialState,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> folder,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>bool<span class='generics'>&gt;</span> stateIs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L468" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L458" class="link">Source</a>
 <a href="#IOExtensions_0_FoldUntilIO_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -5189,7 +5164,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span class='g
         S initialState,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> folder,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>bool<span class='generics'>&gt;</span> stateIs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L477" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L467" class="link">Source</a>
 <a href="#IOExtensions_0_FoldUntilIO_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -5220,7 +5195,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span class='g
         S initialState,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> folder,
         Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> valueIs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L485" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L475" class="link">Source</a>
 <a href="#IOExtensions_0_FoldUntilIO_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -5250,7 +5225,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span class='g
         S initialState,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> folder,
         Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> valueIs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L494" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L484" class="link">Source</a>
 <a href="#IOExtensions_0_FoldUntilIO_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -5280,7 +5255,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span class='g
         S initialState,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> folder,
         Func<span class='generics'>&lt;</span><span class='parens'>(</span>S State<span class='comma'>, </span>A Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L502" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L492" class="link">Source</a>
 <a href="#IOExtensions_0_FoldUntilIO_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -5311,7 +5286,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span class='g
         S initialState,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> folder,
         Func<span class='generics'>&lt;</span><span class='parens'>(</span>S State<span class='comma'>, </span>A Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L510" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L500" class="link">Source</a>
 <a href="#IOExtensions_0_FoldUntilIO_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -5338,7 +5313,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>(A First<span c
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>
         this <span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> First<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span> Second<span class='parens'>)</span> tuple<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L535" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L525" class="link">Source</a>
 <a href="#IOExtensions_0_ZipIO_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -5388,7 +5363,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>(A First<span c
         this <span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> First,
               K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span> Second,
               K<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span> Third<span class='parens'>)</span> tuple<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L556" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L546" class="link">Source</a>
 <a href="#IOExtensions_0_ZipIO_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -5443,7 +5418,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>(A First<span c
               K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span> Second<span class='comma'>, </span>
               K<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span> Third<span class='comma'>, </span>
               K<span class='generics'>&lt;</span>M<span class='comma'>, </span>D<span class='generics'>&gt;</span> Fourth<span class='parens'>)</span> tuple<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L582" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L572" class="link">Source</a>
 <a href="#IOExtensions_0_ZipIO_5" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -5500,7 +5475,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>(A First<span c
 <span class='parens'>(</span>
         this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> First,
         K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span> Second<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L607" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L597" class="link">Source</a>
 <a href="#IOExtensions_0_ZipIO_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -5546,7 +5521,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>(A First<span c
         this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> First<span class='comma'>, </span>
         K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span> Second<span class='comma'>, </span>
         K<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span> Third<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L624" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L614" class="link">Source</a>
 <a href="#IOExtensions_0_ZipIO_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -5597,7 +5572,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>(A First<span c
         K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span> Second<span class='comma'>, </span>
         K<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span> Third<span class='comma'>, </span>
         K<span class='generics'>&lt;</span>M<span class='comma'>, </span>D<span class='generics'>&gt;</span> Fourth<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L643" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Extensions.cs#L633" class="link">Source</a>
 <a href="#IOExtensions_0_ZipIO_5" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -7557,11 +7532,11 @@ IO<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
 <div class="top"><p class="src"><span class="keyword">field</span>
 IO<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
 <a id="Prelude_0_unitIO = 
-        IO<Unit>.pure(default)_0" class="def">unitIO = 
-        IO&lt;Unit&gt;.pure(default)</a>
+        IO<Unit>.Pure(default)_0" class="def">unitIO = 
+        IO&lt;Unit&gt;.Pure(default)</a>
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L35" class="link">Source</a>
 <a href="#Prelude_0_unitIO = 
-        IO<Unit>.pure(default)_0" class="selflink">#</a>
+        IO<Unit>.Pure(default)_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Always yields a <code>Unit</code> value</p>
 </div>
@@ -7712,11 +7687,46 @@ the forked IO operation or to await the result of it.</p>
 
 </div>
 <div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_awaitIO_2" class="def">awaitIO</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L90" class="link">Source</a>
+<a href="#Prelude_0_awaitIO_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Queue this IO operation to run on the thread-pool.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">timeout</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Maximum time that the forked IO operation can run for. <code>None</code> for no timeout.</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Returns a <code>ForkIO</code> data-structure that contains two IO effects that can be used to either cancel
+the forked IO operation or to await the result of it.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
 IO<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
 <a id="Prelude_0_yieldIO_0" class="def">yieldIO</a>
 
 <span class='parens'>(</span>double milliseconds<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L88" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L101" class="link">Source</a>
 <a href="#Prelude_0_yieldIO_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Yield the thread for the specified milliseconds or until cancelled.</p>
@@ -7749,7 +7759,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Seq<span class=
 <a id="Prelude_0_awaitAll_2" class="def">awaitAll</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>params K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>[] ms<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L96" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L109" class="link">Source</a>
 <a href="#Prelude_0_awaitAll_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -7783,7 +7793,7 @@ IO<span class='generics'>&lt;</span>Seq<span class='generics'>&lt;</span>A<span 
 <a id="Prelude_0_awaitAll_1" class="def">awaitAll</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>params K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span>[] ms<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L105" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L118" class="link">Source</a>
 <a href="#Prelude_0_awaitAll_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Awaits all operations</p>
@@ -7816,7 +7826,7 @@ IO<span class='generics'>&lt;</span>Seq<span class='generics'>&lt;</span>A<span 
 <a id="Prelude_0_awaitAll_1" class="def">awaitAll</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>params IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>[] ms<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L113" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L126" class="link">Source</a>
 <a href="#Prelude_0_awaitAll_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Awaits all operations</p>
@@ -7849,7 +7859,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Seq<span class=
 <a id="Prelude_0_awaitAll_2" class="def">awaitAll</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>params K<span class='generics'>&lt;</span>M<span class='comma'>, </span>ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>[] forks<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L121" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L134" class="link">Source</a>
 <a href="#Prelude_0_awaitAll_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -7883,7 +7893,7 @@ IO<span class='generics'>&lt;</span>Seq<span class='generics'>&lt;</span>A<span 
 <a id="Prelude_0_awaitAll_1" class="def">awaitAll</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>params IO<span class='generics'>&lt;</span>ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>[] mfs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L130" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L143" class="link">Source</a>
 <a href="#Prelude_0_awaitAll_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Awaits all</p>
@@ -7916,7 +7926,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Seq<span class=
 <a id="Prelude_0_awaitAll_2" class="def">awaitAll</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Seq<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ms<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L138" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L151" class="link">Source</a>
 <a href="#Prelude_0_awaitAll_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -7950,7 +7960,7 @@ IO<span class='generics'>&lt;</span>Seq<span class='generics'>&lt;</span>A<span 
 <a id="Prelude_0_awaitAll_1" class="def">awaitAll</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Seq<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ms<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L148" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L161" class="link">Source</a>
 <a href="#Prelude_0_awaitAll_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Awaits all operations</p>
@@ -7983,7 +7993,7 @@ IO<span class='generics'>&lt;</span>Seq<span class='generics'>&lt;</span>A<span 
 <a id="Prelude_0_awaitAll_1" class="def">awaitAll</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Seq<span class='generics'>&lt;</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ms<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L156" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L169" class="link">Source</a>
 <a href="#Prelude_0_awaitAll_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Awaits all operations</p>
@@ -8016,7 +8026,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Seq<span class=
 <a id="Prelude_0_awaitAll_2" class="def">awaitAll</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Seq<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> forks<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L168" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L181" class="link">Source</a>
 <a href="#Prelude_0_awaitAll_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -8050,7 +8060,7 @@ IO<span class='generics'>&lt;</span>Seq<span class='generics'>&lt;</span>A<span 
 <a id="Prelude_0_awaitAll_1" class="def">awaitAll</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Seq<span class='generics'>&lt;</span>IO<span class='generics'>&lt;</span>ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> mfs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L177" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L190" class="link">Source</a>
 <a href="#Prelude_0_awaitAll_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Awaits all</p>
@@ -8083,7 +8093,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <a id="Prelude_0_awaitAny_2" class="def">awaitAny</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>params K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>[] forks<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L195" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L207" class="link">Source</a>
 <a href="#Prelude_0_awaitAny_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -8119,7 +8129,7 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_awaitAny_1" class="def">awaitAny</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>params IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>[] ms<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L208" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L220" class="link">Source</a>
 <a href="#Prelude_0_awaitAny_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Awaits for any IO to complete</p>
@@ -8154,7 +8164,7 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_awaitAny_1" class="def">awaitAny</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>params K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span>[] ms<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L220" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L232" class="link">Source</a>
 <a href="#Prelude_0_awaitAny_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Awaits for any IO to complete</p>
@@ -8189,7 +8199,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <a id="Prelude_0_awaitAny_2" class="def">awaitAny</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>params K<span class='generics'>&lt;</span>M<span class='comma'>, </span>ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>[] forks<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L232" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L244" class="link">Source</a>
 <a href="#Prelude_0_awaitAny_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -8225,7 +8235,7 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_awaitAny_1" class="def">awaitAny</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>params IO<span class='generics'>&lt;</span>ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>[] forks<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L245" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L257" class="link">Source</a>
 <a href="#Prelude_0_awaitAny_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Awaits for any forks to complete</p>
@@ -8260,7 +8270,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <a id="Prelude_0_awaitAny_2" class="def">awaitAny</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Seq<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> forks<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L257" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L269" class="link">Source</a>
 <a href="#Prelude_0_awaitAny_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -8296,7 +8306,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <a id="Prelude_0_awaitAny_2" class="def">awaitAny</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Seq<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> forks<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L271" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L283" class="link">Source</a>
 <a href="#Prelude_0_awaitAny_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -8332,41 +8342,6 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_awaitAny_1" class="def">awaitAny</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Seq<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ms<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L285" class="link">Source</a>
-<a href="#Prelude_0_awaitAny_1" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div><p>Awaits for any IO to complete</p>
-</div>
-<div></div>
-<div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">ms</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>IO operations to await</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>If we get one success, then we'll return straight away and cancel the others.
-If we get any errors, we'll collect them in the hope that at least one works.
-If we have collected as many errors as we have forks, then we'll return them all.</p>
-</span></td></tr></tbody></table></div></div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<a id="Prelude_0_awaitAny_1" class="def">awaitAny</a>
-<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ms<span class='parens'>)</span>
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L297" class="link">Source</a>
 <a href="#Prelude_0_awaitAny_1" class="selflink">#</a>
 <div class="constraints"></div></p>
@@ -8401,8 +8376,43 @@ If we have collected as many errors as we have forks, then we'll return them all
 IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_awaitAny_1" class="def">awaitAny</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ms<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L309" class="link">Source</a>
+<a href="#Prelude_0_awaitAny_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Awaits for any IO to complete</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ms</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>IO operations to await</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>If we get one success, then we'll return straight away and cancel the others.
+If we get any errors, we'll collect them in the hope that at least one works.
+If we have collected as many errors as we have forks, then we'll return them all.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_awaitAny_1" class="def">awaitAny</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Seq<span class='generics'>&lt;</span>IO<span class='generics'>&lt;</span>ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> mfs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L313" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L325" class="link">Source</a>
 <a href="#Prelude_0_awaitAny_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Awaits for any forks to complete</p>
@@ -8437,7 +8447,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <a id="Prelude_0_timeoutIO_2" class="def">timeoutIO</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>TimeSpan timeout<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L325" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L336" class="link">Source</a>
 <a href="#Prelude_0_timeoutIO_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -8464,7 +8474,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <a id="Prelude_0_repeatIO_2" class="def">repeatIO</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L337" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L348" class="link">Source</a>
 <a href="#Prelude_0_repeatIO_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -8502,7 +8512,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <a id="Prelude_0_repeatIO_2" class="def">repeatIO</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Schedule schedule<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L348" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L359" class="link">Source</a>
 <a href="#Prelude_0_repeatIO_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -8544,7 +8554,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <a id="Prelude_0_repeatWhileIO_2" class="def">repeatWhileIO</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L358" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L369" class="link">Source</a>
 <a href="#Prelude_0_repeatWhileIO_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -8585,7 +8595,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
         Schedule schedule,
         K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
         Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L369" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L380" class="link">Source</a>
 <a href="#Prelude_0_repeatWhileIO_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -8629,7 +8639,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <span class='parens'>(</span>
         K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
         Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L382" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L393" class="link">Source</a>
 <a href="#Prelude_0_repeatUntilIO_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -8670,7 +8680,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
         Schedule schedule,
         K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
         Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L395" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L406" class="link">Source</a>
 <a href="#Prelude_0_repeatUntilIO_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -8712,7 +8722,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <a id="Prelude_0_retryIO_2" class="def">retryIO</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L408" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L419" class="link">Source</a>
 <a href="#Prelude_0_retryIO_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -8750,7 +8760,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <a id="Prelude_0_retryIO_2" class="def">retryIO</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Schedule schedule<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L419" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L430" class="link">Source</a>
 <a href="#Prelude_0_retryIO_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -8794,7 +8804,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <span class='parens'>(</span>
         K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
         Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L429" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L440" class="link">Source</a>
 <a href="#Prelude_0_retryWhileIO_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -8835,7 +8845,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
         Schedule schedule,
         K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
         Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L442" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L453" class="link">Source</a>
 <a href="#Prelude_0_retryWhileIO_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -8879,7 +8889,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <span class='parens'>(</span>
         K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
         Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L455" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L466" class="link">Source</a>
 <a href="#Prelude_0_retryUntilIO_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -8920,7 +8930,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
         Schedule schedule,
         K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
         Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L468" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L479" class="link">Source</a>
 <a href="#Prelude_0_retryUntilIO_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -8963,7 +8973,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>(A First<span c
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>
         <span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> First<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span> Second<span class='parens'>)</span> tuple<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L492" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L503" class="link">Source</a>
 <a href="#Prelude_0_zipIO_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -9011,7 +9021,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>(A First<span c
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>
         <span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> First<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span> Second<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span> Third<span class='parens'>)</span> tuple<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L513" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L524" class="link">Source</a>
 <a href="#Prelude_0_zipIO_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -9063,7 +9073,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>(A First<span c
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span>
 <span class='parens'>(</span>
         <span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> First<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span> Second<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span> Third<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>D<span class='generics'>&gt;</span> Fourth<span class='parens'>)</span> tuple<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L537" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L548" class="link">Source</a>
 <a href="#Prelude_0_zipIO_5" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -9119,7 +9129,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>(A First<span c
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>
         K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> First<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span> Second<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L559" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L570" class="link">Source</a>
 <a href="#Prelude_0_zipIO_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -9163,7 +9173,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>(A First<span c
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>
         K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> First<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span> Second<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span> Third<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L575" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L586" class="link">Source</a>
 <a href="#Prelude_0_zipIO_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -9211,7 +9221,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>(A First<span c
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span>
 <span class='parens'>(</span>
         K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> First<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span> Second<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span> Third<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>D<span class='generics'>&gt;</span> Fourth<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L592" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L603" class="link">Source</a>
 <a href="#Prelude_0_zipIO_5" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
