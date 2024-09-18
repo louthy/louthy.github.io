@@ -32,7 +32,13 @@
 <li><a href="#Prelude_0_use_1" class="link"><div class="nowrap">use
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> acquire<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_useAsync_1" class="link"><div class="nowrap">useAsync
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> acquire<span class='parens'>)</span></div></a></li>
 <li><a href="#Prelude_0_use_2" class="link"><div class="nowrap">use
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> acquire<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_useAsync_2" class="link"><div class="nowrap">useAsync
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> acquire<span class='parens'>)</span></div></a></li>
 <li><a href="#Prelude_0_release_1" class="link"><div class="nowrap">release
@@ -318,11 +324,51 @@ code with <code>@using</code>.</p>
 
 </div>
 <div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_useAsync_1" class="def">useAsync</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> acquire<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Prelude/Resources/Prelude.Resources.cs#L116" class="link">Source</a>
+<a href="#Prelude_0_useAsync_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> A : IAsyncDisposable</span></div></div></p>
+<div class="doc"><div><p>Acquire a resource and have it tracked by the IO environment.  The resource
+can be released manually using <code>release</code> or from wrapping a section of IO
+code with <code>@using</code>.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">acquire</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation that acquires the resource</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Acquired resource</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
 K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_use_2" class="def">use</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> acquire<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Prelude/Resources/Prelude.Resources.cs#L116" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Prelude/Resources/Prelude.Resources.cs#L130" class="link">Source</a>
 <a href="#Prelude_0_use_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;
@@ -361,11 +407,54 @@ code with <code>@using</code>.</p>
 
 </div>
 <div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_useAsync_2" class="def">useAsync</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> acquire<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Prelude/Resources/Prelude.Resources.cs#L150" class="link">Source</a>
+<a href="#Prelude_0_useAsync_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> A : IAsyncDisposable</span></div></div></p>
+<div class="doc"><div><p>Acquire a resource and have it tracked by the IO environment.  The resource
+can be released manually using <code>release</code> or from wrapping a section of IO
+code with <code>@using</code>.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">acquire</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation that acquires the resource</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Acquired resource</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
 IO<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
 <a id="Prelude_0_release_1" class="def">release</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>A value<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Prelude/Resources/Prelude.Resources.cs#L134" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Prelude/Resources/Prelude.Resources.cs#L168" class="link">Source</a>
 <a href="#Prelude_0_release_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Release the resource from the tracked IO environment</p>
@@ -402,7 +491,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <a id="Prelude_0_bracketIO_2" class="def">bracketIO</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> computation<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Prelude/Resources/Prelude.Resources.cs#L147" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Prelude/Resources/Prelude.Resources.cs#L181" class="link">Source</a>
 <a href="#Prelude_0_bracketIO_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -442,7 +531,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span class='g
 <a id="Prelude_0_bracketIO_4" class="def">bracketIO</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> Acq<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> Use<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> Fin<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Prelude/Resources/Prelude.Resources.cs#L165" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Prelude/Resources/Prelude.Resources.cs#L199" class="link">Source</a>
 <a href="#Prelude_0_bracketIO_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
