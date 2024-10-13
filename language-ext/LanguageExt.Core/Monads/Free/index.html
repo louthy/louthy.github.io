@@ -14,7 +14,21 @@
 <div id="table-of-contents"><p class="caption">Contents</p>
 <ul><li><a href="#_0_Free_2" class="link"><div class="nowrap">Free
 <span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span></div></a></li>
-<ul></ul>
+<ul><li><a href="#Free_2_Map_1" class="link"><div class="nowrap">Map
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Free_2_Select_1" class="link"><div class="nowrap">Select
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Free_2_Bind_1" class="link"><div class="nowrap">Bind
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Free<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Free_2_Bind_1" class="link"><div class="nowrap">Bind
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Free_2_SelectMany_2" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li></ul>
 <li><a href="#_0_Pure_2" class="link"><div class="nowrap">Pure
 <span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>A Value<span class='parens'>)</span></div></a></li>
@@ -27,85 +41,27 @@
 </div></a></li>
 <ul><li><a href="#FreeExtensions_0_As_2" class="link"><div class="nowrap">As
 <span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>this K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
-<li><a href="#FreeExtensions_0_Apply_3" class="link"><div class="nowrap">Apply
-<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
-<span class='parens'>(</span>this K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
-<li><a href="#FreeExtensions_0_Apply_4" class="link"><div class="nowrap">Apply
-<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        this K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
-<li><a href="#FreeExtensions_0_Apply_5" class="link"><div class="nowrap">Apply
-<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        this K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
-<li><a href="#FreeExtensions_0_Apply_6" class="link"><div class="nowrap">Apply
-<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        this K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
-<li><a href="#FreeExtensions_0_Apply_7" class="link"><div class="nowrap">Apply
-<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        this K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
-<li><a href="#FreeExtensions_0_Apply_8" class="link"><div class="nowrap">Apply
-<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        this K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
-<li><a href="#FreeExtensions_0_Apply_9" class="link"><div class="nowrap">Apply
-<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        this K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
-<li><a href="#FreeExtensions_0_Apply_10" class="link"><div class="nowrap">Apply
-<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        this K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
-<li><a href="#FreeExtensions_0_Apply_11" class="link"><div class="nowrap">Apply
-<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        this K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
-<li><a href="#FreeExtensions_0_Apply_12" class="link"><div class="nowrap">Apply
-<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='comma'>, </span>K<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        this K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='comma'>, </span>K<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_FreeExtensions_0" class="link"><div class="nowrap">FreeExtensions
+</div></a></li>
+<ul><li><a href="#FreeExtensions_0_Map_3" class="link"><div class="nowrap">Map
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
 <li><a href="#FreeExtensions_0_Map_3" class="link"><div class="nowrap">Map
-<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
-<span class='parens'>(</span>this Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
-<li><a href="#FreeExtensions_0_Map_4" class="link"><div class="nowrap">Map
-<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        this Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
-<li><a href="#FreeExtensions_0_Map_5" class="link"><div class="nowrap">Map
-<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        this Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
-<li><a href="#FreeExtensions_0_Map_6" class="link"><div class="nowrap">Map
-<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        this Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
-<li><a href="#FreeExtensions_0_Map_7" class="link"><div class="nowrap">Map
-<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        this Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
-<li><a href="#FreeExtensions_0_Map_8" class="link"><div class="nowrap">Map
-<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        this Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
-<li><a href="#FreeExtensions_0_Map_9" class="link"><div class="nowrap">Map
-<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        this Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
-<li><a href="#FreeExtensions_0_Map_10" class="link"><div class="nowrap">Map
-<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        this Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
-<li><a href="#FreeExtensions_0_Map_11" class="link"><div class="nowrap">Map
-<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        this Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
-<li><a href="#FreeExtensions_0_Map_12" class="link"><div class="nowrap">Map
-<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='comma'>, </span>K<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        this Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='comma'>, </span>K<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li></ul>
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='comma'>, </span>Free<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#FreeExtensions_0_Action_3" class="link"><div class="nowrap">Action
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Free<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#FreeExtensions_0_Action_3" class="link"><div class="nowrap">Action
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#FreeExtensions_0_Apply_3" class="link"><div class="nowrap">Apply
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Free<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#FreeExtensions_0_Apply_3" class="link"><div class="nowrap">Apply
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span><span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li></ul>
 <li><a href="#_0_Free_0" class="link"><div class="nowrap">Free
 </div></a></li>
 <ul><li><a href="#Free_0_pure_2" class="link"><div class="nowrap">pure
@@ -119,12 +75,23 @@
 <span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Free<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> value<span class='parens'>)</span></div></a></li></ul>
 <li><a href="#_0_Free_1" class="link"><div class="nowrap">Free
 <span class='generics'>&lt;</span>F<span class='generics'>&gt;</span></div></a></li>
-<ul></ul></ul></div>
+<ul></ul>
+<li><a href="#_0_Prelude_0" class="link"><div class="nowrap">Prelude
+</div></a></li>
+<ul><li><a href="#Prelude_0_map_3" class="link"><div class="nowrap">map
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_action_3" class="link"><div class="nowrap">action
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_apply_3" class="link"><div class="nowrap">apply
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span><span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li></ul></ul></div>
 <div class="interface">
 <div class="top"><p class="src"><span class="keyword">record</span>
 <a id="_0_Free_2" class="def">Free</a>
 <span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.cs#L10" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.cs#L11" class="link">Source</a>
 <a href="#_0_Free_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> F : Functor&lt;F&gt;</span></div></div></p>
@@ -148,7 +115,132 @@
 
 
 
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Free<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Free_2_Map_1" class="def">Map</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.cs#L14" class="link">Source</a>
+<a href="#Free_2_Map_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
 
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Free<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Free_2_Select_1" class="def">Select</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.cs#L17" class="link">Source</a>
+<a href="#Free_2_Select_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Free<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Free_2_Bind_1" class="def">Bind</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Free<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.cs#L20" class="link">Source</a>
+<a href="#Free_2_Bind_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Free<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Free_2_Bind_1" class="def">Bind</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.cs#L23" class="link">Source</a>
+<a href="#Free_2_Bind_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Free<span class='generics'>&lt;</span>F<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="Free_2_SelectMany_2" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.cs#L26" class="link">Source</a>
+<a href="#Free_2_SelectMany_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
 
 
 
@@ -158,7 +250,7 @@
 <a id="_0_Pure_2" class="def">Pure</a>
 <span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>A Value<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.cs#L19" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.cs#L36" class="link">Source</a>
 <a href="#_0_Pure_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> F : Functor&lt;F&gt;</span></div></div></p>
@@ -196,7 +288,7 @@
 <a id="_0_Bind_2" class="def">Bind</a>
 <span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Free<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> Value<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.cs#L28" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.cs#L45" class="link">Source</a>
 <a href="#_0_Bind_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> F : Functor&lt;F&gt;</span></div></div></p>
@@ -233,7 +325,7 @@
 <div class="top"><p class="src"><span class="keyword">class</span>
 <a id="_0_FreeExtensions_0" class="def">FreeExtensions</a>
 
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.Extensions.cs#L7" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.Extensions.cs#L5" class="link">Source</a>
 <a href="#_0_FreeExtensions_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -253,7 +345,7 @@ Free<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span c
 <a id="FreeExtensions_0_As_2" class="def">As</a>
 <span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.Extensions.cs#L9" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.Extensions.cs#L7" class="link">Source</a>
 <a href="#FreeExtensions_0_As_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> Fnctr : Functor&lt;Fnctr&gt;</span></div></div></p>
@@ -273,419 +365,39 @@ Free<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span c
 
 
 
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-Free<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>B<span class='generics'>&gt;</span>
-<a id="FreeExtensions_0_Apply_3" class="def">Apply</a>
-<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
-<span class='parens'>(</span>this K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.Extensions.cs#L23" class="link">Source</a>
-<a href="#FreeExtensions_0_Apply_3" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> Fnctr : Functor&lt;Fnctr&gt;</span></div></div></p>
-<div class="doc"><div><p>Functor map operation</p>
-</div>
-<div><p>Unwraps the value within the functor, passes it to the map function <code>f</code> provided, and
-then takes the mapped value and wraps it back up into a new functor.</p>
-</div>
-<div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Functor to map</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">mf</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Mapped functor</p>
-</span></td></tr></tbody></table></div></div>
-</div>
-
-
-
-
-
-
-
-
+</div></div>
 
 
 
 
 </div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-Free<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
-<a id="FreeExtensions_0_Apply_4" class="def">Apply</a>
-<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        this K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.Extensions.cs#L43" class="link">Source</a>
-<a href="#FreeExtensions_0_Apply_4" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> Fnctr : Functor&lt;Fnctr&gt;</span></div></div></p>
-<div class="doc"><div><p>Functor map operation</p>
-</div>
-<div><p>Unwraps the value within the functor, passes it to the map function <code>f</code> provided, and
-then takes the mapped value and wraps it back up into a new functor.</p>
-</div>
-<div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Functor to map</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">mf</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Mapped functor</p>
-</span></td></tr></tbody></table></div></div>
-</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_FreeExtensions_0" class="def">FreeExtensions</a>
 
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-Free<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>Func<span class='generics'>&lt;</span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span>
-<a id="FreeExtensions_0_Apply_5" class="def">Apply</a>
-<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        this K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.Extensions.cs#L58" class="link">Source</a>
-<a href="#FreeExtensions_0_Apply_5" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> Fnctr : Functor&lt;Fnctr&gt;</span></div></div></p>
-<div class="doc"><div><p>Functor map operation</p>
-</div>
-<div><p>Unwraps the value within the functor, passes it to the map function <code>f</code> provided, and
-then takes the mapped value and wraps it back up into a new functor.</p>
-</div>
-<div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Functor to map</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">mf</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Mapped functor</p>
-</span></td></tr></tbody></table></div></div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-Free<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>Func<span class='generics'>&lt;</span>C<span class='comma'>, </span>Func<span class='generics'>&lt;</span>D<span class='comma'>, </span>E<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span>
-<a id="FreeExtensions_0_Apply_6" class="def">Apply</a>
-<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        this K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.Extensions.cs#L73" class="link">Source</a>
-<a href="#FreeExtensions_0_Apply_6" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> Fnctr : Functor&lt;Fnctr&gt;</span></div></div></p>
-<div class="doc"><div><p>Functor map operation</p>
-</div>
-<div><p>Unwraps the value within the functor, passes it to the map function <code>f</code> provided, and
-then takes the mapped value and wraps it back up into a new functor.</p>
-</div>
-<div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Functor to map</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">mf</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Mapped functor</p>
-</span></td></tr></tbody></table></div></div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-Free<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>Func<span class='generics'>&lt;</span>C<span class='comma'>, </span>Func<span class='generics'>&lt;</span>D<span class='comma'>, </span>Func<span class='generics'>&lt;</span>E<span class='comma'>, </span>F<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span>
-<a id="FreeExtensions_0_Apply_7" class="def">Apply</a>
-<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        this K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.Extensions.cs#L88" class="link">Source</a>
-<a href="#FreeExtensions_0_Apply_7" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> Fnctr : Functor&lt;Fnctr&gt;</span></div></div></p>
-<div class="doc"><div><p>Functor map operation</p>
-</div>
-<div><p>Unwraps the value within the functor, passes it to the map function <code>f</code> provided, and
-then takes the mapped value and wraps it back up into a new functor.</p>
-</div>
-<div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Functor to map</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">mf</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Mapped functor</p>
-</span></td></tr></tbody></table></div></div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-Free<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>Func<span class='generics'>&lt;</span>C<span class='comma'>, </span>Func<span class='generics'>&lt;</span>D<span class='comma'>, </span>Func<span class='generics'>&lt;</span>E<span class='comma'>, </span>Func<span class='generics'>&lt;</span>F<span class='comma'>, </span>G<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span>
-<a id="FreeExtensions_0_Apply_8" class="def">Apply</a>
-<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        this K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.Extensions.cs#L103" class="link">Source</a>
-<a href="#FreeExtensions_0_Apply_8" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> Fnctr : Functor&lt;Fnctr&gt;</span></div></div></p>
-<div class="doc"><div><p>Functor map operation</p>
-</div>
-<div><p>Unwraps the value within the functor, passes it to the map function <code>f</code> provided, and
-then takes the mapped value and wraps it back up into a new functor.</p>
-</div>
-<div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Functor to map</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">mf</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Mapped functor</p>
-</span></td></tr></tbody></table></div></div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-Free<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>Func<span class='generics'>&lt;</span>C<span class='comma'>, </span>Func<span class='generics'>&lt;</span>D<span class='comma'>, </span>Func<span class='generics'>&lt;</span>E<span class='comma'>, </span>Func<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>G<span class='comma'>, </span>H<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span>
-<a id="FreeExtensions_0_Apply_9" class="def">Apply</a>
-<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        this K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.Extensions.cs#L114" class="link">Source</a>
-<a href="#FreeExtensions_0_Apply_9" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> Fnctr : Functor&lt;Fnctr&gt;</span></div></div></p>
-<div class="doc"><div><p>Functor map operation</p>
-</div>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.Extensions.MapApply.cs#L6" class="link">Source</a>
+<a href="#_0_FreeExtensions_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
 <div></div>
-<div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Functor to map</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">mf</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Mapped functor</p>
-</span></td></tr></tbody></table></div></div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
 
 </div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
 <div class="top"><p class="src"><span class="keyword">method</span>
-Free<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>Func<span class='generics'>&lt;</span>C<span class='comma'>, </span>Func<span class='generics'>&lt;</span>D<span class='comma'>, </span>Func<span class='generics'>&lt;</span>E<span class='comma'>, </span>Func<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>G<span class='comma'>, </span>Func<span class='generics'>&lt;</span>H<span class='comma'>, </span>I<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span>
-<a id="FreeExtensions_0_Apply_10" class="def">Apply</a>
-<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        this K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.Extensions.cs#L125" class="link">Source</a>
-<a href="#FreeExtensions_0_Apply_10" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> Fnctr : Functor&lt;Fnctr&gt;</span></div></div></p>
-<div class="doc"><div><p>Functor map operation</p>
-</div>
-<div></div>
-<div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Functor to map</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">mf</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Mapped functor</p>
-</span></td></tr></tbody></table></div></div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-Free<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>Func<span class='generics'>&lt;</span>C<span class='comma'>, </span>Func<span class='generics'>&lt;</span>D<span class='comma'>, </span>Func<span class='generics'>&lt;</span>E<span class='comma'>, </span>Func<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>G<span class='comma'>, </span>Func<span class='generics'>&lt;</span>H<span class='comma'>, </span>Func<span class='generics'>&lt;</span>I<span class='comma'>, </span>J<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span>
-<a id="FreeExtensions_0_Apply_11" class="def">Apply</a>
-<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        this K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.Extensions.cs#L136" class="link">Source</a>
-<a href="#FreeExtensions_0_Apply_11" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> Fnctr : Functor&lt;Fnctr&gt;</span></div></div></p>
-<div class="doc"><div><p>Functor map operation</p>
-</div>
-<div></div>
-<div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Functor to map</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">mf</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Mapped functor</p>
-</span></td></tr></tbody></table></div></div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-Free<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>Func<span class='generics'>&lt;</span>C<span class='comma'>, </span>Func<span class='generics'>&lt;</span>D<span class='comma'>, </span>Func<span class='generics'>&lt;</span>E<span class='comma'>, </span>Func<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>G<span class='comma'>, </span>Func<span class='generics'>&lt;</span>H<span class='comma'>, </span>Func<span class='generics'>&lt;</span>I<span class='comma'>, </span>Func<span class='generics'>&lt;</span>J<span class='comma'>, </span>K<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span>
-<a id="FreeExtensions_0_Apply_12" class="def">Apply</a>
-<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='comma'>, </span>K<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        this K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='comma'>, </span>K<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.Extensions.cs#L151" class="link">Source</a>
-<a href="#FreeExtensions_0_Apply_12" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> Fnctr : Functor&lt;Fnctr&gt;</span></div></div></p>
-<div class="doc"><div><p>Functor map operation</p>
-</div>
-<div><p>Unwraps the value within the functor, passes it to the map function <code>f</code> provided, and
-then takes the mapped value and wraps it back up into a new functor.</p>
-</div>
-<div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Functor to map</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">mf</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Mapped functor</p>
-</span></td></tr></tbody></table></div></div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-Free<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+Free<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span>
 <a id="FreeExtensions_0_Map_3" class="def">Map</a>
-<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
-<span class='parens'>(</span>this Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.Extensions.cs#L166" class="link">Source</a>
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.Extensions.MapApply.cs#L18" class="link">Source</a>
 <a href="#FreeExtensions_0_Map_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> Fnctr : Functor&lt;Fnctr&gt;</span></div></div></p>
+<span> F : Functor&lt;F&gt;</span></div></div></p>
 <div class="doc"><div><p>Functor map operation</p>
 </div>
 <div><p>Unwraps the value within the functor, passes it to the map function <code>f</code> provided, and
@@ -718,15 +430,14 @@ then takes the mapped value and wraps it back up into a new functor.</p>
 
 </div>
 <div class="top"><p class="src"><span class="keyword">method</span>
-Free<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
-<a id="FreeExtensions_0_Map_4" class="def">Map</a>
-<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        this Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.Extensions.cs#L180" class="link">Source</a>
-<a href="#FreeExtensions_0_Map_4" class="selflink">#</a>
+Free<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="FreeExtensions_0_Map_3" class="def">Map</a>
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='comma'>, </span>Free<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.Extensions.MapApply.cs#L32" class="link">Source</a>
+<a href="#FreeExtensions_0_Map_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> Fnctr : Functor&lt;Fnctr&gt;</span></div></div></p>
+<span> F : Functor&lt;F&gt;</span></div></div></p>
 <div class="doc"><div><p>Functor map operation</p>
 </div>
 <div><p>Unwraps the value within the functor, passes it to the map function <code>f</code> provided, and
@@ -759,194 +470,18 @@ then takes the mapped value and wraps it back up into a new functor.</p>
 
 </div>
 <div class="top"><p class="src"><span class="keyword">method</span>
-Free<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>Func<span class='generics'>&lt;</span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span>
-<a id="FreeExtensions_0_Map_5" class="def">Map</a>
-<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        this Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.Extensions.cs#L195" class="link">Source</a>
-<a href="#FreeExtensions_0_Map_5" class="selflink">#</a>
+Free<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="FreeExtensions_0_Action_3" class="def">Action</a>
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Free<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.Extensions.MapApply.cs#L39" class="link">Source</a>
+<a href="#FreeExtensions_0_Action_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> Fnctr : Functor&lt;Fnctr&gt;</span></div></div></p>
-<div class="doc"><div><p>Functor map operation</p>
-</div>
-<div><p>Unwraps the value within the functor, passes it to the map function <code>f</code> provided, and
-then takes the mapped value and wraps it back up into a new functor.</p>
-</div>
-<div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Functor to map</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Mapped functor</p>
-</span></td></tr></tbody></table></div></div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-Free<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>Func<span class='generics'>&lt;</span>C<span class='comma'>, </span>Func<span class='generics'>&lt;</span>D<span class='comma'>, </span>E<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span>
-<a id="FreeExtensions_0_Map_6" class="def">Map</a>
-<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        this Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.Extensions.cs#L210" class="link">Source</a>
-<a href="#FreeExtensions_0_Map_6" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> Fnctr : Functor&lt;Fnctr&gt;</span></div></div></p>
-<div class="doc"><div><p>Functor map operation</p>
-</div>
-<div><p>Unwraps the value within the functor, passes it to the map function <code>f</code> provided, and
-then takes the mapped value and wraps it back up into a new functor.</p>
-</div>
-<div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Functor to map</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Mapped functor</p>
-</span></td></tr></tbody></table></div></div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-Free<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>Func<span class='generics'>&lt;</span>C<span class='comma'>, </span>Func<span class='generics'>&lt;</span>D<span class='comma'>, </span>Func<span class='generics'>&lt;</span>E<span class='comma'>, </span>F<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span>
-<a id="FreeExtensions_0_Map_7" class="def">Map</a>
-<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        this Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.Extensions.cs#L225" class="link">Source</a>
-<a href="#FreeExtensions_0_Map_7" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> Fnctr : Functor&lt;Fnctr&gt;</span></div></div></p>
-<div class="doc"><div><p>Functor map operation</p>
-</div>
-<div><p>Unwraps the value within the functor, passes it to the map function <code>f</code> provided, and
-then takes the mapped value and wraps it back up into a new functor.</p>
-</div>
-<div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Functor to map</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Mapped functor</p>
-</span></td></tr></tbody></table></div></div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-Free<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>Func<span class='generics'>&lt;</span>C<span class='comma'>, </span>Func<span class='generics'>&lt;</span>D<span class='comma'>, </span>Func<span class='generics'>&lt;</span>E<span class='comma'>, </span>Func<span class='generics'>&lt;</span>F<span class='comma'>, </span>G<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span>
-<a id="FreeExtensions_0_Map_8" class="def">Map</a>
-<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        this Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.Extensions.cs#L240" class="link">Source</a>
-<a href="#FreeExtensions_0_Map_8" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> Fnctr : Functor&lt;Fnctr&gt;</span></div></div></p>
-<div class="doc"><div><p>Functor map operation</p>
-</div>
-<div><p>Unwraps the value within the functor, passes it to the map function <code>f</code> provided, and
-then takes the mapped value and wraps it back up into a new functor.</p>
-</div>
-<div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Functor to map</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Mapped functor</p>
-</span></td></tr></tbody></table></div></div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-Free<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>Func<span class='generics'>&lt;</span>C<span class='comma'>, </span>Func<span class='generics'>&lt;</span>D<span class='comma'>, </span>Func<span class='generics'>&lt;</span>E<span class='comma'>, </span>Func<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>G<span class='comma'>, </span>H<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span>
-<a id="FreeExtensions_0_Map_9" class="def">Map</a>
-<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        this Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.Extensions.cs#L251" class="link">Source</a>
-<a href="#FreeExtensions_0_Map_9" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> Fnctr : Functor&lt;Fnctr&gt;</span></div></div></p>
-<div class="doc"><div><p>Functor map operation</p>
+<span> F : Functor&lt;F&gt;</span></div></div></p>
+<div class="doc"><div><p>Applicative action: runs the first applicative, ignores the result, and returns the second applicative</p>
 </div>
 <div></div>
-<div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Functor to map</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Mapped functor</p>
-</span></td></tr></tbody></table></div></div>
+
 </div>
 
 
@@ -962,29 +497,57 @@ Free<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>Func<spa
 
 </div>
 <div class="top"><p class="src"><span class="keyword">method</span>
-Free<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>Func<span class='generics'>&lt;</span>C<span class='comma'>, </span>Func<span class='generics'>&lt;</span>D<span class='comma'>, </span>Func<span class='generics'>&lt;</span>E<span class='comma'>, </span>Func<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>G<span class='comma'>, </span>Func<span class='generics'>&lt;</span>H<span class='comma'>, </span>I<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span>
-<a id="FreeExtensions_0_Map_10" class="def">Map</a>
-<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        this Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.Extensions.cs#L262" class="link">Source</a>
-<a href="#FreeExtensions_0_Map_10" class="selflink">#</a>
+Free<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="FreeExtensions_0_Action_3" class="def">Action</a>
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.Extensions.MapApply.cs#L46" class="link">Source</a>
+<a href="#FreeExtensions_0_Action_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> Fnctr : Functor&lt;Fnctr&gt;</span></div></div></p>
-<div class="doc"><div><p>Functor map operation</p>
+<span> F : Functor&lt;F&gt;</span></div></div></p>
+<div class="doc"><div><p>Applicative action: runs the first applicative, ignores the result, and returns the second applicative</p>
 </div>
 <div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Free<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="FreeExtensions_0_Apply_3" class="def">Apply</a>
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Free<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.Extensions.MapApply.cs#L60" class="link">Source</a>
+<a href="#FreeExtensions_0_Apply_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> F : Functor&lt;F&gt;</span></div></div></p>
+<div class="doc"><div><p>Applicative functor apply operation</p>
+</div>
+<div><p>Unwraps the value within the <code>ma</code> applicative-functor, passes it to the unwrapped function(s) within <code>mf</code>, and
+then takes the resulting value and wraps it back up into a new applicative-functor.</p>
+</div>
 <div class="methods"><p class="caption">Parameters</p>
 <div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Functor to map</p>
+<td class="src clearfix"><span class="instruction inst-left"><p>Value(s) applicative functor</p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
+<td class="src clearfix"><span class="inst-left"><span class="def">mf</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function(s)</p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Mapped functor</p>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Mapped applicative functor</p>
 </span></td></tr></tbody></table></div></div>
 </div>
 
@@ -1001,70 +564,30 @@ Free<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>Func<spa
 
 </div>
 <div class="top"><p class="src"><span class="keyword">method</span>
-Free<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>Func<span class='generics'>&lt;</span>C<span class='comma'>, </span>Func<span class='generics'>&lt;</span>D<span class='comma'>, </span>Func<span class='generics'>&lt;</span>E<span class='comma'>, </span>Func<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>G<span class='comma'>, </span>Func<span class='generics'>&lt;</span>H<span class='comma'>, </span>Func<span class='generics'>&lt;</span>I<span class='comma'>, </span>J<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span>
-<a id="FreeExtensions_0_Map_11" class="def">Map</a>
-<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        this Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.Extensions.cs#L273" class="link">Source</a>
-<a href="#FreeExtensions_0_Map_11" class="selflink">#</a>
+Free<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="FreeExtensions_0_Apply_3" class="def">Apply</a>
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span><span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.Extensions.MapApply.cs#L74" class="link">Source</a>
+<a href="#FreeExtensions_0_Apply_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> Fnctr : Functor&lt;Fnctr&gt;</span></div></div></p>
-<div class="doc"><div><p>Functor map operation</p>
+<span> F : Functor&lt;F&gt;</span></div></div></p>
+<div class="doc"><div><p>Applicative functor apply operation</p>
 </div>
-<div></div>
-<div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Functor to map</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Mapped functor</p>
-</span></td></tr></tbody></table></div></div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-Free<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>Func<span class='generics'>&lt;</span>C<span class='comma'>, </span>Func<span class='generics'>&lt;</span>D<span class='comma'>, </span>Func<span class='generics'>&lt;</span>E<span class='comma'>, </span>Func<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>G<span class='comma'>, </span>Func<span class='generics'>&lt;</span>H<span class='comma'>, </span>Func<span class='generics'>&lt;</span>I<span class='comma'>, </span>Func<span class='generics'>&lt;</span>J<span class='comma'>, </span>K<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span>
-<a id="FreeExtensions_0_Map_12" class="def">Map</a>
-<span class='generics'>&lt;</span>Fnctr<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='comma'>, </span>K<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        this Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='comma'>, </span>K<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>Fnctr<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.Extensions.cs#L288" class="link">Source</a>
-<a href="#FreeExtensions_0_Map_12" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> Fnctr : Functor&lt;Fnctr&gt;</span></div></div></p>
-<div class="doc"><div><p>Functor map operation</p>
-</div>
-<div><p>Unwraps the value within the functor, passes it to the map function <code>f</code> provided, and
-then takes the mapped value and wraps it back up into a new functor.</p>
+<div><p>Unwraps the value within the <code>ma</code> applicative-functor, passes it to the unwrapped function(s) within <code>mf</code>, and
+then takes the resulting value and wraps it back up into a new applicative-functor.</p>
 </div>
 <div class="methods"><p class="caption">Parameters</p>
 <div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Functor to map</p>
+<td class="src clearfix"><span class="instruction inst-left"><p>Value(s) applicative functor</p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
+<td class="src clearfix"><span class="inst-left"><span class="def">mf</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function(s)</p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Mapped functor</p>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Mapped applicative functor</p>
 </span></td></tr></tbody></table></div></div>
 </div>
 
@@ -1245,6 +768,136 @@ Free<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class
 
 
 
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_Prelude_0" class="def">Prelude</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.Prelude.mapapply.cs#L6" class="link">Source</a>
+<a href="#_0_Prelude_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Free<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Prelude_0_map_3" class="def">map</a>
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.Prelude.mapapply.cs#L18" class="link">Source</a>
+<a href="#Prelude_0_map_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> F : Functor&lt;F&gt;</span></div></div></p>
+<div class="doc"><div><p>Functor map operation</p>
+</div>
+<div><p>Unwraps the value within the functor, passes it to the map function <code>f</code> provided, and
+then takes the mapped value and wraps it back up into a new functor.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Functor to map</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Mapped functor</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Free<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Prelude_0_action_3" class="def">action</a>
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.Prelude.mapapply.cs#L25" class="link">Source</a>
+<a href="#Prelude_0_action_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> F : Functor&lt;F&gt;</span></div></div></p>
+<div class="doc"><div><p>Applicative action: runs the first applicative, ignores the result, and returns the second applicative</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Free<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Prelude_0_apply_3" class="def">apply</a>
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span><span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>Free<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Free/Free.Prelude.mapapply.cs#L39" class="link">Source</a>
+<a href="#Prelude_0_apply_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> F : Functor&lt;F&gt;</span></div></div></p>
+<div class="doc"><div><p>Applicative functor apply operation</p>
+</div>
+<div><p>Unwraps the value within the <code>ma</code> applicative-functor, passes it to the unwrapped function(s) within <code>mf</code>, and
+then takes the resulting value and wraps it back up into a new applicative-functor.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Value(s) applicative functor</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">mf</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function(s)</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Mapped applicative functor</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
 
 
 
