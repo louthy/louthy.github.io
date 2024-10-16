@@ -98,6 +98,24 @@
 <ul><li><a href="#FunctorExtensions_0_MapT_4" class="link"><div class="nowrap">MapT
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>N<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>K<span class='generics'>&lt;</span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mna<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_FunctorLaw_1" class="link"><div class="nowrap">FunctorLaw
+<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#FunctorLaw_1_assert_0" class="link"><div class="nowrap">assert
+
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span> fa<span class='comma'>, </span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span>? equals = null<span class='parens'>)</span></div></a></li>
+<li><a href="#FunctorLaw_1_validate_0" class="link"><div class="nowrap">validate
+
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span> fa<span class='comma'>, </span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span>? equals = null<span class='parens'>)</span></div></a></li>
+<li><a href="#FunctorLaw_1_identityLaw_0" class="link"><div class="nowrap">identityLaw
+
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> equals<span class='parens'>)</span></div></a></li>
+<li><a href="#FunctorLaw_1_compositionLaw_0" class="link"><div class="nowrap">compositionLaw
+
+<span class='parens'>(</span>
+        K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span> fa<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>int<span class='comma'>, </span>int<span class='generics'>&gt;</span> f,
+        Func<span class='generics'>&lt;</span>int<span class='comma'>, </span>int<span class='generics'>&gt;</span> g<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> equals<span class='parens'>)</span></div></a></li></ul>
 <li><a href="#_0_Functor_0" class="link"><div class="nowrap">Functor
 </div></a></li>
 <ul><li><a href="#Functor_0_map_3" class="link"><div class="nowrap">map
@@ -1160,6 +1178,158 @@ excessive generic arguments all the way down the chain.</p>
 .MapT(a =&gt; a + 1);
 .AsT&lt;Seq, Option, Option<int>, int&gt;();</p>
 </div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_FunctorLaw_1" class="def">FunctorLaw</a>
+<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Functor/Functor.Laws.cs#L15" class="link">Source</a>
+<a href="#_0_FunctorLaw_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> F : Functor&lt;F&gt;</span></div></div></p>
+<div class="doc"><div><p>Functions that test that functor-laws hold for the <code>F</code> functor provided.</p>
+</div>
+<div><p>NOTE: <code>Equals</code> must be implemented for the <code>K&lt;F, *&gt;</code> derived-type, so that the laws
+can be proven to be true.  If your functor doesn't have <code>Equals</code> then you must provide
+the optional <code>equals</code> parameter so that the equality of outcomes can be tested.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">F</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Functor type</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<a id="FunctorLaw_1_assert_0" class="def">assert</a>
+
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span> fa<span class='comma'>, </span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span>? equals = null<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Functor/Functor.Laws.cs#L26" class="link">Source</a>
+<a href="#FunctorLaw_1_assert_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Assert that the functor laws hold</p>
+</div>
+<div><p>NOTE: <code>Equals</code> must be implemented for the <code>K&lt;F, *&gt;</code> derived-type, so that the laws
+can be proven to be true.  If your functor doesn't have <code>Equals</code> then you must provide
+the optional <code>equals</code> parameter so that the equality of outcomes can be tested.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Validation<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="FunctorLaw_1_validate_0" class="def">validate</a>
+
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span> fa<span class='comma'>, </span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span>? equals = null<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Functor/Functor.Laws.cs#L38" class="link">Source</a>
+<a href="#FunctorLaw_1_validate_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Validate that the functor laws hold</p>
+</div>
+<div><p>NOTE: <code>Equals</code> must be implemented for the <code>K&lt;F, *&gt;</code> derived-type, so that the laws
+can be proven to be true.  If your functor doesn't have <code>Equals</code> then you must provide
+the optional <code>equals</code> parameter so that the equality of outcomes can be tested.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Validation<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="FunctorLaw_1_identityLaw_0" class="def">identityLaw</a>
+
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> equals<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Functor/Functor.Laws.cs#L53" class="link">Source</a>
+<a href="#FunctorLaw_1_identityLaw_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Validate the identity law</p>
+</div>
+<div><p>NOTE: <code>Equals</code> must be implemented for the <code>K&lt;F, *&gt;</code> derived-type, so that the laws
+can be proven to be true.  If your functor doesn't have <code>Equals</code> then you must provide
+the optional <code>equals</code> parameter so that the equality of outcomes can be tested.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Validation<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="FunctorLaw_1_compositionLaw_0" class="def">compositionLaw</a>
+
+<span class='parens'>(</span>
+        K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span> fa<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>int<span class='comma'>, </span>int<span class='generics'>&gt;</span> f,
+        Func<span class='generics'>&lt;</span>int<span class='comma'>, </span>int<span class='generics'>&gt;</span> g<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> equals<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Functor/Functor.Laws.cs#L69" class="link">Source</a>
+<a href="#FunctorLaw_1_compositionLaw_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Validate the composition law</p>
+</div>
+<div><p>NOTE: <code>Equals</code> must be implemented for the <code>K&lt;F, *&gt;</code> derived-type, so that the laws
+can be proven to be true.  If your functor doesn't have <code>Equals</code> then you must provide
+the optional <code>equals</code> parameter so that the equality of outcomes can be tested.</p>
+</div>
+
+</div>
 
 
 

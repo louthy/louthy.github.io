@@ -60,6 +60,23 @@
 <li><a href="#MonadExtensions_0_BindT_4" class="link"><div class="nowrap">BindT
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>N<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>K<span class='generics'>&lt;</span>N<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mna<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>K<span class='generics'>&lt;</span>N<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_MonadLaw_1" class="link"><div class="nowrap">MonadLaw
+<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#MonadLaw_1_assert_0" class="link"><div class="nowrap">assert
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span>? equals = null<span class='parens'>)</span></div></a></li>
+<li><a href="#MonadLaw_1_validate_0" class="link"><div class="nowrap">validate
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span>? equals = null<span class='parens'>)</span></div></a></li>
+<li><a href="#MonadLaw_1_leftIdentityLaw_0" class="link"><div class="nowrap">leftIdentityLaw
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> equals<span class='parens'>)</span></div></a></li>
+<li><a href="#MonadLaw_1_rightIdentityLaw_0" class="link"><div class="nowrap">rightIdentityLaw
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> equals<span class='parens'>)</span></div></a></li>
+<li><a href="#MonadLaw_1_associativityLaw_0" class="link"><div class="nowrap">associativityLaw
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> equals<span class='parens'>)</span></div></a></li></ul>
 <li><a href="#_0_Monad_0" class="link"><div class="nowrap">Monad
 </div></a></li>
 <ul><li><a href="#Monad_0_pure_2" class="link"><div class="nowrap">pure
@@ -627,6 +644,183 @@ excessive generic arguments all the way down the chain.</p>
 .MapT(a =&gt; a + 1);
 .AsT&lt;Seq, Option, Option<int>, int&gt;();</p>
 </div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_MonadLaw_1" class="def">MonadLaw</a>
+<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Laws.cs#L22" class="link">Source</a>
+<a href="#_0_MonadLaw_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> F : Monad&lt;F&gt;</span></div></div></p>
+<div class="doc"><div><p>Functions that test that monad laws hold for the <code>F</code> monad provided.</p>
+</div>
+<div><p>NOTE: <code>Equals</code> must be implemented for the <code>K&lt;F, *&gt;</code> derived-type, so that the laws
+can be proven to be true.  If your monad doesn't have <code>Equals</code> then you must provide
+the optional <code>equals</code> parameter so that the equality of outcomes can be tested.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">F</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Functor type</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<a id="MonadLaw_1_assert_0" class="def">assert</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span>? equals = null<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Laws.cs#L33" class="link">Source</a>
+<a href="#MonadLaw_1_assert_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Assert that the monad laws hold</p>
+</div>
+<div><p>NOTE: <code>Equals</code> must be implemented for the <code>K&lt;F, *&gt;</code> derived-type, so that the laws
+can be proven to be true.  If your monad doesn't have <code>Equals</code> then you must provide
+the optional <code>equals</code> parameter so that the equality of outcomes can be tested.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Validation<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="MonadLaw_1_validate_0" class="def">validate</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span>? equals = null<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Laws.cs#L45" class="link">Source</a>
+<a href="#MonadLaw_1_validate_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Validate that the monad laws hold</p>
+</div>
+<div><p>NOTE: <code>Equals</code> must be implemented for the <code>K&lt;F, *&gt;</code> derived-type, so that the laws
+can be proven to be true.  If your monad doesn't have <code>Equals</code> then you must provide
+the optional <code>equals</code> parameter so that the equality of outcomes can be tested.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Validation<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="MonadLaw_1_leftIdentityLaw_0" class="def">leftIdentityLaw</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> equals<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Laws.cs#L62" class="link">Source</a>
+<a href="#MonadLaw_1_leftIdentityLaw_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Validate the left-identity law</p>
+</div>
+<div><p>NOTE: <code>Equals</code> must be implemented for the <code>K&lt;F, *&gt;</code> derived-type, so that the laws
+can be proven to be true.  If your monad doesn't have <code>Equals</code> then you must provide
+the optional <code>equals</code> parameter so that the equality of outcomes can be tested.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Validation<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="MonadLaw_1_rightIdentityLaw_0" class="def">rightIdentityLaw</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> equals<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Laws.cs#L82" class="link">Source</a>
+<a href="#MonadLaw_1_rightIdentityLaw_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Validate the right-identity law</p>
+</div>
+<div><p>NOTE: <code>Equals</code> must be implemented for the <code>K&lt;F, *&gt;</code> derived-type, so that the laws
+can be proven to be true.  If your monad doesn't have <code>Equals</code> then you must provide
+the optional <code>equals</code> parameter so that the equality of outcomes can be tested.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Validation<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="MonadLaw_1_associativityLaw_0" class="def">associativityLaw</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> equals<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Laws.cs#L102" class="link">Source</a>
+<a href="#MonadLaw_1_associativityLaw_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Validate the associativity law</p>
+</div>
+<div><p>NOTE: <code>Equals</code> must be implemented for the <code>K&lt;F, *&gt;</code> derived-type, so that the laws
+can be proven to be true.  If your monad doesn't have <code>Equals</code> then you must provide
+the optional <code>equals</code> parameter so that the equality of outcomes can be tested.</p>
+</div>
+
+</div>
 
 
 

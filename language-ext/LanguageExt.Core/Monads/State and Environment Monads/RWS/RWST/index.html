@@ -1,0 +1,1895 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST</title>
+<link href="style.css" rel="stylesheet" type="text/css"/></head>
+<body class="js-enabled"><div id="package-header"><ul class="links" id="page-menu"><li><a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST" class="link">Source</a></li>
+<li><a href="../index.html" class="link">Contents</a></li>
+<li><a href="../../../../../index.html" class="link">Index</a></li></ul>
+<p class="caption">LanguageExt.Core</p></div>
+<div id="content"><div id="module-header"><p class="caption"><a href="../../../../index.html" class="link">LanguageExt.Core</a>
+<span> ► </span>
+<a href="../../../index.html" class="link">Monads</a>
+<span> ► </span>
+<a href="../../index.html" class="link">State and Environment Monads</a>
+<span> ► </span>
+<a href="../index.html" class="link">RWS</a>
+<span> ► </span>
+<a href="index.html" class="link">RWST</a></p></div>
+
+<div id="table-of-contents"><p class="caption">Contents</p>
+<ul><li><a href="#_0_RWST_5" class="link"><div class="nowrap">RWST
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span><span class='parens'>(</span>R Env<span class='comma'>, </span>W Output<span class='comma'>, </span>S State<span class='parens'>)</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span><span class='parens'>(</span>A Value<span class='comma'>, </span>W Output<span class='comma'>, </span>S State<span class='parens'>)</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> runRWST<span class='parens'>)</span></div></a></li>
+<ul><li><a href="#RWST_5_Run_0" class="link"><div class="nowrap">Run
+
+<span class='parens'>(</span>R env<span class='comma'>, </span>W output<span class='comma'>, </span>S state<span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_5_Run_0" class="link"><div class="nowrap">Run
+
+<span class='parens'>(</span>R env<span class='comma'>, </span>S state<span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_5_Pure_0" class="link"><div class="nowrap">Pure
+
+<span class='parens'>(</span>A value<span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_5_Lift_0" class="link"><div class="nowrap">Lift
+
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_5_Lift_0" class="link"><div class="nowrap">Lift
+
+<span class='parens'>(</span>Pure<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_5_LiftIO_0" class="link"><div class="nowrap">LiftIO
+
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_5_Asks_0" class="link"><div class="nowrap">Asks
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>R<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_5_AsksM_0" class="link"><div class="nowrap">AsksM
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>R<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_5_With_1" class="link"><div class="nowrap">With
+<span class='generics'>&lt;</span>R1<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>R1<span class='comma'>, </span>R<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_5_Local_0" class="link"><div class="nowrap">Local
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>R<span class='comma'>, </span>R<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_5_Write_0" class="link"><div class="nowrap">Write
+
+<span class='parens'>(</span><span class='parens'>(</span>A Value<span class='comma'>, </span>W Output<span class='parens'>)</span> result<span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_5_Write_0" class="link"><div class="nowrap">Write
+
+<span class='parens'>(</span>A value<span class='comma'>, </span>W output<span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_5_Listen_0" class="link"><div class="nowrap">Listen</div></a></li>
+<li><a href="#RWST_5_Listens_1" class="link"><div class="nowrap">Listens
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>W<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_5_Censor_0" class="link"><div class="nowrap">Censor
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>W<span class='comma'>, </span>W<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_5_Modify_0" class="link"><div class="nowrap">Modify
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>S<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_5_ModifyM_0" class="link"><div class="nowrap">ModifyM
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_5_Put_0" class="link"><div class="nowrap">Put
+
+<span class='parens'>(</span>S value<span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_5_State_0" class="link"><div class="nowrap">State
+
+<span class='parens'>(</span>A value<span class='comma'>, </span>S state<span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_5_State_0" class="link"><div class="nowrap">State
+
+<span class='parens'>(</span><span class='parens'>(</span>A Value<span class='comma'>, </span>S State<span class='parens'>)</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_5_Get_0" class="link"><div class="nowrap">Get</div></a></li>
+<li><a href="#RWST_5_Gets_0" class="link"><div class="nowrap">Gets
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_5_GetsM_0" class="link"><div class="nowrap">GetsM
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_RWSTExtensions_0" class="link"><div class="nowrap">RWSTExtensions
+</div></a></li>
+<ul><li><a href="#RWSTExtensions_0_As_5" class="link"><div class="nowrap">As
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#RWSTExtensions_0_Run_5" class="link"><div class="nowrap">Run
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>R env<span class='comma'>, </span>W output<span class='comma'>, </span>S state<span class='parens'>)</span></div></a></li>
+<li><a href="#RWSTExtensions_0_Run_5" class="link"><div class="nowrap">Run
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>R env<span class='comma'>, </span>S state<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_RWST_0" class="link"><div class="nowrap">RWST
+</div></a></li>
+<ul><li><a href="#RWST_0_pure_5" class="link"><div class="nowrap">pure
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_0_lift_5" class="link"><div class="nowrap">lift
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_0_liftIO_5" class="link"><div class="nowrap">liftIO
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> effect<span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_0_combine_5" class="link"><div class="nowrap">combine
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        K<span class='generics'>&lt;</span>RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
+        K<span class='generics'>&lt;</span>RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_0_ask_4" class="link"><div class="nowrap">ask
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_0_asks_5" class="link"><div class="nowrap">asks
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>R<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_0_asksM_5" class="link"><div class="nowrap">asksM
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>R<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_0_asksM_5" class="link"><div class="nowrap">asksM
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>R<span class='comma'>, </span>K<span class='generics'>&lt;</span>RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_0_local_5" class="link"><div class="nowrap">local
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>R<span class='comma'>, </span>R<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_0_with_6" class="link"><div class="nowrap">with
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>R1<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>R<span class='comma'>, </span>R1<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>RWST<span class='generics'>&lt;</span>R1<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_0_tell_4" class="link"><div class="nowrap">tell
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span>W item<span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_0_write_5" class="link"><div class="nowrap">write
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>(</span>A<span class='comma'>, </span>W<span class='parens'>)</span> item<span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_0_write_5" class="link"><div class="nowrap">write
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='comma'>, </span>W item<span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_0_pass_5" class="link"><div class="nowrap">pass
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span><span class='parens'>(</span>A Value<span class='comma'>, </span>Func<span class='generics'>&lt;</span>W<span class='comma'>, </span>W<span class='generics'>&gt;</span> Function<span class='parens'>)</span><span class='generics'>&gt;</span> action<span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_0_listen_5" class="link"><div class="nowrap">listen
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_0_listens_6" class="link"><div class="nowrap">listens
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>W<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='comma'>, </span>RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_0_censor_5" class="link"><div class="nowrap">censor
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>W<span class='comma'>, </span>W<span class='generics'>&gt;</span> f<span class='comma'>, </span>RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_0_get_4" class="link"><div class="nowrap">get
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_0_gets_5" class="link"><div class="nowrap">gets
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_0_getsM_5" class="link"><div class="nowrap">getsM
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_0_getsM_5" class="link"><div class="nowrap">getsM
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>K<span class='generics'>&lt;</span>RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_0_put_4" class="link"><div class="nowrap">put
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span>S state<span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_0_modify_4" class="link"><div class="nowrap">modify
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>S<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_0_modifyM_4" class="link"><div class="nowrap">modifyM
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_0_modifyM_4" class="link"><div class="nowrap">modifyM
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>K<span class='generics'>&lt;</span>RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='generics'>&gt;</span><span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_RWST_4" class="link"><div class="nowrap">RWST
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#RWST_4_LiftIO_1" class="link"><div class="nowrap">LiftIO
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#RWST_4_LiftIO_1" class="link"><div class="nowrap">LiftIO
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li></ul></ul></div>
+<div class="interface">
+<div class="top"><p class="src"><span class="keyword">record</span>
+<a id="_0_RWST_5" class="def">RWST</a>
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span><span class='parens'>(</span>R Env<span class='comma'>, </span>W Output<span class='comma'>, </span>S State<span class='parens'>)</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span><span class='parens'>(</span>A Value<span class='comma'>, </span>W Output<span class='comma'>, </span>S State<span class='parens'>)</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> runRWST<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.cs#L15" class="link">Source</a>
+<a href="#_0_RWST_5" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;, SemigroupK&lt;M&gt;
+    </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> W : Monoid&lt;W&gt;</span></div></div></p>
+<div class="doc"><div><p>Reader / Write / State monad-transformer</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">R</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Reader environment type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">W</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Writer output type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>State type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted monad type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+<div class="subs methods"><p class="caption">Properties</p>
+<div class="top"><p class="src"><span class="keyword">property</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>(A Value<span class='comma'>, </span>W Output)<span class='generics'>&gt;</span>
+<a id="RWST_5_Listen_0" class="def">Listen</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.cs#L103" class="link">Source</a>
+<a href="#RWST_5_Listen_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Writes an item and returns a value at the same time</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<a id="RWST_5_Get_0" class="def">Get</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.cs#L168" class="link">Source</a>
+<a href="#RWST_5_Get_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Extracts the state value and returns it as the bound value</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>StateT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>(A Value<span class='comma'>, </span>W Output<span class='comma'>, </span>S State)<span class='generics'>&gt;</span>
+<a id="RWST_5_Run_0" class="def">Run</a>
+
+<span class='parens'>(</span>R env<span class='comma'>, </span>W output<span class='comma'>, </span>S state<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.cs#L20" class="link">Source</a>
+<a href="#RWST_5_Run_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>(A Value<span class='comma'>, </span>W Output<span class='comma'>, </span>S State)<span class='generics'>&gt;</span>
+<a id="RWST_5_Run_0" class="def">Run</a>
+
+<span class='parens'>(</span>R env<span class='comma'>, </span>S state<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.cs#L23" class="link">Source</a>
+<a href="#RWST_5_Run_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="RWST_5_Pure_0" class="def">Pure</a>
+
+<span class='parens'>(</span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.cs#L26" class="link">Source</a>
+<a href="#RWST_5_Pure_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="RWST_5_Lift_0" class="def">Lift</a>
+
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.cs#L29" class="link">Source</a>
+<a href="#RWST_5_Lift_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="RWST_5_Lift_0" class="def">Lift</a>
+
+<span class='parens'>(</span>Pure<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.cs#L32" class="link">Source</a>
+<a href="#RWST_5_Lift_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="RWST_5_LiftIO_0" class="def">LiftIO</a>
+
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.cs#L35" class="link">Source</a>
+<a href="#RWST_5_LiftIO_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="RWST_5_Asks_0" class="def">Asks</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>R<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.cs#L48" class="link">Source</a>
+<a href="#RWST_5_Asks_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Extracts the environment value and maps it to the bound value</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Environment mapping function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>ReaderT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="RWST_5_AsksM_0" class="def">AsksM</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>R<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.cs#L56" class="link">Source</a>
+<a href="#RWST_5_AsksM_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Extracts the environment value and maps it to the bound value</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Environment mapping function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>ReaderT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R1<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="RWST_5_With_1" class="def">With</a>
+<span class='generics'>&lt;</span>R1<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>R1<span class='comma'>, </span>R<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.cs#L64" class="link">Source</a>
+<a href="#RWST_5_With_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Maps the Reader's environment value</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>ReaderT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="RWST_5_Local_0" class="def">Local</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>R<span class='comma'>, </span>R<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.cs#L72" class="link">Source</a>
+<a href="#RWST_5_Local_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Maps the Reader's environment value</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>ReaderT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="RWST_5_Write_0" class="def">Write</a>
+
+<span class='parens'>(</span><span class='parens'>(</span>A Value<span class='comma'>, </span>W Output<span class='parens'>)</span> result<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.cs#L87" class="link">Source</a>
+<a href="#RWST_5_Write_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Construct a writer computation from a (result, output) pair.</p>
+</div>
+<div><p>The inverse of <code>Run()</code></p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">result</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Result / Output pair</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="RWST_5_Write_0" class="def">Write</a>
+
+<span class='parens'>(</span>A value<span class='comma'>, </span>W output<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.cs#L97" class="link">Source</a>
+<a href="#RWST_5_Write_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Construct a writer computation from a (result, output) pair.</p>
+</div>
+<div><p>The inverse of <code>Run()</code></p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">result</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Result / Output pair</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>(A Value<span class='comma'>, </span>B Output)<span class='generics'>&gt;</span>
+<a id="RWST_5_Listens_1" class="def">Listens</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>W<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.cs#L110" class="link">Source</a>
+<a href="#RWST_5_Listens_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p><code>Listens</code> executes the action and adds the result of applying <code>f</code> to the
+output to the value of the computation.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="RWST_5_Censor_0" class="def">Censor</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>W<span class='comma'>, </span>W<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.cs#L117" class="link">Source</a>
+<a href="#RWST_5_Censor_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p><code>Censor</code> executes the action and applies the function <code>f</code> to its output,
+leaving the return value unchanged.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="RWST_5_Modify_0" class="def">Modify</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>S<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.cs#L131" class="link">Source</a>
+<a href="#RWST_5_Modify_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Extracts the state value, maps it, and then puts it back into
+the monadic state.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>State mapping function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>StateT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="RWST_5_ModifyM_0" class="def">ModifyM</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.cs#L140" class="link">Source</a>
+<a href="#RWST_5_ModifyM_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Extracts the state value, maps it, and then puts it back into
+the monadic state.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>State mapping function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>StateT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="RWST_5_Put_0" class="def">Put</a>
+
+<span class='parens'>(</span>S value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.cs#L147" class="link">Source</a>
+<a href="#RWST_5_Put_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Writes the value into the monadic state</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>StateT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="RWST_5_State_0" class="def">State</a>
+
+<span class='parens'>(</span>A value<span class='comma'>, </span>S state<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.cs#L154" class="link">Source</a>
+<a href="#RWST_5_State_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Writes a value and state into the monad</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>StateT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="RWST_5_State_0" class="def">State</a>
+
+<span class='parens'>(</span><span class='parens'>(</span>A Value<span class='comma'>, </span>S State<span class='parens'>)</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.cs#L161" class="link">Source</a>
+<a href="#RWST_5_State_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Writes a value and state into the monad</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>StateT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="RWST_5_Gets_0" class="def">Gets</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.cs#L176" class="link">Source</a>
+<a href="#RWST_5_Gets_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Extracts the state value and maps it to the bound value</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>State mapping function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>StateT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="RWST_5_GetsM_0" class="def">GetsM</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.cs#L184" class="link">Source</a>
+<a href="#RWST_5_GetsM_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Extracts the state value and maps it to the bound value</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>State mapping function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>StateT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_RWSTExtensions_0" class="def">RWSTExtensions</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.Extensions.cs#L5" class="link">Source</a>
+<a href="#_0_RWSTExtensions_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="RWSTExtensions_0_As_5" class="def">As</a>
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.Extensions.cs#L7" class="link">Source</a>
+<a href="#RWSTExtensions_0_As_5" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;, SemigroupK&lt;M&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> W : Monoid&lt;W&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>(A Value<span class='comma'>, </span>W Output<span class='comma'>, </span>S State)<span class='generics'>&gt;</span>
+<a id="RWSTExtensions_0_Run_5" class="def">Run</a>
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>R env<span class='comma'>, </span>W output<span class='comma'>, </span>S state<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.Extensions.cs#L12" class="link">Source</a>
+<a href="#RWSTExtensions_0_Run_5" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;, SemigroupK&lt;M&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> W : Monoid&lt;W&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>(A Value<span class='comma'>, </span>W Output<span class='comma'>, </span>S State)<span class='generics'>&gt;</span>
+<a id="RWSTExtensions_0_Run_5" class="def">Run</a>
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>R env<span class='comma'>, </span>S state<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.Extensions.cs#L18" class="link">Source</a>
+<a href="#RWSTExtensions_0_Run_5" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;, SemigroupK&lt;M&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> W : Monoid&lt;W&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_RWST_0" class="def">RWST</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.Module.cs#L6" class="link">Source</a>
+<a href="#_0_RWST_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="RWST_0_pure_5" class="def">pure</a>
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.Module.cs#L8" class="link">Source</a>
+<a href="#RWST_0_pure_5" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> W : Monoid&lt;W&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;, SemigroupK&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="RWST_0_lift_5" class="def">lift</a>
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.Module.cs#L13" class="link">Source</a>
+<a href="#RWST_0_lift_5" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> W : Monoid&lt;W&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;, SemigroupK&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="RWST_0_liftIO_5" class="def">liftIO</a>
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> effect<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.Module.cs#L23" class="link">Source</a>
+<a href="#RWST_0_liftIO_5" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> W : Monoid&lt;W&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;, SemigroupK&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Lifts a given monad into the transformer</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">effect</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monad to lift</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>ReaderT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="RWST_0_combine_5" class="def">combine</a>
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        K<span class='generics'>&lt;</span>RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
+        K<span class='generics'>&lt;</span>RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.Module.cs#L33" class="link">Source</a>
+<a href="#RWST_0_combine_5" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> W : Monoid&lt;W&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;, SemigroupK&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<a id="RWST_0_ask_4" class="def">ask</a>
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.Module.cs#L45" class="link">Source</a>
+<a href="#RWST_0_ask_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> W : Monoid&lt;W&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;, SemigroupK&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="RWST_0_asks_5" class="def">asks</a>
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>R<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.Module.cs#L50" class="link">Source</a>
+<a href="#RWST_0_asks_5" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> W : Monoid&lt;W&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;, SemigroupK&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="RWST_0_asksM_5" class="def">asksM</a>
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>R<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.Module.cs#L55" class="link">Source</a>
+<a href="#RWST_0_asksM_5" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> W : Monoid&lt;W&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;, SemigroupK&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="RWST_0_asksM_5" class="def">asksM</a>
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>R<span class='comma'>, </span>K<span class='generics'>&lt;</span>RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.Module.cs#L60" class="link">Source</a>
+<a href="#RWST_0_asksM_5" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> W : Monoid&lt;W&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;, SemigroupK&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="RWST_0_local_5" class="def">local</a>
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>R<span class='comma'>, </span>R<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.Module.cs#L65" class="link">Source</a>
+<a href="#RWST_0_local_5" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> W : Monoid&lt;W&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;, SemigroupK&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="RWST_0_with_6" class="def">with</a>
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>R1<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>R<span class='comma'>, </span>R1<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>RWST<span class='generics'>&lt;</span>R1<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.Module.cs#L70" class="link">Source</a>
+<a href="#RWST_0_with_6" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> W : Monoid&lt;W&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;, SemigroupK&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="RWST_0_tell_4" class="def">tell</a>
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span>W item<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.Module.cs#L86" class="link">Source</a>
+<a href="#RWST_0_tell_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;, SemigroupK&lt;M&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> W : Monoid&lt;W&gt;</span></div></div></p>
+<div class="doc"><div><p>Tell is an action that produces the writer output</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">W</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Writer type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">item</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Item to tell</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Structure with the told item</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="RWST_0_write_5" class="def">write</a>
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>(</span>A<span class='comma'>, </span>W<span class='parens'>)</span> item<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.Module.cs#L94" class="link">Source</a>
+<a href="#RWST_0_write_5" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;, SemigroupK&lt;M&gt; 
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> W : Monoid&lt;W&gt;</span></div></div></p>
+<div class="doc"><div><p>Writes an item and returns a value at the same time</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="RWST_0_write_5" class="def">write</a>
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='comma'>, </span>W item<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.Module.cs#L102" class="link">Source</a>
+<a href="#RWST_0_write_5" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;, SemigroupK&lt;M&gt; 
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> W : Monoid&lt;W&gt;</span></div></div></p>
+<div class="doc"><div><p>Writes an item and returns a value at the same time</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="RWST_0_pass_5" class="def">pass</a>
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span><span class='parens'>(</span>A Value<span class='comma'>, </span>Func<span class='generics'>&lt;</span>W<span class='comma'>, </span>W<span class='generics'>&gt;</span> Function<span class='parens'>)</span><span class='generics'>&gt;</span> action<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.Module.cs#L112" class="link">Source</a>
+<a href="#RWST_0_pass_5" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;, SemigroupK&lt;M&gt; 
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> W : Monoid&lt;W&gt;</span></div></div></p>
+<div class="doc"><div><p><code>pass</code> is an action that executes the <code>action</code>, which returns a value and a
+function; it then returns the value with the output having been applied to
+the function.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>(A Value<span class='comma'>, </span>W Output)<span class='generics'>&gt;</span>
+<a id="RWST_0_listen_5" class="def">listen</a>
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.Module.cs#L121" class="link">Source</a>
+<a href="#RWST_0_listen_5" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;, SemigroupK&lt;M&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> W : Monoid&lt;W&gt;</span></div></div></p>
+<div class="doc"><div><p><code>listen</code> executes the action <code>ma</code> and adds the result of applying <code>f</code> to the
+output to the value of the computation.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>(A Value<span class='comma'>, </span>B Output)<span class='generics'>&gt;</span>
+<a id="RWST_0_listens_6" class="def">listens</a>
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>W<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='comma'>, </span>RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.Module.cs#L130" class="link">Source</a>
+<a href="#RWST_0_listens_6" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;, SemigroupK&lt;M&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> W : Monoid&lt;W&gt;</span></div></div></p>
+<div class="doc"><div><p><code>listens</code> executes the action <code>ma</code> and adds the result of applying <code>f</code> to the
+output to the value of the computation.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="RWST_0_censor_5" class="def">censor</a>
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>W<span class='comma'>, </span>W<span class='generics'>&gt;</span> f<span class='comma'>, </span>RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.Module.cs#L139" class="link">Source</a>
+<a href="#RWST_0_censor_5" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;, SemigroupK&lt;M&gt; 
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> W : Monoid&lt;W&gt;</span></div></div></p>
+<div class="doc"><div><p><code>censor</code> executes the action <code>ma</code> and applies the function <code>f</code> to its output,
+leaving the return value unchanged.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<a id="RWST_0_get_4" class="def">get</a>
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.Module.cs#L149" class="link">Source</a>
+<a href="#RWST_0_get_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> W : Monoid&lt;W&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;, SemigroupK&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="RWST_0_gets_5" class="def">gets</a>
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.Module.cs#L154" class="link">Source</a>
+<a href="#RWST_0_gets_5" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> W : Monoid&lt;W&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;, SemigroupK&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="RWST_0_getsM_5" class="def">getsM</a>
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.Module.cs#L159" class="link">Source</a>
+<a href="#RWST_0_getsM_5" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> W : Monoid&lt;W&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;, SemigroupK&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="RWST_0_getsM_5" class="def">getsM</a>
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>K<span class='generics'>&lt;</span>RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.Module.cs#L164" class="link">Source</a>
+<a href="#RWST_0_getsM_5" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> W : Monoid&lt;W&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;, SemigroupK&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="RWST_0_put_4" class="def">put</a>
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span>S state<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.Module.cs#L169" class="link">Source</a>
+<a href="#RWST_0_put_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> W : Monoid&lt;W&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;, SemigroupK&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="RWST_0_modify_4" class="def">modify</a>
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>S<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.Module.cs#L174" class="link">Source</a>
+<a href="#RWST_0_modify_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> W : Monoid&lt;W&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;, SemigroupK&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="RWST_0_modifyM_4" class="def">modifyM</a>
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.Module.cs#L179" class="link">Source</a>
+<a href="#RWST_0_modifyM_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> W : Monoid&lt;W&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;, SemigroupK&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="RWST_0_modifyM_4" class="def">modifyM</a>
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>K<span class='generics'>&lt;</span>RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='generics'>&gt;</span><span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.Module.cs#L184" class="link">Source</a>
+<a href="#RWST_0_modifyM_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> W : Monoid&lt;W&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;, SemigroupK&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_RWST_4" class="def">RWST</a>
+<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.Monad.cs#L14" class="link">Source</a>
+<a href="#_0_RWST_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;, SemigroupK&lt;M&gt;
+    </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> W : Monoid&lt;W&gt;</span></div></div></p>
+<div class="doc"><div><p>Reader / Write / State monad-transformer trait implementations</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">R</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Reader environment type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">W</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Writer output type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>State type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted monad type</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="RWST_4_LiftIO_1" class="def">LiftIO</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.Monad.cs#L94" class="link">Source</a>
+<a href="#RWST_4_LiftIO_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>RWST<span class='generics'>&lt;</span>R<span class='comma'>, </span>W<span class='comma'>, </span>S<span class='comma'>, </span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="RWST_4_LiftIO_1" class="def">LiftIO</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/State and Environment Monads/RWS/RWST/RWST.Monad.cs#L97" class="link">Source</a>
+<a href="#RWST_4_LiftIO_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js" integrity="sha512-9khQRAUBYEJDCDVP2yw3LRUQvjJ0Pjx0EShmaQjcHa6AXiOv6qHQu9lCAIR8O+/D8FtaCoJ2c0Tf9Xo7hYH01Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-fTl/qcO1VgvKtOMApX2PdZzkziyr2stM65GYPLGuYMnuMm1z2JLJG6XVU7C/mR+E7xBUqCivykuhlzfqxXBXbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script></body></html>
