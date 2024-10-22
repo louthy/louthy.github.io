@@ -1,0 +1,224 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>LanguageExt.Core/Effects/Source</title>
+<link href="style.css" rel="stylesheet" type="text/css"/></head>
+<body class="js-enabled"><div id="package-header"><ul class="links" id="page-menu"><li><a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Source" class="link">Source</a></li>
+<li><a href="../index.html" class="link">Contents</a></li>
+<li><a href="../../../index.html" class="link">Index</a></li></ul>
+<p class="caption">LanguageExt.Core</p></div>
+<div id="content"><div id="module-header"><p class="caption"><a href="../../index.html" class="link">LanguageExt.Core</a>
+<span> ► </span>
+<a href="../index.html" class="link">Effects</a>
+<span> ► </span>
+<a href="index.html" class="link">Source</a></p></div>
+
+<div id="table-of-contents"><p class="caption">Contents</p>
+<ul><li><a href="#_0_Source_1" class="link"><div class="nowrap">Source
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#Source_1_Start_0" class="link"><div class="nowrap">Start
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Source_1_Await_1" class="link"><div class="nowrap">Await
+<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Source_1_Post_0" class="link"><div class="nowrap">Post
+
+<span class='parens'>(</span>A value<span class='parens'>)</span></div></a></li>
+<li><a href="#Source_1_Complete_0" class="link"><div class="nowrap">Complete
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Source_1_Dispose_0" class="link"><div class="nowrap">Dispose
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li></ul>
+</ul></div>
+<div class="interface">
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_Source_1" class="def">Source</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Source/Source.cs#L22" class="link">Source</a>
+<a href="#_0_Source_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>A source of a stream</p>
+</div>
+<div><p>A <code>Source</code> manages a queue of events that it distributes to its subscribers asynchronously.</p>
+<p>Each subscriber runs on the same thread as the event-distributor.  So, if you have multiple
+subscribers they will be processed serially for each event.  If you want the subscribers to
+run in parallel then you must lift the <code>IO</code> monad when calling <code>Subscribe</code> and <code>forkIO</code> the
+stream.  This gives fine-grained control over when to run events in parallel.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Value type flowing downstream</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>Source<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Source_1_Start_0" class="def">Start</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Source/Source.cs#L47" class="link">Source</a>
+<a href="#Source_1_Start_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Start a new source</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A source in an IO computation</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+StreamT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Source_1_Await_1" class="def">Await</a>
+<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Source/Source.cs#L61" class="link">Source</a>
+<a href="#Source_1_Await_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Subscribe to the source and await the values</p>
+</div>
+<div><p>Each subscriber runs on the same thread as the event-distributor.  So, if you have multiple
+subscribers they will be processed serially for each event.  If you want the subscribers to
+run in parallel then you must lift the <code>IO</code> monad when calling <code>Subscribe</code> and <code>forkIO</code> the
+stream.  This gives fine-grained control over when to run events in parallel.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monad type lifted into the stream</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>StreamT monad transformer that will get the values coming downstream</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
+<a id="Source_1_Post_0" class="def">Post</a>
+
+<span class='parens'>(</span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Source/Source.cs#L96" class="link">Source</a>
+<a href="#Source_1_Post_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Post a value to flow downstream</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">value</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Value</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>IO effect</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
+<a id="Source_1_Complete_0" class="def">Complete</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Source/Source.cs#L114" class="link">Source</a>
+<a href="#Source_1_Complete_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Post a completion event to flow downstream to shut down the <code>Source</code> and its subscribers</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>IO effect</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+void
+<a id="Source_1_Dispose_0" class="def">Dispose</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Source/Source.cs#L145" class="link">Source</a>
+<a href="#Source_1_Dispose_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Dispose</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js" integrity="sha512-9khQRAUBYEJDCDVP2yw3LRUQvjJ0Pjx0EShmaQjcHa6AXiOv6qHQu9lCAIR8O+/D8FtaCoJ2c0Tf9Xo7hYH01Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-fTl/qcO1VgvKtOMApX2PdZzkziyr2stM65GYPLGuYMnuMm1z2JLJG6XVU7C/mR+E7xBUqCivykuhlzfqxXBXbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script></body></html>
