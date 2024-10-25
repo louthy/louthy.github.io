@@ -1,0 +1,1854 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>LanguageExt.Pipes/Pipe</title>
+<link href="style.css" rel="stylesheet" type="text/css"/></head>
+<body class="js-enabled"><div id="package-header"><ul class="links" id="page-menu"><li><a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe" class="link">Source</a></li>
+<li><a href="../index.html" class="link">Contents</a></li>
+<li><a href="../../index.html" class="link">Index</a></li></ul>
+<p class="caption">LanguageExt.Pipes</p></div>
+<div id="content"><div id="module-header"><p class="caption"><a href="../index.html" class="link">LanguageExt.Pipes</a>
+<span> ► </span>
+<a href="index.html" class="link">Pipe</a></p></div>
+
+<div id="table-of-contents"><p class="caption">Contents</p>
+<ul><li><a href="#_0_Pipe_4" class="link"><div class="nowrap">Pipe
+<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#Pipe_4_Value_0" class="link"><div class="nowrap">Value</div></a></li>
+<li><a href="#Pipe_4_Pipe_0" class="link"><div class="nowrap">Pipe
+<span class='parens'>(</span>Proxy<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>IN<span class='comma'>, </span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> value<span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_4_ToProxy_0" class="link"><div class="nowrap">ToProxy
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_4_Bind_1" class="link"><div class="nowrap">Bind
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>IN<span class='comma'>, </span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_4_Bind_1" class="link"><div class="nowrap">Bind
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_4_Bind_1" class="link"><div class="nowrap">Bind
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_4_Map_1" class="link"><div class="nowrap">Map
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_4_MapM_1" class="link"><div class="nowrap">MapM
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_4_ToIO_0" class="link"><div class="nowrap">ToIO
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_4_Bind_1" class="link"><div class="nowrap">Bind
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_4_Select_1" class="link"><div class="nowrap">Select
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_4_For_2" class="link"><div class="nowrap">For
+<span class='generics'>&lt;</span>C1<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>IN<span class='comma'>, </span>C1<span class='comma'>, </span>C<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span><span class='generics'>&gt;</span> body<span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_4_Action_1" class="link"><div class="nowrap">Action
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Proxy<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>IN<span class='comma'>, </span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>S<span class='generics'>&gt;</span> r<span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_4_PairEachRequestWithRespond_2" class="link"><div class="nowrap">PairEachRequestWithRespond
+<span class='generics'>&lt;</span>UOutA<span class='comma'>, </span>AUInA<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>UOutA<span class='comma'>, </span>AUInA<span class='comma'>, </span>Unit<span class='comma'>, </span>IN<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> lhs<span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_4_ReplaceRequest_2" class="link"><div class="nowrap">ReplaceRequest
+<span class='generics'>&lt;</span>UOutA<span class='comma'>, </span>AUInA<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>UOutA<span class='comma'>, </span>AUInA<span class='comma'>, </span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>IN<span class='generics'>&gt;</span><span class='generics'>&gt;</span> lhs<span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_4_PairEachRespondWithRequest_2" class="link"><div class="nowrap">PairEachRespondWithRequest
+<span class='generics'>&lt;</span>DInC<span class='comma'>, </span>DOutC<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>DInC<span class='comma'>, </span>DOutC<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_4_ReplaceRespond_2" class="link"><div class="nowrap">ReplaceRespond
+<span class='generics'>&lt;</span>DInC<span class='comma'>, </span>DOutC<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>IN<span class='comma'>, </span>DInC<span class='comma'>, </span>DOutC<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span><span class='generics'>&gt;</span> rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_4_Reflect_0" class="link"><div class="nowrap">Reflect
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_4_Observe_0" class="link"><div class="nowrap">Observe
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_4_Deconstruct_0" class="link"><div class="nowrap">Deconstruct
+
+<span class='parens'>(</span>out Proxy<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>IN<span class='comma'>, </span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> value<span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_4_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>Producer<span class='generics'>&lt;</span>IN<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> p1<span class='comma'>, </span>Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> p2<span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_4_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>Producer<span class='generics'>&lt;</span>IN<span class='comma'>, </span>A<span class='generics'>&gt;</span> p1<span class='comma'>, </span>Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> p2<span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_4_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>Producer<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>IN<span class='generics'>&gt;</span> p1<span class='comma'>, </span>Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> p2<span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_4_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> p1<span class='comma'>, </span>Consumer<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>A<span class='generics'>&gt;</span> p2<span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_4_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> p1<span class='comma'>, </span>Consumer<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> p2<span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_4_Then_1" class="link"><div class="nowrap">Then
+<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Pipe<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>C<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> pipe<span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_4_SelectMany_1" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_4_SelectMany_2" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_4_SelectMany_1" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_4_SelectMany_2" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_4_SelectMany_2" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_4_SelectMany_2" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_4_&_0" class="link"><div class="nowrap">&amp;
+<span class='parens'>(</span>
+        Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> lhs,
+        Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_4_ToString_0" class="link"><div class="nowrap">ToString
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_Pipe_0" class="link"><div class="nowrap">Pipe
+</div></a></li>
+<ul><li><a href="#Pipe_0_Pure_4" class="link"><div class="nowrap">Pure
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>M<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>R value<span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_0_awaiting_3" class="link"><div class="nowrap">awaiting
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>Y<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_0_yield_3" class="link"><div class="nowrap">yield
+<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span>OUT value<span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_0_filter_2" class="link"><div class="nowrap">filter
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_0_map_4" class="link"><div class="nowrap">map
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>M<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_0_map_3" class="link"><div class="nowrap">map
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_0_map_2" class="link"><div class="nowrap">map
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_0_mapM_4" class="link"><div class="nowrap">mapM
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>M<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_0_lift_4" class="link"><div class="nowrap">lift
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>M<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>R<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_0_liftIO_4" class="link"><div class="nowrap">liftIO
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>M<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>IO<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_0_foldWhile_3" class="link"><div class="nowrap">foldWhile
+<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        OUT Initial<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>IN<span class='comma'>, </span>OUT<span class='generics'>&gt;</span> Fold<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>bool<span class='generics'>&gt;</span> WhileState<span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_0_foldUntil_3" class="link"><div class="nowrap">foldUntil
+<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        OUT Initial<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>IN<span class='comma'>, </span>OUT<span class='generics'>&gt;</span> Fold<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>bool<span class='generics'>&gt;</span> UntilState<span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_0_foldWhile_3" class="link"><div class="nowrap">foldWhile
+<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        OUT Initial
+      <span class='comma'>, </span>Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>IN<span class='comma'>, </span>OUT<span class='generics'>&gt;</span> Fold<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>IN<span class='comma'>, </span>bool<span class='generics'>&gt;</span> WhileValue<span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_0_foldUntil_3" class="link"><div class="nowrap">foldUntil
+<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        OUT Initial<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>IN<span class='comma'>, </span>OUT<span class='generics'>&gt;</span> Fold<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>IN<span class='comma'>, </span>bool<span class='generics'>&gt;</span> UntilValue<span class='parens'>)</span></div></a></li>
+<li><a href="#Pipe_0_scan_4" class="link"><div class="nowrap">scan
+<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>IN<span class='comma'>, </span>S<span class='generics'>&gt;</span> Step<span class='comma'>, </span>S Begin<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>OUT<span class='generics'>&gt;</span> Done<span class='parens'>)</span></div></a></li></ul></ul></div>
+<div class="interface">
+<div class="top"><p class="src"><span class="keyword">record</span>
+<a id="_0_Pipe_4" class="def">Pipe</a>
+<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/CoreTypes.cs#L23" class="link">Source</a>
+<a href="#_0_Pipe_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Pipes both can both be <code>await</code> and can <code>yield</code></p>
+</div>
+<div><pre class='language-csharp'><code>  Upstream | Downstream
+      +---------+
+      |         |
+Unit &lt;==       &lt;== Unit
+      |         |
+ IN  ==&gt;       ==&gt; OUT
+      |    |    |
+      +----|----+
+           |
+           A
+</code></pre>
+</div>
+
+</div>
+
+
+
+<div class="subs methods"><p class="caption">Fields</p>
+<div class="top"><p class="src"><span class="keyword">field</span>
+Proxy<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>IN<span class='comma'>, </span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Pipe_4_Value_0" class="def">Value</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/CoreTypes.cs#L26" class="link">Source</a>
+<a href="#Pipe_4_Value_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+<div class="subs methods"><p class="caption">Constructors</p>
+<div class="top"><p class="src"><span class="keyword">constructor</span>
+<a id="Pipe_4_Pipe_0" class="def">Pipe</a>
+<span class='parens'>(</span>Proxy<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>IN<span class='comma'>, </span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/CoreTypes.cs#L32" class="link">Source</a>
+<a href="#Pipe_4_Pipe_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Constructor</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">value</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Correctly shaped <code>Proxy</code> that represents a <code>Pipe</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>IN<span class='comma'>, </span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Pipe_4_ToProxy_0" class="def">ToProxy</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/CoreTypes.cs#L42" class="link">Source</a>
+<a href="#Pipe_4_ToProxy_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Calling this will effectively cast the sub-type to the base.</p>
+</div>
+<div><p>This type wraps up a <code>Proxy</code> for convenience, and so it's a <code>Proxy</code> proxy.  So calling this method
+isn't exactly the same as a cast operation, as it unwraps the <code>Proxy</code> from within.  It has the same effect
+however, and removes a level of indirection</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A general <code>Proxy</code> type from a more specialised type</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>IN<span class='comma'>, </span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<a id="Pipe_4_Bind_1" class="def">Bind</a>
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>IN<span class='comma'>, </span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/CoreTypes.cs#L52" class="link">Source</a>
+<a href="#Pipe_4_Bind_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monadic bind operation, for chaining <code>Proxy</code> computations together.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>The mapped bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>The bind function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A new <code>Proxy</code> that represents the composition of this <code>Proxy</code> and the result of the bind operation</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Pipe_4_Bind_1" class="def">Bind</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/CoreTypes.cs#L63" class="link">Source</a>
+<a href="#Pipe_4_Bind_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monadic bind operation, for chaining <code>Proxy</code> computations together.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>The mapped bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>The bind function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A new <code>Proxy</code> that represents the composition of this <code>Proxy</code> and the result of the bind operation</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Pipe_4_Bind_1" class="def">Bind</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/CoreTypes.cs#L73" class="link">Source</a>
+<a href="#Pipe_4_Bind_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monadic bind operation, for chaining <code>Proxy</code> computations together.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>The mapped bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>The bind function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A new <code>Proxy</code> that represents the composition of this <code>Proxy</code> and the result of the bind operation</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>IN<span class='comma'>, </span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Pipe_4_Map_1" class="def">Map</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/CoreTypes.cs#L83" class="link">Source</a>
+<a href="#Pipe_4_Map_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Lifts a pure function into the <code>Proxy</code> domain, causing it to map the bound value within</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>The mapped bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>The map function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A new <code>Proxy</code> that represents the composition of this <code>Proxy</code> and the result of the map operation</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>IN<span class='comma'>, </span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Pipe_4_MapM_1" class="def">MapM</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/CoreTypes.cs#L93" class="link">Source</a>
+<a href="#Pipe_4_MapM_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Map the lifted monad</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>The mapped bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>The map function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A new <code>Proxy</code> that represents the composition of this <code>Proxy</code> and the result of the map operation</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>IN<span class='comma'>, </span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Pipe_4_ToIO_0" class="def">ToIO</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/CoreTypes.cs#L103" class="link">Source</a>
+<a href="#Pipe_4_ToIO_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Extract the lifted IO monad (if there is one)</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>The map function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A new <code>Proxy</code> that represents the innermost IO monad, if it exists.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Pipe_4_Bind_1" class="def">Bind</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/CoreTypes.cs#L113" class="link">Source</a>
+<a href="#Pipe_4_Bind_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monadic bind operation, for chaining <code>Proxy</code> computations together.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>The mapped bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>The bind function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A new <code>Proxy</code> that represents the composition of this <code>Proxy</code> and the result of the bind operation</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Pipe_4_Select_1" class="def">Select</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/CoreTypes.cs#L123" class="link">Source</a>
+<a href="#Pipe_4_Select_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Lifts a pure function into the <code>Proxy</code> domain, causing it to map the bound value within</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>The mapped bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>The map function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A new <code>Proxy</code> that represents the composition of this <code>Proxy</code> and the result of the map operation</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>IN<span class='comma'>, </span>C1<span class='comma'>, </span>C<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Pipe_4_For_2" class="def">For</a>
+<span class='generics'>&lt;</span>C1<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>IN<span class='comma'>, </span>C1<span class='comma'>, </span>C<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span><span class='generics'>&gt;</span> body<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/CoreTypes.cs#L134" class="link">Source</a>
+<a href="#Pipe_4_For_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p><code>For(body)</code> loops over the <code>Proxy p</code> replacing each <code>yield</code> with <code>body</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">body</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Any <code>yield</code> found in the <code>Proxy</code> will be replaced with this function.  It will be composed so
+that the value yielded will be passed to the argument of the function.  That returns a <code>Proxy</code> to continue the
+processing of the computation</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A new <code>Proxy</code> that represents the composition of this <code>Proxy</code> and the function provided</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>IN<span class='comma'>, </span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<a id="Pipe_4_Action_1" class="def">Action</a>
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Proxy<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>IN<span class='comma'>, </span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>S<span class='generics'>&gt;</span> r<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/CoreTypes.cs#L145" class="link">Source</a>
+<a href="#Pipe_4_Action_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Applicative action</p>
+<p>Invokes this <code>Proxy</code>, then the <code>Proxy r</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">r</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p><code>Proxy</code> to run after this one</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>UOutA<span class='comma'>, </span>AUInA<span class='comma'>, </span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Pipe_4_PairEachRequestWithRespond_2" class="def">PairEachRequestWithRespond</a>
+<span class='generics'>&lt;</span>UOutA<span class='comma'>, </span>AUInA<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>UOutA<span class='comma'>, </span>AUInA<span class='comma'>, </span>Unit<span class='comma'>, </span>IN<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> lhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/CoreTypes.cs#L157" class="link">Source</a>
+<a href="#Pipe_4_PairEachRequestWithRespond_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Used by the various composition functions and when composing proxies with the <code>|</code> operator.  You usually
+wouldn't need to call this directly, instead either pipe them using <code>|</code> or call <code>Proxy.compose(lhs, rhs)</code></p>
+</div>
+<div><p>(f +&gt;&gt; p) pairs each 'request' in <code>this</code> with a 'respond' in <code>lhs</code>.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>UOutA<span class='comma'>, </span>AUInA<span class='comma'>, </span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Pipe_4_ReplaceRequest_2" class="def">ReplaceRequest</a>
+<span class='generics'>&lt;</span>UOutA<span class='comma'>, </span>AUInA<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>UOutA<span class='comma'>, </span>AUInA<span class='comma'>, </span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>IN<span class='generics'>&gt;</span><span class='generics'>&gt;</span> lhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/CoreTypes.cs#L166" class="link">Source</a>
+<a href="#Pipe_4_ReplaceRequest_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Used by the various composition functions and when composing proxies with the <code>|</code> operator.  You usually
+wouldn't need to call this directly, instead either pipe them using <code>|</code> or call <code>Proxy.compose(lhs, rhs)</code></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>IN<span class='comma'>, </span>DInC<span class='comma'>, </span>DOutC<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Pipe_4_PairEachRespondWithRequest_2" class="def">PairEachRespondWithRequest</a>
+<span class='generics'>&lt;</span>DInC<span class='comma'>, </span>DOutC<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>DInC<span class='comma'>, </span>DOutC<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/CoreTypes.cs#L175" class="link">Source</a>
+<a href="#Pipe_4_PairEachRespondWithRequest_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Used by the various composition functions and when composing proxies with the <code>|</code> operator.  You usually
+wouldn't need to call this directly, instead either pipe them using <code>|</code> or call <code>Proxy.compose(lhs, rhs)</code></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>IN<span class='comma'>, </span>DInC<span class='comma'>, </span>DOutC<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Pipe_4_ReplaceRespond_2" class="def">ReplaceRespond</a>
+<span class='generics'>&lt;</span>DInC<span class='comma'>, </span>DOutC<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>Proxy<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>IN<span class='comma'>, </span>DInC<span class='comma'>, </span>DOutC<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span><span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/CoreTypes.cs#L184" class="link">Source</a>
+<a href="#Pipe_4_ReplaceRespond_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Used by the various composition functions and when composing proxies with the <code>|</code> operator.  You usually
+wouldn't need to call this directly, instead either pipe them using <code>|</code> or call <code>Proxy.compose(lhs, rhs)</code></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>Unit<span class='comma'>, </span>IN<span class='comma'>, </span>Unit<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Pipe_4_Reflect_0" class="def">Reflect</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/CoreTypes.cs#L193" class="link">Source</a>
+<a href="#Pipe_4_Reflect_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Reverse the arrows of the <code>Proxy</code> to find its dual.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The dual of <code>this</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Proxy<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>IN<span class='comma'>, </span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Pipe_4_Observe_0" class="def">Observe</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/CoreTypes.cs#L206" class="link">Source</a>
+<a href="#Pipe_4_Observe_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><pre class='language-csharp'><code>Observe(lift (Pure(r))) = Observe(Pure(r))
+Observe(lift (m.Bind(f))) = Observe(lift(m.Bind(x =&gt; lift(f(x)))))
+</code></pre>
+<p>This correctness comes at a small cost to performance, so use this function sparingly.
+This function is a convenience for low-level pipes implementers.  You do not need to
+use observe if you stick to the safe API.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+void
+<a id="Pipe_4_Deconstruct_0" class="def">Deconstruct</a>
+
+<span class='parens'>(</span>out Proxy<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>IN<span class='comma'>, </span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/CoreTypes.cs#L210" class="link">Source</a>
+<a href="#Pipe_4_Deconstruct_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>C<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Pipe_4_Then_1" class="def">Then</a>
+<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Pipe<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>C<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> pipe<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/CoreTypes.cs#L274" class="link">Source</a>
+<a href="#Pipe_4_Then_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Composition chaining of two pipes.</p>
+</div>
+<div><p>We can't provide the operator overloading to chain two pipes together, because operators don't have
+generics of their own.  And so we can use this method to chain to pipes together.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">C</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Type of value that the right hand side pipe yields</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">pipe</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Right hand side <code>Pipe</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A composition of this pipe and the <code>Pipe</code> provided</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Pipe_4_SelectMany_1" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/CoreTypes.cs#L302" class="link">Source</a>
+<a href="#Pipe_4_SelectMany_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monadic bind operation, for chaining <code>Proxy</code> computations together.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>The mapped bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>The bind function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A new <code>Proxy</code> that represents the composition of this <code>Proxy</code> and the result of the bind operation</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="Pipe_4_SelectMany_2" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/CoreTypes.cs#L312" class="link">Source</a>
+<a href="#Pipe_4_SelectMany_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monadic bind operation, for chaining <code>Proxy</code> computations together.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>The mapped bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>The bind function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A new <code>Proxy</code> that represents the composition of this <code>Proxy</code> and the result of the bind operation</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Pipe_4_SelectMany_1" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/CoreTypes.cs#L322" class="link">Source</a>
+<a href="#Pipe_4_SelectMany_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monadic bind operation, for chaining <code>Proxy</code> computations together.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>The mapped bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>The bind function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A new <code>Proxy</code> that represents the composition of this <code>Proxy</code> and the result of the bind operation</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="Pipe_4_SelectMany_2" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/CoreTypes.cs#L332" class="link">Source</a>
+<a href="#Pipe_4_SelectMany_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monadic bind operation, for chaining <code>Proxy</code> computations together.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>The mapped bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>The bind function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A new <code>Proxy</code> that represents the composition of this <code>Proxy</code> and the result of the bind operation</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="Pipe_4_SelectMany_2" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/CoreTypes.cs#L342" class="link">Source</a>
+<a href="#Pipe_4_SelectMany_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monadic bind operation, for chaining <code>Proxy</code> computations together.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>The mapped bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>The bind function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A new <code>Proxy</code> that represents the composition of this <code>Proxy</code> and the result of the bind operation</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="Pipe_4_SelectMany_2" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/CoreTypes.cs#L352" class="link">Source</a>
+<a href="#Pipe_4_SelectMany_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monadic bind operation, for chaining <code>Proxy</code> computations together.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>The mapped bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>The bind function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A new <code>Proxy</code> that represents the composition of this <code>Proxy</code> and the result of the bind operation</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+string
+<a id="Pipe_4_ToString_0" class="def">ToString</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/CoreTypes.cs#L365" class="link">Source</a>
+<a href="#Pipe_4_ToString_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+<div class="subs methods"><p class="caption">Operators</p>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="Pipe_4_|_0" class="def">|</a>
+<span class='parens'>(</span>Producer<span class='generics'>&lt;</span>IN<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> p1<span class='comma'>, </span>Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> p2<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/CoreTypes.cs#L220" class="link">Source</a>
+<a href="#Pipe_4_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Compose a <code>Producer</code> and a <code>Pipe</code> together into a <code>Producer</code>.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">p1</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p><code>Producer</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">p2</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p><code>Pipe</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>Producer</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="Pipe_4_|_0" class="def">|</a>
+<span class='parens'>(</span>Producer<span class='generics'>&lt;</span>IN<span class='comma'>, </span>A<span class='generics'>&gt;</span> p1<span class='comma'>, </span>Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> p2<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/CoreTypes.cs#L230" class="link">Source</a>
+<a href="#Pipe_4_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Compose a <code>Producer</code> and a <code>Pipe</code> together into a <code>Producer</code>.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">p1</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p><code>Producer</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">p2</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p><code>Pipe</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>Producer</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="Pipe_4_|_0" class="def">|</a>
+<span class='parens'>(</span>Producer<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>IN<span class='generics'>&gt;</span> p1<span class='comma'>, </span>Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> p2<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/CoreTypes.cs#L240" class="link">Source</a>
+<a href="#Pipe_4_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Compose a <code>Producer</code> and a <code>Pipe</code> together into a <code>Producer</code>.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">p1</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p><code>Producer</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">p2</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p><code>Pipe</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>Producer</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="Pipe_4_|_0" class="def">|</a>
+<span class='parens'>(</span>Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> p1<span class='comma'>, </span>Consumer<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>A<span class='generics'>&gt;</span> p2<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/CoreTypes.cs#L250" class="link">Source</a>
+<a href="#Pipe_4_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Compose a <code>Pipe</code> and a <code>Consumer</code> together into a <code>Consumer</code>.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">p1</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p><code>Pipe</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">p2</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p><code>Consumer</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>Consumer</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="Pipe_4_|_0" class="def">|</a>
+<span class='parens'>(</span>Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> p1<span class='comma'>, </span>Consumer<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> p2<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/CoreTypes.cs#L260" class="link">Source</a>
+<a href="#Pipe_4_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Compose a <code>Pipe</code> and a <code>Consumer</code> together into a <code>Consumer</code>.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">p1</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p><code>Pipe</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">p2</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p><code>Consumer</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>Consumer</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="Pipe_4_&_0" class="def">&amp;</a>
+<span class='parens'>(</span>
+        Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> lhs,
+        Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/CoreTypes.cs#L359" class="link">Source</a>
+<a href="#Pipe_4_&_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Chain one pipe's set of awaits and yields after another</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_Pipe_0" class="def">Pipe</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/Pipe.cs#L25" class="link">Source</a>
+<a href="#_0_Pipe_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Pipes both can both be <code>await</code> and can <code>yield</code></p>
+</div>
+<div><pre class='language-csharp'><code>  Upstream | Downstream
+      +---------+
+      |         |
+Unit &lt;==       &lt;== Unit
+      |         |
+ IN  ==&gt;       ==&gt; OUT
+      |    |    |
+      +----|----+
+           |
+           A
+</code></pre>
+</div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Pipe<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>M<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<a id="Pipe_0_Pure_4" class="def">Pure</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>M<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>R value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/Pipe.cs#L30" class="link">Source</a>
+<a href="#Pipe_0_Pure_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Monad return / pure</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Pipe<span class='generics'>&lt;</span>A<span class='comma'>, </span>Y<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Pipe_0_awaiting_3" class="def">awaiting</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>Y<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/Pipe.cs#L40" class="link">Source</a>
+<a href="#Pipe_0_awaiting_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Wait for a value from upstream (whilst in a pipe)</p>
+</div>
+<div><p>This is the version of <code>await</code> that works for pipes.  In consumers, use <code>Consumer.await</code></p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="Pipe_0_yield_3" class="def">yield</a>
+<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span>OUT value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/Pipe.cs#L51" class="link">Source</a>
+<a href="#Pipe_0_yield_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Send a value downstream (whilst in a pipe)</p>
+</div>
+<div><p>This is the version of <code>yield</code> that works for pipes.  In producers, use <code>Producer.yield</code></p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Pipe<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="Pipe_0_filter_2" class="def">filter</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/Pipe.cs#L59" class="link">Source</a>
+<a href="#Pipe_0_filter_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Only forwards values that satisfy the predicate.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Pipe<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>M<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<a id="Pipe_0_map_4" class="def">map</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>M<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/Pipe.cs#L69" class="link">Source</a>
+<a href="#Pipe_0_map_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Map the output of the pipe (not the bound value as is usual with Map)</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Pipe<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="Pipe_0_map_3" class="def">map</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/Pipe.cs#L76" class="link">Source</a>
+<a href="#Pipe_0_map_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Map the output of the pipe (not the bound value as is usual with Map)</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Pipe<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="Pipe_0_map_2" class="def">map</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/Pipe.cs#L83" class="link">Source</a>
+<a href="#Pipe_0_map_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Map the output of the pipe (not the bound value as is usual with Map)</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Pipe<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>M<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<a id="Pipe_0_mapM_4" class="def">mapM</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>M<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/Pipe.cs#L89" class="link">Source</a>
+<a href="#Pipe_0_mapM_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Apply a monadic function to all values flowing downstream (not the bound value as is usual with Map)</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Pipe<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>M<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<a id="Pipe_0_lift_4" class="def">lift</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>M<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>R<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/Pipe.cs#L97" class="link">Source</a>
+<a href="#Pipe_0_lift_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Lift the IO monad into the Pipe monad transformer (a specialism of the Proxy monad transformer)</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Pipe<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>M<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<a id="Pipe_0_liftIO_4" class="def">liftIO</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>M<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>IO<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/Pipe.cs#L105" class="link">Source</a>
+<a href="#Pipe_0_liftIO_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Lift the IO monad into the Pipe monad transformer (a specialism of the Proxy monad transformer)</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="Pipe_0_foldWhile_3" class="def">foldWhile</a>
+<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        OUT Initial<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>IN<span class='comma'>, </span>OUT<span class='generics'>&gt;</span> Fold<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>bool<span class='generics'>&gt;</span> WhileState<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/Pipe.cs#L117" class="link">Source</a>
+<a href="#Pipe_0_foldWhile_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Folds values coming down-stream, when the predicate returns false the folded value is yielded</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Initial</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Initial state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Fold</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Fold operation</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">WhileState</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A pipe that folds</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="Pipe_0_foldUntil_3" class="def">foldUntil</a>
+<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        OUT Initial<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>IN<span class='comma'>, </span>OUT<span class='generics'>&gt;</span> Fold<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>bool<span class='generics'>&gt;</span> UntilState<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/Pipe.cs#L132" class="link">Source</a>
+<a href="#Pipe_0_foldUntil_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Folds values coming down-stream, when the predicate returns true the folded value is yielded</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Initial</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Initial state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Fold</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Fold operation</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">UntilState</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A pipe that folds</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="Pipe_0_foldWhile_3" class="def">foldWhile</a>
+<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        OUT Initial
+      <span class='comma'>, </span>Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>IN<span class='comma'>, </span>OUT<span class='generics'>&gt;</span> Fold<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>IN<span class='comma'>, </span>bool<span class='generics'>&gt;</span> WhileValue<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/Pipe.cs#L164" class="link">Source</a>
+<a href="#Pipe_0_foldWhile_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Folds values coming down-stream, when the predicate returns false the folded value is yielded</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Initial</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Initial state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Fold</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Fold operation</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">WhileValue</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A pipe that folds</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="Pipe_0_foldUntil_3" class="def">foldUntil</a>
+<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        OUT Initial<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>IN<span class='comma'>, </span>OUT<span class='generics'>&gt;</span> Fold<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>IN<span class='comma'>, </span>bool<span class='generics'>&gt;</span> UntilValue<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/Pipe.cs#L179" class="link">Source</a>
+<a href="#Pipe_0_foldUntil_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Folds values coming down-stream, when the predicate returns true the folded value is yielded</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Initial</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Initial state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Fold</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Fold operation</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">UntilValue</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A pipe that folds</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Pipe<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="Pipe_0_scan_4" class="def">scan</a>
+<span class='generics'>&lt;</span>IN<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>IN<span class='comma'>, </span>S<span class='generics'>&gt;</span> Step<span class='comma'>, </span>S Begin<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>OUT<span class='generics'>&gt;</span> Done<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Pipes/Pipe/Pipe.cs#L207" class="link">Source</a>
+<a href="#Pipe_0_scan_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Strict left scan</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js" integrity="sha512-9khQRAUBYEJDCDVP2yw3LRUQvjJ0Pjx0EShmaQjcHa6AXiOv6qHQu9lCAIR8O+/D8FtaCoJ2c0Tf9Xo7hYH01Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-fTl/qcO1VgvKtOMApX2PdZzkziyr2stM65GYPLGuYMnuMm1z2JLJG6XVU7C/mR+E7xBUqCivykuhlzfqxXBXbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script></body></html>

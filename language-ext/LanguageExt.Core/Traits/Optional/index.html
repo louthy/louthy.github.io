@@ -1,0 +1,692 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>LanguageExt.Core/Traits/Optional</title>
+<link href="style.css" rel="stylesheet" type="text/css"/></head>
+<body class="js-enabled"><div id="package-header"><ul class="links" id="page-menu"><li><a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Optional" class="link">Source</a></li>
+<li><a href="../index.html" class="link">Contents</a></li>
+<li><a href="../../../index.html" class="link">Index</a></li></ul>
+<p class="caption">LanguageExt.Core</p></div>
+<div id="content"><div id="module-header"><p class="caption"><a href="../../index.html" class="link">LanguageExt.Core</a>
+<span> ► </span>
+<a href="../index.html" class="link">Traits</a>
+<span> ► </span>
+<a href="index.html" class="link">Optional</a></p></div>
+
+<div id="table-of-contents"><p class="caption">Contents</p>
+<ul><li><a href="#_0_Optional_2" class="link"><div class="nowrap">Optional
+<span class='generics'>&lt;</span>OA<span class='comma'>, </span>A<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#Optional_2_IsSome_0" class="link"><div class="nowrap">IsSome
+
+<span class='parens'>(</span>OA opt<span class='parens'>)</span></div></a></li>
+<li><a href="#Optional_2_IsNone_0" class="link"><div class="nowrap">IsNone
+
+<span class='parens'>(</span>OA opt<span class='parens'>)</span></div></a></li>
+<li><a href="#Optional_2_Match_1" class="link"><div class="nowrap">Match
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>OA opt<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> Some<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span> None<span class='parens'>)</span></div></a></li>
+<li><a href="#Optional_2_Match_1" class="link"><div class="nowrap">Match
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>OA opt<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> Some<span class='comma'>, </span>B None<span class='parens'>)</span></div></a></li>
+<li><a href="#Optional_2_Match_0" class="link"><div class="nowrap">Match
+
+<span class='parens'>(</span>OA opt<span class='comma'>, </span>Action<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> Some<span class='comma'>, </span>Action None<span class='parens'>)</span></div></a></li>
+<li><a href="#Optional_2_None_0" class="link"><div class="nowrap">None</div></a></li>
+<li><a href="#Optional_2_Some_0" class="link"><div class="nowrap">Some
+
+<span class='parens'>(</span>A value<span class='parens'>)</span></div></a></li>
+<li><a href="#Optional_2_MkOptional_0" class="link"><div class="nowrap">MkOptional
+
+<span class='parens'>(</span>A value<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_Optional_0" class="link"><div class="nowrap">Optional
+</div></a></li>
+<ul><li><a href="#Optional_0_ifSome_3" class="link"><div class="nowrap">ifSome
+<span class='generics'>&lt;</span>OPT<span class='comma'>, </span>OA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>OA opt<span class='comma'>, </span>Action<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Optional_0_ifSome_3" class="link"><div class="nowrap">ifSome
+<span class='generics'>&lt;</span>OPT<span class='comma'>, </span>OA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>OA opt<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Optional_0_ifNone_3" class="link"><div class="nowrap">ifNone
+<span class='generics'>&lt;</span>OPT<span class='comma'>, </span>OA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>OA opt<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> None<span class='parens'>)</span></div></a></li>
+<li><a href="#Optional_0_ifNone_3" class="link"><div class="nowrap">ifNone
+<span class='generics'>&lt;</span>OPT<span class='comma'>, </span>OA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>OA opt<span class='comma'>, </span>A noneValue<span class='parens'>)</span></div></a></li>
+<li><a href="#Optional_0_matchUntyped_4" class="link"><div class="nowrap">matchUntyped
+<span class='generics'>&lt;</span>OPT<span class='comma'>, </span>OA<span class='comma'>, </span>A<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>OA ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>object?<span class='comma'>, </span>R<span class='generics'>&gt;</span> Some<span class='comma'>, </span>Func<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span> None<span class='parens'>)</span></div></a></li>
+<li><a href="#Optional_0_toArray_3" class="link"><div class="nowrap">toArray
+<span class='generics'>&lt;</span>OPT<span class='comma'>, </span>OA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>OA ma<span class='parens'>)</span></div></a></li>
+<li><a href="#Optional_0_toList_3" class="link"><div class="nowrap">toList
+<span class='generics'>&lt;</span>OPT<span class='comma'>, </span>OA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>OA ma<span class='parens'>)</span></div></a></li>
+<li><a href="#Optional_0_asEnumerable_3" class="link"><div class="nowrap">asEnumerable
+<span class='generics'>&lt;</span>OPT<span class='comma'>, </span>OA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>OA ma<span class='parens'>)</span></div></a></li>
+<li><a href="#Optional_0_toEither_4" class="link"><div class="nowrap">toEither
+<span class='generics'>&lt;</span>OPT<span class='comma'>, </span>OA<span class='comma'>, </span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>OA ma<span class='comma'>, </span>L defaultLeftValue<span class='parens'>)</span></div></a></li>
+<li><a href="#Optional_0_toEither_4" class="link"><div class="nowrap">toEither
+<span class='generics'>&lt;</span>OPT<span class='comma'>, </span>OA<span class='comma'>, </span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>OA ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span> Left<span class='parens'>)</span></div></a></li>
+<li><a href="#Optional_0_toOption_3" class="link"><div class="nowrap">toOption
+<span class='generics'>&lt;</span>OPT<span class='comma'>, </span>OA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>OA ma<span class='parens'>)</span></div></a></li></ul></ul></div>
+<div class="interface">
+<div class="top"><p class="src"><span class="keyword">interface</span>
+<a id="_0_Optional_2" class="def">Optional</a>
+<span class='generics'>&lt;</span>OA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Optional/Optional.cs#L8" class="link">Source</a>
+<a href="#_0_Optional_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+<div class="subs methods"><p class="caption">Properties</p>
+<div class="top"><p class="src"><span class="keyword">property</span>
+OA
+<a id="Optional_2_None_0" class="def">None</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Optional/Optional.cs#L42" class="link">Source</a>
+<a href="#Optional_2_None_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="Optional_2_IsSome_0" class="def">IsSome</a>
+
+<span class='parens'>(</span>OA opt<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Optional/Optional.cs#L14" class="link">Source</a>
+<a href="#Optional_2_IsSome_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Is the option in a Some state</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="Optional_2_IsNone_0" class="def">IsNone</a>
+
+<span class='parens'>(</span>OA opt<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Optional/Optional.cs#L20" class="link">Source</a>
+<a href="#Optional_2_IsNone_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Is the option in a None state</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+B
+<a id="Optional_2_Match_1" class="def">Match</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>OA opt<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> Some<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span> None<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Optional/Optional.cs#L26" class="link">Source</a>
+<a href="#Optional_2_Match_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Match the two states of the Option and return a non-null B.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+B
+<a id="Optional_2_Match_1" class="def">Match</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>OA opt<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> Some<span class='comma'>, </span>B None<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Optional/Optional.cs#L32" class="link">Source</a>
+<a href="#Optional_2_Match_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Match the two states of the Option and return a non-null B.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<a id="Optional_2_Match_0" class="def">Match</a>
+
+<span class='parens'>(</span>OA opt<span class='comma'>, </span>Action<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> Some<span class='comma'>, </span>Action None<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Optional/Optional.cs#L40" class="link">Source</a>
+<a href="#Optional_2_Match_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Match the two states of the Option A</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Some</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Some match operation</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">None</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>None match operation</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OA
+<a id="Optional_2_Some_0" class="def">Some</a>
+
+<span class='parens'>(</span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Optional/Optional.cs#L45" class="link">Source</a>
+<a href="#Optional_2_Some_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+OA
+<a id="Optional_2_MkOptional_0" class="def">MkOptional</a>
+
+<span class='parens'>(</span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Optional/Optional.cs#L48" class="link">Source</a>
+<a href="#Optional_2_MkOptional_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_Optional_0" class="def">Optional</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Optional/Optional.Prelude.cs#L8" class="link">Source</a>
+<a href="#_0_Optional_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<a id="Optional_0_ifSome_3" class="def">ifSome</a>
+<span class='generics'>&lt;</span>OPT<span class='comma'>, </span>OA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>OA opt<span class='comma'>, </span>Action<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Optional/Optional.Prelude.cs#L16" class="link">Source</a>
+<a href="#Optional_0_ifSome_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> OPT : Optional&lt;OA, A&gt;</span></div></div></p>
+<div class="doc"><div><p>Invokes the f action if Option is in the Some state, otherwise nothing happens.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Unit
+<a id="Optional_0_ifSome_3" class="def">ifSome</a>
+<span class='generics'>&lt;</span>OPT<span class='comma'>, </span>OA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>OA opt<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Optional/Optional.Prelude.cs#L24" class="link">Source</a>
+<a href="#Optional_0_ifSome_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> OPT : Optional&lt;OA, A&gt;</span></div></div></p>
+<div class="doc"><div><p>Invokes the f function if Option is in the Some state, otherwise nothing
+happens.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+A
+<a id="Optional_0_ifNone_3" class="def">ifNone</a>
+<span class='generics'>&lt;</span>OPT<span class='comma'>, </span>OA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>OA opt<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> None<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Optional/Optional.Prelude.cs#L36" class="link">Source</a>
+<a href="#Optional_0_ifNone_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> OPT : Optional&lt;OA, A&gt;</span></div></div></p>
+<div class="doc"><div><p>Returns the result of invoking the None() operation if the optional
+is in a None state, otherwise the bound Some(x) value is returned.</p>
+</div>
+<div><p>Will not accept a null return value from the None operation</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">None</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Operation to invoke if the structure is in a None state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Tesult of invoking the None() operation if the optional
+is in a None state, otherwise the bound Some(x) value is returned.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+A
+<a id="Optional_0_ifNone_3" class="def">ifNone</a>
+<span class='generics'>&lt;</span>OPT<span class='comma'>, </span>OA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>OA opt<span class='comma'>, </span>A noneValue<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Optional/Optional.Prelude.cs#L49" class="link">Source</a>
+<a href="#Optional_0_ifNone_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> OPT : Optional&lt;OA, A&gt;</span></div></div></p>
+<div class="doc"><div><p>Returns the noneValue if the optional is in a None state, otherwise
+the bound Some(x) value is returned.</p>
+</div>
+<div><p>Will not accept a null noneValue</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">noneValue</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Value to return if in a None state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>noneValue if the optional is in a None state, otherwise
+the bound Some(x) value is returned</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+R
+<a id="Optional_0_matchUntyped_4" class="def">matchUntyped</a>
+<span class='generics'>&lt;</span>OPT<span class='comma'>, </span>OA<span class='comma'>, </span>A<span class='comma'>, </span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>OA ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>object?<span class='comma'>, </span>R<span class='generics'>&gt;</span> Some<span class='comma'>, </span>Func<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span> None<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Optional/Optional.Prelude.cs#L62" class="link">Source</a>
+<a href="#Optional_0_matchUntyped_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> OPT : Optional&lt;OA, A&gt;</span></div></div></p>
+<div class="doc"><div><p>Match operation with an untyped value for Some. This can be
+useful for serialisation and dealing with the IOptional interface</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">R</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>The return type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Some</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Operation to perform if the option is in a Some state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">None</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Operation to perform if the option is in a None state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The result of the match operation</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Arr<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Optional_0_toArray_3" class="def">toArray</a>
+<span class='generics'>&lt;</span>OPT<span class='comma'>, </span>OA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>OA ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Optional/Optional.Prelude.cs#L74" class="link">Source</a>
+<a href="#Optional_0_toArray_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> OPT : Optional&lt;OA, A&gt;</span></div></div></p>
+<div class="doc"><div><p>Convert the Option to an enumerable of zero or one items</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Option</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>An enumerable of zero or one items</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Lst<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Optional_0_toList_3" class="def">toList</a>
+<span class='generics'>&lt;</span>OPT<span class='comma'>, </span>OA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>OA ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Optional/Optional.Prelude.cs#L86" class="link">Source</a>
+<a href="#Optional_0_toList_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> OPT : Optional&lt;OA, A&gt;</span></div></div></p>
+<div class="doc"><div><p>Convert the Option to an immutable list of zero or one items</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Option</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>An immutable list of zero or one items</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Optional_0_asEnumerable_3" class="def">asEnumerable</a>
+<span class='generics'>&lt;</span>OPT<span class='comma'>, </span>OA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>OA ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Optional/Optional.Prelude.cs#L97" class="link">Source</a>
+<a href="#Optional_0_asEnumerable_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> OPT : Optional&lt;OA, A&gt;</span></div></div></p>
+<div class="doc"><div><p>Convert the Option to an enumerable of zero or one items</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Option</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>An enumerable of zero or one items</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Either<span class='generics'>&lt;</span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Optional_0_toEither_4" class="def">toEither</a>
+<span class='generics'>&lt;</span>OPT<span class='comma'>, </span>OA<span class='comma'>, </span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>OA ma<span class='comma'>, </span>L defaultLeftValue<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Optional/Optional.Prelude.cs#L105" class="link">Source</a>
+<a href="#Optional_0_toEither_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> OPT : Optional&lt;OA, A&gt;</span></div></div></p>
+<div class="doc"><div><p>Convert the structure to an Either</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Either<span class='generics'>&lt;</span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Optional_0_toEither_4" class="def">toEither</a>
+<span class='generics'>&lt;</span>OPT<span class='comma'>, </span>OA<span class='comma'>, </span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>OA ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>L<span class='generics'>&gt;</span> Left<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Optional/Optional.Prelude.cs#L115" class="link">Source</a>
+<a href="#Optional_0_toEither_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> OPT : Optional&lt;OA, A&gt;</span></div></div></p>
+<div class="doc"><div><p>Convert the structure to an Either</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Option<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Optional_0_toOption_3" class="def">toOption</a>
+<span class='generics'>&lt;</span>OPT<span class='comma'>, </span>OA<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>OA ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Optional/Optional.Prelude.cs#L125" class="link">Source</a>
+<a href="#Optional_0_toOption_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> OPT : Optional&lt;OA, A&gt;</span></div></div></p>
+<div class="doc"><div><p>Convert the structure to a Option</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js" integrity="sha512-9khQRAUBYEJDCDVP2yw3LRUQvjJ0Pjx0EShmaQjcHa6AXiOv6qHQu9lCAIR8O+/D8FtaCoJ2c0Tf9Xo7hYH01Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-fTl/qcO1VgvKtOMApX2PdZzkziyr2stM65GYPLGuYMnuMm1z2JLJG6XVU7C/mR+E7xBUqCivykuhlzfqxXBXbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script></body></html>
