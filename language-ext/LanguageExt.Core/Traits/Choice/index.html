@@ -10,6 +10,26 @@
 <a href="../index.html" class="link">Traits</a>
 <span> ► </span>
 <a href="index.html" class="link">Choice</a></p></div>
+<p><code>Choice&lt;F&gt;</code> allows for propagation of 'failure' and 'choice' (in some appropriate sense, depending on the type).</p>
+<p><code>Choice</code> is a <code>SemigroupK</code>, but has a <code>Choose</code> method, rather than relying on the <code>SemigroupK.Combine</code> method, (which
+now has a default implementation of invoking <code>Choose</code>).  That creates a new semantic meaning for <code>Choose</code>, which is
+about choice propagation rather than the broader meaning of <code>Combine</code>.  It also allows for <code>Choose</code> and <code>Combine</code> to
+have separate implementations depending on the type.</p>
+<p>The way to think about <code>Choose</code> and the inherited <code>SemigroupK.Combine</code> methods is:</p>
+<ul>
+<li class='markdown-bullet'><code>Choose</code> is the failure/choice propagation operator: <code>|</code></li>
+<li class='markdown-bullet'><code>Combine</code> is the concatenation/combination/addition operator: <code>+</code></li>
+</ul>
+<p>Any type that supports the <code>Choice</code> trait should also implement the <code>|</code> operator, to enable easy choice/failure
+propagation.  If there is a different implementation of <code>Combine</code> (rather than accepting the default), then the type
+should also implement the <code>+</code> operator.</p>
+<p><code>ChoiceLaw</code> can help you test your implementation:</p>
+<pre class='language-csharp'><code>choose(Pure(a),   Pure(b))  = Pure(a)
+choose(Fail,      Pure(b))  = Pure(b)
+choose(Pure(a),   Fail)     = Pure(a)
+choose(Fail [1],  Fail [2]) = Fail [2]
+</code></pre>
+<p>It also tests the <code>Applicative</code> and <code>Functor</code> laws.</p>
 
 <div id="table-of-contents"><p class="caption">Contents</p>
 <ul><li><a href="#_0_ChoiceExtensions_0" class="link"><div class="nowrap">ChoiceExtensions
@@ -27,10 +47,16 @@
 <span class='generics'>&lt;</span>F<span class='generics'>&gt;</span></div></a></li>
 <ul><li><a href="#ChoiceLaw_1_assert_0" class="link"><div class="nowrap">assert
 
-<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span>? equals = null<span class='parens'>)</span></div></a></li>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span> failure<span class='comma'>, </span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span>? equals = null<span class='parens'>)</span></div></a></li>
 <li><a href="#ChoiceLaw_1_validate_0" class="link"><div class="nowrap">validate
 
-<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span>? equals = null<span class='parens'>)</span></div></a></li>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span> failure<span class='comma'>, </span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span>? equals = null<span class='parens'>)</span></div></a></li>
+<li><a href="#ChoiceLaw_1_leftZeroLaw_0" class="link"><div class="nowrap">leftZeroLaw
+
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span> failure<span class='comma'>, </span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> equals<span class='parens'>)</span></div></a></li>
+<li><a href="#ChoiceLaw_1_rightZeroLaw_0" class="link"><div class="nowrap">rightZeroLaw
+
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span> failure<span class='comma'>, </span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> equals<span class='parens'>)</span></div></a></li>
 <li><a href="#ChoiceLaw_1_leftCatchLaw_0" class="link"><div class="nowrap">leftCatchLaw
 
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> equals<span class='parens'>)</span></div></a></li></ul>
@@ -235,7 +261,7 @@ must provide the optional <code>equals</code> parameter so that the equality of 
 Unit
 <a id="ChoiceLaw_1_assert_0" class="def">assert</a>
 
-<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span>? equals = null<span class='parens'>)</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span> failure<span class='comma'>, </span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span>? equals = null<span class='parens'>)</span>
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Choice/Choice.Laws.cs#L30" class="link">Source</a>
 <a href="#ChoiceLaw_1_assert_0" class="selflink">#</a>
 <div class="constraints"></div></p>
@@ -265,7 +291,7 @@ be tested.</p>
 Validation<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
 <a id="ChoiceLaw_1_validate_0" class="def">validate</a>
 
-<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span>? equals = null<span class='parens'>)</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span> failure<span class='comma'>, </span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span>? equals = null<span class='parens'>)</span>
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Choice/Choice.Laws.cs#L43" class="link">Source</a>
 <a href="#ChoiceLaw_1_validate_0" class="selflink">#</a>
 <div class="constraints"></div></p>
@@ -293,10 +319,74 @@ be tested.</p>
 </div>
 <div class="top"><p class="src"><span class="keyword">method</span>
 Validation<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="ChoiceLaw_1_leftZeroLaw_0" class="def">leftZeroLaw</a>
+
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span> failure<span class='comma'>, </span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> equals<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Choice/Choice.Laws.cs#L64" class="link">Source</a>
+<a href="#ChoiceLaw_1_leftZeroLaw_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Left-zero law</p>
+</div>
+<div><p>choose(empty, pure(x)) = pure(x)</p>
+
+<p>NOTE: <code>Equals</code> must be implemented for the <code>K&lt;F, *&gt;</code> derived-type, so that the laws
+can be proven to be true.  If your Alternative structure doesn't have <code>Equals</code> then
+you must provide the optional <code>equals</code> parameter so that the equality of outcomes can
+be tested.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Validation<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="ChoiceLaw_1_rightZeroLaw_0" class="def">rightZeroLaw</a>
+
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span> failure<span class='comma'>, </span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> equals<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Choice/Choice.Laws.cs#L87" class="link">Source</a>
+<a href="#ChoiceLaw_1_rightZeroLaw_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Right-zero law</p>
+</div>
+<div><p>choose(pure(x), empty) = pure(x)</p>
+
+<p>NOTE: <code>Equals</code> must be implemented for the <code>K&lt;F, *&gt;</code> derived-type, so that the laws
+can be proven to be true.  If your Alternative structure doesn't have <code>Equals</code> then
+you must provide the optional <code>equals</code> parameter so that the equality of outcomes can
+be tested.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Validation<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
 <a id="ChoiceLaw_1_leftCatchLaw_0" class="def">leftCatchLaw</a>
 
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> equals<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Choice/Choice.Laws.cs#L62" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Choice/Choice.Laws.cs#L110" class="link">Source</a>
 <a href="#ChoiceLaw_1_leftCatchLaw_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Left catch law</p>
