@@ -106,14 +106,14 @@ them all).</p>
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/K.cs#L20" class="link">Source</a>
 <a href="#_0_K_2" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Arrow kind: <code>* -&gt; *</code> used to represent higher-kinded types.</p>
+<div class="doc"><div><p>Arrow kind: <code>* -〉*</code> used to represent higher-kinded types.</p>
 </div>
-<div><p><code>K&lt;F, A&gt;</code> should be thought of as <code>F&lt;A&gt;</code> (where both <code>F</code> an <code>A</code> are parametric).  It currently
+<div><p><code>K〈F, A〉</code> should be thought of as <code>F〈A〉</code> (where both <code>F</code> an <code>A</code> are parametric).  It currently
 can't be represented in C#, so this allows us to define higher-kinded types and pass them
 around.  We can then build traits that expected a <code>K</code> where the trait is tied to the <code>F</code>.</p>
 <p>For example:</p>
-<pre class='language-csharp'><code>K&lt;F, A&gt; where F : Functor&lt;F&gt;
-K&lt;M, A&gt; where M : Monad&lt;M&gt;
+<pre class='language-csharp'><code>K〈F, A〉 where F : Functor〈F〉
+K〈M, A〉 where M : Monad〈M〉
 </code></pre>
 <p>That means we can write generic functions that work with monads, functors, etc.</p>
 </div>
@@ -146,7 +146,7 @@ K&lt;M, A&gt; where M : Monad&lt;M&gt;
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/K.cs#L28" class="link">Source</a>
 <a href="#_0_K_3" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Arrow kind: <code>* -&gt; * -&gt; *</code> used to represent higher-kinded types.</p>
+<div class="doc"><div><p>Arrow kind: <code>* -〉* -〉*</code> used to represent higher-kinded types.</p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
@@ -261,8 +261,8 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>K<span class='g
         </span></div>
 <div class="constraint"><span class="keyword">where</span>
 <span> M : Functor&lt;M&gt;</span></div></div></p>
-<div class="doc"><div><p><code>KindT</code> converts a nested Kind type (inherits <code>K&lt;M, A&gt;</code>), where the inner
-type is a concrete type and not <code>K&lt;N, A&gt;</code> to the more general version - which
+<div class="doc"><div><p><code>KindT</code> converts a nested Kind type (inherits <code>K〈M, A〉</code>), where the inner
+type is a concrete type and not <code>K〈N, A〉</code> to the more general version - which
 allows the other <code>T</code> variant methods to work seamlessly.</p>
 </div>
 <div><p>The casting of nested types is especially problematic for C#'s type-system,
@@ -281,7 +281,7 @@ for the outer type.</p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">NA</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Concrete nested type (i.e. <code>Option&lt;int&gt;</code>)</p>
+<td class="src clearfix"><span class="instruction inst-left"><p>Concrete nested type (i.e. <code>Option〈int〉</code>)</p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
@@ -295,12 +295,12 @@ for the outer type.</p>
 <td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>More general version of the type that can be used with other <code>T</code> extensions, like <code>BindT</code></p>
 </span></td></tr></tbody></table></div></div>
 <div class="methods"><p class="caption">Examples</p>
-<pre class='language-csharp'><code>var mx = Seq&lt;Option&lt;int&gt;&gt;(Some(1), Some(2), Some(3));
+<pre class='language-csharp'><code>var mx = Seq〈Option〈int〉〉(Some(1), Some(2), Some(3));
 
-var ma = mx.KindT&lt;Seq, Option, Option&lt;int&gt;, int&gt;()
+var ma = mx.KindT〈Seq, Option, Option〈int〉, int〉()
            .BindT(a =&gt; Some(a + 1))
            .MapT(a =&gt; a + 1);
-           .AsT&lt;Seq, Option, Option&lt;int&gt;, int&gt;();
+           .AsT〈Seq, Option, Option〈int〉, int〉();
 </code></pre>
 </div></div>
 
@@ -328,8 +328,8 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>NA<span class='
         </span></div>
 <div class="constraint"><span class="keyword">where</span>
 <span> M : Functor&lt;M&gt;</span></div></div></p>
-<div class="doc"><div><p><code>AsT</code> converts a nested Kind type (inherits <code>K&lt;M, A&gt;</code>), where the inner type
-is a general type (<code>K&lt;N, A&gt;</code>) to its downcast concrete version.</p>
+<div class="doc"><div><p><code>AsT</code> converts a nested Kind type (inherits <code>K〈M, A〉</code>), where the inner type
+is a general type (<code>K〈N, A〉</code>) to its downcast concrete version.</p>
 </div>
 <div><p>The casting of nested types is especially problematic for C#'s type-system,
 so even though this isn't ideal, it does allow for a truly generic system
@@ -347,7 +347,7 @@ for the outer type.</p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">NA</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Concrete nested type (i.e. <code>Option&lt;int&gt;</code>)</p>
+<td class="src clearfix"><span class="instruction inst-left"><p>Concrete nested type (i.e. <code>Option〈int〉</code>)</p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">type</span></td>
 <td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
@@ -361,12 +361,12 @@ for the outer type.</p>
 <td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Concrete version of the general type.</p>
 </span></td></tr></tbody></table></div></div>
 <div class="methods"><p class="caption">Examples</p>
-<pre class='language-csharp'><code>var mx = Seq&lt;Option&lt;int&gt;&gt;(Some(1), Some(2), Some(3));
+<pre class='language-csharp'><code>var mx = Seq〈Option〈int〉〉(Some(1), Some(2), Some(3));
 
-var ma = mx.KindT&lt;Seq, Option, Option&lt;int&gt;, int&gt;()
+var ma = mx.KindT〈Seq, Option, Option〈int〉, int〉()
            .BindT(a =&gt; Some(a + 1))
            .MapT(a =&gt; a + 1);
-           .AsT&lt;Seq, Option, Option&lt;int&gt;, int&gt;();
+           .AsT〈Seq, Option, Option〈int〉, int〉();
 </code></pre>
 </div></div>
 
