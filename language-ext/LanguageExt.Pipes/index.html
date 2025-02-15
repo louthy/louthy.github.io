@@ -6,174 +6,26 @@
 <li><a href="../index.html" class="link">Index</a></li></ul>
 <p class="caption">LanguageExt.Pipes</p></div>
 <div id="content"><div id="module-header"><p class="caption"><a href="index.html" class="link">LanguageExt.Pipes</a></p></div>
-<blockquote>
-<p>If you find this feature confusing at first, and it wouldn't be surprising as
-it's quite a complex idea, there are some examples in the <a href="https://github.com/louthy/language-ext/blob/main/Samples/EffectsExamples/Examples/TextFileChunkStreamExample.cs">EffectsExample sample in the repo</a></p>
-</blockquote>
-<p>Conventional stream programming forces you to choose only two of the
-following three features:</p>
+<p>The <code>Pipes</code> library of language-ext is all about compositional streams.  There are two major areas of functionality:</p>
 <ol>
-<li class='markdown-bullet'><strong>Effects</strong></li>
-<li class='markdown-bullet'><strong>Streaming</strong></li>
-<li class='markdown-bullet'><strong>Composability</strong></li>
+<li class='markdown-bullet'><a href="Core"><code>Core</code></a> - This is where the core compositional pipeline monad-transformers live. They are capable of lifting
+any monad (usually an effectful monad like a <code>IO</code>, <code>Eff</code>, or one of your own design) into a <code>producer -&gt; pipe -&gt; consumer</code>
+<em>fused effect</em>.  These fused-effects handle the flow of values through the pipeline, whilst also allowing for the
+lifted monadic effects to occur (the <code>IO</code>, <code>Eff</code>, etc).  This was originally based on the Haskell Pipes library,
+but has since been refactored to be more useful in C#-land.  It still shares many core ideas, but is its own thing now.</li>
+<li class='markdown-bullet'><a href="Concurrent"><code>Concurrent</code></a> - Provides three major types: <code>Conduit&lt;IN, OUT&gt;</code>, <code>Sink&lt;IN&gt;</code>, and <code>Source&lt;OUT&gt;</code>.  Although,
+they share the same names as the Haskell Conduit library, they are unrelated in implementation.  Behind the scenes they
+use the <code>System.Threading.Channels.Channel</code> type to provide efficient threadsafe/concurrent access to a queue that
+supports backpressure primitives.</li>
 </ol>
-<p>If you sacrifice <em>Effects</em> you get <code>IEnumerable</code>, which you
-can transform using composable functions in constant space, but without
-interleaving effects (other than of the <em>imperative kind</em>).</p>
-<p>If you sacrifice <em>Streaming</em> you get <code>Traverse</code> and <code>Sequence</code>, which are
-composable and effectful, but do not return a single result until the whole
-list has first been processed and loaded into memory.</p>
-<p>If you sacrifice <em>Composability</em> you write a tightly coupled for loops,
-and fire off imperative side-effects like they're going out of style.  Which
-is streaming and effectful, but is not modular or separable.</p>
-<p><code>Pipes</code> gives you all three features: effectful, streaming, and composable
-programming.  <code>Pipes</code> also provides a wide variety of stream programming
-abstractions which are all subsets of a single unified machinery:</p>
-<ul>
-<li class='markdown-bullet'>Effectful <a href="Producer"><code>Producer</code></a> and <a href="ProducerT"><code>ProducerT</code></a>,</li>
-<li class='markdown-bullet'>Effectful <a href="Consumer"><code>Consumer</code></a> and <a href="ConsumerT"><code>ConsumerT</code></a>,</li>
-<li class='markdown-bullet'>Effectful <a href="Pipe"><code>Pipe</code></a> and <a href="PipeT"><code>PipeT</code></a> (like Unix pipes)</li>
-<li class='markdown-bullet'>Effectful <a href="Effect"><code>Effect</code></a> and <a href="EffectT"><code>EffectT</code></a></li>
-</ul>
-<blockquote>
-<p>The <code>T</code> suffix types (<code>ProducerT</code>, <code>ConsumerT</code>, <code>PipeT</code>, and <code>EffectT</code>) are the
-more generalist monad-transformers.  They can lift any monad <code>M</code> you like into them,
-supplementing the behaviour of <code>Pipes</code> with the behaviour of <code>M</code>.  The non-<code>T</code>
-suffix types (<code>Producer</code>, <code>Consumer</code>, <code>Pipe</code>, and <code>Effect</code>) only support the lifting
-of the <code>Eff&lt;RT, A&gt;</code> type.  They're slightly easier to use, just less flexible.</p>
-</blockquote>
-<p>All of these are connectable and you can combine them together in clever and
-unexpected ways because they all share the same underlying type: <a href="PipeT"><code>PipeT</code></a>.</p>
-<p>The pipes ecosystem decouples stream processing stages from each other so
-that you can mix and match diverse stages to produce useful streaming
-programs.  If you are a library writer, pipes lets you package up streaming
-components into a reusable interface.  If you are an application writer,
-pipes lets you connect pre-made streaming components with minimal effort to
-produce a highly-efficient program that streams data in constant memory.</p>
-<p>To enforce loose coupling, components can only communicate using two commands:</p>
-<ul>
-<li class='markdown-bullet'><code>yield</code>: Send output data</li>
-<li class='markdown-bullet'><code>awaiting</code>: Receive input data</li>
-</ul>
-<p>Pipes has four types of components built around these two commands:</p>
-<ul>
-<li class='markdown-bullet'><a href="Producer"><code>Producer</code></a> and <a href="ProducerT"><code>ProducerT</code></a> yield values downstream and can only do so using: <code>Producer.yield</code> and <code>ProducerT.yield</code>.</li>
-<li class='markdown-bullet'><a href="Consumer"><code>Consumer</code></a> and <a href="ConsumerT"><code>ConsumerT</code></a> await values from upstream and can only do so using: <code>Consumer.awaiting</code> and <code>ConsumerT.awaiting</code>.</li>
-<li class='markdown-bullet'><a href="Pipe"><code>Pipe</code></a> and <a href="PipeT"><code>PipeT</code></a> can both await and yield, using: <code>Pipe.awaiting</code>, <code>PipeT.awaiting</code>, <code>Pipe.yield</code>, and <code>PipeT.yield</code>.</li>
-<li class='markdown-bullet'><a href="Effect"><code>Effect</code></a> and <a href="EffectT"><code>EffectT</code></a> can neither yield nor await and they model non-streaming components.</li>
-</ul>
-<p>Pipes uses parametric polymorphism (i.e. generics) to overload all operations. The operator <code>|</code> connects <code>Producer</code>, <code>Consumer</code>, and <code>Pipe</code> by 'fusing'
-them together.  Eventually they will 'fuse' together into an <code>Effect</code> or <code>EffectT</code>.  This final state can be <code>.Run()</code>, you must fuse to an <code>Effect</code> or
-<code>EffectT</code> to be able to invoke any of the pipelines.</p>
-<p><code>Producer</code>, <code>ProducerT</code>, <code>Consumer</code>, <code>ConsumerT</code>, <code>Pipe</code>, <code>Effect</code>, and <code>EffectT</code> are all special cases of a
-single underlying type: <a href="PipeT"><code>PipeT</code></a>.</p>
-<p>You can think of it as having the following shape:</p>
-<pre class='language-csharp'><code>PipeT&lt;IN, OUT, M, A&gt;
-
-      Upstream | Downstream
-          +---------+
-          |         |
-     IN --►        --► OUT  -- Information flowing downstream
-          |    |    |
-          +----|----+
-               |
-               A
-    
-</code></pre>
-<p>Pipes uses type synonyms to hide unused inputs or outputs and clean up
-type signatures.  These type synonyms come in two flavors:</p>
-<ul>
-<li class='markdown-bullet'><p>Concrete type synonyms that explicitly close unused inputs and outputs of
-the <code>Proxy</code> type.</p>
-</li>
-<li class='markdown-bullet'><p>Polymorphic type synonyms that don't explicitly close unused inputs or
-outputs.</p>
-</li>
-</ul>
-<p>The concrete type synonyms use <code>Unit</code> to close unused inputs and <code>Void</code> (the
-uninhabited type) to close unused outputs:</p>
-<ul>
-<li class='markdown-bullet'><p><code>EffectT</code>: explicitly closes both ends, forbidding <code>awaiting</code> and <code>yield</code>:</p>
-<pre class='language-csharp'><code> EffectT&lt;M, A&gt; = PipeT&lt;Unit, Void, M, A&gt;
-
-          Upstream | Downstream
-
-              +---------+
-              |         |
-       Unit --►         --► Void
-              |    |    |
-              +----|----+
-                   |
-                   A
-</code></pre>
-</li>
-<li class='markdown-bullet'><p><code>ProducerT</code>: explicitly closes the upstream end, forbidding <code>awaiting</code>:</p>
-<pre class='language-csharp'><code> ProducerT&lt;OUT, M, A&gt; = PipeT&lt;Unit, OUT, M, A&gt;
-
-          Upstream | Downstream
-
-              +---------+
-              |         |
-       Unit --►         --► OUT
-              |    |    |
-              +----|----+
-                   |
-                   A
-</code></pre>
-</li>
-<li class='markdown-bullet'><p><code>ConsumerT</code>: explicitly closes the downstream end, forbidding <code>yield</code>:</p>
-<pre class='language-csharp'><code>  ConsumerT&lt;IN, M, A&gt; = PipeT&lt;IN, Void, M, A&gt;
-
-          Upstream | Downstream
-
-              +---------+
-              |         |
-         IN --►         --► Void
-              |    |    |
-              +----|----+
-                   |
-                   A
-</code></pre>
-</li>
-</ul>
-<p>When you compose <code>PipeT</code> using <code>|</code> all you are doing is placing them
-side by side and fusing them laterally.  For example, when you compose a
-<code>ProducerT</code>, <code>PipeT</code>, and a <code>ConsumerT</code>, you can think of information flowing
-like this:</p>
-<pre class='language-csharp'><code>            ProducerT                     PipeT                  ConsumerT
-         +-------------+             +------------+           +-------------+
-         |             |             |            |           |             |
-  Unit --►  readLine   --►  string --►  parseInt  --►  int  --►  writeLine  --► Void
-         |      |      |             |      |     |           |      |      |
-         +------|------+             +------|-----+           +------|------+
-                |                           |                        |  
-                A                           A                        A
-</code></pre>
-<p>Composition fuses away the intermediate interfaces, leaving behind an <code>EffectT</code>:</p>
-<pre class='language-csharp'><code>                        EffectT
-        +-------------------------------------+
-        |                                     |
- Unit --►   readLine | parseInt | writeLine   --► Void
-        |                                     |
-        +------------------|------------------+
-                           |
-                           A
-</code></pre>
-<p>This <code>EffectT</code> can be <code>Run()</code> which will return the composed underlying <code>M</code> type.  Or,
-if it's an <code>Effect</code> will return the composed underlying <code>Eff&lt;RT, A&gt;</code>.</p>
+<p><code>Conduit&lt;IN, OUT&gt;</code> also supports <code>ToProducer</code> and <code>ToConsumer</code>.  Which allows for efficient concurrency in the more
+abstract and compositional world of the <code>Core</code> pipes.</p>
 
 <div id="table-of-contents"><p class="caption">Contents</p>
 <ul></ul></div>
 <div class="interface"><H1>Sub modules</H1>
 <table><tbody><tr><td class="src clearfix"><span class="inst-left"><a href="Concurrent/index.html" class="link">Concurrent</a></span></td></tr>
-<tr><td class="src clearfix"><span class="inst-left"><a href="Consumer/index.html" class="link">Consumer</a></span></td></tr>
-<tr><td class="src clearfix"><span class="inst-left"><a href="ConsumerT/index.html" class="link">ConsumerT</a></span></td></tr>
-<tr><td class="src clearfix"><span class="inst-left"><a href="Effect/index.html" class="link">Effect</a></span></td></tr>
-<tr><td class="src clearfix"><span class="inst-left"><a href="EffectT/index.html" class="link">EffectT</a></span></td></tr>
-<tr><td class="src clearfix"><span class="inst-left"><a href="Pipe/index.html" class="link">Pipe</a></span></td></tr>
-<tr><td class="src clearfix"><span class="inst-left"><a href="PipeT/index.html" class="link">PipeT</a></span></td></tr>
-<tr><td class="src clearfix"><span class="inst-left"><a href="Producer/index.html" class="link">Producer</a></span></td></tr>
-<tr><td class="src clearfix"><span class="inst-left"><a href="ProducerT/index.html" class="link">ProducerT</a></span></td></tr></tbody></table>
+<tr><td class="src clearfix"><span class="inst-left"><a href="Core/index.html" class="link">Core</a></span></td></tr></tbody></table>
 </div></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js" integrity="sha512-9khQRAUBYEJDCDVP2yw3LRUQvjJ0Pjx0EShmaQjcHa6AXiOv6qHQu9lCAIR8O+/D8FtaCoJ2c0Tf9Xo7hYH01Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-fTl/qcO1VgvKtOMApX2PdZzkziyr2stM65GYPLGuYMnuMm1z2JLJG6XVU7C/mR+E7xBUqCivykuhlzfqxXBXbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script></body></html>
