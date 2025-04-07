@@ -10,9 +10,65 @@
 <a href="../index.html" class="link">Traits</a>
 <span> ► </span>
 <a href="index.html" class="link">Natural</a></p></div>
+<h2>Natural transformations</h2>
+<p>Natural transformations are operations that transform the <em>structure</em> of a type.  If <code>Functor</code> is
+<em>structure <strong>preserving</strong></em> then natural-transformations are <em>structure <strong>transforming</strong></em>.</p>
+<p>A concrete example is that if we call <code>Map</code> on a <code>Seq〈A〉</code>, then the structure (the <code>Seq</code>) is
+preserved, but the values within the structure, <code>A</code>, are transformed: and that defines a <code>Functor</code>,
+whereas with natural-transformations we could call <code>AsEnumerable()</code> on the <code>Seq〈A〉</code>.  The result
+would preserve value-type, <code>A</code>, but transform the structure <code>Seq</code> to <code>IEnumerable</code>.</p>
+<p>This common pattern of structure transformation is a natural-transformation. It is captured by the type <code>Natural〈F, G〉</code>.</p>
+<h2><code>Natural</code></h2>
+<p><code>Natural〈F, G〉</code> defines a single method, <code>Transform</code>, that maps a <code>K&lt;F, A&gt;</code> to a <code>K&lt;G, A&gt;</code>.  This could be <code>K&lt;Try, A&gt;</code>
+to <code>K&lt;Option, A&gt;</code> for example.</p>
+<h2><code>CoNatural</code></h2>
+<p>There is also <code>CoNatural〈F, G〉</code> which is the dual of <code>Natural〈F, G〉</code>.  It has the <code>Transform</code> arrow reversed, which
+means it maps a <code>K&lt;G, A&gt;</code> to a <code>K&lt;F, A&gt;</code>.</p>
+<p>It is <em>functionally exactly the same</em> as <code>Natural</code>.  The reason it exists is listed below.</p>
+<h2><code>NaturalIso</code></h2>
+<p>A natural-isomorphism (<code>NaturalIso〈F, G〉</code>) is a natural-transformation that can map forwards and backwards:</p>
+<pre class='language-csharp'><code>F〈A〉-&gt; G〈A〉
+</code></pre>
+<p>And the dual:</p>
+<pre class='language-csharp'><code>G〈A〉-&gt; F〈A〉
+</code></pre>
+<p><code>NaturalIso</code> derives from:</p>
+<pre class='language-csharp'><code>Natural〈F, G〉
+CoNatural〈F, G〉
+</code></pre>
+<blockquote>
+<p>The reason it doesn't derive from <code>Natural〈F, G〉</code> and <code>Natural〈G, F〉</code> is because C# can't type-check when <code>F == G</code> and
+so the dual needs a separate type: <code>CoNatural〈F, G〉</code>.</p>
+</blockquote>
+<h2><code>NaturalMono</code></h2>
+<p>A natural <em>monomorphic</em> transformation means there's one arrow between <code>F</code> and <code>G</code>.  Therefore, there's also a <code>CoNatural</code>
+between <code>G</code> and <code>F</code> (<code>CoNatural</code> is the dual of <code>Natural</code>, so its arrows are flipped, so a <code>CoNatural</code> between <code>G</code> and <code>F</code>
+is isomorphic to a <code>Natural</code> between <code>F</code> and <code>G</code>).</p>
+<p><code>NaturalMono</code> derives from:</p>
+<pre class='language-csharp'><code>Natural〈F, G〉
+CoNatural〈G, F〉
+</code></pre>
+<p>The <code>CoTransform</code> method has a default implementation.</p>
+<h2><code>NaturalEpi</code></h2>
+<p>An <em>epimorphism</em> is the <em>dual</em> of a <em>monomorphism</em>.  So, <code>NaturalEpi</code> is the dual of <code>NaturalMono</code>.</p>
+<p><code>NaturalEpi</code> derives from:</p>
+<pre class='language-csharp'><code>Natural〈G, F〉
+CoNatural〈F, G〉
+</code></pre>
+<p>The <code>Transform</code> method has a default implementation.</p>
 
 <div id="table-of-contents"><p class="caption">Contents</p>
-<ul><li><a href="#_0_Natural_2" class="link"><div class="nowrap">Natural
+<ul><li><a href="#_0_CoNatural_2" class="link"><div class="nowrap">CoNatural
+<span class='generics'>&lt;</span>in F<span class='comma'>, </span>out G<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#CoNatural_2_CoTransform_1" class="link"><div class="nowrap">CoTransform
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>G<span class='comma'>, </span>A<span class='generics'>&gt;</span> fa<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_CoNatural_0" class="link"><div class="nowrap">CoNatural
+</div></a></li>
+<ul><li><a href="#CoNatural_0_transform_3" class="link"><div class="nowrap">transform
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>G<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>G<span class='comma'>, </span>A<span class='generics'>&gt;</span> fa<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_Natural_2" class="link"><div class="nowrap">Natural
 <span class='generics'>&lt;</span>out F<span class='comma'>, </span>in G<span class='generics'>&gt;</span></div></a></li>
 <ul><li><a href="#Natural_2_Transform_1" class="link"><div class="nowrap">Transform
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
@@ -21,8 +77,173 @@
 </div></a></li>
 <ul><li><a href="#Natural_0_transform_3" class="link"><div class="nowrap">transform
 <span class='generics'>&lt;</span>F<span class='comma'>, </span>G<span class='comma'>, </span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> fa<span class='parens'>)</span></div></a></li></ul></ul></div>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> fa<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_NaturalEpi_2" class="link"><div class="nowrap">NaturalEpi
+<span class='generics'>&lt;</span>in F<span class='comma'>, </span>out G<span class='generics'>&gt;</span></div></a></li>
+<ul></ul>
+<li><a href="#_0_NaturalIso_2" class="link"><div class="nowrap">NaturalIso
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>G<span class='generics'>&gt;</span></div></a></li>
+<ul></ul>
+<li><a href="#_0_NaturalMono_2" class="link"><div class="nowrap">NaturalMono
+<span class='generics'>&lt;</span>out F<span class='comma'>, </span>in G<span class='generics'>&gt;</span></div></a></li>
+<ul></ul></ul></div>
 <div class="interface">
+<div class="top"><p class="src"><span class="keyword">interface</span>
+<a id="_0_CoNatural_2" class="def">CoNatural</a>
+<span class='generics'>&lt;</span>in F<span class='comma'>, </span>out G<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Natural/CoNatural.cs#L17" class="link">Source</a>
+<a href="#_0_CoNatural_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Natural transformation</p>
+</div>
+<div><p>If functor <code>map</code> operations transform the bound-values within the structure, then
+natural-transformations transform the structure itself.</p>
+
+<p>Functors are referenced, because that's the true definition in category-theory, but
+there is no requirement in language-ext for FA or GA to be functors.  It is just typically
+true that FA and GA will also be functors.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">F</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>From functor</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">G</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>To functor</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="CoNatural_2_CoTransform_1" class="def">CoTransform</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>G<span class='comma'>, </span>A<span class='generics'>&gt;</span> fa<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Natural/CoNatural.cs#L34" class="link">Source</a>
+<a href="#CoNatural_2_CoTransform_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Perform a natural transformation from <code>FA -&gt; GA</code></p>
+</div>
+<div><p>If functor <code>map</code> operations transform the bound-values within the structure, then
+natural-transformations transform the structure itself.</p>
+
+<p>Functors are referenced, because that's the true definition in category-theory, but
+there is no requirement in language-ext for FA or GA to be functors.  It is just typically
+true that FA and GA will also be functors.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">fa</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Functor to transform</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Transformed functor</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_CoNatural_0" class="def">CoNatural</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Natural/CoNatural.Module.cs#L3" class="link">Source</a>
+<a href="#_0_CoNatural_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="CoNatural_0_transform_3" class="def">transform</a>
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>G<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>G<span class='comma'>, </span>A<span class='generics'>&gt;</span> fa<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Natural/CoNatural.Module.cs#L22" class="link">Source</a>
+<a href="#CoNatural_0_transform_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> F : CoNatural&lt;F, G&gt;</span></div></div></p>
+<div class="doc"><div><p>Co-natural transformation</p>
+</div>
+<div><p>If functor <code>map</code> operations transform the bound-values within the structure, then
+natural-transformations transform the structure itself.</p>
+
+<p>Functors are referenced, because that's the true definition in category-theory, but
+there is no requirement in language-ext for FA or GA to be functors.  It is just typically
+true that FA and GA will also be functors.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">F</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Source functor type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">G</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target functor type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">fa</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Functor to transform</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Transformed functor</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
 <div class="top"><p class="src"><span class="keyword">interface</span>
 <a id="_0_Natural_2" class="def">Natural</a>
 <span class='generics'>&lt;</span>out F<span class='comma'>, </span>in G<span class='generics'>&gt;</span>
@@ -174,6 +395,120 @@ true that FA and GA will also be functors.</p>
 
 
 </div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">interface</span>
+<a id="_0_NaturalEpi_2" class="def">NaturalEpi</a>
+<span class='generics'>&lt;</span>in F<span class='comma'>, </span>out G<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Natural/NaturalEpi.cs#L16" class="link">Source</a>
+<a href="#_0_NaturalEpi_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> F : CoNatural&lt;F, G&gt;</span></div></div></p>
+<div class="doc"><div><p>Natural epimorphic transformation</p>
+</div>
+<div><p>Epimorphism is the dual of monomorphism.  So, <code>NaturalEpi</code> is the dual of <code>NaturalMono</code>.</p>
+
+<p>Functors are referenced, because that's the true definition in category-theory, but
+there is no requirement in language-ext for FA or GA to be functors.  It is just typically
+true that FA and GA will also be functors.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">F</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>From functor</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">G</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>To functor</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">interface</span>
+<a id="_0_NaturalIso_2" class="def">NaturalIso</a>
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>G<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Natural/NaturalIso.cs#L8" class="link">Source</a>
+<a href="#_0_NaturalIso_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Natural isomorphism</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">F</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Functor</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">G</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Functor</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">interface</span>
+<a id="_0_NaturalMono_2" class="def">NaturalMono</a>
+<span class='generics'>&lt;</span>out F<span class='comma'>, </span>in G<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Natural/NaturalMono.cs#L23" class="link">Source</a>
+<a href="#_0_NaturalMono_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> F : Natural&lt;F, G&gt;</span></div></div></p>
+<div class="doc"><div><p>Natural monomorphic transformation</p>
+</div>
+<div><p>Monomorphism means that there's one arrow between <code>F</code> and <code>G</code>.  Therefore, there's also a <code>CoNatural</code> between
+<code>G</code> and <code>F</code> (<code>CoNatural</code> is the dual of <code>Natural</code>, so its arrows are flipped, so a <code>CoNatural</code> between <code>G</code> and <code>F</code>
+is isomorphic to a <code>Natural</code> between <code>F</code> and <code>G</code>).  That's why <code>NaturalMono</code> derives from both <code>Natural</code> and
+<code>CoNatural</code> and can provide a default implementation for <code>CoTransform</code>.</p>
+
+<p>This type wouldn't need to exist is C# was better at type-unification.   Use this when you want a unidirectional
+natural-transformation.  Use <code>NaturalIso</code> when you want a bidirectional natural-transformation.</p>
+
+<p>Functors are referenced, because that's the true definition in category-theory, but
+there is no requirement in language-ext for FA or GA to be functors.  It is just typically
+true that FA and GA will also be functors.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">F</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>From functor</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">G</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>To functor</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
 
 
 
