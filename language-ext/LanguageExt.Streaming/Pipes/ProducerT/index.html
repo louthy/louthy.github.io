@@ -1,0 +1,2784 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>LanguageExt.Streaming/Pipes/ProducerT</title>
+<link href="style.css" rel="stylesheet" type="text/css"/></head>
+<body class="js-enabled"><div id="package-header"><ul class="links" id="page-menu"><li><a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT" class="link">Source</a></li>
+<li><a href="../index.html" class="link">Contents</a></li>
+<li><a href="../../../index.html" class="link">Index</a></li></ul>
+<p class="caption">LanguageExt.Streaming</p></div>
+<div id="content"><div id="module-header"><p class="caption"><a href="../../index.html" class="link">LanguageExt.Streaming</a>
+<span> ► </span>
+<a href="../index.html" class="link">Pipes</a>
+<span> ► </span>
+<a href="index.html" class="link">ProducerT</a></p></div>
+
+<div id="table-of-contents"><p class="caption">Contents</p>
+<ul><li><a href="#_0_ProducerT_3" class="link"><div class="nowrap">ProducerT
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>PipeT<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> Proxy<span class='parens'>)</span></div></a></li>
+<ul><li><a href="#ProducerT_3_Compose_1" class="link"><div class="nowrap">Compose
+<span class='generics'>&lt;</span>OUT1<span class='generics'>&gt;</span>
+<span class='parens'>(</span>PipeT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>OUT1<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_3_Compose_0" class="link"><div class="nowrap">Compose
+
+<span class='parens'>(</span>ConsumerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_3_|_0" class="link"><div class="nowrap">|
+<span class='parens'>(</span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>ConsumerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_3_Map_1" class="link"><div class="nowrap">Map
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_3_MapM_1" class="link"><div class="nowrap">MapM
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_3_MapIO_1" class="link"><div class="nowrap">MapIO
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_3_ApplyBack_1" class="link"><div class="nowrap">ApplyBack
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ff<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_3_Action_1" class="link"><div class="nowrap">Action
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span> fb<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_3_Bind_1" class="link"><div class="nowrap">Bind
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_3_Bind_1" class="link"><div class="nowrap">Bind
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_3_Bind_1" class="link"><div class="nowrap">Bind
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_3_Bind_1" class="link"><div class="nowrap">Bind
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Pure<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_3_Bind_1" class="link"><div class="nowrap">Bind
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Lift<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_3_Select_1" class="link"><div class="nowrap">Select
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_3_SelectMany_2" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> g<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_3_SelectMany_2" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> g<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_3_SelectMany_2" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> g<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_3_SelectMany_2" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Pure<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> g<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_3_SelectMany_2" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Lift<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> g<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_3_Fold_0" class="link"><div class="nowrap">Fold
+
+<span class='parens'>(</span>
+        Schedule Time,
+        Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>A<span class='comma'>, </span>OUT<span class='generics'>&gt;</span> Fold<span class='comma'>, </span>
+        OUT Init<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_3_FoldUntil_0" class="link"><div class="nowrap">FoldUntil
+
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>A<span class='comma'>, </span>OUT<span class='generics'>&gt;</span> Fold<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span><span class='parens'>(</span>OUT State<span class='comma'>, </span>A Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>
+        OUT Init<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_3_FoldUntil_0" class="link"><div class="nowrap">FoldUntil
+
+<span class='parens'>(</span>
+        Schedule Time,
+        Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>A<span class='comma'>, </span>OUT<span class='generics'>&gt;</span> Fold<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span><span class='parens'>(</span>OUT State<span class='comma'>, </span>A Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>
+        OUT Init<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_3_FoldWhile_0" class="link"><div class="nowrap">FoldWhile
+
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>A<span class='comma'>, </span>OUT<span class='generics'>&gt;</span> Fold<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span><span class='parens'>(</span>OUT State<span class='comma'>, </span>A Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>
+        OUT Init<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_3_FoldWhile_0" class="link"><div class="nowrap">FoldWhile
+
+<span class='parens'>(</span>
+        Schedule Time,
+        Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>A<span class='comma'>, </span>OUT<span class='generics'>&gt;</span> Fold<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span><span class='parens'>(</span>OUT State<span class='comma'>, </span>A Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>
+        OUT Init<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_ProducerTExtensions_0" class="link"><div class="nowrap">ProducerTExtensions
+</div></a></li>
+<ul><li><a href="#ProducerTExtensions_0_ToProducer_3" class="link"><div class="nowrap">ToProducer
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>PipeT<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> pipe<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerTExtensions_0_As_3" class="link"><div class="nowrap">As
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerTExtensions_0_ToEff_3" class="link"><div class="nowrap">ToEff
+<span class='generics'>&lt;</span>RT<span class='comma'>, </span>OUT<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>RT<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerTExtensions_0_SelectMany_5" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> g<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerTExtensions_0_SelectMany_5" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> g<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerTExtensions_0_SelectMany_5" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this Pure<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> g<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerTExtensions_0_SelectMany_5" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this Lift<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ff<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> g<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerTExtensions_0_Bind_4" class="link"><div class="nowrap">Bind
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerTExtensions_0_Bind_4" class="link"><div class="nowrap">Bind
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerTExtensions_0_Bind_4" class="link"><div class="nowrap">Bind
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this Pure<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerTExtensions_0_Bind_4" class="link"><div class="nowrap">Bind
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this Lift<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ff<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerTExtensions_0_SelectMany_5" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>E<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Guard<span class='generics'>&lt;</span>E<span class='comma'>, </span>Unit<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind,
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Unit<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerTExtensions_0_SelectMany_5" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>E<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this Guard<span class='generics'>&lt;</span>E<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> ma,
+        Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>K<span class='generics'>&lt;</span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind,
+        Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_ProducerT_0" class="link"><div class="nowrap">ProducerT
+</div></a></li>
+<ul><li><a href="#ProducerT_0_yield_2" class="link"><div class="nowrap">yield
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>OUT<span class='generics'>&gt;</span>
+<span class='parens'>(</span>OUT value<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_0_yieldAll_2" class="link"><div class="nowrap">yieldAll
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>OUT<span class='generics'>&gt;</span>
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>OUT<span class='generics'>&gt;</span> values<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_0_yieldAll_2" class="link"><div class="nowrap">yieldAll
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>OUT<span class='generics'>&gt;</span>
+<span class='parens'>(</span>IAsyncEnumerable<span class='generics'>&lt;</span>OUT<span class='generics'>&gt;</span> values<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_0_yieldAll_2" class="link"><div class="nowrap">yieldAll
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>OUT<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Source<span class='generics'>&lt;</span>OUT<span class='generics'>&gt;</span> values<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_0_yieldAll_2" class="link"><div class="nowrap">yieldAll
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>OUT<span class='generics'>&gt;</span>
+<span class='parens'>(</span>SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>OUT<span class='generics'>&gt;</span> values<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_0_yieldRepeat_2" class="link"><div class="nowrap">yieldRepeat
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>OUT<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>OUT<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_0_yieldRepeatIO_2" class="link"><div class="nowrap">yieldRepeatIO
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>OUT<span class='generics'>&gt;</span>
+<span class='parens'>(</span>IO<span class='generics'>&lt;</span>OUT<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_0_pure_3" class="link"><div class="nowrap">pure
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_0_fail_4" class="link"><div class="nowrap">fail
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>E<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>E value<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_0_error_3" class="link"><div class="nowrap">error
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Error value<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_0_empty_3" class="link"><div class="nowrap">empty
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_0_lift_3" class="link"><div class="nowrap">lift
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_0_liftM_3" class="link"><div class="nowrap">liftM
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_0_liftIO_3" class="link"><div class="nowrap">liftIO
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_0_liftT_3" class="link"><div class="nowrap">liftT
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_0_liftT_3" class="link"><div class="nowrap">liftT
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>ValueTask<span class='generics'>&lt;</span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_0_liftT_3" class="link"><div class="nowrap">liftT
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>ValueTask<span class='generics'>&lt;</span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_0_repeat_3" class="link"><div class="nowrap">repeat
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_0_repeat_3" class="link"><div class="nowrap">repeat
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Schedule schedule<span class='comma'>, </span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_0_repeatM_3" class="link"><div class="nowrap">repeatM
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_0_repeatM_3" class="link"><div class="nowrap">repeatM
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Schedule schedule<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_0_fold_3" class="link"><div class="nowrap">fold
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Schedule Time,
+        Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>A<span class='comma'>, </span>OUT<span class='generics'>&gt;</span> Fold<span class='comma'>, </span>
+        OUT Init,
+        ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> Item<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_0_foldUntil_3" class="link"><div class="nowrap">foldUntil
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>A<span class='comma'>, </span>OUT<span class='generics'>&gt;</span> Fold<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span><span class='parens'>(</span>OUT State<span class='comma'>, </span>A Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>
+        OUT Init,
+        ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> Item<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_0_foldUntil_3" class="link"><div class="nowrap">foldUntil
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Schedule Time,
+        Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>A<span class='comma'>, </span>OUT<span class='generics'>&gt;</span> Fold<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span><span class='parens'>(</span>OUT State<span class='comma'>, </span>A Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>
+        OUT Init,
+        ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> Item<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_0_foldWhile_3" class="link"><div class="nowrap">foldWhile
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>A<span class='comma'>, </span>OUT<span class='generics'>&gt;</span> Fold<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span><span class='parens'>(</span>OUT State<span class='comma'>, </span>A Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>
+        OUT Init,
+        ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> Item<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_0_foldWhile_3" class="link"><div class="nowrap">foldWhile
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Schedule Time,
+        Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>A<span class='comma'>, </span>OUT<span class='generics'>&gt;</span> Fold<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span><span class='parens'>(</span>OUT State<span class='comma'>, </span>A Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>
+        OUT Init,
+        ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> Item<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_0_merge_2" class="link"><div class="nowrap">merge
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        params ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>[] producers<span class='parens'>)</span></div></a></li>
+<li><a href="#ProducerT_0_merge_2" class="link"><div class="nowrap">merge
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Seq<span class='generics'>&lt;</span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span><span class='generics'>&gt;</span> producers<span class='comma'>, </span>
+        Buffer<span class='generics'>&lt;</span>OUT<span class='generics'>&gt;</span>? settings = null<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_ProducerT_2" class="link"><div class="nowrap">ProducerT
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='generics'>&gt;</span></div></a></li>
+<ul></ul></ul></div>
+<div class="interface">
+<div class="top"><p class="src"><span class="keyword">record</span>
+<a id="_0_ProducerT_3" class="def">ProducerT</a>
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>PipeT<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> Proxy<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.cs#L10" class="link">Source</a>
+<a href="#_0_ProducerT_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p><code>ProducerT</code> streaming producer monad-transformer instance</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT1<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="ProducerT_3_Compose_1" class="def">Compose</a>
+<span class='generics'>&lt;</span>OUT1<span class='generics'>&gt;</span>
+<span class='parens'>(</span>PipeT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>OUT1<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.cs#L13" class="link">Source</a>
+<a href="#ProducerT_3_Compose_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+EffectT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="ProducerT_3_Compose_0" class="def">Compose</a>
+
+<span class='parens'>(</span>ConsumerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.cs#L17" class="link">Source</a>
+<a href="#ProducerT_3_Compose_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="ProducerT_3_Map_1" class="def">Map</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.cs#L25" class="link">Source</a>
+<a href="#ProducerT_3_Map_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="ProducerT_3_MapM_1" class="def">MapM</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.cs#L29" class="link">Source</a>
+<a href="#ProducerT_3_MapM_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="ProducerT_3_MapIO_1" class="def">MapIO</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.cs#L33" class="link">Source</a>
+<a href="#ProducerT_3_MapIO_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="ProducerT_3_ApplyBack_1" class="def">ApplyBack</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ff<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.cs#L37" class="link">Source</a>
+<a href="#ProducerT_3_ApplyBack_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="ProducerT_3_Action_1" class="def">Action</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span> fb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.cs#L41" class="link">Source</a>
+<a href="#ProducerT_3_Action_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="ProducerT_3_Bind_1" class="def">Bind</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.cs#L45" class="link">Source</a>
+<a href="#ProducerT_3_Bind_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="ProducerT_3_Bind_1" class="def">Bind</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.cs#L49" class="link">Source</a>
+<a href="#ProducerT_3_Bind_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="ProducerT_3_Bind_1" class="def">Bind</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.cs#L53" class="link">Source</a>
+<a href="#ProducerT_3_Bind_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="ProducerT_3_Bind_1" class="def">Bind</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Pure<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.cs#L57" class="link">Source</a>
+<a href="#ProducerT_3_Bind_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="ProducerT_3_Bind_1" class="def">Bind</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Lift<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.cs#L61" class="link">Source</a>
+<a href="#ProducerT_3_Bind_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="ProducerT_3_Select_1" class="def">Select</a>
+<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.cs#L65" class="link">Source</a>
+<a href="#ProducerT_3_Select_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="ProducerT_3_SelectMany_2" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> g<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.cs#L69" class="link">Source</a>
+<a href="#ProducerT_3_SelectMany_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="ProducerT_3_SelectMany_2" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> g<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.cs#L73" class="link">Source</a>
+<a href="#ProducerT_3_SelectMany_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="ProducerT_3_SelectMany_2" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> g<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.cs#L77" class="link">Source</a>
+<a href="#ProducerT_3_SelectMany_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="ProducerT_3_SelectMany_2" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Pure<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> g<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.cs#L81" class="link">Source</a>
+<a href="#ProducerT_3_SelectMany_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="ProducerT_3_SelectMany_2" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Lift<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> g<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.cs#L85" class="link">Source</a>
+<a href="#ProducerT_3_SelectMany_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="ProducerT_3_Fold_0" class="def">Fold</a>
+
+<span class='parens'>(</span>
+        Schedule Time,
+        Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>A<span class='comma'>, </span>OUT<span class='generics'>&gt;</span> Fold<span class='comma'>, </span>
+        OUT Init<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.cs#L100" class="link">Source</a>
+<a href="#ProducerT_3_Fold_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Fold the given pipe until the <code>Schedule</code> completes.
+Once complete, the pipe yields the aggregated value downstream.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">OUT</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Stream value to produce</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted monad type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Time</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Schedule to run each item</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Fold</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Fold function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Init</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Initial state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="ProducerT_3_FoldUntil_0" class="def">FoldUntil</a>
+
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>A<span class='comma'>, </span>OUT<span class='generics'>&gt;</span> Fold<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span><span class='parens'>(</span>OUT State<span class='comma'>, </span>A Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>
+        OUT Init<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.cs#L117" class="link">Source</a>
+<a href="#ProducerT_3_FoldUntil_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Fold the given pipe until the predicate is <code>true</code>.  Once <code>true</code> the pipe yields the
+aggregated value downstream.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">OUT</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Stream value to produce</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted monad type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Fold</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Fold function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Until predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Init</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Initial state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="ProducerT_3_FoldUntil_0" class="def">FoldUntil</a>
+
+<span class='parens'>(</span>
+        Schedule Time,
+        Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>A<span class='comma'>, </span>OUT<span class='generics'>&gt;</span> Fold<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span><span class='parens'>(</span>OUT State<span class='comma'>, </span>A Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>
+        OUT Init<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.cs#L135" class="link">Source</a>
+<a href="#ProducerT_3_FoldUntil_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Fold the given pipe until the predicate is <code>true</code> or the <code>Schedule</code> completes.
+Once <code>true</code>, or completed, the pipe yields the aggregated value downstream.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">OUT</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Stream value to produce</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted monad type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Time</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Schedule to run each item</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Fold</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Fold function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Until predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Init</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Initial state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="ProducerT_3_FoldWhile_0" class="def">FoldWhile</a>
+
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>A<span class='comma'>, </span>OUT<span class='generics'>&gt;</span> Fold<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span><span class='parens'>(</span>OUT State<span class='comma'>, </span>A Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>
+        OUT Init<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.cs#L153" class="link">Source</a>
+<a href="#ProducerT_3_FoldWhile_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Fold the given pipe while the predicate is <code>true</code>.  Once <code>false</code> the pipe yields the
+aggregated value downstream.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">OUT</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Stream value to produce</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted monad type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Fold</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Fold function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Until predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Init</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Initial state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="ProducerT_3_FoldWhile_0" class="def">FoldWhile</a>
+
+<span class='parens'>(</span>
+        Schedule Time,
+        Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>A<span class='comma'>, </span>OUT<span class='generics'>&gt;</span> Fold<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span><span class='parens'>(</span>OUT State<span class='comma'>, </span>A Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>
+        OUT Init<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.cs#L171" class="link">Source</a>
+<a href="#ProducerT_3_FoldWhile_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Fold the given pipe while the predicate is <code>true</code> or the <code>Schedule</code> completes.
+Once <code>false</code>, or completed, the pipe yields the aggregated value downstream.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">OUT</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Stream value to produce</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted monad type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Time</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Schedule to run each item</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Fold</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Fold function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Until predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Init</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Initial state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+<div class="subs methods"><p class="caption">Operators</p>
+<div class="top"><p class="src"><span class="keyword">operator</span>
+<a id="ProducerT_3_|_0" class="def">|</a>
+<span class='parens'>(</span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>ConsumerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.cs#L21" class="link">Source</a>
+<a href="#ProducerT_3_|_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_ProducerTExtensions_0" class="def">ProducerTExtensions</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Extensions.cs#L7" class="link">Source</a>
+<a href="#_0_ProducerTExtensions_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="ProducerTExtensions_0_ToProducer_3" class="def">ToProducer</a>
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>PipeT<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>OUT<span class='comma'>, </span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> pipe<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Extensions.cs#L12" class="link">Source</a>
+<a href="#ProducerTExtensions_0_ToProducer_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Transformation from <code>PipeT</code> to <code>ProducerT</code>.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="ProducerTExtensions_0_As_3" class="def">As</a>
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Extensions.cs#L19" class="link">Source</a>
+<a href="#ProducerTExtensions_0_As_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Downcast</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Producer<span class='generics'>&lt;</span>RT<span class='comma'>, </span>OUT<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="ProducerTExtensions_0_ToEff_3" class="def">ToEff</a>
+<span class='generics'>&lt;</span>RT<span class='comma'>, </span>OUT<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>Eff<span class='generics'>&lt;</span>RT<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Extensions.cs#L26" class="link">Source</a>
+<a href="#ProducerTExtensions_0_ToEff_3" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Convert to the <code>Eff</code> version of <code>Producer</code></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="ProducerTExtensions_0_SelectMany_5" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> g<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Extensions.cs#L32" class="link">Source</a>
+<a href="#ProducerTExtensions_0_SelectMany_5" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Monad bind</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="ProducerTExtensions_0_SelectMany_5" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> g<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Extensions.cs#L42" class="link">Source</a>
+<a href="#ProducerTExtensions_0_SelectMany_5" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Monad bind</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="ProducerTExtensions_0_SelectMany_5" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this Pure<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> g<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Extensions.cs#L52" class="link">Source</a>
+<a href="#ProducerTExtensions_0_SelectMany_5" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Monad bind</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="ProducerTExtensions_0_SelectMany_5" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this Lift<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ff<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> g<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Extensions.cs#L62" class="link">Source</a>
+<a href="#ProducerTExtensions_0_SelectMany_5" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Monad bind</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="ProducerTExtensions_0_Bind_4" class="def">Bind</a>
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Extensions.cs#L72" class="link">Source</a>
+<a href="#ProducerTExtensions_0_Bind_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Monad bind</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="ProducerTExtensions_0_Bind_4" class="def">Bind</a>
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Extensions.cs#L81" class="link">Source</a>
+<a href="#ProducerTExtensions_0_Bind_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Monad bind</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="ProducerTExtensions_0_Bind_4" class="def">Bind</a>
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this Pure<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Extensions.cs#L90" class="link">Source</a>
+<a href="#ProducerTExtensions_0_Bind_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Monad bind</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="ProducerTExtensions_0_Bind_4" class="def">Bind</a>
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this Lift<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ff<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Extensions.cs#L99" class="link">Source</a>
+<a href="#ProducerTExtensions_0_Bind_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Monad bind</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="ProducerTExtensions_0_SelectMany_5" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>E<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Guard<span class='generics'>&lt;</span>E<span class='comma'>, </span>Unit<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind,
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Unit<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Extensions.cs#L108" class="link">Source</a>
+<a href="#ProducerTExtensions_0_SelectMany_5" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;, Fallible&lt;E, M&gt;</span></div></div></p>
+<div class="doc"><div><p>Monad bind operation</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="ProducerTExtensions_0_SelectMany_5" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>E<span class='comma'>, </span>M<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this Guard<span class='generics'>&lt;</span>E<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> ma,
+        Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>K<span class='generics'>&lt;</span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind,
+        Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Extensions.cs#L122" class="link">Source</a>
+<a href="#ProducerTExtensions_0_SelectMany_5" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;, Fallible&lt;E, M&gt;</span></div></div></p>
+<div class="doc"><div><p>Monad bind operation</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_ProducerT_0" class="def">ProducerT</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Module.cs#L11" class="link">Source</a>
+<a href="#_0_ProducerT_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="ProducerT_0_yield_2" class="def">yield</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>OUT<span class='generics'>&gt;</span>
+<span class='parens'>(</span>OUT value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Module.cs#L19" class="link">Source</a>
+<a href="#ProducerT_0_yield_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Yield a value downstream</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">OUT</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Stream value to produce</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted monad type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="ProducerT_0_yieldAll_2" class="def">yieldAll</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>OUT<span class='generics'>&gt;</span>
+<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>OUT<span class='generics'>&gt;</span> values<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Module.cs#L29" class="link">Source</a>
+<a href="#ProducerT_0_yieldAll_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Yield all values downstream</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">OUT</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Stream value to produce</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted monad type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="ProducerT_0_yieldAll_2" class="def">yieldAll</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>OUT<span class='generics'>&gt;</span>
+<span class='parens'>(</span>IAsyncEnumerable<span class='generics'>&lt;</span>OUT<span class='generics'>&gt;</span> values<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Module.cs#L39" class="link">Source</a>
+<a href="#ProducerT_0_yieldAll_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Yield all values downstream</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">OUT</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Stream value to produce</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted monad type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="ProducerT_0_yieldAll_2" class="def">yieldAll</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>OUT<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Source<span class='generics'>&lt;</span>OUT<span class='generics'>&gt;</span> values<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Module.cs#L49" class="link">Source</a>
+<a href="#ProducerT_0_yieldAll_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Yield all values downstream</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">OUT</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Stream value to produce</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted monad type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="ProducerT_0_yieldAll_2" class="def">yieldAll</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>OUT<span class='generics'>&gt;</span>
+<span class='parens'>(</span>SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>OUT<span class='generics'>&gt;</span> values<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Module.cs#L59" class="link">Source</a>
+<a href="#ProducerT_0_yieldAll_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;, Alternative&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Yield all values downstream</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">OUT</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Stream value to produce</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted monad type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="ProducerT_0_yieldRepeat_2" class="def">yieldRepeat</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>OUT<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>OUT<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Module.cs#L70" class="link">Source</a>
+<a href="#ProducerT_0_yieldRepeat_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Evaluate the <code>M</code> monad repeatedly, yielding its bound values downstream</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">IN</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Stream value to consume</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">OUT</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Stream value to produce</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted monad type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="ProducerT_0_yieldRepeatIO_2" class="def">yieldRepeatIO</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>OUT<span class='generics'>&gt;</span>
+<span class='parens'>(</span>IO<span class='generics'>&lt;</span>OUT<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Module.cs#L81" class="link">Source</a>
+<a href="#ProducerT_0_yieldRepeatIO_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Evaluate the <code>IO</code> monad repeatedly, yielding its bound values downstream</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">IN</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Stream value to consume</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">OUT</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Stream value to produce</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted monad type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="ProducerT_0_pure_3" class="def">pure</a>
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Module.cs#L92" class="link">Source</a>
+<a href="#ProducerT_0_pure_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Create a producer that simply returns a bound value without yielding anything</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">OUT</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Stream value to produce</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted monad type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="ProducerT_0_fail_4" class="def">fail</a>
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>E<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>E value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Module.cs#L104" class="link">Source</a>
+<a href="#ProducerT_0_fail_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;, Fallible&lt;E, M&gt;</span></div></div></p>
+<div class="doc"><div><p>Create a producer that always fails</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">OUT</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Stream value to produce</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">E</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Failure type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted monad type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="ProducerT_0_error_3" class="def">error</a>
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Error value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Module.cs#L115" class="link">Source</a>
+<a href="#ProducerT_0_error_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;, Fallible&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Create a producer that always fails</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">OUT</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Stream value to produce</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted monad type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="ProducerT_0_empty_3" class="def">empty</a>
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Module.cs#L126" class="link">Source</a>
+<a href="#ProducerT_0_empty_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;, MonoidK&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Create a producer that yields nothing at all</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">OUT</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Stream value to produce</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted monad type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="ProducerT_0_lift_3" class="def">lift</a>
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Module.cs#L137" class="link">Source</a>
+<a href="#ProducerT_0_lift_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Create a producer that lazily returns a bound value without yielding anything</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">OUT</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Stream value to produce</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted monad type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="ProducerT_0_liftM_3" class="def">liftM</a>
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Module.cs#L148" class="link">Source</a>
+<a href="#ProducerT_0_liftM_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Create a producer that simply returns the bound value of the lifted monad without yielding anything</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">OUT</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Stream value to produce</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted monad type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="ProducerT_0_liftIO_3" class="def">liftIO</a>
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Module.cs#L159" class="link">Source</a>
+<a href="#ProducerT_0_liftIO_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Create a producer that simply returns the bound value of the lifted monad without yielding anything</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">OUT</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Stream value to produce</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted monad type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="ProducerT_0_liftT_3" class="def">liftT</a>
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Module.cs#L170" class="link">Source</a>
+<a href="#ProducerT_0_liftT_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Create a lazy proxy</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">OUT</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Stream value to produce</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted monad type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="ProducerT_0_liftT_3" class="def">liftT</a>
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>ValueTask<span class='generics'>&lt;</span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Module.cs#L181" class="link">Source</a>
+<a href="#ProducerT_0_liftT_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Create an asynchronous lazy proxy</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">OUT</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Stream value to produce</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted monad type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="ProducerT_0_liftT_3" class="def">liftT</a>
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>ValueTask<span class='generics'>&lt;</span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Module.cs#L192" class="link">Source</a>
+<a href="#ProducerT_0_liftT_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Create an asynchronous proxy</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">OUT</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Stream value to produce</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted monad type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="ProducerT_0_repeat_3" class="def">repeat</a>
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Module.cs#L203" class="link">Source</a>
+<a href="#ProducerT_0_repeat_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Continually repeat the provided operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">OUT</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Stream value to produce</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted monad type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="ProducerT_0_repeat_3" class="def">repeat</a>
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Schedule schedule<span class='comma'>, </span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Module.cs#L214" class="link">Source</a>
+<a href="#ProducerT_0_repeat_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Repeat the provided operation based on the schedule provided</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">OUT</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Stream value to produce</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted monad type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="ProducerT_0_repeatM_3" class="def">repeatM</a>
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Module.cs#L225" class="link">Source</a>
+<a href="#ProducerT_0_repeatM_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Continually lift and repeat the provided operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">OUT</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Stream value to produce</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted monad type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="ProducerT_0_repeatM_3" class="def">repeatM</a>
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Schedule schedule<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Module.cs#L236" class="link">Source</a>
+<a href="#ProducerT_0_repeatM_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Repeat the provided operation based on the schedule provided</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">OUT</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Stream value to produce</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted monad type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="ProducerT_0_fold_3" class="def">fold</a>
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Schedule Time,
+        Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>A<span class='comma'>, </span>OUT<span class='generics'>&gt;</span> Fold<span class='comma'>, </span>
+        OUT Init,
+        ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> Item<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Module.cs#L252" class="link">Source</a>
+<a href="#ProducerT_0_fold_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Fold the given pipe until the <code>Schedule</code> completes.
+Once complete, the pipe yields the aggregated value downstream.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">OUT</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Stream value to produce</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted monad type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Time</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Schedule to run each item</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Fold</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Fold function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Init</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Initial state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Item</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Pipe to fold</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="ProducerT_0_foldUntil_3" class="def">foldUntil</a>
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>A<span class='comma'>, </span>OUT<span class='generics'>&gt;</span> Fold<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span><span class='parens'>(</span>OUT State<span class='comma'>, </span>A Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>
+        OUT Init,
+        ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> Item<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Module.cs#L272" class="link">Source</a>
+<a href="#ProducerT_0_foldUntil_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Fold the given pipe until the predicate is <code>true</code>.  Once <code>true</code> the pipe yields the
+aggregated value downstream.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">OUT</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Stream value to produce</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted monad type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Fold</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Fold function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Until predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Init</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Initial state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Item</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Pipe to fold</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="ProducerT_0_foldUntil_3" class="def">foldUntil</a>
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Schedule Time,
+        Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>A<span class='comma'>, </span>OUT<span class='generics'>&gt;</span> Fold<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span><span class='parens'>(</span>OUT State<span class='comma'>, </span>A Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>
+        OUT Init,
+        ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> Item<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Module.cs#L293" class="link">Source</a>
+<a href="#ProducerT_0_foldUntil_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Fold the given pipe until the predicate is <code>true</code> or the <code>Schedule</code> completes.
+Once <code>true</code>, or completed, the pipe yields the aggregated value downstream.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">OUT</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Stream value to produce</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted monad type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Time</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Schedule to run each item</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Fold</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Fold function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Until predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Init</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Initial state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Item</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Pipe to fold</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="ProducerT_0_foldWhile_3" class="def">foldWhile</a>
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>A<span class='comma'>, </span>OUT<span class='generics'>&gt;</span> Fold<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span><span class='parens'>(</span>OUT State<span class='comma'>, </span>A Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>
+        OUT Init,
+        ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> Item<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Module.cs#L314" class="link">Source</a>
+<a href="#ProducerT_0_foldWhile_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Fold the given pipe while the predicate is <code>true</code>.  Once <code>false</code> the pipe yields the
+aggregated value downstream.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">OUT</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Stream value to produce</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted monad type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Fold</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Fold function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Until predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Init</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Initial state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Item</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Pipe to fold</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="ProducerT_0_foldWhile_3" class="def">foldWhile</a>
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Schedule Time,
+        Func<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>A<span class='comma'>, </span>OUT<span class='generics'>&gt;</span> Fold<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span><span class='parens'>(</span>OUT State<span class='comma'>, </span>A Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>
+        OUT Init,
+        ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> Item<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Module.cs#L335" class="link">Source</a>
+<a href="#ProducerT_0_foldWhile_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Fold the given pipe while the predicate is <code>true</code> or the <code>Schedule</code> completes.
+Once <code>false</code>, or completed, the pipe yields the aggregated value downstream.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">OUT</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Stream value to produce</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted monad type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Time</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Schedule to run each item</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Fold</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Fold function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Until predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Init</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Initial state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Item</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Pipe to fold</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="ProducerT_0_merge_2" class="def">merge</a>
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        params ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>[] producers<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Module.cs#L352" class="link">Source</a>
+<a href="#ProducerT_0_merge_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Merge multiple producers</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">OUT</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Stream value to produce</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted monad type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">producers</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Producers to merge</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">settings</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Buffer settings</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Merged producer</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="ProducerT_0_merge_2" class="def">merge</a>
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Seq<span class='generics'>&lt;</span>ProducerT<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span><span class='generics'>&gt;</span> producers<span class='comma'>, </span>
+        Buffer<span class='generics'>&lt;</span>OUT<span class='generics'>&gt;</span>? settings = null<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Module.cs#L365" class="link">Source</a>
+<a href="#ProducerT_0_merge_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Merge multiple producers</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">OUT</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Stream value to produce</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted monad type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">producers</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Producers to merge</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">settings</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Buffer settings</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Merged producer</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_ProducerT_2" class="def">ProducerT</a>
+<span class='generics'>&lt;</span>OUT<span class='comma'>, </span>M<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Pipes/ProducerT/ProducerT.Monad.cs#L9" class="link">Source</a>
+<a href="#_0_ProducerT_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js" integrity="sha512-9khQRAUBYEJDCDVP2yw3LRUQvjJ0Pjx0EShmaQjcHa6AXiOv6qHQu9lCAIR8O+/D8FtaCoJ2c0Tf9Xo7hYH01Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-fTl/qcO1VgvKtOMApX2PdZzkziyr2stM65GYPLGuYMnuMm1z2JLJG6XVU7C/mR+E7xBUqCivykuhlzfqxXBXbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script></body></html>

@@ -1,0 +1,830 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>LanguageExt.Streaming/Transducers</title>
+<link href="style.css" rel="stylesheet" type="text/css"/></head>
+<body class="js-enabled"><div id="package-header"><ul class="links" id="page-menu"><li><a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers" class="link">Source</a></li>
+<li><a href="../index.html" class="link">Contents</a></li>
+<li><a href="../../index.html" class="link">Index</a></li></ul>
+<p class="caption">LanguageExt.Streaming</p></div>
+<div id="content"><div id="module-header"><p class="caption"><a href="../index.html" class="link">LanguageExt.Streaming</a>
+<span> ► </span>
+<a href="index.html" class="link">Transducers</a></p></div>
+
+<div id="table-of-contents"><p class="caption">Contents</p>
+<ul><li><a href="#_0_Reduced_1" class="link"><div class="nowrap">Reduced
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool Continue<span class='comma'>, </span>A Value<span class='parens'>)</span></div></a></li>
+<ul></ul>
+<li><a href="#_0_Reduced_0" class="link"><div class="nowrap">Reduced
+</div></a></li>
+<ul><li><a href="#Reduced_0_Continue_1" class="link"><div class="nowrap">Continue
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='parens'>)</span></div></a></li>
+<li><a href="#Reduced_0_Done_1" class="link"><div class="nowrap">Done
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='parens'>)</span></div></a></li>
+<li><a href="#Reduced_0_Unit_0" class="link"><div class="nowrap">Unit</div></a></li>
+<li><a href="#Reduced_0_ContinueAsync_1" class="link"><div class="nowrap">ContinueAsync
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='parens'>)</span></div></a></li>
+<li><a href="#Reduced_0_DoneAsync_1" class="link"><div class="nowrap">DoneAsync
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='parens'>)</span></div></a></li>
+<li><a href="#Reduced_0_UnitAsync_0" class="link"><div class="nowrap">UnitAsync</div></a></li></ul>
+<li><a href="#_0_ReducedM_2" class="link"><div class="nowrap">ReducedM
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool Continue<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> Value<span class='parens'>)</span></div></a></li>
+<ul></ul>
+<li><a href="#_0_ReducedM_0" class="link"><div class="nowrap">ReducedM
+</div></a></li>
+<ul><li><a href="#ReducedM_0_Continue_2" class="link"><div class="nowrap">Continue
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='parens'>)</span></div></a></li>
+<li><a href="#ReducedM_0_Continue_2" class="link"><div class="nowrap">Continue
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#ReducedM_0_Done_2" class="link"><div class="nowrap">Done
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='parens'>)</span></div></a></li>
+<li><a href="#ReducedM_0_Done_2" class="link"><div class="nowrap">Done
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#ReducedM_0_Unit_1" class="link"><div class="nowrap">Unit
+<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#ReducedM_0_ContinueAsync_2" class="link"><div class="nowrap">ContinueAsync
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='parens'>)</span></div></a></li>
+<li><a href="#ReducedM_0_ContinueAsync_2" class="link"><div class="nowrap">ContinueAsync
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#ReducedM_0_DoneAsync_2" class="link"><div class="nowrap">DoneAsync
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='parens'>)</span></div></a></li>
+<li><a href="#ReducedM_0_DoneAsync_2" class="link"><div class="nowrap">DoneAsync
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#ReducedM_0_UnitAsync_1" class="link"><div class="nowrap">UnitAsync
+<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_Reducer_2" class="link"><div class="nowrap">Reducer
+<span class='generics'>&lt;</span>in A<span class='comma'>, </span>S<span class='generics'>&gt;</span></div></a></li>
+<ul></ul>
+<li><a href="#_0_ReducerAsync_2" class="link"><div class="nowrap">ReducerAsync
+<span class='generics'>&lt;</span>in A<span class='comma'>, </span>S<span class='generics'>&gt;</span></div></a></li>
+<ul></ul>
+<li><a href="#_0_ReducerM_3" class="link"><div class="nowrap">ReducerM
+<span class='generics'>&lt;</span>in M<span class='comma'>, </span>in A<span class='comma'>, </span>S<span class='generics'>&gt;</span></div></a></li>
+<ul></ul></ul></div>
+<div class="interface"><H1>Sub modules</H1>
+<table><tbody><tr><td class="src clearfix"><span class="inst-left"><a href="Transducer/index.html" class="link">Transducer</a></span></td></tr>
+<tr><td class="src clearfix"><span class="inst-left"><a href="TransducerM/index.html" class="link">TransducerM</a></span></td></tr></tbody></table>
+<div class="top"><p class="src"><span class="keyword">record</span>
+<a id="_0_Reduced_1" class="def">Reduced</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool Continue<span class='comma'>, </span>A Value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Reduced.cs#L8" class="link">Source</a>
+<a href="#_0_Reduced_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Result of a <code>Reducer</code> delegate</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_Reduced_0" class="def">Reduced</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Reduced.cs#L13" class="link">Source</a>
+<a href="#_0_Reduced_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p><code>Reduced〈A〉</code> constructors</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+<div class="subs methods"><p class="caption">Fields</p>
+<div class="top"><p class="src"><span class="keyword">field</span>
+Reduced<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
+<a id="Reduced_0_Unit_0" class="def">Unit</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Reduced.cs#L42" class="link">Source</a>
+<a href="#Reduced_0_Unit_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p><code>Reduced〈A〉</code> in a continue state</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">field</span>
+ValueTask<span class='generics'>&lt;</span>Reduced<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Reduced_0_UnitAsync_0" class="def">UnitAsync</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Reduced.cs#L65" class="link">Source</a>
+<a href="#Reduced_0_UnitAsync_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p><code>Reduced〈A〉</code> in a continue state</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Reduced<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Reduced_0_Continue_1" class="def">Continue</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Reduced.cs#L27" class="link">Source</a>
+<a href="#Reduced_0_Continue_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Return a result and indicate that we're happy to continue</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Result value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">value</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Result</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>Reduced</code> structure in a continue state</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Reduced<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Reduced_0_Done_1" class="def">Done</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Reduced.cs#L36" class="link">Source</a>
+<a href="#Reduced_0_Done_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Return a result and indicate that we're done and don't want to process any more</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Result value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">value</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Result</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>Reduced</code> structure in a done state</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ValueTask<span class='generics'>&lt;</span>Reduced<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Reduced_0_ContinueAsync_1" class="def">ContinueAsync</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Reduced.cs#L50" class="link">Source</a>
+<a href="#Reduced_0_ContinueAsync_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Return a result and indicate that we're happy to continue</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Result value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">value</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Result</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>Reduced</code> structure in a continue state</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ValueTask<span class='generics'>&lt;</span>Reduced<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Reduced_0_DoneAsync_1" class="def">DoneAsync</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Reduced.cs#L59" class="link">Source</a>
+<a href="#Reduced_0_DoneAsync_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Return a result and indicate that we're done and don't want to process any more</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Result value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">value</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Result</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>Reduced</code> structure in a done state</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">record</span>
+<a id="_0_ReducedM_2" class="def">ReducedM</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool Continue<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> Value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/ReducedM.cs#L9" class="link">Source</a>
+<a href="#_0_ReducedM_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Result of a <code>Reducer</code> delegate</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_ReducedM_0" class="def">ReducedM</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/ReducedM.cs#L14" class="link">Source</a>
+<a href="#_0_ReducedM_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p><code>Reduced〈A〉</code> constructors</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ReducedM<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="ReducedM_0_Continue_2" class="def">Continue</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/ReducedM.cs#L22" class="link">Source</a>
+<a href="#ReducedM_0_Continue_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Applicative&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Return a result and indicate that we're happy to continue</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Result value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">value</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Result</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>ReducedM</code> structure in a continue state</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ReducedM<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="ReducedM_0_Continue_2" class="def">Continue</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/ReducedM.cs#L32" class="link">Source</a>
+<a href="#ReducedM_0_Continue_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Applicative&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Return a result and indicate that we're happy to continue</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Result value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Result</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>ReducedM</code> structure in a continue state</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ReducedM<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="ReducedM_0_Done_2" class="def">Done</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/ReducedM.cs#L42" class="link">Source</a>
+<a href="#ReducedM_0_Done_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Applicative&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Return a result and indicate that we're done and don't want to process any more</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Result value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">value</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Result</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>ReducedM</code> structure in a done state</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ReducedM<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="ReducedM_0_Done_2" class="def">Done</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/ReducedM.cs#L52" class="link">Source</a>
+<a href="#ReducedM_0_Done_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Applicative&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Return a result and indicate that we're done and don't want to process any more</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Result value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Result</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>ReducedM</code> structure in a done state</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ReducedM<span class='generics'>&lt;</span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="ReducedM_0_Unit_1" class="def">Unit</a>
+<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/ReducedM.cs#L59" class="link">Source</a>
+<a href="#ReducedM_0_Unit_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Applicative&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p><code>ReducedM〈A〉</code> in a continue state</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ValueTask<span class='generics'>&lt;</span>ReducedM<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="ReducedM_0_ContinueAsync_2" class="def">ContinueAsync</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/ReducedM.cs#L69" class="link">Source</a>
+<a href="#ReducedM_0_ContinueAsync_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Applicative&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Return a result and indicate that we're happy to continue</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Result value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">value</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Result</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>ReducedM</code> structure in a continue state</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ValueTask<span class='generics'>&lt;</span>ReducedM<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="ReducedM_0_ContinueAsync_2" class="def">ContinueAsync</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/ReducedM.cs#L79" class="link">Source</a>
+<a href="#ReducedM_0_ContinueAsync_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Applicative&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Return a result and indicate that we're happy to continue</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Result value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Result</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>ReducedM</code> structure in a continue state</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ValueTask<span class='generics'>&lt;</span>ReducedM<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="ReducedM_0_DoneAsync_2" class="def">DoneAsync</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/ReducedM.cs#L89" class="link">Source</a>
+<a href="#ReducedM_0_DoneAsync_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Applicative&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Return a result and indicate that we're done and don't want to process any more</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Result value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">value</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Result</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>ReducedM</code> structure in a done state</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ValueTask<span class='generics'>&lt;</span>ReducedM<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="ReducedM_0_DoneAsync_2" class="def">DoneAsync</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/ReducedM.cs#L99" class="link">Source</a>
+<a href="#ReducedM_0_DoneAsync_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Applicative&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Return a result and indicate that we're done and don't want to process any more</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Result value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Result</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>ReducedM</code> structure in a done state</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ValueTask<span class='generics'>&lt;</span>ReducedM<span class='generics'>&lt;</span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="ReducedM_0_UnitAsync_1" class="def">UnitAsync</a>
+<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/ReducedM.cs#L106" class="link">Source</a>
+<a href="#ReducedM_0_UnitAsync_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Applicative&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p><code>ReducedM〈A〉</code> in a continue state</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">delegate</span>
+<a id="_0_Reducer_2" class="def">Reducer</a>
+<span class='generics'>&lt;</span>in A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Reducer.cs#L11" class="link">Source</a>
+<a href="#_0_Reducer_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Reducer delegate</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>State</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Value</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">delegate</span>
+<a id="_0_ReducerAsync_2" class="def">ReducerAsync</a>
+<span class='generics'>&lt;</span>in A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/ReducerAsync.cs#L11" class="link">Source</a>
+<a href="#_0_ReducerAsync_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>ReducerAsync delegate</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>State</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Value</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">delegate</span>
+<a id="_0_ReducerM_3" class="def">ReducerM</a>
+<span class='generics'>&lt;</span>in M<span class='comma'>, </span>in A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/ReducerM.cs#L10" class="link">Source</a>
+<a href="#_0_ReducerM_3" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>ReducerM delegate</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>State</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Value</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js" integrity="sha512-9khQRAUBYEJDCDVP2yw3LRUQvjJ0Pjx0EShmaQjcHa6AXiOv6qHQu9lCAIR8O+/D8FtaCoJ2c0Tf9Xo7hYH01Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-fTl/qcO1VgvKtOMApX2PdZzkziyr2stM65GYPLGuYMnuMm1z2JLJG6XVU7C/mR+E7xBUqCivykuhlzfqxXBXbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script></body></html>

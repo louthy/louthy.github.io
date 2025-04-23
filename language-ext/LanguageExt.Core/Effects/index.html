@@ -52,24 +52,11 @@
 <ul></ul>
 <li><a href="#_0_Prelude_0" class="link"><div class="nowrap">Prelude
 </div></a></li>
-<ul><li><a href="#Prelude_0_Source_1" class="link"><div class="nowrap">Source
-<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
-<li><a href="#Prelude_0_await_2" class="link"><div class="nowrap">await
-<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>Source<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> source<span class='parens'>)</span></div></a></li>
-<li><a href="#Prelude_0_post_1" class="link"><div class="nowrap">post
-<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>Source<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> source<span class='comma'>, </span>A value<span class='parens'>)</span></div></a></li>
-<li><a href="#Prelude_0_post_1" class="link"><div class="nowrap">post
-<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>Source<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> source<span class='parens'>)</span></div></a></li></ul></ul></div>
+<ul></ul></ul></div>
 <div class="interface"><H1>Sub modules</H1>
 <table><tbody><tr><td class="src clearfix"><span class="inst-left"><a href="Eff/index.html" class="link">Eff</a></span></td></tr>
 <tr><td class="src clearfix"><span class="inst-left"><a href="IO/index.html" class="link">IO</a></span></td></tr>
-<tr><td class="src clearfix"><span class="inst-left"><a href="Schedule/index.html" class="link">Schedule</a></span></td></tr>
-<tr><td class="src clearfix"><span class="inst-left"><a href="Source/index.html" class="link">Source</a></span></td></tr>
-<tr><td class="src clearfix"><span class="inst-left"><a href="StreamT/index.html" class="link">StreamT</a></span></td></tr></tbody></table>
+<tr><td class="src clearfix"><span class="inst-left"><a href="Schedule/index.html" class="link">Schedule</a></span></td></tr></tbody></table>
 <div class="top"><p class="src"><span class="keyword">struct</span>
 <a id="_0_MinRT_0" class="def">MinRT</a>
 
@@ -97,7 +84,7 @@
 <div class="top"><p class="src"><span class="keyword">class</span>
 <a id="_0_Prelude_0" class="def">Prelude</a>
 
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Prelude.cs#L8" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Prelude.cs#L3" class="link">Source</a>
 <a href="#_0_Prelude_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -111,140 +98,7 @@
 
 
 
-<div class="subs methods"><p class="caption">Methods</p>
-<div class="top"><p class="src"><span class="keyword">method</span>
-IO<span class='generics'>&lt;</span>Source<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
-<a id="Prelude_0_Source_1" class="def">Source</a>
-<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Prelude.cs#L14" class="link">Source</a>
-<a href="#Prelude_0_Source_1" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div><p>Start a new source</p>
-</div>
-<div></div>
-<div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A source in an IO computation</p>
-</span></td></tr></tbody></table></div></div>
-</div>
 
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-StreamT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
-<a id="Prelude_0_await_2" class="def">await</a>
-<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>Source<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> source<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Prelude.cs#L29" class="link">Source</a>
-<a href="#Prelude_0_await_2" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> M : Monad&lt;M&gt;</span></div></div></p>
-<div class="doc"><div><p>Subscribe to the source and await the values</p>
-</div>
-<div><p>Each subscriber runs on the same thread as the event-distributor.  So, if you have multiple
-subscribers they will be processed serially for each event.  If you want the subscribers to
-run in parallel then you must lift the <code>IO</code> monad when calling <code>Subscribe</code> and <code>forkIO</code> the
-stream.  This gives fine-grained control over when to run events in parallel.</p>
-</div>
-<div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Monad type lifted into the stream</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>StreamT monad transformer that will get the values coming downstream</p>
-</span></td></tr></tbody></table></div></div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-IO<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
-<a id="Prelude_0_post_1" class="def">post</a>
-<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>Source<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> source<span class='comma'>, </span>A value<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Prelude.cs#L38" class="link">Source</a>
-<a href="#Prelude_0_post_1" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div><p>Post a value to flow downstream</p>
-</div>
-<div></div>
-<div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">value</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Value</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>IO effect</p>
-</span></td></tr></tbody></table></div></div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
-<a id="Prelude_0_post_1" class="def">post</a>
-<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>Source<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> source<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/Prelude.cs#L46" class="link">Source</a>
-<a href="#Prelude_0_post_1" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div><p>Post a value to flow downstream (partially applied)</p>
-</div>
-<div></div>
-<div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">value</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Value</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>IO effect</p>
-</span></td></tr></tbody></table></div></div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div></div>
 
 
 

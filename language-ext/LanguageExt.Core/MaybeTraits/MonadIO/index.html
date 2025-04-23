@@ -1,0 +1,376 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>LanguageExt.Core/MaybeTraits/MonadIO</title>
+<link href="style.css" rel="stylesheet" type="text/css"/></head>
+<body class="js-enabled"><div id="package-header"><ul class="links" id="page-menu"><li><a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/MaybeTraits/MonadIO" class="link">Source</a></li>
+<li><a href="../index.html" class="link">Contents</a></li>
+<li><a href="../../../index.html" class="link">Index</a></li></ul>
+<p class="caption">LanguageExt.Core</p></div>
+<div id="content"><div id="module-header"><p class="caption"><a href="../../index.html" class="link">LanguageExt.Core</a>
+<span> ► </span>
+<a href="../index.html" class="link">MaybeTraits</a>
+<span> ► </span>
+<a href="index.html" class="link">MonadIO</a></p></div>
+
+<div id="table-of-contents"><p class="caption">Contents</p>
+<ul><li><a href="#_0_MaybeMonadIOExtensions_0" class="link"><div class="nowrap">MaybeMonadIOExtensions
+</div></a></li>
+<ul><li><a href="#MaybeMonadIOExtensions_0_ToIO_2" class="link"><div class="nowrap">ToIO
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#MaybeMonadIOExtensions_0_MapIO_3" class="link"><div class="nowrap">MapIO
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#MaybeMonadIOExtensions_0_MapIO_3" class="link"><div class="nowrap">MapIO
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Func<span class='generics'>&lt;</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#MaybeMonadIOExtensions_0_ForkIO_2" class="link"><div class="nowrap">ForkIO
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Option<span class='generics'>&lt;</span>TimeSpan<span class='generics'>&gt;</span> timeout = default<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#Maybe_0_MonadIO_1" class="link"><div class="nowrap">MonadIO
+<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#MonadIO_1_LiftIO_1" class="link"><div class="nowrap">LiftIO
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#MonadIO_1_LiftIO_1" class="link"><div class="nowrap">LiftIO
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#MonadIO_1_ToIO_1" class="link"><div class="nowrap">ToIO
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#MonadIO_1_MapIO_2" class="link"><div class="nowrap">MapIO
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_Maybe_0" class="link"><div class="nowrap">Maybe
+</div></a></li>
+<ul></ul></ul></div>
+<div class="interface">
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_MaybeMonadIOExtensions_0" class="def">MaybeMonadIOExtensions</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/MaybeTraits/MonadIO/MonadIO.Extensions.cs#L6" class="link">Source</a>
+<a href="#_0_MaybeMonadIOExtensions_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="MaybeMonadIOExtensions_0_ToIO_2" class="def">ToIO</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/MaybeTraits/MonadIO/MonadIO.Extensions.cs#L11" class="link">Source</a>
+<a href="#MaybeMonadIOExtensions_0_ToIO_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Maybe.MonadIO&lt;M&gt;, Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Convert an action in <code>ma</code>to an action in <code>IO</code>.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="MaybeMonadIOExtensions_0_MapIO_3" class="def">MapIO</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/MaybeTraits/MonadIO/MonadIO.Extensions.cs#L18" class="link">Source</a>
+<a href="#MaybeMonadIOExtensions_0_MapIO_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Maybe.MonadIO&lt;M&gt;, Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Convert an action in <code>ma</code>to an action in <code>IO</code>.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="MaybeMonadIOExtensions_0_MapIO_3" class="def">MapIO</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Func<span class='generics'>&lt;</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/MaybeTraits/MonadIO/MonadIO.Extensions.cs#L25" class="link">Source</a>
+<a href="#MaybeMonadIOExtensions_0_MapIO_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Maybe.MonadIO&lt;M&gt;, Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Map the underlying IO monad</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="MaybeMonadIOExtensions_0_ForkIO_2" class="def">ForkIO</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Option<span class='generics'>&lt;</span>TimeSpan<span class='generics'>&gt;</span> timeout = default<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/MaybeTraits/MonadIO/MonadIO.Extensions.cs#L36" class="link">Source</a>
+<a href="#MaybeMonadIOExtensions_0_ForkIO_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;, Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Queue this IO operation to run on the thread-pool.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">timeout</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Maximum time that the forked IO operation can run for. <code>None</code> for no timeout.</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Returns a <code>ForkIO</code> data-structure that contains two IO effects that can be used to either cancel
+the forked IO operation or to await the result of it.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">interface</span>
+<a id="Maybe_0_MonadIO_1" class="def">MonadIO</a>
+<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/MaybeTraits/MonadIO/MonadIO.Trait.cs#L12" class="link">Source</a>
+<a href="#Maybe_0_MonadIO_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;, Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Monad that is either the IO monad or a transformer with the IO monad in its stack</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Self referring trait</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="MonadIO_1_LiftIO_1" class="def">LiftIO</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/MaybeTraits/MonadIO/MonadIO.Trait.cs#L21" class="link">Source</a>
+<a href="#MonadIO_1_LiftIO_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Lifts the IO monad into a monad transformer stack.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>IO computation to lift</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The outer monad with the IO monad lifted into it</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="MonadIO_1_LiftIO_1" class="def">LiftIO</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/MaybeTraits/MonadIO/MonadIO.Trait.cs#L41" class="link">Source</a>
+<a href="#MonadIO_1_LiftIO_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Lifts the IO monad into a monad transformer stack.</p>
+</div>
+<div><p>IMPLEMENTATION REQUIRED: If this method isn't overloaded in this monad
+or any monad in the stack on the way to the inner monad then it will throw
+an exception.</p>
+<p>This isn't ideal - however it appears to be the only way to achieve this
+kind of functionality in C# without resorting to magic.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>IO computation to lift</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The outer monad with the IO monad lifted into it</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="MonadIO_1_ToIO_1" class="def">ToIO</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/MaybeTraits/MonadIO/MonadIO.Trait.cs#L58" class="link">Source</a>
+<a href="#MonadIO_1_ToIO_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Extract the IO monad from within the M monad (usually as part of a monad-transformer stack).</p>
+</div>
+<div><p>IMPLEMENTATION REQUIRED: If this method isn't overloaded in this monad
+or any monad in the stack on the way to the inner monad then it will throw
+an exception.</p>
+<p>This isn't ideal - however it appears to be the only way to achieve this
+kind of functionality in C# without resorting to magic.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="MonadIO_1_MapIO_2" class="def">MapIO</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/MaybeTraits/MonadIO/MonadIO.Trait.cs#L65" class="link">Source</a>
+<a href="#MonadIO_1_MapIO_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Extract the IO monad from within the <code>M</code> monad (usually as part of a monad-transformer stack).  Then perform
+a mapping operation on the IO action before lifting the IO back into the <code>M</code> monad.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_Maybe_0" class="def">Maybe</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/MaybeTraits/MonadIO/MonadIO.Trait.cs#L6" class="link">Source</a>
+<a href="#_0_Maybe_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js" integrity="sha512-9khQRAUBYEJDCDVP2yw3LRUQvjJ0Pjx0EShmaQjcHa6AXiOv6qHQu9lCAIR8O+/D8FtaCoJ2c0Tf9Xo7hYH01Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-fTl/qcO1VgvKtOMApX2PdZzkziyr2stM65GYPLGuYMnuMm1z2JLJG6XVU7C/mR+E7xBUqCivykuhlzfqxXBXbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script></body></html>

@@ -1,0 +1,1627 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>LanguageExt.Streaming/Transducers/Transducer</title>
+<link href="style.css" rel="stylesheet" type="text/css"/></head>
+<body class="js-enabled"><div id="package-header"><ul class="links" id="page-menu"><li><a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Transducer" class="link">Source</a></li>
+<li><a href="../index.html" class="link">Contents</a></li>
+<li><a href="../../../index.html" class="link">Index</a></li></ul>
+<p class="caption">LanguageExt.Streaming</p></div>
+<div id="content"><div id="module-header"><p class="caption"><a href="../../index.html" class="link">LanguageExt.Streaming</a>
+<span> ► </span>
+<a href="../index.html" class="link">Transducers</a>
+<span> ► </span>
+<a href="index.html" class="link">Transducer</a></p></div>
+
+<div id="table-of-contents"><p class="caption">Contents</p>
+<ul><li><a href="#_0_TransduceFrom_1" class="link"><div class="nowrap">TransduceFrom
+<span class='generics'>&lt;</span>IN<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#TransduceFrom_1_Asks_1" class="link"><div class="nowrap">Asks
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>IN<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#TransduceFrom_1_Local_1" class="link"><div class="nowrap">Local
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>IN<span class='comma'>, </span>IN<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>TransduceFrom<span class='generics'>&lt;</span>IN<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_Transducer_2" class="link"><div class="nowrap">Transducer
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#Transducer_2_Reduce_1" class="link"><div class="nowrap">Reduce
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>ReducerAsync<span class='generics'>&lt;</span>B<span class='comma'>, </span>S<span class='generics'>&gt;</span> reducer<span class='parens'>)</span></div></a></li>
+<li><a href="#Transducer_2_Compose_1" class="link"><div class="nowrap">Compose
+<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Transducer<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> tg<span class='parens'>)</span></div></a></li>
+<li><a href="#Transducer_2_Map_1" class="link"><div class="nowrap">Map
+<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Transducer_2_Comap_1" class="link"><div class="nowrap">Comap
+<span class='generics'>&lt;</span>X<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>X<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Transducer_2_Bind_1" class="link"><div class="nowrap">Bind
+<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>K<span class='generics'>&lt;</span>TransduceFrom<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Transducer_2_Bind_1" class="link"><div class="nowrap">Bind
+<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Transducer_2_SelectMany_2" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>K<span class='generics'>&lt;</span>TransduceFrom<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#Transducer_2_SelectMany_2" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#Transducer_2_Filter_0" class="link"><div class="nowrap">Filter
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>bool<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Transducer_2_Where_0" class="link"><div class="nowrap">Where
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>bool<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Transducer_2_Take_0" class="link"><div class="nowrap">Take
+
+<span class='parens'>(</span>int n<span class='parens'>)</span></div></a></li>
+<li><a href="#Transducer_2_Skip_0" class="link"><div class="nowrap">Skip
+
+<span class='parens'>(</span>int n<span class='parens'>)</span></div></a></li>
+<li><a href="#Transducer_2_FoldWhile_1" class="link"><div class="nowrap">FoldWhile
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>B<span class='comma'>, </span>S<span class='generics'>&gt;</span> Folder<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>B<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>
+        S State<span class='parens'>)</span></div></a></li>
+<li><a href="#Transducer_2_FoldWhile_1" class="link"><div class="nowrap">FoldWhile
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Schedule Schedule<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>B<span class='comma'>, </span>S<span class='generics'>&gt;</span> Folder<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>B<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>
+        S State<span class='parens'>)</span></div></a></li>
+<li><a href="#Transducer_2_FoldUntil_1" class="link"><div class="nowrap">FoldUntil
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>B<span class='comma'>, </span>S<span class='generics'>&gt;</span> Folder<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>B<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>
+        S State<span class='parens'>)</span></div></a></li>
+<li><a href="#Transducer_2_FoldUntil_1" class="link"><div class="nowrap">FoldUntil
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Schedule Schedule<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>B<span class='comma'>, </span>S<span class='generics'>&gt;</span> Folder<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>B<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>
+        S State<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_TransducerExtensions_0" class="link"><div class="nowrap">TransducerExtensions
+</div></a></li>
+<ul><li><a href="#TransducerExtensions_0_As_2" class="link"><div class="nowrap">As
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>TransduceFrom<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#TransducerExtensions_0_As_2" class="link"><div class="nowrap">As
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>TransduceTo<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_Transducer_0" class="link"><div class="nowrap">Transducer
+</div></a></li>
+<ul><li><a href="#Transducer_0_identity_1" class="link"><div class="nowrap">identity
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Transducer_0_constant_2" class="link"><div class="nowrap">constant
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>B value<span class='parens'>)</span></div></a></li>
+<li><a href="#Transducer_0_compose_3" class="link"><div class="nowrap">compose
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> ta<span class='comma'>, </span>
+        Transducer<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> tb<span class='parens'>)</span></div></a></li>
+<li><a href="#Transducer_0_compose_4" class="link"><div class="nowrap">compose
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> ta<span class='comma'>, </span>
+        Transducer<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> tb<span class='comma'>, </span>
+        Transducer<span class='generics'>&lt;</span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span> tc<span class='parens'>)</span></div></a></li>
+<li><a href="#Transducer_0_compose_5" class="link"><div class="nowrap">compose
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> ta<span class='comma'>, </span>
+        Transducer<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> tb<span class='comma'>, </span>
+        Transducer<span class='generics'>&lt;</span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span> tc<span class='comma'>, </span>
+        Transducer<span class='generics'>&lt;</span>D<span class='comma'>, </span>E<span class='generics'>&gt;</span> td<span class='parens'>)</span></div></a></li>
+<li><a href="#Transducer_0_compose_6" class="link"><div class="nowrap">compose
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> ta<span class='comma'>, </span>
+        Transducer<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> tb<span class='comma'>, </span>
+        Transducer<span class='generics'>&lt;</span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span> tc<span class='comma'>, </span>
+        Transducer<span class='generics'>&lt;</span>D<span class='comma'>, </span>E<span class='generics'>&gt;</span> td<span class='comma'>, </span>
+        Transducer<span class='generics'>&lt;</span>E<span class='comma'>, </span>F<span class='generics'>&gt;</span> te<span class='parens'>)</span></div></a></li>
+<li><a href="#Transducer_0_compose_7" class="link"><div class="nowrap">compose
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> ta<span class='comma'>, </span>
+        Transducer<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> tb<span class='comma'>, </span>
+        Transducer<span class='generics'>&lt;</span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span> tc<span class='comma'>, </span>
+        Transducer<span class='generics'>&lt;</span>D<span class='comma'>, </span>E<span class='generics'>&gt;</span> td<span class='comma'>, </span>
+        Transducer<span class='generics'>&lt;</span>E<span class='comma'>, </span>F<span class='generics'>&gt;</span> te<span class='comma'>, </span>
+        Transducer<span class='generics'>&lt;</span>F<span class='comma'>, </span>G<span class='generics'>&gt;</span> tf<span class='parens'>)</span></div></a></li>
+<li><a href="#Transducer_0_skip_1" class="link"><div class="nowrap">skip
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>int amount<span class='parens'>)</span></div></a></li>
+<li><a href="#Transducer_0_take_1" class="link"><div class="nowrap">take
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>int amount<span class='parens'>)</span></div></a></li>
+<li><a href="#Transducer_0_map_2" class="link"><div class="nowrap">map
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Transducer_0_filter_1" class="link"><div class="nowrap">filter
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span></div></a></li>
+<li><a href="#Transducer_0_bind_3" class="link"><div class="nowrap">bind
+<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Transducer<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>TransduceFrom<span class='generics'>&lt;</span>Env<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Transducer_0_bind_3" class="link"><div class="nowrap">bind
+<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Transducer<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Transducer<span class='generics'>&lt;</span>Env<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Transducer_0_foldWhile_2" class="link"><div class="nowrap">foldWhile
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> Folder,
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred,
+        S State<span class='parens'>)</span></div></a></li>
+<li><a href="#Transducer_0_foldWhile_2" class="link"><div class="nowrap">foldWhile
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Schedule Schedule,
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> Folder,
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred,
+        S State<span class='parens'>)</span></div></a></li>
+<li><a href="#Transducer_0_foldUntil_2" class="link"><div class="nowrap">foldUntil
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> Folder,
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred,
+        S State<span class='parens'>)</span></div></a></li>
+<li><a href="#Transducer_0_foldUntil_2" class="link"><div class="nowrap">foldUntil
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Schedule Schedule,
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> Folder,
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred,
+        S State<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_TransduceTo_1" class="link"><div class="nowrap">TransduceTo
+<span class='generics'>&lt;</span>OUT<span class='generics'>&gt;</span></div></a></li>
+<ul></ul></ul></div>
+<div class="interface"><H1>Sub modules</H1>
+<table><tbody><tr><td class="src clearfix"><span class="inst-left"><a href="DSL/index.html" class="link">DSL</a></span></td></tr></tbody></table>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_TransduceFrom_1" class="def">TransduceFrom</a>
+<span class='generics'>&lt;</span>IN<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Transducer/TransduceFrom.TraitImpl.cs#L6" class="link">Source</a>
+<a href="#_0_TransduceFrom_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>TransduceFrom<span class='generics'>&lt;</span>IN<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="TransduceFrom_1_Asks_1" class="def">Asks</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>IN<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Transducer/TransduceFrom.TraitImpl.cs#L28" class="link">Source</a>
+<a href="#TransduceFrom_1_Asks_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>TransduceFrom<span class='generics'>&lt;</span>IN<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="TransduceFrom_1_Local_1" class="def">Local</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>IN<span class='comma'>, </span>IN<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>TransduceFrom<span class='generics'>&lt;</span>IN<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Transducer/TransduceFrom.TraitImpl.cs#L31" class="link">Source</a>
+<a href="#TransduceFrom_1_Local_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">record</span>
+<a id="_0_Transducer_2" class="def">Transducer</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Transducer/Transducer.cs#L6" class="link">Source</a>
+<a href="#_0_Transducer_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ReducerAsync<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<a id="Transducer_2_Reduce_1" class="def">Reduce</a>
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>ReducerAsync<span class='generics'>&lt;</span>B<span class='comma'>, </span>S<span class='generics'>&gt;</span> reducer<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Transducer/Transducer.cs#L16" class="link">Source</a>
+<a href="#Transducer_2_Reduce_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Fold the input stream using the supplied reducer.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>State</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">reducer</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Reducer that folds the stream of values flowing through the transducer</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="Transducer_2_Compose_1" class="def">Compose</a>
+<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Transducer<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> tg<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Transducer/Transducer.cs#L21" class="link">Source</a>
+<a href="#Transducer_2_Compose_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Compose two transducers together.  The output of the first transducer is the input to the second.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="Transducer_2_Map_1" class="def">Map</a>
+<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Transducer/Transducer.cs#L27" class="link">Source</a>
+<a href="#Transducer_2_Map_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Functor map</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Transducer<span class='generics'>&lt;</span>X<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Transducer_2_Comap_1" class="def">Comap</a>
+<span class='generics'>&lt;</span>X<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>X<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Transducer/Transducer.cs#L33" class="link">Source</a>
+<a href="#Transducer_2_Comap_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Contravariant functor map</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="Transducer_2_Bind_1" class="def">Bind</a>
+<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>K<span class='generics'>&lt;</span>TransduceFrom<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Transducer/Transducer.cs#L39" class="link">Source</a>
+<a href="#Transducer_2_Bind_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monadic bind</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="Transducer_2_Bind_1" class="def">Bind</a>
+<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Transducer/Transducer.cs#L45" class="link">Source</a>
+<a href="#Transducer_2_Bind_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monadic bind</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>D<span class='generics'>&gt;</span>
+<a id="Transducer_2_SelectMany_2" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>K<span class='generics'>&lt;</span>TransduceFrom<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Transducer/Transducer.cs#L51" class="link">Source</a>
+<a href="#Transducer_2_SelectMany_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monadic bind</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>D<span class='generics'>&gt;</span>
+<a id="Transducer_2_SelectMany_2" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Transducer/Transducer.cs#L57" class="link">Source</a>
+<a href="#Transducer_2_SelectMany_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monadic bind</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Transducer_2_Filter_0" class="def">Filter</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>bool<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Transducer/Transducer.cs#L63" class="link">Source</a>
+<a href="#Transducer_2_Filter_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Filter values flowing through the transducer.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Transducer_2_Where_0" class="def">Where</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>bool<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Transducer/Transducer.cs#L69" class="link">Source</a>
+<a href="#Transducer_2_Where_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Filter values flowing through the transducer.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Transducer_2_Take_0" class="def">Take</a>
+
+<span class='parens'>(</span>int n<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Transducer/Transducer.cs#L75" class="link">Source</a>
+<a href="#Transducer_2_Take_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Take the first <code>n</code> values from the stream.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Transducer_2_Skip_0" class="def">Skip</a>
+
+<span class='parens'>(</span>int n<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Transducer/Transducer.cs#L81" class="link">Source</a>
+<a href="#Transducer_2_Skip_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Skip the first <code>n</code> values from the stream.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<a id="Transducer_2_FoldWhile_1" class="def">FoldWhile</a>
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>B<span class='comma'>, </span>S<span class='generics'>&gt;</span> Folder<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>B<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>
+        S State<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Transducer/Transducer.cs#L84" class="link">Source</a>
+<a href="#Transducer_2_FoldWhile_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<a id="Transducer_2_FoldWhile_1" class="def">FoldWhile</a>
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Schedule Schedule<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>B<span class='comma'>, </span>S<span class='generics'>&gt;</span> Folder<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>B<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>
+        S State<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Transducer/Transducer.cs#L90" class="link">Source</a>
+<a href="#Transducer_2_FoldWhile_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<a id="Transducer_2_FoldUntil_1" class="def">FoldUntil</a>
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>B<span class='comma'>, </span>S<span class='generics'>&gt;</span> Folder<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>B<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>
+        S State<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Transducer/Transducer.cs#L97" class="link">Source</a>
+<a href="#Transducer_2_FoldUntil_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<a id="Transducer_2_FoldUntil_1" class="def">FoldUntil</a>
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Schedule Schedule<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>B<span class='comma'>, </span>S<span class='generics'>&gt;</span> Folder<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>B<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>
+        S State<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Transducer/Transducer.cs#L103" class="link">Source</a>
+<a href="#Transducer_2_FoldUntil_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_TransducerExtensions_0" class="def">TransducerExtensions</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Transducer/Transducer.Extensions.cs#L5" class="link">Source</a>
+<a href="#_0_TransducerExtensions_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="TransducerExtensions_0_As_2" class="def">As</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>TransduceFrom<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Transducer/Transducer.Extensions.cs#L10" class="link">Source</a>
+<a href="#TransducerExtensions_0_As_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Downcast operator</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="TransducerExtensions_0_As_2" class="def">As</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>TransduceTo<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Transducer/Transducer.Extensions.cs#L16" class="link">Source</a>
+<a href="#TransducerExtensions_0_As_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Downcast operator</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_Transducer_0" class="def">Transducer</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Transducer/Transducer.Module.cs#L6" class="link">Source</a>
+<a href="#_0_Transducer_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Transducer_0_identity_1" class="def">identity</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Transducer/Transducer.Module.cs#L13" class="link">Source</a>
+<a href="#Transducer_0_identity_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Identity transducer.  Has no effect on values flowing through.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Identity transducer</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Transducer_0_constant_2" class="def">constant</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>B value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Transducer/Transducer.Module.cs#L21" class="link">Source</a>
+<a href="#Transducer_0_constant_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Constant transducer.  Ignores all incoming values and yields the constant value.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Constant value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Constant transducer</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="Transducer_0_compose_3" class="def">compose</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> ta<span class='comma'>, </span>
+        Transducer<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> tb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Transducer/Transducer.Module.cs#L30" class="link">Source</a>
+<a href="#Transducer_0_compose_3" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Compose transducers together.  The output of each transducer is fed into the next transducer.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ta</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>First transducer</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">tb</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Second transducer</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Composed transducer</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>D<span class='generics'>&gt;</span>
+<a id="Transducer_0_compose_4" class="def">compose</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> ta<span class='comma'>, </span>
+        Transducer<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> tb<span class='comma'>, </span>
+        Transducer<span class='generics'>&lt;</span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span> tc<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Transducer/Transducer.Module.cs#L42" class="link">Source</a>
+<a href="#Transducer_0_compose_4" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Compose transducers together.  The output of each transducer is fed into the next transducer.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ta</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>First transducer</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">tb</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Second transducer</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">tc</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Third transducer</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Composed transducer</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>E<span class='generics'>&gt;</span>
+<a id="Transducer_0_compose_5" class="def">compose</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> ta<span class='comma'>, </span>
+        Transducer<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> tb<span class='comma'>, </span>
+        Transducer<span class='generics'>&lt;</span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span> tc<span class='comma'>, </span>
+        Transducer<span class='generics'>&lt;</span>D<span class='comma'>, </span>E<span class='generics'>&gt;</span> td<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Transducer/Transducer.Module.cs#L56" class="link">Source</a>
+<a href="#Transducer_0_compose_5" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Compose transducers together.  The output of each transducer is fed into the next transducer.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ta</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>First transducer</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">tb</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Second transducer</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">tc</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Third transducer</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">td</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Fourth transducer</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Composed transducer</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>F<span class='generics'>&gt;</span>
+<a id="Transducer_0_compose_6" class="def">compose</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> ta<span class='comma'>, </span>
+        Transducer<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> tb<span class='comma'>, </span>
+        Transducer<span class='generics'>&lt;</span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span> tc<span class='comma'>, </span>
+        Transducer<span class='generics'>&lt;</span>D<span class='comma'>, </span>E<span class='generics'>&gt;</span> td<span class='comma'>, </span>
+        Transducer<span class='generics'>&lt;</span>E<span class='comma'>, </span>F<span class='generics'>&gt;</span> te<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Transducer/Transducer.Module.cs#L72" class="link">Source</a>
+<a href="#Transducer_0_compose_6" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Compose transducers together.  The output of each transducer is fed into the next transducer.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ta</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>First transducer</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">tb</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Second transducer</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">tc</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Third transducer</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">td</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Fourth transducer</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">te</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Fifth transducer</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Composed transducer</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>G<span class='generics'>&gt;</span>
+<a id="Transducer_0_compose_7" class="def">compose</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> ta<span class='comma'>, </span>
+        Transducer<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> tb<span class='comma'>, </span>
+        Transducer<span class='generics'>&lt;</span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span> tc<span class='comma'>, </span>
+        Transducer<span class='generics'>&lt;</span>D<span class='comma'>, </span>E<span class='generics'>&gt;</span> td<span class='comma'>, </span>
+        Transducer<span class='generics'>&lt;</span>E<span class='comma'>, </span>F<span class='generics'>&gt;</span> te<span class='comma'>, </span>
+        Transducer<span class='generics'>&lt;</span>F<span class='comma'>, </span>G<span class='generics'>&gt;</span> tf<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Transducer/Transducer.Module.cs#L90" class="link">Source</a>
+<a href="#Transducer_0_compose_7" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Compose transducers together.  The output of each transducer is fed into the next transducer.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ta</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>First transducer</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">tb</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Second transducer</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">tc</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Third transducer</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">td</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Fourth transducer</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">te</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Fifth transducer</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">tf</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Sixth transducer</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Composed transducer</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Transducer_0_skip_1" class="def">skip</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>int amount<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Transducer/Transducer.Module.cs#L105" class="link">Source</a>
+<a href="#Transducer_0_skip_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Skip <code>amount</code> items in the sequence before yielding</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">amount</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Number of items to skip</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Transducer that skips values</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Transducer_0_take_1" class="def">take</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>int amount<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Transducer/Transducer.Module.cs#L114" class="link">Source</a>
+<a href="#Transducer_0_take_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Take <code>amount</code> items in the sequence before terminating</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">amount</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Number of items to take</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Transducer that takes <code>amount</code> values only</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Transducer_0_map_2" class="def">map</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Transducer/Transducer.Module.cs#L124" class="link">Source</a>
+<a href="#Transducer_0_map_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Functor map transducer</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Input value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Output value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Function to map values of type <code>A</code> to values of type <code>B</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Mapping transducer</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Transducer_0_filter_1" class="def">filter</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Transducer/Transducer.Module.cs#L134" class="link">Source</a>
+<a href="#Transducer_0_filter_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Applicative filter transducer</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">predicate</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Filters each value flowing through the transducer.  If <code>true</code> the value will flow
+downstream;  if <code>false</code>, the value is dropped</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Filtering transducer</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Transducer<span class='generics'>&lt;</span>Env<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Transducer_0_bind_3" class="def">bind</a>
+<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Transducer<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>TransduceFrom<span class='generics'>&lt;</span>Env<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Transducer/Transducer.Module.cs#L149" class="link">Source</a>
+<a href="#Transducer_0_bind_3" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monad bind transducer</p>
+</div>
+<div><p>Chains two transducers together</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Env</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Input value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Result value type of the first transducer</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Result value type of returned transducer</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ta</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Initial transducer to run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Chaining function to run with the result of <code>ta</code> that will produce a new <code>Transducer</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A monadic bind transducer operation</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Transducer<span class='generics'>&lt;</span>Env<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Transducer_0_bind_3" class="def">bind</a>
+<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Transducer<span class='generics'>&lt;</span>Env<span class='comma'>, </span>A<span class='generics'>&gt;</span> ta<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Transducer<span class='generics'>&lt;</span>Env<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Transducer/Transducer.Module.cs#L164" class="link">Source</a>
+<a href="#Transducer_0_bind_3" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Monad bind transducer</p>
+</div>
+<div><p>Chains two transducers together</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Env</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Input value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Result value type of the first transducer</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Result value type of returned transducer</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ta</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Initial transducer to run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Chaining function to run with the result of <code>ta</code> that will produce a new <code>Transducer</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A monadic bind transducer operation</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<a id="Transducer_0_foldWhile_2" class="def">foldWhile</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> Folder,
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred,
+        S State<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Transducer/Transducer.Module.cs#L177" class="link">Source</a>
+<a href="#Transducer_0_foldWhile_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Fold items in the stream while the predicate returns true; once the predicate returns false, the
+aggregated value is yielded downstream.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Yielded aggregate value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Folder</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Aggregating binary fold function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">State</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Initial state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Aggregating binary folding transducer</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<a id="Transducer_0_foldWhile_2" class="def">foldWhile</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Schedule Schedule,
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> Folder,
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred,
+        S State<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Transducer/Transducer.Module.cs#L194" class="link">Source</a>
+<a href="#Transducer_0_foldWhile_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Fold items in the stream while the predicate returns true; once the predicate returns false, the
+aggregated value is yielded downstream.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Yielded aggregate value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Schedule</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Schedule for each yielded item</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Folder</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Aggregating binary fold function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">State</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Initial state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Aggregating binary folding transducer</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<a id="Transducer_0_foldUntil_2" class="def">foldUntil</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> Folder,
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred,
+        S State<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Transducer/Transducer.Module.cs#L212" class="link">Source</a>
+<a href="#Transducer_0_foldUntil_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Fold items in the stream until the predicate returns true; once the predicate returns true, the
+aggregated value is yielded downstream.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Yielded aggregate value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Folder</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Aggregating binary fold function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">State</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Initial state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Aggregating binary folding transducer</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Transducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<a id="Transducer_0_foldUntil_2" class="def">foldUntil</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Schedule Schedule,
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> Folder,
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred,
+        S State<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Transducer/Transducer.Module.cs#L229" class="link">Source</a>
+<a href="#Transducer_0_foldUntil_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Fold items in the stream until the predicate returns true; once the predicate returns true, the
+aggregated value is yielded downstream.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Yielded aggregate value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Schedule</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Schedule for each yielded item</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Folder</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Aggregating binary fold function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">State</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Initial state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Aggregating binary folding transducer</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_TransduceTo_1" class="def">TransduceTo</a>
+<span class='generics'>&lt;</span>OUT<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Transducers/Transducer/TransduceTo.TraitImpl.cs#L7" class="link">Source</a>
+<a href="#_0_TransduceTo_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js" integrity="sha512-9khQRAUBYEJDCDVP2yw3LRUQvjJ0Pjx0EShmaQjcHa6AXiOv6qHQu9lCAIR8O+/D8FtaCoJ2c0Tf9Xo7hYH01Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-fTl/qcO1VgvKtOMApX2PdZzkziyr2stM65GYPLGuYMnuMm1z2JLJG6XVU7C/mR+E7xBUqCivykuhlzfqxXBXbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script></body></html>

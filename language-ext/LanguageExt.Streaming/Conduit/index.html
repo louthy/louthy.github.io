@@ -1,0 +1,1207 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>LanguageExt.Streaming/Conduit</title>
+<link href="style.css" rel="stylesheet" type="text/css"/></head>
+<body class="js-enabled"><div id="package-header"><ul class="links" id="page-menu"><li><a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Conduit" class="link">Source</a></li>
+<li><a href="../index.html" class="link">Contents</a></li>
+<li><a href="../../index.html" class="link">Index</a></li></ul>
+<p class="caption">LanguageExt.Streaming</p></div>
+<div id="content"><div id="module-header"><p class="caption"><a href="../index.html" class="link">LanguageExt.Streaming</a>
+<span> ► </span>
+<a href="index.html" class="link">Conduit</a></p></div>
+
+<div id="table-of-contents"><p class="caption">Contents</p>
+<ul><li><a href="#_0_Conduit_2" class="link"><div class="nowrap">Conduit
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#Conduit_2_Sink_0" class="link"><div class="nowrap">Sink</div></a></li>
+<li><a href="#Conduit_2_Source_0" class="link"><div class="nowrap">Source</div></a></li>
+<li><a href="#Conduit_2_Post_0" class="link"><div class="nowrap">Post
+
+<span class='parens'>(</span>A value<span class='parens'>)</span></div></a></li>
+<li><a href="#Conduit_2_Complete_0" class="link"><div class="nowrap">Complete
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Conduit_2_Fail_0" class="link"><div class="nowrap">Fail
+
+<span class='parens'>(</span>Error Error<span class='parens'>)</span></div></a></li>
+<li><a href="#Conduit_2_Reduce_1" class="link"><div class="nowrap">Reduce
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>S state<span class='comma'>, </span>ReducerAsync<span class='generics'>&lt;</span>B<span class='comma'>, </span>S<span class='generics'>&gt;</span> reducer<span class='parens'>)</span></div></a></li>
+<li><a href="#Conduit_2_Reduce_2" class="link"><div class="nowrap">Reduce
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>S state<span class='comma'>, </span>ReducerAsync<span class='generics'>&lt;</span>B<span class='comma'>, </span>S<span class='generics'>&gt;</span> reducer<span class='parens'>)</span></div></a></li>
+<li><a href="#Conduit_2_Map_1" class="link"><div class="nowrap">Map
+<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Conduit_2_Select_1" class="link"><div class="nowrap">Select
+<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Conduit_2_Transform_1" class="link"><div class="nowrap">Transform
+<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Transducer<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> transducer<span class='parens'>)</span></div></a></li>
+<li><a href="#Conduit_2_Comap_1" class="link"><div class="nowrap">Comap
+<span class='generics'>&lt;</span>X<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>X<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Conduit_2_CoTransform_1" class="link"><div class="nowrap">CoTransform
+<span class='generics'>&lt;</span>X<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Transducer<span class='generics'>&lt;</span>X<span class='comma'>, </span>A<span class='generics'>&gt;</span> transducer<span class='parens'>)</span></div></a></li>
+<li><a href="#Conduit_2_ToConsumerT_1" class="link"><div class="nowrap">ToConsumerT
+<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Conduit_2_ToConsumer_1" class="link"><div class="nowrap">ToConsumer
+<span class='generics'>&lt;</span>RT<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Conduit_2_ToProducerT_1" class="link"><div class="nowrap">ToProducerT
+<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Conduit_2_ToProducer_1" class="link"><div class="nowrap">ToProducer
+<span class='generics'>&lt;</span>RT<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Conduit_2_Where_0" class="link"><div class="nowrap">Where
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>bool<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Conduit_2_Filter_0" class="link"><div class="nowrap">Filter
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>bool<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Conduit_2_Skip_0" class="link"><div class="nowrap">Skip
+
+<span class='parens'>(</span>int amount<span class='parens'>)</span></div></a></li>
+<li><a href="#Conduit_2_Take_0" class="link"><div class="nowrap">Take
+
+<span class='parens'>(</span>int amount<span class='parens'>)</span></div></a></li>
+<li><a href="#Conduit_2_FoldWhile_1" class="link"><div class="nowrap">FoldWhile
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>B<span class='comma'>, </span>S<span class='generics'>&gt;</span> Fold<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>B<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>S Init<span class='parens'>)</span></div></a></li>
+<li><a href="#Conduit_2_FoldUntil_1" class="link"><div class="nowrap">FoldUntil
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>B<span class='comma'>, </span>S<span class='generics'>&gt;</span> Fold<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>B<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>S Init<span class='parens'>)</span></div></a></li>
+<li><a href="#Conduit_2_FoldWhile_1" class="link"><div class="nowrap">FoldWhile
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Schedule Time,
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>B<span class='comma'>, </span>S<span class='generics'>&gt;</span> Fold,
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>B<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred,
+        S Init<span class='parens'>)</span></div></a></li>
+<li><a href="#Conduit_2_FoldUntil_1" class="link"><div class="nowrap">FoldUntil
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Schedule Time,
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>B<span class='comma'>, </span>S<span class='generics'>&gt;</span> Fold,
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>B<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred,
+        S Init<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_ConduitExtensions_0" class="link"><div class="nowrap">ConduitExtensions
+</div></a></li>
+<ul><li><a href="#ConduitExtensions_0_As_2" class="link"><div class="nowrap">As
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>Conduit<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_Conduit_0" class="link"><div class="nowrap">Conduit
+</div></a></li>
+<ul><li><a href="#Conduit_0_make_1" class="link"><div class="nowrap">make
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Conduit_0_make_1" class="link"><div class="nowrap">make
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Buffer<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> buffer<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_Conduit_1" class="link"><div class="nowrap">Conduit
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#Conduit_1_Comap_2" class="link"><div class="nowrap">Comap
+<span class='generics'>&lt;</span>X<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>X<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>Conduit<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> fb<span class='parens'>)</span></div></a></li>
+<li><a href="#Conduit_1_Map_2" class="link"><div class="nowrap">Map
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>Conduit<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li></ul></ul></div>
+<div class="interface"><H1>Sub modules</H1>
+<table><tbody><tr><td class="src clearfix"><span class="inst-left"><a href="Internal/index.html" class="link">Internal</a></span></td></tr></tbody></table>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_Conduit_2" class="def">Conduit</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Conduit/Conduit.cs#L31" class="link">Source</a>
+<a href="#_0_Conduit_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Represents a channel with an internal queue.  A channel has:</p>
+<ul>
+<li class='markdown-bullet'>A sink: an input transducer that manipulates values before being placed into the internal queue.</li>
+<li class='markdown-bullet'>A buffer: <code>System.Threading.Channels.Channel</code>.</li>
+<li class='markdown-bullet'>A source: an output transducer that manipulates values after being taken from the internal queue.</li>
+</ul>
+<p>Both sides of the conduit can be manipulated:</p>
+<p>The sink is a co-functor and can be mapped using <code>Comap</code> or <code>CoTransform</code>, these transform values <em>before</em> they get
+to the conduit's buffer.</p>
+<p>The source is a functor, so you can <code>Map</code> or <code>Transform</code> in the usual way to map values on their way out of the
+buffer.</p>
+<p>Control of the internal buffer is provided by passing a <code>Buffer</code> value to <code>Conduit.make</code>.  This allows you to set
+various parameters for the internal queue, such as the maximum number of items to hold in the queue, and what
+strategy to use when the queue is full.  The default is <code>Buffer.Unbounded</code>.</p>
+<p><code>ToProducer</code> and <code>ToConsumer</code> enable the <code>Conduit</code> components to be used in composed pipe effects.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Input value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Output value type</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+<div class="subs methods"><p class="caption">Properties</p>
+<div class="top"><p class="src"><span class="keyword">property</span>
+Sink<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Conduit_2_Sink_0" class="def">Sink</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Conduit/Conduit.cs#L37" class="link">Source</a>
+<a href="#Conduit_2_Sink_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Access the underlying <code>Sink</code> for more direct manipulation.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+Source<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<a id="Conduit_2_Source_0" class="def">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Conduit/Conduit.cs#L43" class="link">Source</a>
+<a href="#Conduit_2_Source_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Access the underlying <code>Source</code> for more direct manipulation.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
+<a id="Conduit_2_Post_0" class="def">Post</a>
+
+<span class='parens'>(</span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Conduit/Conduit.cs#L53" class="link">Source</a>
+<a href="#Conduit_2_Post_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Post a value to the <code>Sink</code></p>
+</div>
+<div><p>Raises <code>Errors.SinkFull</code> if the <code>Sink</code> is full or closed.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">value</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Value to post</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>IO computation that represents the posting</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
+<a id="Conduit_2_Complete_0" class="def">Complete</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Conduit/Conduit.cs#L58" class="link">Source</a>
+<a href="#Conduit_2_Complete_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Complete and close the Sink</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
+<a id="Conduit_2_Fail_0" class="def">Fail</a>
+
+<span class='parens'>(</span>Error Error<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Conduit/Conduit.cs#L63" class="link">Source</a>
+<a href="#Conduit_2_Fail_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Complete and close the Sink with an <code>Error</code></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<a id="Conduit_2_Reduce_1" class="def">Reduce</a>
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>S state<span class='comma'>, </span>ReducerAsync<span class='generics'>&lt;</span>B<span class='comma'>, </span>S<span class='generics'>&gt;</span> reducer<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Conduit/Conduit.cs#L73" class="link">Source</a>
+<a href="#Conduit_2_Reduce_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Iterate the stream, flowing values downstream to the reducer, which aggregates a
+result value.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>State type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">state</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>State to reduce</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">reducer</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Reducer</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Reduced state</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<a id="Conduit_2_Reduce_2" class="def">Reduce</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>S state<span class='comma'>, </span>ReducerAsync<span class='generics'>&lt;</span>B<span class='comma'>, </span>S<span class='generics'>&gt;</span> reducer<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Conduit/Conduit.cs#L83" class="link">Source</a>
+<a href="#Conduit_2_Reduce_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Iterate the stream, flowing values downstream to the reducer, which aggregates a
+result value.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>State type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">state</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>State to reduce</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">reducer</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Reducer</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Reduced state</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Conduit<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="Conduit_2_Map_1" class="def">Map</a>
+<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Conduit/Conduit.cs#L89" class="link">Source</a>
+<a href="#Conduit_2_Map_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Functor map</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Conduit<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="Conduit_2_Select_1" class="def">Select</a>
+<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Conduit/Conduit.cs#L94" class="link">Source</a>
+<a href="#Conduit_2_Select_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Functor map</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Conduit<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="Conduit_2_Transform_1" class="def">Transform</a>
+<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Transducer<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> transducer<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Conduit/Conduit.cs#L102" class="link">Source</a>
+<a href="#Conduit_2_Transform_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Transform with a transducer</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">transducer</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Transducer to use to transform</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Transformed source</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Conduit<span class='generics'>&lt;</span>X<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Conduit_2_Comap_1" class="def">Comap</a>
+<span class='generics'>&lt;</span>X<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>X<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Conduit/Conduit.cs#L107" class="link">Source</a>
+<a href="#Conduit_2_Comap_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Contravariant functor map</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Conduit<span class='generics'>&lt;</span>X<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Conduit_2_CoTransform_1" class="def">CoTransform</a>
+<span class='generics'>&lt;</span>X<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Transducer<span class='generics'>&lt;</span>X<span class='comma'>, </span>A<span class='generics'>&gt;</span> transducer<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Conduit/Conduit.cs#L114" class="link">Source</a>
+<a href="#Conduit_2_CoTransform_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Co-transform with a transducer</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">transducer</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Transducer to use to transform</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Transformed source</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ConsumerT<span class='generics'>&lt;</span>A<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="Conduit_2_ToConsumerT_1" class="def">ToConsumerT</a>
+<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Conduit/Conduit.cs#L121" class="link">Source</a>
+<a href="#Conduit_2_ToConsumerT_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Convert the <code>Sink</code> to a <code>ConsumerT</code> pipe component</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monad to lift (must support <code>IO</code>)</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>ConsumerT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Consumer<span class='generics'>&lt;</span>RT<span class='comma'>, </span>A<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="Conduit_2_ToConsumer_1" class="def">ToConsumer</a>
+<span class='generics'>&lt;</span>RT<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Conduit/Conduit.cs#L128" class="link">Source</a>
+<a href="#Conduit_2_ToConsumer_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Convert the <code>Sink</code> to a <code>Consumer</code> pipe component</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>Consumer</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ProducerT<span class='generics'>&lt;</span>B<span class='comma'>, </span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="Conduit_2_ToProducerT_1" class="def">ToProducerT</a>
+<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Conduit/Conduit.cs#L135" class="link">Source</a>
+<a href="#Conduit_2_ToProducerT_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Convert <code>Source</code> to a <code>ProducerT</code> pipe component</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monad to lift (must support <code>IO</code>)</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>ProducerT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Producer<span class='generics'>&lt;</span>RT<span class='comma'>, </span>B<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="Conduit_2_ToProducer_1" class="def">ToProducer</a>
+<span class='generics'>&lt;</span>RT<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Conduit/Conduit.cs#L142" class="link">Source</a>
+<a href="#Conduit_2_ToProducer_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Convert <code>Source</code> to a <code>Producer</code> pipe component</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>Producer</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Conduit<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Conduit_2_Where_0" class="def">Where</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>bool<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Conduit/Conduit.cs#L149" class="link">Source</a>
+<a href="#Conduit_2_Where_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Filter values.  Yielding downstream when <code>true</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Filter function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>SourceT where the only values yield are those that pass the predicate</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Conduit<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Conduit_2_Filter_0" class="def">Filter</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>bool<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Conduit/Conduit.cs#L157" class="link">Source</a>
+<a href="#Conduit_2_Filter_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Filter values.  Yielding downstream when <code>true</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Filter function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>SourceT where the only values yield are those that pass the predicate</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Conduit<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Conduit_2_Skip_0" class="def">Skip</a>
+
+<span class='parens'>(</span>int amount<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Conduit/Conduit.cs#L164" class="link">Source</a>
+<a href="#Conduit_2_Skip_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Skip items in the source</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">amount</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Amount to skip</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Transformed source</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Conduit<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Conduit_2_Take_0" class="def">Take</a>
+
+<span class='parens'>(</span>int amount<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Conduit/Conduit.cs#L171" class="link">Source</a>
+<a href="#Conduit_2_Take_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Limit the number of items processed</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">amount</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Number to take</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Transformed source</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Conduit<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<a id="Conduit_2_FoldWhile_1" class="def">FoldWhile</a>
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>B<span class='comma'>, </span>S<span class='generics'>&gt;</span> Fold<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>B<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>S Init<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Conduit/Conduit.cs#L182" class="link">Source</a>
+<a href="#Conduit_2_FoldWhile_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Fold the values flowing through.  Values are yielded downstream when either the predicate returns
+<code>false</code>, or the source completes.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>State type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Fold</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Binary operator</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Init</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Initial state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Stream of aggregate states</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Conduit<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<a id="Conduit_2_FoldUntil_1" class="def">FoldUntil</a>
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>B<span class='comma'>, </span>S<span class='generics'>&gt;</span> Fold<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>B<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>S Init<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Conduit/Conduit.cs#L193" class="link">Source</a>
+<a href="#Conduit_2_FoldUntil_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Fold the values flowing through.  Values are yielded downstream when either the predicate returns
+<code>true</code>, or the source completes.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>State type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Fold</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Binary operator</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Init</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Initial state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Stream of aggregate states</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Conduit<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<a id="Conduit_2_FoldWhile_1" class="def">FoldWhile</a>
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Schedule Time,
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>B<span class='comma'>, </span>S<span class='generics'>&gt;</span> Fold,
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>B<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred,
+        S Init<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Conduit/Conduit.cs#L205" class="link">Source</a>
+<a href="#Conduit_2_FoldWhile_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Fold the values flowing through.  Values are yielded downstream when either the schedule expires, the
+predicate returns <code>false</code>, or the source completes.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>State type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Time</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Schedule to control the rate of processing</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Fold</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Binary operator</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Init</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Initial state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Stream of aggregate states</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Conduit<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<a id="Conduit_2_FoldUntil_1" class="def">FoldUntil</a>
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Schedule Time,
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>B<span class='comma'>, </span>S<span class='generics'>&gt;</span> Fold,
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>B<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred,
+        S Init<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Conduit/Conduit.cs#L221" class="link">Source</a>
+<a href="#Conduit_2_FoldUntil_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Fold the values flowing through.  Values are yielded downstream when either the schedule expires, the
+predicate returns <code>true</code>, or the source completes.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"></span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Time</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Schedule to control the rate of processing</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Fold</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Binary operator</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Pred</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Init</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Initial state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Stream of aggregate states</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_ConduitExtensions_0" class="def">ConduitExtensions</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Conduit/Conduit.Extensions.cs#L6" class="link">Source</a>
+<a href="#_0_ConduitExtensions_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Conduit<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="ConduitExtensions_0_As_2" class="def">As</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>Conduit<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Conduit/Conduit.Extensions.cs#L8" class="link">Source</a>
+<a href="#ConduitExtensions_0_As_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_Conduit_0" class="def">Conduit</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Conduit/Conduit.Module.cs#L5" class="link">Source</a>
+<a href="#_0_Conduit_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Conduit<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Conduit_0_make_1" class="def">make</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Conduit/Conduit.Module.cs#L13" class="link">Source</a>
+<a href="#Conduit_0_make_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Create a new unbounded Conduit</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">label</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Label for debugging purposes</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Constructed Conduit with an <code>Sink</code> and an <code>Source</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Conduit<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Conduit_0_make_1" class="def">make</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Buffer<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> buffer<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Conduit/Conduit.Module.cs#L24" class="link">Source</a>
+<a href="#Conduit_0_make_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Create a new Conduit with the buffer settings provided</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">buffer</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Buffer settings</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">label</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Label for debugging purposes</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Constructed Conduit with an <code>Sink</code> and an <code>Source</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_Conduit_1" class="def">Conduit</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Conduit/Conduit.TraitImpl.cs#L6" class="link">Source</a>
+<a href="#_0_Conduit_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>Conduit<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>X<span class='generics'>&gt;</span>
+<a id="Conduit_1_Comap_2" class="def">Comap</a>
+<span class='generics'>&lt;</span>X<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>X<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>Conduit<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> fb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Conduit/Conduit.TraitImpl.cs#L8" class="link">Source</a>
+<a href="#Conduit_1_Comap_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>Conduit<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="Conduit_1_Map_2" class="def">Map</a>
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>Conduit<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/Conduit/Conduit.TraitImpl.cs#L11" class="link">Source</a>
+<a href="#Conduit_1_Map_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js" integrity="sha512-9khQRAUBYEJDCDVP2yw3LRUQvjJ0Pjx0EShmaQjcHa6AXiOv6qHQu9lCAIR8O+/D8FtaCoJ2c0Tf9Xo7hYH01Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-fTl/qcO1VgvKtOMApX2PdZzkziyr2stM65GYPLGuYMnuMm1z2JLJG6XVU7C/mR+E7xBUqCivykuhlzfqxXBXbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script></body></html>

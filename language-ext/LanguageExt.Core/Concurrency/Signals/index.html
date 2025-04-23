@@ -1,0 +1,655 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>LanguageExt.Core/Concurrency/Signals</title>
+<link href="style.css" rel="stylesheet" type="text/css"/></head>
+<body class="js-enabled"><div id="package-header"><ul class="links" id="page-menu"><li><a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Signals" class="link">Source</a></li>
+<li><a href="../index.html" class="link">Contents</a></li>
+<li><a href="../../../index.html" class="link">Index</a></li></ul>
+<p class="caption">LanguageExt.Core</p></div>
+<div id="content"><div id="module-header"><p class="caption"><a href="../../index.html" class="link">LanguageExt.Core</a>
+<span> ► </span>
+<a href="../index.html" class="link">Concurrency</a>
+<span> ► </span>
+<a href="index.html" class="link">Signals</a></p></div>
+
+<div id="table-of-contents"><p class="caption">Contents</p>
+<ul><li><a href="#_0_CountdownSignal_1" class="link"><div class="nowrap">CountdownSignal
+<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#CountdownSignal_1_Initial_0" class="link"><div class="nowrap">Initial</div></a></li>
+<li><a href="#CountdownSignal_1_Count_0" class="link"><div class="nowrap">Count</div></a></li>
+<li><a href="#CountdownSignal_1_Complete_0" class="link"><div class="nowrap">Complete</div></a></li>
+<li><a href="#CountdownSignal_1_Trigger_0" class="link"><div class="nowrap">Trigger
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#CountdownSignal_1_TriggerUnsafe_0" class="link"><div class="nowrap">TriggerUnsafe
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#CountdownSignal_1_Trigger_0" class="link"><div class="nowrap">Trigger
+
+<span class='parens'>(</span>int count<span class='parens'>)</span></div></a></li>
+<li><a href="#CountdownSignal_1_TriggerUnsafe_0" class="link"><div class="nowrap">TriggerUnsafe
+
+<span class='parens'>(</span>int count<span class='parens'>)</span></div></a></li>
+<li><a href="#CountdownSignal_1_Wait_0" class="link"><div class="nowrap">Wait
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#CountdownSignal_1_Dispose_0" class="link"><div class="nowrap">Dispose
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_Signal_1" class="link"><div class="nowrap">Signal
+<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#Signal_1_Trigger_0" class="link"><div class="nowrap">Trigger
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Signal_1_TriggerUnsafe_0" class="link"><div class="nowrap">TriggerUnsafe
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Signal_1_Wait_0" class="link"><div class="nowrap">Wait
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Signal_1_Wait_0" class="link"><div class="nowrap">Wait
+
+<span class='parens'>(</span>TimeSpan timeout<span class='parens'>)</span></div></a></li>
+<li><a href="#Signal_1_Wait_0" class="link"><div class="nowrap">Wait
+
+<span class='parens'>(</span>int timeoutMilliseconds<span class='parens'>)</span></div></a></li>
+<li><a href="#Signal_1_Dispose_0" class="link"><div class="nowrap">Dispose
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_Signal_0" class="link"><div class="nowrap">Signal
+</div></a></li>
+<ul><li><a href="#Signal_0_autoReset_1" class="link"><div class="nowrap">autoReset
+<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool signaled = false<span class='parens'>)</span></div></a></li>
+<li><a href="#Signal_0_manualReset_1" class="link"><div class="nowrap">manualReset
+<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool signaled = false<span class='parens'>)</span></div></a></li>
+<li><a href="#Signal_0_countdown_1" class="link"><div class="nowrap">countdown
+<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span>int count<span class='parens'>)</span></div></a></li></ul></ul></div>
+<div class="interface">
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_CountdownSignal_1" class="def">CountdownSignal</a>
+<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Signals/CountdownSignal.cs#L11" class="link">Source</a>
+<a href="#_0_CountdownSignal_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>IO signalling, usually used to signal for cross-thread synchronisation.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+<div class="subs methods"><p class="caption">Properties</p>
+<div class="top"><p class="src"><span class="keyword">property</span>
+int
+<a id="CountdownSignal_1_Initial_0" class="def">Initial</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Signals/CountdownSignal.cs#L17" class="link">Source</a>
+<a href="#CountdownSignal_1_Initial_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>The initial value of the counter</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>int<span class='generics'>&gt;</span>
+<a id="CountdownSignal_1_Count_0" class="def">Count</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Signals/CountdownSignal.cs#L23" class="link">Source</a>
+<a href="#CountdownSignal_1_Count_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>The current value of the counter</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>bool<span class='generics'>&gt;</span>
+<a id="CountdownSignal_1_Complete_0" class="def">Complete</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Signals/CountdownSignal.cs#L29" class="link">Source</a>
+<a href="#CountdownSignal_1_Complete_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>True if the counter has complete its countdown</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>bool<span class='generics'>&gt;</span>
+<a id="CountdownSignal_1_Trigger_0" class="def">Trigger</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Signals/CountdownSignal.cs#L36" class="link">Source</a>
+<a href="#CountdownSignal_1_Trigger_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Triggers a single countdown of the counter in the signal</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if the counter reached zero.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="CountdownSignal_1_TriggerUnsafe_0" class="def">TriggerUnsafe</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Signals/CountdownSignal.cs#L43" class="link">Source</a>
+<a href="#CountdownSignal_1_TriggerUnsafe_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Triggers a single countdown of the counter in the signal</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if the counter reached zero.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>bool<span class='generics'>&gt;</span>
+<a id="CountdownSignal_1_Trigger_0" class="def">Trigger</a>
+
+<span class='parens'>(</span>int count<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Signals/CountdownSignal.cs#L53" class="link">Source</a>
+<a href="#CountdownSignal_1_Trigger_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Triggers <code>n</code> signals to the counter in the signal</p>
+</div>
+<div><p>This is marked unsafe because it's not in an <code>IO</code> operation and therefore is impure.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if the counter reached zero.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="CountdownSignal_1_TriggerUnsafe_0" class="def">TriggerUnsafe</a>
+
+<span class='parens'>(</span>int count<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Signals/CountdownSignal.cs#L63" class="link">Source</a>
+<a href="#CountdownSignal_1_TriggerUnsafe_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Triggers <code>n</code> signals to the counter in the signal</p>
+</div>
+<div><p>This is marked unsafe because it's not in an <code>IO</code> operation and therefore is impure.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if the counter reached zero.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="CountdownSignal_1_Wait_0" class="def">Wait</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Signals/CountdownSignal.cs#L70" class="link">Source</a>
+<a href="#CountdownSignal_1_Wait_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Wait for signal to signal</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Monad <code>M</code> with the <code>Wait</code> operation lifted into it via <code>liftIO</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+void
+<a id="CountdownSignal_1_Dispose_0" class="def">Dispose</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Signals/CountdownSignal.cs#L77" class="link">Source</a>
+<a href="#CountdownSignal_1_Dispose_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_Signal_1" class="def">Signal</a>
+<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Signals/Signal.cs#L11" class="link">Source</a>
+<a href="#_0_Signal_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>IO signalling, usually used to signal for cross-thread synchronisation.</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>bool<span class='generics'>&gt;</span>
+<a id="Signal_1_Trigger_0" class="def">Trigger</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Signals/Signal.cs#L20" class="link">Source</a>
+<a href="#Signal_1_Trigger_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Set the signal</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if the operation succeeds</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="Signal_1_TriggerUnsafe_0" class="def">TriggerUnsafe</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Signals/Signal.cs#L32" class="link">Source</a>
+<a href="#Signal_1_TriggerUnsafe_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Set the signal</p>
+</div>
+<div><p>This is marked unsafe because it's not in an <code>IO</code> operation and therefore is impure.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if the operation succeeds</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>bool<span class='generics'>&gt;</span>
+<a id="Signal_1_Wait_0" class="def">Wait</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Signals/Signal.cs#L39" class="link">Source</a>
+<a href="#Signal_1_Wait_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Wait for signal to signal</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>bool<span class='generics'>&gt;</span>
+<a id="Signal_1_Wait_0" class="def">Wait</a>
+
+<span class='parens'>(</span>TimeSpan timeout<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Signals/Signal.cs#L46" class="link">Source</a>
+<a href="#Signal_1_Wait_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Wait for signal to signal</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>bool<span class='generics'>&gt;</span>
+<a id="Signal_1_Wait_0" class="def">Wait</a>
+
+<span class='parens'>(</span>int timeoutMilliseconds<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Signals/Signal.cs#L53" class="link">Source</a>
+<a href="#Signal_1_Wait_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Wait for signal to signal</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+void
+<a id="Signal_1_Dispose_0" class="def">Dispose</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Signals/Signal.cs#L56" class="link">Source</a>
+<a href="#Signal_1_Dispose_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_Signal_0" class="def">Signal</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Signals/Signal.Module.cs#L10" class="link">Source</a>
+<a href="#_0_Signal_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>IO signalling constructors</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Signal<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Signal_0_autoReset_1" class="def">autoReset</a>
+<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool signaled = false<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Signals/Signal.Module.cs#L22" class="link">Source</a>
+<a href="#Signal_0_autoReset_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Represents a thread synchronisation event that, when signaled, resets automatically after releasing a
+single waiting thread.</p>
+</div>
+<div><p>The internal <code>EventWaitHandle</code> is wrapped with a <code>use</code> operator so that its handle is tracked by the <code>IO</code>
+resource-management system and auto-cleaned up if not done manually with <code>release</code> or using <code>bracket</code>.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">signaled</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p><see langword="true" /> to set the initial state to signaled;
+<see langword="false" /> to set the initial state to non-signaled.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Signal<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Signal_0_manualReset_1" class="def">manualReset</a>
+<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span>bool signaled = false<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Signals/Signal.Module.cs#L35" class="link">Source</a>
+<a href="#Signal_0_manualReset_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Represents a thread synchronisation event that, when signaled, must be reset manually.</p>
+</div>
+<div><p>The internal <code>EventWaitHandle</code> is wrapped with a <code>use</code> operator so that its handle is tracked by the <code>IO</code>
+resource-management system and auto-cleaned up if not done manually with <code>release</code> or using <code>bracket</code>.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">signaled</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p><see langword="true" /> to set the initial state signaled;
+<see langword="false" /> to set the initial state to non-signaled.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>CountdownSignal<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Signal_0_countdown_1" class="def">countdown</a>
+<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span>int count<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Concurrency/Signals/Signal.Module.cs#L44" class="link">Source</a>
+<a href="#Signal_0_countdown_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Represents a synchronisation primitive that is signaled when its count reaches zero.</p>
+</div>
+<div><p>The internal <code>EventWaitHandle</code> is wrapped with a <code>use</code> operator so that its handle is tracked by the <code>IO</code>
+resource-management system and auto-cleaned up if not done manually with <code>release</code> or using <code>bracket</code>.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js" integrity="sha512-9khQRAUBYEJDCDVP2yw3LRUQvjJ0Pjx0EShmaQjcHa6AXiOv6qHQu9lCAIR8O+/D8FtaCoJ2c0Tf9Xo7hYH01Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-fTl/qcO1VgvKtOMApX2PdZzkziyr2stM65GYPLGuYMnuMm1z2JLJG6XVU7C/mR+E7xBUqCivykuhlzfqxXBXbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script></body></html>
