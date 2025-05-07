@@ -666,8 +666,8 @@
 <li><a href="#Prelude_0_awaitAny_1" class="link"><div class="nowrap">awaitAny
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>params IO<span class='generics'>&lt;</span>ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>[] forks<span class='parens'>)</span></div></a></li>
-<li><a href="#Prelude_0_awaitAny_2" class="link"><div class="nowrap">awaitAny
-<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<li><a href="#Prelude_0_awaitAny_1" class="link"><div class="nowrap">awaitAny
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>params ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>[] forks<span class='parens'>)</span></div></a></li>
 <li><a href="#Prelude_0_awaitAny_2" class="link"><div class="nowrap">awaitAny
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
@@ -4790,12 +4790,12 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Module.cs#L84" class="link">Source</a>
 <a href="#IO_0_local_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
 <div class="doc"><div><p>Creates a local cancellation environment</p>
 </div>
 <div><p>A local cancellation environment stops other IO computations, that rely on the same
 environmental cancellation token, from being taken down by a regional cancellation.</p>
-<p>If a <code>IO.cancel</code> is invoked locally then it will still create an exception that
+<p>If an <code>IO.cancel</code> is invoked locally, then it will still create an exception that
 propagates upwards and so catching cancellations is still important.</p>
 </div>
 <div class="methods"><p class="caption">Parameters</p>
@@ -4836,7 +4836,7 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 </div>
 <div><p>A local cancellation environment stops other IO computations, that rely on the same
 environmental cancellation token, from being taken down by a regional cancellation.</p>
-<p>If a <code>IO.cancel</code> is invoked locally then it will still create an exception that
+<p>If an <code>IO.cancel</code> is invoked locally, then it will still create an exception that
 propagates upwards and so catching cancellations is still important.</p>
 </div>
 <div class="methods"><p class="caption">Parameters</p>
@@ -5223,7 +5223,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='g
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Module.cs#L170" class="link">Source</a>
 <a href="#IO_0_mapIO_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> M : Maybe.MonadIO&lt;M&gt;, Monad&lt;M&gt;</span></div></div></p>
+<span> M : MonadUnliftIO&lt;M&gt;, Monad&lt;M&gt;</span></div></div></p>
 <div class="doc"><div><p>Queue this IO operation to run on the thread-pool.</p>
 </div>
 <div></div>
@@ -5258,7 +5258,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>ForkIO<span cla
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Module.cs#L183" class="link">Source</a>
 <a href="#IO_0_fork_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> M : MonadIO&lt;M&gt;, Monad&lt;M&gt;</span></div></div></p>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
 <div class="doc"><div><p>Queue this IO operation to run on the thread-pool.</p>
 </div>
 <div></div>
@@ -6515,7 +6515,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L60" class="link">Source</a>
 <a href="#Prelude_0_tailIO_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> M : Monad&lt;M&gt;</span></div></div></p>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
 <div class="doc"><div><p>Tail call</p>
 </div>
 <div></div>
@@ -6550,7 +6550,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L69" class="link">Source</a>
 <a href="#Prelude_0_postIO_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
 <div class="doc"><div><p>Make this IO computation run on the <code>SynchronizationContext</code> that was captured at the start
 of the IO chain (i.e. the one embedded within the <code>EnvIO</code> environment that is passed through
 all IO computations)</p>
@@ -6579,7 +6579,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>ForkIO<span cla
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L82" class="link">Source</a>
 <a href="#Prelude_0_fork_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> M : MonadIO&lt;M&gt;, Monad&lt;M&gt;</span></div></div></p>
+<span> M : MonadUnliftIO&lt;M&gt;, Monad&lt;M&gt;</span></div></div></p>
 <div class="doc"><div><p>Queue this IO operation to run on the thread-pool.</p>
 </div>
 <div></div>
@@ -6614,7 +6614,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L95" class="link">Source</a>
 <a href="#Prelude_0_awaitIO_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
 <div class="doc"><div><p>Queue this IO operation to run on the thread-pool.</p>
 </div>
 <div></div>
@@ -6715,7 +6715,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Seq<span class=
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L126" class="link">Source</a>
 <a href="#Prelude_0_awaitAll_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> M : Monad&lt;M&gt;</span></div></div></p>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
 <div class="doc"><div><p>Awaits all operations</p>
 </div>
 <div></div>
@@ -6749,7 +6749,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Seq<span class=
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L135" class="link">Source</a>
 <a href="#Prelude_0_awaitAll_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
 <div class="doc"><div><p>Awaits all forks</p>
 </div>
 <div></div>
@@ -6816,7 +6816,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Seq<span class=
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L152" class="link">Source</a>
 <a href="#Prelude_0_awaitAll_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> M : Monad&lt;M&gt;</span></div></div></p>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
 <div class="doc"><div><p>Awaits all operations</p>
 </div>
 <div></div>
@@ -6883,7 +6883,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Seq<span class=
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L174" class="link">Source</a>
 <a href="#Prelude_0_awaitAll_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
 <div class="doc"><div><p>Awaits all forks</p>
 </div>
 <div></div>
@@ -6983,7 +6983,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L212" class="link">Source</a>
 <a href="#Prelude_0_awaitAny_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> M : Monad&lt;M&gt;</span></div></div></p>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
 <div class="doc"><div><p>Awaits for any operation to complete</p>
 </div>
 <div></div>
@@ -7089,7 +7089,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L249" class="link">Source</a>
 <a href="#Prelude_0_awaitAny_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> M : Monad&lt;M&gt;</span></div></div></p>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
 <div class="doc"><div><p>Awaits for any forks to complete</p>
 </div>
 <div></div>
@@ -7154,13 +7154,12 @@ If we have collected as many errors as we have forks, then we'll return them all
 </div>
 <div class="top"><p class="src"><span class="keyword">method</span>
 IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<a id="Prelude_0_awaitAny_2" class="def">awaitAny</a>
-<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_awaitAny_1" class="def">awaitAny</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>params ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>[] forks<span class='parens'>)</span>
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L274" class="link">Source</a>
-<a href="#Prelude_0_awaitAny_2" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> M : Monad&lt;M&gt;</span></div></div></p>
+<a href="#Prelude_0_awaitAny_1" class="selflink">#</a>
+<div class="constraints"></div></p>
 <div class="doc"><div><p>Awaits for any forks to complete</p>
 </div>
 <div></div>
@@ -7193,10 +7192,10 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <a id="Prelude_0_awaitAny_2" class="def">awaitAny</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Seq<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> forks<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L287" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L286" class="link">Source</a>
 <a href="#Prelude_0_awaitAny_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> M : Monad&lt;M&gt;</span></div></div></p>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
 <div class="doc"><div><p>Awaits for any forks to complete</p>
 </div>
 <div></div>
@@ -7229,10 +7228,10 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <a id="Prelude_0_awaitAny_2" class="def">awaitAny</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Seq<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> forks<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L301" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L300" class="link">Source</a>
 <a href="#Prelude_0_awaitAny_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> M : Monad&lt;M&gt;</span></div></div></p>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
 <div class="doc"><div><p>Awaits for operations to complete</p>
 </div>
 <div></div>
@@ -7265,7 +7264,7 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_awaitAny_1" class="def">awaitAny</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Seq<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ms<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L315" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L314" class="link">Source</a>
 <a href="#Prelude_0_awaitAny_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Awaits for any IO to complete</p>
@@ -7300,7 +7299,7 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_awaitAny_1" class="def">awaitAny</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Seq<span class='generics'>&lt;</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ms<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L327" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L326" class="link">Source</a>
 <a href="#Prelude_0_awaitAny_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Awaits for any IO to complete</p>
@@ -7335,7 +7334,7 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_awaitAny_1" class="def">awaitAny</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Seq<span class='generics'>&lt;</span>ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> forks<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L339" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L338" class="link">Source</a>
 <a href="#Prelude_0_awaitAny_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Awaits for any forks to complete</p>
@@ -7370,7 +7369,7 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_awaitAny_1" class="def">awaitAny</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Seq<span class='generics'>&lt;</span>IO<span class='generics'>&lt;</span>ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> forks<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L351" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L350" class="link">Source</a>
 <a href="#Prelude_0_awaitAny_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Awaits for any forks to complete</p>
@@ -7405,10 +7404,10 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <a id="Prelude_0_timeout_2" class="def">timeout</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>TimeSpan timeout<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L362" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L361" class="link">Source</a>
 <a href="#Prelude_0_timeout_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
 <div class="doc"><div><p>Timeout operation if it takes too long</p>
 </div>
 <div></div>
@@ -7432,7 +7431,7 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_timeout_1" class="def">timeout</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>TimeSpan timeout<span class='comma'>, </span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L371" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L370" class="link">Source</a>
 <a href="#Prelude_0_timeout_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Timeout operation if it takes too long</p>
@@ -7458,10 +7457,10 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <a id="Prelude_0_repeat_2" class="def">repeat</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L382" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L381" class="link">Source</a>
 <a href="#Prelude_0_repeat_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
 <div class="doc"><div><p>Keeps repeating the computation</p>
 </div>
 <div></div>
@@ -7496,7 +7495,7 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_repeat_1" class="def">repeat</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L392" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L391" class="link">Source</a>
 <a href="#Prelude_0_repeat_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Keeps repeating the computation</p>
@@ -7533,10 +7532,10 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <a id="Prelude_0_repeat_2" class="def">repeat</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Schedule schedule<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L402" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L401" class="link">Source</a>
 <a href="#Prelude_0_repeat_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
 <div class="doc"><div><p>Keeps repeating the computation, until the scheduler expires</p>
 </div>
 <div></div>
@@ -7575,10 +7574,10 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_repeat_1" class="def">repeat</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Schedule schedule<span class='comma'>, </span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L413" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L412" class="link">Source</a>
 <a href="#Prelude_0_repeat_1" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Keeps repeating the computation, until the scheduler expires</p>
+<div class="doc"><div><p>Keeps repeating the computation until the scheduler expires</p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
@@ -7616,10 +7615,10 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <a id="Prelude_0_repeatWhile_2" class="def">repeatWhile</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L422" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L421" class="link">Source</a>
 <a href="#Prelude_0_repeatWhile_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
 <div class="doc"><div><p>Keeps repeating the computation until the predicate returns false</p>
 </div>
 <div></div>
@@ -7654,7 +7653,7 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_repeatWhile_1" class="def">repeatWhile</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L432" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L431" class="link">Source</a>
 <a href="#Prelude_0_repeatWhile_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Keeps repeating the computation until the predicate returns false</p>
@@ -7694,11 +7693,11 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
         Schedule schedule,
         K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
         Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L442" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L441" class="link">Source</a>
 <a href="#Prelude_0_repeatWhile_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> M : MonadIO&lt;M&gt;</span></div></div></p>
-<div class="doc"><div><p>Keeps repeating the computation, until the scheduler expires, or the predicate returns false</p>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Keeps repeating the computation until the scheduler expires, or the predicate returns false</p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
@@ -7739,10 +7738,10 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
         Schedule schedule,
         K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
         Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L456" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L455" class="link">Source</a>
 <a href="#Prelude_0_repeatWhile_1" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Keeps repeating the computation, until the scheduler expires, or the predicate returns false</p>
+<div class="doc"><div><p>Keeps repeating the computation until the scheduler expires, or the predicate returns false</p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
@@ -7782,10 +7781,10 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <span class='parens'>(</span>
         K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
         Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L468" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L467" class="link">Source</a>
 <a href="#Prelude_0_repeatUntil_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
 <div class="doc"><div><p>Keeps repeating the computation until the predicate returns true</p>
 </div>
 <div></div>
@@ -7822,7 +7821,7 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>
         K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
         Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L480" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L479" class="link">Source</a>
 <a href="#Prelude_0_repeatUntil_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Keeps repeating the computation until the predicate returns true</p>
@@ -7862,11 +7861,11 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
         Schedule schedule,
         K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
         Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L492" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L491" class="link">Source</a>
 <a href="#Prelude_0_repeatUntil_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> M : MonadIO&lt;M&gt;</span></div></div></p>
-<div class="doc"><div><p>Keeps repeating the computation, until the scheduler expires, or the predicate returns true</p>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Keeps repeating the computation until the scheduler expires, or the predicate returns true</p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
@@ -7907,10 +7906,10 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
         Schedule schedule,
         K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
         Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L506" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L505" class="link">Source</a>
 <a href="#Prelude_0_repeatUntil_1" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Keeps repeating the computation, until the scheduler expires, or the predicate returns true</p>
+<div class="doc"><div><p>Keeps repeating the computation until the scheduler expires, or the predicate returns true</p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
@@ -7948,10 +7947,10 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <a id="Prelude_0_retry_2" class="def">retry</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L518" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L517" class="link">Source</a>
 <a href="#Prelude_0_retry_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
 <div class="doc"><div><p>Keeps retrying the computation</p>
 </div>
 <div></div>
@@ -7986,7 +7985,7 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_retry_1" class="def">retry</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L528" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L527" class="link">Source</a>
 <a href="#Prelude_0_retry_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Keeps retrying the computation</p>
@@ -8023,11 +8022,11 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <a id="Prelude_0_retry_2" class="def">retry</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Schedule schedule<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L538" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L537" class="link">Source</a>
 <a href="#Prelude_0_retry_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> M : MonadIO&lt;M&gt;</span></div></div></p>
-<div class="doc"><div><p>Keeps retrying the computation, until the scheduler expires</p>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Keeps retrying the computation until the scheduler expires</p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
@@ -8065,10 +8064,10 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Prelude_0_retry_1" class="def">retry</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Schedule schedule<span class='comma'>, </span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L549" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L548" class="link">Source</a>
 <a href="#Prelude_0_retry_1" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Keeps retrying the computation, until the scheduler expires</p>
+<div class="doc"><div><p>Keeps retrying the computation until the scheduler expires</p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
@@ -8108,10 +8107,10 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <span class='parens'>(</span>
         K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
         Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L558" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L557" class="link">Source</a>
 <a href="#Prelude_0_retryWhile_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
 <div class="doc"><div><p>Keeps retrying the computation until the predicate returns false</p>
 </div>
 <div></div>
@@ -8148,7 +8147,7 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>
         K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
         Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L570" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L569" class="link">Source</a>
 <a href="#Prelude_0_retryWhile_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Keeps retrying the computation until the predicate returns false</p>
@@ -8188,11 +8187,11 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
         Schedule schedule,
         K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
         Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L582" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L581" class="link">Source</a>
 <a href="#Prelude_0_retryWhile_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> M : MonadIO&lt;M&gt;</span></div></div></p>
-<div class="doc"><div><p>Keeps retrying the computation, until the scheduler expires, or the predicate returns false</p>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Keeps retrying the computation until the scheduler expires, or the predicate returns false</p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
@@ -8233,10 +8232,10 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
         Schedule schedule,
         K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
         Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L596" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L595" class="link">Source</a>
 <a href="#Prelude_0_retryWhile_1" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Keeps retrying the computation, until the scheduler expires, or the predicate returns false</p>
+<div class="doc"><div><p>Keeps retrying the computation until the scheduler expires, or the predicate returns false</p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
@@ -8276,10 +8275,10 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <span class='parens'>(</span>
         K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
         Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L608" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L607" class="link">Source</a>
 <a href="#Prelude_0_retryUntil_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
 <div class="doc"><div><p>Keeps retrying the computation until the predicate returns true</p>
 </div>
 <div></div>
@@ -8316,7 +8315,7 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>
         K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
         Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L620" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L619" class="link">Source</a>
 <a href="#Prelude_0_retryUntil_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Keeps retrying the computation until the predicate returns true</p>
@@ -8356,11 +8355,11 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
         Schedule schedule,
         K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
         Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L632" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L631" class="link">Source</a>
 <a href="#Prelude_0_retryUntil_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> M : MonadIO&lt;M&gt;</span></div></div></p>
-<div class="doc"><div><p>Keeps retrying the computation, until the scheduler expires, or the predicate returns true</p>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Keeps retrying the computation until the scheduler expires, or the predicate returns true</p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
@@ -8401,10 +8400,10 @@ IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
         Schedule schedule,
         K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
         Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L646" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/IO.Prelude.cs#L645" class="link">Source</a>
 <a href="#Prelude_0_retryUntil_1" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div><p>Keeps retrying the computation, until the scheduler expires, or the predicate returns true</p>
+<div class="doc"><div><p>Keeps retrying the computation until the scheduler expires, or the predicate returns true</p>
 </div>
 <div></div>
 <div class="methods"><p class="caption">Parameters</p>
