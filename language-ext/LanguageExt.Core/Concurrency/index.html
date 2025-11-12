@@ -11,8 +11,8 @@
 <p>We prefer to work with immutable types in functional-programming.  However, it's not always possible, and sometimes we
 need some shared mutable state.  With the immutable types in this library you'd need to protect the updates with locks:</p>
 <pre class='language-csharp'><code>// Some global
-static HashSet&lt;int&gt; set = HashSet(1, 2, 3);
-static object sync = new();
+HashSet&lt;int&gt; set = HashSet(1, 2, 3);
+object sync = new();
 
 lock(sync)
 {
@@ -22,7 +22,7 @@ lock(sync)
 <p>This in unsatisfactory, and so this module is all about lock-free atomic operations.  <code>Atom</code> allows you to protect any
 value.  <code>AtomHashMap</code> and <code>AtomSeq</code> are <code>HashMap</code> and <code>Seq</code> wrapped up into a lock-free mutable structure.  Snapshots
 of those are free!  The above code can be written:</p>
-<pre class='language-csharp'><code>static AtomHashSet&lt;int&gt; set = AtomHashSet(1, 2, 3);
+<pre class='language-csharp'><code>AtomHashSet&lt;int&gt; set = AtomHashSet(1, 2, 3);
 set.Add(4);
 </code></pre>
 <p>Finally, there's the Software Transactional Memory (STM) system.  Which allows for transactional changes to multiple
@@ -102,7 +102,8 @@ set.Add(4);
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Atom<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>Option<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li></ul></ul></div>
 <div class="interface"><H1>Sub modules</H1>
-<table><tbody><tr><td class="src clearfix"><span class="inst-left"><a href="Atom/index.html" class="link">Atom</a></span></td></tr>
+<table><tbody><tr><td class="src clearfix"><span class="inst-left"><a href="Async/index.html" class="link">Async</a></span></td></tr>
+<tr><td class="src clearfix"><span class="inst-left"><a href="Atom/index.html" class="link">Atom</a></span></td></tr>
 <tr><td class="src clearfix"><span class="inst-left"><a href="AtomHashMap/index.html" class="link">AtomHashMap</a></span></td></tr>
 <tr><td class="src clearfix"><span class="inst-left"><a href="AtomQue/index.html" class="link">AtomQue</a></span></td></tr>
 <tr><td class="src clearfix"><span class="inst-left"><a href="AtomSeq/index.html" class="link">AtomSeq</a></span></td></tr>

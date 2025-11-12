@@ -1,0 +1,1852 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>LanguageExt.Core/Monads/Alternative Monads/These</title>
+<link href="style.css" rel="stylesheet" type="text/css"/></head>
+<body class="js-enabled"><div id="package-header"><ul class="links" id="page-menu"><li><a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These" class="link">Source</a></li>
+<li><a href="../index.html" class="link">Contents</a></li>
+<li><a href="../../../../index.html" class="link">Index</a></li></ul>
+<p class="caption">LanguageExt.Core</p></div>
+<div id="content"><div id="module-header"><p class="caption"><a href="../../../index.html" class="link">LanguageExt.Core</a>
+<span> ► </span>
+<a href="../../index.html" class="link">Monads</a>
+<span> ► </span>
+<a href="../index.html" class="link">Alternative Monads</a>
+<span> ► </span>
+<a href="index.html" class="link">These</a></p></div>
+
+<div id="table-of-contents"><p class="caption">Contents</p>
+<ul><li><a href="#_0_These_2" class="link"><div class="nowrap">These
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span></div></a></li>
+<ul></ul>
+<li><a href="#These_2_Both_0" class="link"><div class="nowrap">Both
+
+<span class='parens'>(</span>A First<span class='comma'>, </span>B Second<span class='parens'>)</span></div></a></li>
+<ul><li><a href="#Both_0_Match_1" class="link"><div class="nowrap">Match
+<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span> This<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> That<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> Both<span class='parens'>)</span></div></a></li>
+<li><a href="#Both_0_ToTuple_0" class="link"><div class="nowrap">ToTuple
+
+<span class='parens'>(</span>A x<span class='comma'>, </span>B y<span class='parens'>)</span></div></a></li>
+<li><a href="#Both_0_Map_1" class="link"><div class="nowrap">Map
+<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Both_0_BiMap_2" class="link"><div class="nowrap">BiMap
+<span class='generics'>&lt;</span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span> This<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>D<span class='generics'>&gt;</span> That<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_These_2" class="link"><div class="nowrap">These
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#These_2_Match_1" class="link"><div class="nowrap">Match
+<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span> This<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> That<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> Both<span class='parens'>)</span></div></a></li>
+<li><a href="#These_2_ToTuple_0" class="link"><div class="nowrap">ToTuple
+
+<span class='parens'>(</span>A x<span class='comma'>, </span>B y<span class='parens'>)</span></div></a></li>
+<li><a href="#These_2_BiMap_2" class="link"><div class="nowrap">BiMap
+<span class='generics'>&lt;</span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span> This<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>D<span class='generics'>&gt;</span> That<span class='parens'>)</span></div></a></li>
+<li><a href="#These_2_Map_1" class="link"><div class="nowrap">Map
+<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#These_2_Traverse_2" class="link"><div class="nowrap">Traverse
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#These_2_Merge_1" class="link"><div class="nowrap">Merge
+<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span> This<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> That<span class='comma'>, </span>Func<span class='generics'>&lt;</span>C<span class='comma'>, </span>C<span class='comma'>, </span>C<span class='generics'>&gt;</span> Both<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_TheseExtensions_0" class="link"><div class="nowrap">TheseExtensions
+</div></a></li>
+<ul><li><a href="#TheseExtensions_0_As_2" class="link"><div class="nowrap">As
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>These<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#TheseExtensions_0_Merge_1" class="link"><div class="nowrap">Merge
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>These<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> these<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#TheseExtensions_0_Partition_3" class="link"><div class="nowrap">Partition
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>F<span class='comma'>, </span>These<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> theses<span class='parens'>)</span></div></a></li>
+<li><a href="#TheseExtensions_0_Partition2_3" class="link"><div class="nowrap">Partition2
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>F<span class='comma'>, </span>These<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> theses<span class='parens'>)</span></div></a></li>
+<li><a href="#TheseExtensions_0_Combine_2" class="link"><div class="nowrap">Combine
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>These<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> first<span class='comma'>, </span>K<span class='generics'>&lt;</span>These<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> second<span class='parens'>)</span></div></a></li>
+<li><a href="#TheseExtensions_0_Combine_2" class="link"><div class="nowrap">Combine
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>These<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> first,
+        K<span class='generics'>&lt;</span>These<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> second,
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> combineFst,
+        Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>B<span class='comma'>, </span>B<span class='generics'>&gt;</span> combineSnd<span class='parens'>)</span></div></a></li>
+<li><a href="#TheseExtensions_0_Apply_3" class="link"><div class="nowrap">Apply
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>These<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>These<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#TheseExtensions_0_Apply_3" class="link"><div class="nowrap">Apply
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>These<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf,
+        K<span class='generics'>&lt;</span>These<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> ma,
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> combine<span class='parens'>)</span></div></a></li>
+<li><a href="#TheseExtensions_0_Bind_3" class="link"><div class="nowrap">Bind
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>These<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>K<span class='generics'>&lt;</span>These<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#TheseExtensions_0_SelectMany_4" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>These<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>K<span class='generics'>&lt;</span>These<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_These_0" class="link"><div class="nowrap">These
+</div></a></li>
+<ul><li><a href="#These_0_This_2" class="link"><div class="nowrap">This
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='parens'>)</span></div></a></li>
+<li><a href="#These_0_That_2" class="link"><div class="nowrap">That
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>B value<span class='parens'>)</span></div></a></li>
+<li><a href="#These_0_Both_2" class="link"><div class="nowrap">Both
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A first<span class='comma'>, </span>B second<span class='parens'>)</span></div></a></li>
+<li><a href="#These_0_merge_1" class="link"><div class="nowrap">merge
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='comma'>, </span>These<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> these<span class='parens'>)</span></div></a></li>
+<li><a href="#These_0_partition_3" class="link"><div class="nowrap">partition
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        K<span class='generics'>&lt;</span>F<span class='comma'>, </span>These<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> theses<span class='parens'>)</span></div></a></li>
+<li><a href="#These_0_partition2_3" class="link"><div class="nowrap">partition2
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        K<span class='generics'>&lt;</span>F<span class='comma'>, </span>These<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> theses<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_Prelude_0" class="link"><div class="nowrap">Prelude
+</div></a></li>
+<ul><li><a href="#Prelude_0_This_2" class="link"><div class="nowrap">This
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_That_2" class="link"><div class="nowrap">That
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>B value<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_Both_2" class="link"><div class="nowrap">Both
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A first<span class='comma'>, </span>B second<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_merge_1" class="link"><div class="nowrap">merge
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='comma'>, </span>These<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> these<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_partition_3" class="link"><div class="nowrap">partition
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>These<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> theses<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_partition2_3" class="link"><div class="nowrap">partition2
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>These<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> theses<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_These_2" class="link"><div class="nowrap">These
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span></div></a></li>
+<ul></ul>
+<li><a href="#These_2_That_0" class="link"><div class="nowrap">That
+
+<span class='parens'>(</span>B Value<span class='parens'>)</span></div></a></li>
+<ul><li><a href="#That_0_Match_1" class="link"><div class="nowrap">Match
+<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span> This<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> That<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> Both<span class='parens'>)</span></div></a></li>
+<li><a href="#That_0_ToTuple_0" class="link"><div class="nowrap">ToTuple
+
+<span class='parens'>(</span>A x<span class='comma'>, </span>B y<span class='parens'>)</span></div></a></li>
+<li><a href="#That_0_Map_1" class="link"><div class="nowrap">Map
+<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#That_0_BiMap_2" class="link"><div class="nowrap">BiMap
+<span class='generics'>&lt;</span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span> This<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>D<span class='generics'>&gt;</span> That<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_These_2" class="link"><div class="nowrap">These
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span></div></a></li>
+<ul></ul>
+<li><a href="#These_2_This_0" class="link"><div class="nowrap">This
+
+<span class='parens'>(</span>A Value<span class='parens'>)</span></div></a></li>
+<ul><li><a href="#This_0_Match_1" class="link"><div class="nowrap">Match
+<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span> This<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> That<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> Both<span class='parens'>)</span></div></a></li>
+<li><a href="#This_0_ToTuple_0" class="link"><div class="nowrap">ToTuple
+
+<span class='parens'>(</span>A x<span class='comma'>, </span>B y<span class='parens'>)</span></div></a></li>
+<li><a href="#This_0_Map_1" class="link"><div class="nowrap">Map
+<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#This_0_BiMap_2" class="link"><div class="nowrap">BiMap
+<span class='generics'>&lt;</span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span> This<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>D<span class='generics'>&gt;</span> That<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_These_1" class="link"><div class="nowrap">These
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#These_1_Map_2" class="link"><div class="nowrap">Map
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>These<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#These_1_FoldWhile_2" class="link"><div class="nowrap">FoldWhile
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+        Func<span class='generics'>&lt;</span><span class='parens'>(</span>S State<span class='comma'>, </span>B Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate,
+        S state,
+        K<span class='generics'>&lt;</span>These<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#These_1_FoldBackWhile_2" class="link"><div class="nowrap">FoldBackWhile
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+        Func<span class='generics'>&lt;</span><span class='parens'>(</span>S State<span class='comma'>, </span>B Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate,
+        S state,
+        K<span class='generics'>&lt;</span>These<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li>
+<li><a href="#These_1_Traverse_3" class="link"><div class="nowrap">Traverse
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>These<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> ta<span class='parens'>)</span></div></a></li></ul></ul></div>
+<div class="interface">
+<div class="top"><p class="src"><span class="keyword">record</span>
+<a id="_0_These_2" class="def">These</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.Both.cs#L5" class="link">Source</a>
+<a href="#_0_These_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">record</span>
+<a id="These_2_Both_0" class="def">Both</a>
+
+<span class='parens'>(</span>A First<span class='comma'>, </span>B Second<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.Both.cs#L7" class="link">Source</a>
+<a href="#These_2_Both_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+C
+<a id="Both_0_Match_1" class="def">Match</a>
+<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span> This<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> That<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> Both<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.Both.cs#L9" class="link">Source</a>
+<a href="#Both_0_Match_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+(A<span class='comma'>, </span>B)
+<a id="Both_0_ToTuple_0" class="def">ToTuple</a>
+
+<span class='parens'>(</span>A x<span class='comma'>, </span>B y<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.Both.cs#L12" class="link">Source</a>
+<a href="#Both_0_ToTuple_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+These<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="Both_0_Map_1" class="def">Map</a>
+<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.Both.cs#L15" class="link">Source</a>
+<a href="#Both_0_Map_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+These<span class='generics'>&lt;</span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span>
+<a id="Both_0_BiMap_2" class="def">BiMap</a>
+<span class='generics'>&lt;</span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span> This<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>D<span class='generics'>&gt;</span> That<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.Both.cs#L18" class="link">Source</a>
+<a href="#Both_0_BiMap_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">record</span>
+<a id="_0_These_2" class="def">These</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.cs#L7" class="link">Source</a>
+<a href="#_0_These_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+C
+<a id="These_2_Match_1" class="def">Match</a>
+<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span> This<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> That<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> Both<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.cs#L22" class="link">Source</a>
+<a href="#These_2_Match_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Case analysis for the <code>These</code> type</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">C</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Result type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">This</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Match for <code>This</code> state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">That</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Match for <code>That</code> state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Both</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Match for <code>Both</code> state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Result of running either <code>This</code>, <code>That</code>, or <code>Both</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+(A<span class='comma'>, </span>B)
+<a id="These_2_ToTuple_0" class="def">ToTuple</a>
+
+<span class='parens'>(</span>A x<span class='comma'>, </span>B y<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.cs#L30" class="link">Source</a>
+<a href="#These_2_ToTuple_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Takes two default values and produces a tuple</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">x</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Default value A</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">y</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Default value B</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Tuple</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+These<span class='generics'>&lt;</span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span>
+<a id="These_2_BiMap_2" class="def">BiMap</a>
+<span class='generics'>&lt;</span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span> This<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>D<span class='generics'>&gt;</span> That<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.cs#L40" class="link">Source</a>
+<a href="#These_2_BiMap_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> C : Semigroup&lt;C&gt;</span></div></div></p>
+<div class="doc"><div><p>Bi-functor map operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">C</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Resulting <code>This</code> bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">D</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Resulting <code>That</code> bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">This</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping of <code>This</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">That</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping of <code>That</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+These<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="These_2_Map_1" class="def">Map</a>
+<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.cs#L47" class="link">Source</a>
+<a href="#These_2_Map_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Functor map operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>F<span class='comma'>, </span>These<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="These_2_Traverse_2" class="def">Traverse</a>
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.cs#L52" class="link">Source</a>
+<a href="#These_2_Traverse_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> F : Applicative&lt;F&gt;</span></div></div></p>
+<div class="doc"><div><p>Traverse</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+C
+<a id="These_2_Merge_1" class="def">Merge</a>
+<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span> This<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> That<span class='comma'>, </span>Func<span class='generics'>&lt;</span>C<span class='comma'>, </span>C<span class='comma'>, </span>C<span class='generics'>&gt;</span> Both<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.cs#L64" class="link">Source</a>
+<a href="#These_2_Merge_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> C : Semigroup&lt;C&gt;</span></div></div></p>
+<div class="doc"><div><p>Bi-map and coalesce results with the provided operation.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">C</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"></span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">This</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>This mapping</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">That</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>That mapping</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">Both</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Both mapping</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_TheseExtensions_0" class="def">TheseExtensions</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.Extensions.cs#L8" class="link">Source</a>
+<a href="#_0_TheseExtensions_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+These<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="TheseExtensions_0_As_2" class="def">As</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>These<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.Extensions.cs#L10" class="link">Source</a>
+<a href="#TheseExtensions_0_As_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+A
+<a id="TheseExtensions_0_Merge_1" class="def">Merge</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>These<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> these<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.Extensions.cs#L18" class="link">Source</a>
+<a href="#TheseExtensions_0_Merge_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Coalesce with the provided operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Coalesce operation</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Coalesced value</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+(Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> This<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span> That<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>(A<span class='comma'>, </span>B)<span class='generics'>&gt;</span> Both)
+<a id="TheseExtensions_0_Partition_3" class="def">Partition</a>
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>F<span class='comma'>, </span>These<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> theses<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.Extensions.cs#L27" class="link">Source</a>
+<a href="#TheseExtensions_0_Partition_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> F : Foldable&lt;F&gt;</span></div></div></p>
+<div class="doc"><div><p>Select each constructor and partition them into separate lists.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">F</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Foldable structure</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">theses</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Selection</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Partitioned sequences</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+(Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> This<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span> That)
+<a id="TheseExtensions_0_Partition2_3" class="def">Partition2</a>
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>F<span class='comma'>, </span>These<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> theses<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.Extensions.cs#L46" class="link">Source</a>
+<a href="#TheseExtensions_0_Partition2_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> F : Foldable&lt;F&gt;</span></div></div></p>
+<div class="doc"><div><p>Select each constructor and partition them into separate lists.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">F</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Foldable structure</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">theses</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Selection</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Partitioned sequences</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+These<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="TheseExtensions_0_Combine_2" class="def">Combine</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>These<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> first<span class='comma'>, </span>K<span class='generics'>&lt;</span>These<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> second<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.Extensions.cs#L64" class="link">Source</a>
+<a href="#TheseExtensions_0_Combine_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> A : Semigroup&lt;A&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> B : Semigroup&lt;B&gt;</span></div></div></p>
+<div class="doc"><div><p>Semigroup combine</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">first</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>First <code>These</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">second</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Second <code>These</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>These</code> combined using semigroup rules</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+These<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="TheseExtensions_0_Combine_2" class="def">Combine</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>These<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> first,
+        K<span class='generics'>&lt;</span>These<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> second,
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> combineFst,
+        Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>B<span class='comma'>, </span>B<span class='generics'>&gt;</span> combineSnd<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.Extensions.cs#L75" class="link">Source</a>
+<a href="#TheseExtensions_0_Combine_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Semigroup combine</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">first</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>First <code>These</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">second</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Second <code>These</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>These</code> combined using semigroup rules</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+These<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="TheseExtensions_0_Apply_3" class="def">Apply</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>These<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>These<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.Extensions.cs#L94" class="link">Source</a>
+<a href="#TheseExtensions_0_Apply_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> A : Semigroup&lt;A&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+These<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="TheseExtensions_0_Apply_3" class="def">Apply</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>These<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf,
+        K<span class='generics'>&lt;</span>These<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> ma,
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> combine<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.Extensions.cs#L98" class="link">Source</a>
+<a href="#TheseExtensions_0_Apply_3" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+These<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="TheseExtensions_0_Bind_3" class="def">Bind</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>These<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>K<span class='generics'>&lt;</span>These<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.Extensions.cs#L118" class="link">Source</a>
+<a href="#TheseExtensions_0_Bind_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> A : Semigroup&lt;A&gt;</span></div></div></p>
+<div class="doc"><div><p>Monad bind operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Chaining function</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+These<span class='generics'>&lt;</span>A<span class='comma'>, </span>D<span class='generics'>&gt;</span>
+<a id="TheseExtensions_0_SelectMany_4" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>These<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>K<span class='generics'>&lt;</span>These<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.Extensions.cs#L134" class="link">Source</a>
+<a href="#TheseExtensions_0_SelectMany_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> A : Semigroup&lt;A&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_These_0" class="def">These</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.Module.cs#L6" class="link">Source</a>
+<a href="#_0_These_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+These<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="These_0_This_2" class="def">This</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.Module.cs#L13" class="link">Source</a>
+<a href="#These_0_This_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>This constructor</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">value</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Value to set</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Constructed <code>These</code> structure</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+These<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="These_0_That_2" class="def">That</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>B value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.Module.cs#L21" class="link">Source</a>
+<a href="#These_0_That_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>That constructor</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">value</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Value to set</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Constructed <code>These</code> structure</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+These<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="These_0_Both_2" class="def">Both</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A first<span class='comma'>, </span>B second<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.Module.cs#L30" class="link">Source</a>
+<a href="#These_0_Both_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Both constructor</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">first</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>First value to set</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">second</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Second value to set</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Constructed <code>These</code> structure</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+A
+<a id="These_0_merge_1" class="def">merge</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='comma'>, </span>These<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> these<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.Module.cs#L38" class="link">Source</a>
+<a href="#These_0_merge_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Coalesce with the provided operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Coalesce operation</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Coalesced value</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+(Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> This<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span> That<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>(A<span class='comma'>, </span>B)<span class='generics'>&gt;</span> Both)
+<a id="These_0_partition_3" class="def">partition</a>
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        K<span class='generics'>&lt;</span>F<span class='comma'>, </span>These<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> theses<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.Module.cs#L47" class="link">Source</a>
+<a href="#These_0_partition_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> F : Foldable&lt;F&gt;</span></div></div></p>
+<div class="doc"><div><p>Select each constructor and partition them into separate lists.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">F</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Foldable structure</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">theses</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Selection</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Partitioned sequences</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+(Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> This<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span> That)
+<a id="These_0_partition2_3" class="def">partition2</a>
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        K<span class='generics'>&lt;</span>F<span class='comma'>, </span>These<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> theses<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.Module.cs#L58" class="link">Source</a>
+<a href="#These_0_partition2_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> F : Foldable&lt;F&gt;</span></div></div></p>
+<div class="doc"><div><p>Select each constructor and partition them into separate lists.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">F</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Foldable structure</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">theses</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Selection</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Partitioned sequences</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_Prelude_0" class="def">Prelude</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.Prelude.cs#L6" class="link">Source</a>
+<a href="#_0_Prelude_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+These<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Prelude_0_This_2" class="def">This</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.Prelude.cs#L13" class="link">Source</a>
+<a href="#Prelude_0_This_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>This constructor</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">value</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Value to set</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Constructed <code>These</code> structure</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+These<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Prelude_0_That_2" class="def">That</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>B value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.Prelude.cs#L21" class="link">Source</a>
+<a href="#Prelude_0_That_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>That constructor</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">value</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Value to set</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Constructed <code>These</code> structure</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+These<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Prelude_0_Both_2" class="def">Both</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A first<span class='comma'>, </span>B second<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.Prelude.cs#L30" class="link">Source</a>
+<a href="#Prelude_0_Both_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Both constructor</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">first</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>First value to set</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">second</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Second value to set</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Constructed <code>These</code> structure</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+A
+<a id="Prelude_0_merge_1" class="def">merge</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='comma'>, </span>These<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> these<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.Prelude.cs#L38" class="link">Source</a>
+<a href="#Prelude_0_merge_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Coalesce with the provided operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Coalesce operation</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Coalesced value</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+(Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> This<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span> That<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>(A<span class='comma'>, </span>B)<span class='generics'>&gt;</span> Both)
+<a id="Prelude_0_partition_3" class="def">partition</a>
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>These<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> theses<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.Prelude.cs#L47" class="link">Source</a>
+<a href="#Prelude_0_partition_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> F : Foldable&lt;F&gt;</span></div></div></p>
+<div class="doc"><div><p>Select each constructor and partition them into separate lists.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">F</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Foldable structure</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">theses</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Selection</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Partitioned sequences</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+(Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> This<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span> That)
+<a id="Prelude_0_partition2_3" class="def">partition2</a>
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>These<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> theses<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.Prelude.cs#L57" class="link">Source</a>
+<a href="#Prelude_0_partition2_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> F : Foldable&lt;F&gt;</span></div></div></p>
+<div class="doc"><div><p>Select each constructor and partition them into separate lists.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">F</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Foldable structure</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">theses</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Selection</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Partitioned sequences</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">record</span>
+<a id="_0_These_2" class="def">These</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.That.cs#L5" class="link">Source</a>
+<a href="#_0_These_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">record</span>
+<a id="These_2_That_0" class="def">That</a>
+
+<span class='parens'>(</span>B Value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.That.cs#L7" class="link">Source</a>
+<a href="#These_2_That_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+C
+<a id="That_0_Match_1" class="def">Match</a>
+<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span> This<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> That<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> Both<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.That.cs#L9" class="link">Source</a>
+<a href="#That_0_Match_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+(A<span class='comma'>, </span>B)
+<a id="That_0_ToTuple_0" class="def">ToTuple</a>
+
+<span class='parens'>(</span>A x<span class='comma'>, </span>B y<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.That.cs#L12" class="link">Source</a>
+<a href="#That_0_ToTuple_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+These<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="That_0_Map_1" class="def">Map</a>
+<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.That.cs#L15" class="link">Source</a>
+<a href="#That_0_Map_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+These<span class='generics'>&lt;</span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span>
+<a id="That_0_BiMap_2" class="def">BiMap</a>
+<span class='generics'>&lt;</span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span> This<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>D<span class='generics'>&gt;</span> That<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.That.cs#L18" class="link">Source</a>
+<a href="#That_0_BiMap_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">record</span>
+<a id="_0_These_2" class="def">These</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.This.cs#L5" class="link">Source</a>
+<a href="#_0_These_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">record</span>
+<a id="These_2_This_0" class="def">This</a>
+
+<span class='parens'>(</span>A Value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.This.cs#L7" class="link">Source</a>
+<a href="#These_2_This_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+C
+<a id="This_0_Match_1" class="def">Match</a>
+<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span> This<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> That<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> Both<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.This.cs#L9" class="link">Source</a>
+<a href="#This_0_Match_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+(A<span class='comma'>, </span>B)
+<a id="This_0_ToTuple_0" class="def">ToTuple</a>
+
+<span class='parens'>(</span>A x<span class='comma'>, </span>B y<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.This.cs#L12" class="link">Source</a>
+<a href="#This_0_ToTuple_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+These<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="This_0_Map_1" class="def">Map</a>
+<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.This.cs#L15" class="link">Source</a>
+<a href="#This_0_Map_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+These<span class='generics'>&lt;</span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span>
+<a id="This_0_BiMap_2" class="def">BiMap</a>
+<span class='generics'>&lt;</span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span> This<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>D<span class='generics'>&gt;</span> That<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.This.cs#L18" class="link">Source</a>
+<a href="#This_0_BiMap_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_These_1" class="def">These</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.TraitImpl.cs#L7" class="link">Source</a>
+<a href="#_0_These_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>These<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="These_1_Map_2" class="def">Map</a>
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>These<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.TraitImpl.cs#L9" class="link">Source</a>
+<a href="#These_1_Map_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+S
+<a id="These_1_FoldWhile_2" class="def">FoldWhile</a>
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+        Func<span class='generics'>&lt;</span><span class='parens'>(</span>S State<span class='comma'>, </span>B Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate,
+        S state,
+        K<span class='generics'>&lt;</span>These<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.TraitImpl.cs#L12" class="link">Source</a>
+<a href="#These_1_FoldWhile_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+S
+<a id="These_1_FoldBackWhile_2" class="def">FoldBackWhile</a>
+<span class='generics'>&lt;</span>B<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
+        Func<span class='generics'>&lt;</span><span class='parens'>(</span>S State<span class='comma'>, </span>B Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate,
+        S state,
+        K<span class='generics'>&lt;</span>These<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.TraitImpl.cs#L25" class="link">Source</a>
+<a href="#These_1_FoldBackWhile_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>F<span class='comma'>, </span>K<span class='generics'>&lt;</span>These<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="These_1_Traverse_3" class="def">Traverse</a>
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>These<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> ta<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/These/These.TraitImpl.cs#L38" class="link">Source</a>
+<a href="#These_1_Traverse_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> F : Applicative&lt;F&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js" integrity="sha512-9khQRAUBYEJDCDVP2yw3LRUQvjJ0Pjx0EShmaQjcHa6AXiOv6qHQu9lCAIR8O+/D8FtaCoJ2c0Tf9Xo7hYH01Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-fTl/qcO1VgvKtOMApX2PdZzkziyr2stM65GYPLGuYMnuMm1z2JLJG6XVU7C/mR+E7xBUqCivykuhlzfqxXBXbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script></body></html>
