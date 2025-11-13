@@ -1,0 +1,3503 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>LanguageExt.Core/Effects/IO/Prelude</title>
+<link href="style.css" rel="stylesheet" type="text/css"/></head>
+<body class="js-enabled"><div id="package-header"><ul class="links" id="page-menu"><li><a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude" class="link">Source</a></li>
+<li><a href="../index.html" class="link">Contents</a></li>
+<li><a href="../../../../index.html" class="link">Index</a></li></ul>
+<p class="caption">LanguageExt.Core</p></div>
+<div id="content"><div id="module-header"><p class="caption"><a href="../../../index.html" class="link">LanguageExt.Core</a>
+<span> ► </span>
+<a href="../../index.html" class="link">Effects</a>
+<span> ► </span>
+<a href="../index.html" class="link">IO</a>
+<span> ► </span>
+<a href="index.html" class="link">Prelude</a></p></div>
+
+<div id="table-of-contents"><p class="caption">Contents</p>
+<ul><li><a href="#_0_Prelude_0" class="link"><div class="nowrap">Prelude
+</div></a></li>
+<ul><li><a href="#Prelude_0_refIO_1" class="link"><div class="nowrap">refIO
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span>? validator = null<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_atomicIO_1" class="link"><div class="nowrap">atomicIO
+<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span> op<span class='comma'>, </span>Isolation isolation = Isolation.Snapshot<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_atomicIO_0" class="link"><div class="nowrap">atomicIO
+
+<span class='parens'>(</span>Action op<span class='comma'>, </span>Isolation isolation = Isolation.Snapshot<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_snapshotIO_1" class="link"><div class="nowrap">snapshotIO
+<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span> op<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_snapshotIO_0" class="link"><div class="nowrap">snapshotIO
+
+<span class='parens'>(</span>Action op<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_serialIO_1" class="link"><div class="nowrap">serialIO
+<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span> op<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_serialIO_0" class="link"><div class="nowrap">serialIO
+
+<span class='parens'>(</span>Action op<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_swapIO_1" class="link"><div class="nowrap">swapIO
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Ref<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> r<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_commuteIO_1" class="link"><div class="nowrap">commuteIO
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Ref<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> r<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_atomIO_1" class="link"><div class="nowrap">atomIO
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_atomIO_1" class="link"><div class="nowrap">atomIO
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> validator<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_atomIO_2" class="link"><div class="nowrap">atomIO
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>M metadata<span class='comma'>, </span>A value<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_atomIO_2" class="link"><div class="nowrap">atomIO
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>M metadata<span class='comma'>, </span>A value<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> validator<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_swapIO_1" class="link"><div class="nowrap">swapIO
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Atom<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_swapIO_2" class="link"><div class="nowrap">swapIO
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Atom<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_swapIO_1" class="link"><div class="nowrap">swapIO
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Atom<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Option<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_swapIO_2" class="link"><div class="nowrap">swapIO
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Atom<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>Option<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_valueIO_1" class="link"><div class="nowrap">valueIO
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Atom<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_valueIO_2" class="link"><div class="nowrap">valueIO
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Atom<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_writeIO_1" class="link"><div class="nowrap">writeIO
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Atom<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>A value<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_writeIO_2" class="link"><div class="nowrap">writeIO
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Atom<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>A value<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_Prelude_0" class="link"><div class="nowrap">Prelude
+</div></a></li>
+<ul><li><a href="#Prelude_0_cancelToken =
+        IO.lift(e => e.Token)_0" class="link"><div class="nowrap">cancelToken =
+        IO.lift(e =&gt; e.Token)</div></a></li>
+<li><a href="#Prelude_0_cancel =
+        IO.lift<Unit>(
+            e =>
+            {
+                e.Source.Cancel();
+                throw new TaskCanceledException();
+            })_0" class="link"><div class="nowrap">cancel =
+        IO.lift&lt;Unit&gt;(
+            e =&gt;
+            {
+                e.Source.Cancel();
+                throw new TaskCanceledException();
+            })</div></a></li>
+<li><a href="#Prelude_0_unitIO = 
+        IO.pure<Unit>(default)_0" class="link"><div class="nowrap">unitIO = 
+        IO.pure&lt;Unit&gt;(default)</div></a></li>
+<li><a href="#Prelude_0_envIO = 
+        IO.lift<EnvIO>(e => e)_0" class="link"><div class="nowrap">envIO = 
+        IO.lift&lt;EnvIO&gt;(e =&gt; e)</div></a></li>
+<li><a href="#Prelude_0_tail_1" class="link"><div class="nowrap">tail
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> tailIO<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_tailIO_2" class="link"><div class="nowrap">tailIO
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_postIO_2" class="link"><div class="nowrap">postIO
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_fork_2" class="link"><div class="nowrap">fork
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Option<span class='generics'>&lt;</span>TimeSpan<span class='generics'>&gt;</span> timeout = default<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_awaitIO_2" class="link"><div class="nowrap">awaitIO
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_yieldFor_0" class="link"><div class="nowrap">yieldFor
+
+<span class='parens'>(</span>Duration duration<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_yieldFor_0" class="link"><div class="nowrap">yieldFor
+
+<span class='parens'>(</span>TimeSpan timeSpan<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_awaitAll_2" class="link"><div class="nowrap">awaitAll
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>params K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>[] ms<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_awaitAll_2" class="link"><div class="nowrap">awaitAll
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>params K<span class='generics'>&lt;</span>M<span class='comma'>, </span>ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>[] forks<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_awaitAll_1" class="link"><div class="nowrap">awaitAll
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>params ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>[] forks<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_awaitAll_2" class="link"><div class="nowrap">awaitAll
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ms<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_awaitAll_1" class="link"><div class="nowrap">awaitAll
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ms<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_awaitAll_2" class="link"><div class="nowrap">awaitAll
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> forks<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_awaitAll_1" class="link"><div class="nowrap">awaitAll
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>IO<span class='generics'>&lt;</span>ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> forks<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_awaitAll_1" class="link"><div class="nowrap">awaitAll
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> forks<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_awaitAny_2" class="link"><div class="nowrap">awaitAny
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>params K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>[] ms<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_awaitAny_1" class="link"><div class="nowrap">awaitAny
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>params IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>[] ms<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_awaitAny_1" class="link"><div class="nowrap">awaitAny
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>params K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span>[] ms<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_awaitAny_2" class="link"><div class="nowrap">awaitAny
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>params K<span class='generics'>&lt;</span>M<span class='comma'>, </span>ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>[] forks<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_awaitAny_1" class="link"><div class="nowrap">awaitAny
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>params IO<span class='generics'>&lt;</span>ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>[] forks<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_awaitAny_1" class="link"><div class="nowrap">awaitAny
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>params ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>[] forks<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_awaitAny_2" class="link"><div class="nowrap">awaitAny
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> forks<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_awaitAny_2" class="link"><div class="nowrap">awaitAny
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> forks<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_awaitAny_1" class="link"><div class="nowrap">awaitAny
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ms<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_awaitAny_1" class="link"><div class="nowrap">awaitAny
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ms<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_awaitAny_1" class="link"><div class="nowrap">awaitAny
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> forks<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_awaitAny_1" class="link"><div class="nowrap">awaitAny
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>IO<span class='generics'>&lt;</span>ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> forks<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_timeout_2" class="link"><div class="nowrap">timeout
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>TimeSpan timeout<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_timeout_1" class="link"><div class="nowrap">timeout
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>TimeSpan timeout<span class='comma'>, </span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_repeat_2" class="link"><div class="nowrap">repeat
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_repeat_1" class="link"><div class="nowrap">repeat
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_repeat_2" class="link"><div class="nowrap">repeat
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Schedule schedule<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_repeat_1" class="link"><div class="nowrap">repeat
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Schedule schedule<span class='comma'>, </span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_repeatWhile_2" class="link"><div class="nowrap">repeatWhile
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_repeatWhile_1" class="link"><div class="nowrap">repeatWhile
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_repeatWhile_2" class="link"><div class="nowrap">repeatWhile
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Schedule schedule,
+        K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_repeatWhile_1" class="link"><div class="nowrap">repeatWhile
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Schedule schedule,
+        K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_repeatUntil_2" class="link"><div class="nowrap">repeatUntil
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_repeatUntil_1" class="link"><div class="nowrap">repeatUntil
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_repeatUntil_2" class="link"><div class="nowrap">repeatUntil
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Schedule schedule,
+        K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_repeatUntil_1" class="link"><div class="nowrap">repeatUntil
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Schedule schedule,
+        K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_retry_2" class="link"><div class="nowrap">retry
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_retry_1" class="link"><div class="nowrap">retry
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_retry_2" class="link"><div class="nowrap">retry
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Schedule schedule<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_retry_1" class="link"><div class="nowrap">retry
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Schedule schedule<span class='comma'>, </span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_retryWhile_2" class="link"><div class="nowrap">retryWhile
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
+        Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_retryWhile_1" class="link"><div class="nowrap">retryWhile
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
+        Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_retryWhile_2" class="link"><div class="nowrap">retryWhile
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Schedule schedule,
+        K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
+        Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_retryWhile_1" class="link"><div class="nowrap">retryWhile
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Schedule schedule,
+        K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
+        Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_retryUntil_2" class="link"><div class="nowrap">retryUntil
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
+        Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_retryUntil_1" class="link"><div class="nowrap">retryUntil
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
+        Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_retryUntil_2" class="link"><div class="nowrap">retryUntil
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Schedule schedule,
+        K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
+        Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_retryUntil_1" class="link"><div class="nowrap">retryUntil
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Schedule schedule,
+        K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
+        Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_Prelude_0" class="link"><div class="nowrap">Prelude
+</div></a></li>
+<ul><li><a href="#Prelude_0_map_2" class="link"><div class="nowrap">map
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_action_2" class="link"><div class="nowrap">action
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#Prelude_0_apply_2" class="link"><div class="nowrap">apply
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li></ul></ul></div>
+<div class="interface">
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_Prelude_0" class="def">Prelude</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.Concurreny.cs#L7" class="link">Source</a>
+<a href="#_0_Prelude_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>Ref<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Prelude_0_refIO_1" class="def">refIO</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span>? validator = null<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.Concurreny.cs#L69" class="link">Source</a>
+<a href="#Prelude_0_refIO_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Generates a new reference that can be used within a <code>sync</code> transaction</p>
+<p><code>Refs</code> ensure safe shared use of mutable storage locations via a software transactional
+memory (STM) system. <code>Refs</code> are bound to a single storage location for their lifetime,
+and only allow mutation of that location to occur within a transaction.</p>
+</div>
+<div><p>Transactions (within a <code>sync(() =&gt; ...)</code>) should be easy to understand if you’ve ever used database
+transactions - they ensure that all actions on Refs are atomic, consistent, and isolated.</p>
+<ul>
+<li class='markdown-bullet'><strong>Atomic</strong> - means that every change to Refs made within a transaction occurs or none do.</li>
+<li class='markdown-bullet'><strong>Consistent</strong> - means that each new value can be checked with a validator function before allowing
+the transaction to commit.</li>
+<li class='markdown-bullet'><strong>Isolated</strong> - means that no transaction sees the effects of any other transaction while it is
+running.</li>
+</ul>
+<p>Another feature common to STMs is that, should a transaction have a conflict while running,
+it is automatically retried.  The language-ext STM uses multi-version concurrency control for
+snapshot and serialisable isolation.</p>
+<p>In practice, this means:</p>
+<p>All reads of Refs will see a consistent snapshot of the <em>Ref world</em> as of the starting point
+of the transaction (its 'read point'). The transaction will see any changes it has made.
+This is called the in-transaction-value.</p>
+<p>All changes made to Refs during a transaction will appear to occur at a single point in the
+<em>Ref world</em> timeline (its 'write point').</p>
+<p>No changes will have been made by any other transactions to any Refs that have been modified
+by this transaction.</p>
+<ul>
+<li class='markdown-bullet'><p>Readers will never block writers, or other readers.</p>
+</li>
+<li class='markdown-bullet'><p>Writers will never block readers.</p>
+</li>
+</ul>
+<p>I/O and other activities with side effects should be avoided in transactions, since transactions
+will be retried.</p>
+<p>If a constraint on the validity of a value of a Ref that is being changed depends upon the
+simultaneous value of a Ref that is not being changed, that second Ref can be protected from
+modification by running the <code>sync</code> transaction with <code>Isolation.Serialisable</code>.</p>
+<p>The language-ext STM is designed to work with the persistent collections (<code>Map</code>, <code>HashMap</code>,
+<code>Seq</code>, <code>Lst</code>, <code>Set, </code>HashSet` etc.), and it is strongly recommended that you use the language-ext
+collections as the values of your Refs. Since all work done in an STM transaction is speculative,
+it is imperative that there be a low cost to making copies and modifications. Persistent collections
+have free copies (just use the original, it can’t be changed), and 'modifications' share structure
+efficiently. In any case:</p>
+<p>The values placed in Refs must be, or be considered, <strong>immutable</strong>. Otherwise, this library can’t help you.</p>
+
+<p>See the <a href="https://github.com/louthy/language-ext/wiki/Concurrency">concurrency section</a> of the wiki for more info.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">value</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Initial value of the ref</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">validator</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Validator that is called on the ref value just
+before any transaction is committed (within a <code>sync</code>)</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span>
+<a id="Prelude_0_atomicIO_1" class="def">atomicIO</a>
+<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span> op<span class='comma'>, </span>Isolation isolation = Isolation.Snapshot<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.Concurreny.cs#L101" class="link">Source</a>
+<a href="#Prelude_0_atomicIO_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div><p>Snapshot isolation requires that nothing outside the transaction has written to any of the values that are
+<em>written-to within the transaction</em>.  If anything does write to the values used within the transaction, then
+the transaction is rolled back and retried (using the latest 'world' state).</p>
+
+<p>Serialisable isolation requires that nothing outside the transaction has written to any of the values that
+are <em>read-from or written-to within the transaction</em>.  If anything does read from or written to the values used
+within the transaction, then it is rolled back and retried (using the latest 'world' state).</p>
+<p>It is the strictest form of isolation, and the most likely to conflict; but protects against cross read/write
+inconsistencies.  For example, if you have:</p>
+<pre class='language-csharp'><code>var x = Ref(1);
+var y = Ref(2);
+
+snapshot(() =&gt; x.Value = y.Value + 1);
+</code></pre>
+<p>Then something writing to <code>y</code> mid-way through the transaction would <em>not</em> cause the transaction to fail.
+Because <code>y</code> was only read-from, not written to.  However, this:</p>
+<pre class='language-csharp'><code>var x = Ref(1);
+var y = Ref(2);
+
+serial(() =&gt; x.Value = y.Value + 1);
+</code></pre>
+<p>... would fail if something wrote to <code>y</code>.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_atomicIO_0" class="def">atomicIO</a>
+
+<span class='parens'>(</span>Action op<span class='comma'>, </span>Isolation isolation = Isolation.Snapshot<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.Concurreny.cs#L137" class="link">Source</a>
+<a href="#Prelude_0_atomicIO_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Run the op within a new transaction
+If a transaction is already running, then this becomes part of the parent transaction</p>
+</div>
+<div><p>Snapshot isolation requires that nothing outside the transaction has written to any of the values that are
+<em>written-to within the transaction</em>.  If anything does write to the values used within the transaction, then
+the transaction is rolled back and retried (using the latest 'world' state).</p>
+
+<p>Serialisable isolation requires that nothing outside the transaction has written to any of the values that
+are <em>read-from or written-to within the transaction</em>.  If anything does read from or written to the values used
+within the transaction, then it is rolled back and retried (using the latest 'world' state).</p>
+<p>It is the strictest form of isolation, and the most likely to conflict; but protects against cross read/write
+inconsistencies.  For example, if you have:</p>
+<pre class='language-csharp'><code>var x = Ref(1);
+var y = Ref(2);
+
+snapshot(() =&gt; x.Value = y.Value + 1);
+</code></pre>
+<p>Then something writing to <code>y</code> mid-way through the transaction would <em>not</em> cause the transaction to fail.
+Because <code>y</code> was only read-from, not written to.  However, this:</p>
+<pre class='language-csharp'><code>var x = Ref(1);
+var y = Ref(2);
+
+serial(() =&gt; x.Value = y.Value + 1);
+</code></pre>
+<p>... would fail if something wrote to <code>y</code>.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span>
+<a id="Prelude_0_snapshotIO_1" class="def">snapshotIO</a>
+<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span> op<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.Concurreny.cs#L150" class="link">Source</a>
+<a href="#Prelude_0_snapshotIO_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Run the op within a new transaction
+If a transaction is already running, then this becomes part of the parent transaction</p>
+</div>
+<div><p>Snapshot isolation requires that nothing outside the transaction has written to any of the values that are
+<em>written-to within the transaction</em>.  If anything does write to the values used within the transaction, then
+the transaction is rolled back and retried (using the latest 'world' state).</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_snapshotIO_0" class="def">snapshotIO</a>
+
+<span class='parens'>(</span>Action op<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.Concurreny.cs#L163" class="link">Source</a>
+<a href="#Prelude_0_snapshotIO_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Run the op within a new transaction
+If a transaction is already running, then this becomes part of the parent transaction</p>
+</div>
+<div><p>Snapshot isolation requires that nothing outside the transaction has written to any of the values that are
+<em>written-to within the transaction</em>.  If anything does write to the values used within the transaction, then
+the transaction is rolled back and retried (using the latest 'world' state).</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span>
+<a id="Prelude_0_serialIO_1" class="def">serialIO</a>
+<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>R<span class='generics'>&gt;</span> op<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.Concurreny.cs#L194" class="link">Source</a>
+<a href="#Prelude_0_serialIO_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Run the op within a new transaction
+If a transaction is already running, then this becomes part of the parent transaction</p>
+</div>
+<div><p>Serialisable isolation requires that nothing outside the transaction has written to any of the values that
+are <em>read-from or written-to within the transaction</em>.  If anything does read from or written to the values used
+within the transaction, then it is rolled back and retried (using the latest 'world' state).</p>
+<p>It is the strictest form of isolation, and the most likely to conflict; but protects against cross read/write
+inconsistencies.  For example, if you have:</p>
+<pre class='language-csharp'><code>var x = Ref(1);
+var y = Ref(2);
+
+snapshot(() =&gt; x.Value = y.Value + 1);
+</code></pre>
+<p>Then something writing to <code>y</code> mid-way through the transaction would <em>not</em> cause the transaction to fail.
+Because <code>y</code> was only read-from, not written to.  However, this:</p>
+<pre class='language-csharp'><code>var x = Ref(1);
+var y = Ref(2);
+
+serial(() =&gt; x.Value = y.Value + 1);
+</code></pre>
+<p>... would fail if something wrote to <code>y</code>.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_serialIO_0" class="def">serialIO</a>
+
+<span class='parens'>(</span>Action op<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.Concurreny.cs#L225" class="link">Source</a>
+<a href="#Prelude_0_serialIO_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Run the op within a new transaction
+If a transaction is already running, then this becomes part of the parent transaction</p>
+</div>
+<div><p>Serialisable isolation requires that nothing outside the transaction has written to any of the values that
+are <em>read-from or written-to within the transaction</em>.  If anything does read from or written to the values used
+within the transaction, then it is rolled back and retried (using the latest 'world' state).</p>
+<p>It is the strictest form of isolation, and the most likely to conflict; but protects against cross read/write
+inconsistencies.  For example, if you have:</p>
+<pre class='language-csharp'><code>var x = Ref(1);
+var y = Ref(2);
+
+snapshot(() =&gt; x.Value = y.Value + 1);
+</code></pre>
+<p>Then something writing to <code>y</code> mid-way through the transaction would <em>not</em> cause the transaction to fail.
+Because <code>y</code> was only read-from, not written to.  However, this:</p>
+<pre class='language-csharp'><code>var x = Ref(1);
+var y = Ref(2);
+
+serial(() =&gt; x.Value = y.Value + 1);
+</code></pre>
+<p>... would fail if something wrote to <code>y</code>.</p>
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_swapIO_1" class="def">swapIO</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Ref<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> r<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.Concurreny.cs#L236" class="link">Source</a>
+<a href="#Prelude_0_swapIO_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Swap the old value for the new returned by <code>f</code>
+Must be run within a <code>sync</code> transaction</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">r</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p><code>Ref</code> to process</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Function to update the <code>Ref</code></p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The value returned from <code>f</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_commuteIO_1" class="def">commuteIO</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Ref<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> r<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.Concurreny.cs#L258" class="link">Source</a>
+<a href="#Prelude_0_commuteIO_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Must be called in a transaction. Sets the in-transaction-value of
+ref to:</p>
+<pre class='language-csharp'><code>`f(in-transaction-value-of-ref)`
+</code></pre>
+<p>and returns the in-transaction-value when complete.</p>
+<p>At the commit point of the transaction, <code>f</code> is run <em>AGAIN</em> with the
+most recently committed value:</p>
+<pre class='language-csharp'><code>`f(most-recently-committed-value-of-ref)`
+</code></pre>
+<p>Thus <code>f</code> should be commutative, or, failing that, you must accept
+last-one-in-wins behavior.</p>
+<p>Commute allows for more concurrency than just setting the Ref's value</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>Atom<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Prelude_0_atomIO_1" class="def">atomIO</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.Concurreny.cs#L284" class="link">Source</a>
+<a href="#Prelude_0_atomIO_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atoms provide a way to manage shared, synchronous, independent state without
+locks.</p>
+</div>
+<div><p>The intended use of atom is to hold one an immutable data structure. You change
+the value by applying a function to the old value. This is done in an atomic
+manner by <code>Swap</code>.</p>
+<p>Internally, <code>Swap</code> reads the current value, applies the function to it, and
+attempts to <code>CompareExchange</code> it in. Since another thread may have changed the
+value in the intervening time, it may have to retry, and does so in a spin loop.</p>
+<p>The net effect is that the value will always be the result of the application
+of the supplied function to a current value, atomically. However, because the
+function might be called multiple times, it must be free of side effects.</p>
+<p>Atoms are an efficient way to represent some state that will never need to be
+coordinated with any other, and for which you wish to make synchronous changes.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">value</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Initial value of the atom</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The constructed Atom</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>Atom<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Prelude_0_atomIO_1" class="def">atomIO</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> validator<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.Concurreny.cs#L317" class="link">Source</a>
+<a href="#Prelude_0_atomIO_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atoms provide a way to manage shared, synchronous, independent state without
+locks.</p>
+</div>
+<div><p>The intended use of atom is to hold one an immutable data structure. You change
+the value by applying a function to the old value. This is done in an atomic
+manner by <code>Swap</code>.</p>
+<p>Internally, <code>Swap</code> reads the current value, applies the function to it, and
+attempts to <code>CompareExchange</code> it in. Since another thread may have changed the
+value in the intervening time, it may have to retry, and does so in a spin loop.</p>
+<p>The net effect is that the value will always be the result of the application
+of the supplied function to a current value, atomically. However, because the
+function might be called multiple times, it must be free of side effects.</p>
+<p>Atoms are an efficient way to represent some state that will never need to be
+coordinated with any other, and for which you wish to make synchronous changes.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">value</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Initial value of the atom</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">validator</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Function to run on the value after each state change.</p>
+<p>If the function returns false for any proposed new state, then the <code>swap</code>
+function will return <code>false</code>, else it will return <code>true</code> on successful setting
+of the atom's state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The constructed Atom or None if the validation faled for the initial
+<code>value</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>Atom<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Prelude_0_atomIO_2" class="def">atomIO</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>M metadata<span class='comma'>, </span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.Concurreny.cs#L348" class="link">Source</a>
+<a href="#Prelude_0_atomIO_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atoms provide a way to manage shared, synchronous, independent state without
+locks.</p>
+</div>
+<div><p>The intended use of atom is to hold one an immutable data structure. You change
+the value by applying a function to the old value. This is done in an atomic
+manner by <code>Swap</code>.</p>
+<p>Internally, <code>Swap</code> reads the current value, applies the function to it, and
+attempts to <code>CompareExchange</code> it in. Since another thread may have changed the
+value in the intervening time, it may have to retry, and does so in a spin loop.</p>
+<p>The net effect is that the value will always be the result of the application
+of the supplied function to a current value, atomically. However, because the
+function might be called multiple times, it must be free of side effects.</p>
+<p>Atoms are an efficient way to represent some state that will never need to be
+coordinated with any other, and for which you wish to make synchronous changes.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">metadata</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Metadata to be passed to the validation function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">value</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Initial value of the atom</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The constructed Atom</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>Atom<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Prelude_0_atomIO_2" class="def">atomIO</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>M metadata<span class='comma'>, </span>A value<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> validator<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.Concurreny.cs#L382" class="link">Source</a>
+<a href="#Prelude_0_atomIO_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atoms provide a way to manage shared, synchronous, independent state without
+locks.</p>
+</div>
+<div><p>The intended use of atom is to hold one an immutable data structure. You change
+the value by applying a function to the old value. This is done in an atomic
+manner by <code>Swap</code>.</p>
+<p>Internally, <code>Swap</code> reads the current value, applies the function to it, and
+attempts to <code>CompareExchange</code> it in. Since another thread may have changed the
+value in the intervening time, it may have to retry, and does so in a spin loop.</p>
+<p>The net effect is that the value will always be the result of the application
+of the supplied function to a current value, atomically. However, because the
+function might be called multiple times, it must be free of side effects.</p>
+<p>Atoms are an efficient way to represent some state that will never need to be
+coordinated with any other, and for which you wish to make synchronous changes.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">metadata</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Metadata to be passed to the validation function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">value</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Initial value of the atom</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">validator</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Function to run on the value after each state change.</p>
+<p>If the function returns false for any proposed new state, then the <code>swap</code>
+function will return <code>false</code>, else it will return <code>true</code> on successful setting
+of the atom's state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The constructed Atom or None if the validation faled for the initial
+<code>value</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_swapIO_1" class="def">swapIO</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Atom<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.Concurreny.cs#L403" class="link">Source</a>
+<a href="#Prelude_0_swapIO_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
+the atom with the result.  Note: <code>f</code> may be called multiple times, so it
+should be free of side effects.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Function to update the atom</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>If the swap operation succeeded then a snapshot of the value that was set is returned.
+If the swap operation fails (which can only happen due to its validator returning false),
+then a snapshot of the current value within the Atom is returned.
+If there is no validator for the Atom then the return value is always the snapshot of
+the successful <code>f</code> function.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_swapIO_2" class="def">swapIO</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Atom<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>A<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.Concurreny.cs#L419" class="link">Source</a>
+<a href="#Prelude_0_swapIO_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
+the atom with the result.  Note: <code>f</code> may be called multiple times, so it
+should be free of side effects.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Function to update the atom</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>If the swap operation succeeded then a snapshot of the value that was set is returned.
+If the swap operation fails (which can only happen due to its validator returning false),
+then a snapshot of the current value within the Atom is returned.
+If there is no validator for the Atom then the return value is always the snapshot of
+the successful <code>f</code> function.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_swapIO_1" class="def">swapIO</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Atom<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Option<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.Concurreny.cs#L437" class="link">Source</a>
+<a href="#Prelude_0_swapIO_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
+the atom with the result.  Note: <code>f</code> may be called multiple times, so it
+should be free of side effects.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Function to update the atom</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><ul>
+<li class='markdown-bullet'>If <code>f</code> returns <code>None</code> then no update occurs and the result of the call
+to <code>Swap</code> will be the latest (unchanged) value of <code>A</code>.</li>
+<li class='markdown-bullet'>If the swap operation fails, due to its validator returning false, then a snapshot of
+the current value within the Atom is returned.</li>
+<li class='markdown-bullet'>If the swap operation succeeded then a snapshot of the value that was set is returned.</li>
+<li class='markdown-bullet'>If there is no validator for the Atom then the return value is always the snapshot of
+the successful <code>f</code> function.</li>
+</ul>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_swapIO_2" class="def">swapIO</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Atom<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>Option<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.Concurreny.cs#L455" class="link">Source</a>
+<a href="#Prelude_0_swapIO_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Atomically updates the value by passing the old value to <code>f</code> and updating
+the atom with the result.  Note: <code>f</code> may be called multiple times, so it
+should be free of side effects.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Function to update the atom</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><ul>
+<li class='markdown-bullet'>If <code>f</code> returns <code>None</code> then no update occurs and the result of the call
+to <code>Swap</code> will be the latest (unchanged) value of <code>A</code>.</li>
+<li class='markdown-bullet'>If the swap operation fails, due to its validator returning false, then a snapshot of
+the current value within the Atom is returned.</li>
+<li class='markdown-bullet'>If the swap operation succeeded then a snapshot of the value that was set is returned.</li>
+<li class='markdown-bullet'>If there is no validator for the Atom then the return value is always the snapshot of
+the successful <code>f</code> function.</li>
+</ul>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_valueIO_1" class="def">valueIO</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Atom<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.Concurreny.cs#L465" class="link">Source</a>
+<a href="#Prelude_0_valueIO_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Retrieve an IO computation that on each invocation will snapshot of the
+value in an atom</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Atom to snapshot</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>IO representation of the snapshot</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_valueIO_2" class="def">valueIO</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Atom<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.Concurreny.cs#L475" class="link">Source</a>
+<a href="#Prelude_0_valueIO_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Retrieve an IO computation that on each invocation will snapshot of the
+value in an atom</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Atom to snapshot</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>IO representation of the snapshot</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_writeIO_1" class="def">writeIO</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Atom<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.Concurreny.cs#L493" class="link">Source</a>
+<a href="#Prelude_0_writeIO_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Write a value to an atom.</p>
+</div>
+<div><p>Note, this can be dangerous and is usually better to use <code>swapIO</code> if the
+<code>value</code> is derived from a snapshot of the atom's value (via <code>valueIO</code>).</p>
+<p>The computation is better run inside the swap operation for atomic consistency.</p>
+<p>However, using <code>writeIO</code> is reasonable if this is simply a forceful overwrite
+of the atomic value without any dependency on the previous state.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Atom to write</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>IO representation of the write operation</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_writeIO_2" class="def">writeIO</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Atom<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.Concurreny.cs#L511" class="link">Source</a>
+<a href="#Prelude_0_writeIO_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Write a value to an atom.</p>
+</div>
+<div><p>Note, this can be dangerous and is usually better to use <code>swapIO</code> if the
+<code>value</code> is derived from a snapshot of the atom's value (via <code>valueIO</code>).</p>
+<p>The computation is better run inside the swap operation for atomic consistency.</p>
+<p>However, using <code>writeIO</code> is reasonable if this is simply a forceful overwrite
+of the atomic value without any dependency on the previous state.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Atom to write</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>IO representation of the write operation</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_Prelude_0" class="def">Prelude</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L13" class="link">Source</a>
+<a href="#_0_Prelude_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+<div class="subs methods"><p class="caption">Fields</p>
+<div class="top"><p class="src"><span class="keyword">field</span>
+IO<span class='generics'>&lt;</span>CancellationToken<span class='generics'>&gt;</span>
+<a id="Prelude_0_cancelToken =
+        IO.lift(e => e.Token)_0" class="def">cancelToken =
+        IO.lift(e =&gt; e.Token)</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L19" class="link">Source</a>
+<a href="#Prelude_0_cancelToken =
+        IO.lift(e => e.Token)_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Access the cancellation-token from the IO environment</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>CancellationToken</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">field</span>
+IO<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_cancel =
+        IO.lift<Unit>(
+            e =>
+            {
+                e.Source.Cancel();
+                throw new TaskCanceledException();
+            })_0" class="def">cancel =
+        IO.lift&lt;Unit&gt;(
+            e =&gt;
+            {
+                e.Source.Cancel();
+                throw new TaskCanceledException();
+            })</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L25" class="link">Source</a>
+<a href="#Prelude_0_cancel =
+        IO.lift<Unit>(
+            e =>
+            {
+                e.Source.Cancel();
+                throw new TaskCanceledException();
+            })_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Request a cancellation of the IO expression</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">field</span>
+IO<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_unitIO = 
+        IO.pure<Unit>(default)_0" class="def">unitIO = 
+        IO.pure&lt;Unit&gt;(default)</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L36" class="link">Source</a>
+<a href="#Prelude_0_unitIO = 
+        IO.pure<Unit>(default)_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Always yields a <code>Unit</code> value</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">field</span>
+IO<span class='generics'>&lt;</span>EnvIO<span class='generics'>&gt;</span>
+<a id="Prelude_0_envIO = 
+        IO.lift<EnvIO>(e => e)_0" class="def">envIO = 
+        IO.lift&lt;EnvIO&gt;(e =&gt; e)</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L42" class="link">Source</a>
+<a href="#Prelude_0_envIO = 
+        IO.lift<EnvIO>(e => e)_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Yields the IO environment</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_tail_1" class="def">tail</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> tailIO<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L51" class="link">Source</a>
+<a href="#Prelude_0_tail_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Tail call</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"></span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">tailIO</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"></span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_tailIO_2" class="def">tailIO</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L60" class="link">Source</a>
+<a href="#Prelude_0_tailIO_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Tail call</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"></span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"></span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_postIO_2" class="def">postIO</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L69" class="link">Source</a>
+<a href="#Prelude_0_postIO_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Make this IO computation run on the <code>SynchronizationContext</code> that was captured at the start
+of the IO chain (i.e. the one embedded within the <code>EnvIO</code> environment that is passed through
+all IO computations)</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Prelude_0_fork_2" class="def">fork</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Option<span class='generics'>&lt;</span>TimeSpan<span class='generics'>&gt;</span> timeout = default<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L82" class="link">Source</a>
+<a href="#Prelude_0_fork_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadUnliftIO&lt;M&gt;, Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Queue this IO operation to run on the thread-pool.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">timeout</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Maximum time that the forked IO operation can run for. <code>None</code> for no timeout.</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Returns a <code>ForkIO</code> data-structure that contains two IO effects that can be used to either cancel
+the forked IO operation or to await the result of it.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_awaitIO_2" class="def">awaitIO</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L95" class="link">Source</a>
+<a href="#Prelude_0_awaitIO_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Queue this IO operation to run on the thread-pool.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">timeout</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Maximum time that the forked IO operation can run for. <code>None</code> for no timeout.</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Returns a <code>ForkIO</code> data-structure that contains two IO effects that can be used to either cancel
+the forked IO operation or to await the result of it.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_yieldFor_0" class="def">yieldFor</a>
+
+<span class='parens'>(</span>Duration duration<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L106" class="link">Source</a>
+<a href="#Prelude_0_yieldFor_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Yield the thread for the specified duration or until cancelled.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">duration</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Amount of time to yield for</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Unit</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span>
+<a id="Prelude_0_yieldFor_0" class="def">yieldFor</a>
+
+<span class='parens'>(</span>TimeSpan timeSpan<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L116" class="link">Source</a>
+<a href="#Prelude_0_yieldFor_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Yield the thread for the specified duration or until cancelled.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">timeSpan</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Amount of time to yield for</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Unit</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Prelude_0_awaitAll_2" class="def">awaitAll</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>params K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>[] ms<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L126" class="link">Source</a>
+<a href="#Prelude_0_awaitAll_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Awaits all operations</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ms</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Operations to await</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Sequence of results</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Prelude_0_awaitAll_2" class="def">awaitAll</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>params K<span class='generics'>&lt;</span>M<span class='comma'>, </span>ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>[] forks<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L135" class="link">Source</a>
+<a href="#Prelude_0_awaitAll_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Awaits all forks</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">forks</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Forks to await</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Sequence of results</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Prelude_0_awaitAll_1" class="def">awaitAll</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>params ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>[] forks<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L144" class="link">Source</a>
+<a href="#Prelude_0_awaitAll_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Awaits all</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">forks</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>IO operations to await</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Sequence of results</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Prelude_0_awaitAll_2" class="def">awaitAll</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ms<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L152" class="link">Source</a>
+<a href="#Prelude_0_awaitAll_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Awaits all operations</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ms</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Operations to await</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Sequence of results</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Prelude_0_awaitAll_1" class="def">awaitAll</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ms<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L162" class="link">Source</a>
+<a href="#Prelude_0_awaitAll_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Awaits all operations</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ms</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Operations to await</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Sequence of results</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Prelude_0_awaitAll_2" class="def">awaitAll</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> forks<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L174" class="link">Source</a>
+<a href="#Prelude_0_awaitAll_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Awaits all forks</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">forks</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Forks to await</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Sequence of results</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Prelude_0_awaitAll_1" class="def">awaitAll</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>IO<span class='generics'>&lt;</span>ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> forks<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L183" class="link">Source</a>
+<a href="#Prelude_0_awaitAll_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Awaits all</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">forks</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>IO operations to await</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Sequence of results</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Prelude_0_awaitAll_1" class="def">awaitAll</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> forks<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L196" class="link">Source</a>
+<a href="#Prelude_0_awaitAll_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Awaits all</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">forks</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>IO operations to await</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Sequence of results</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_awaitAny_2" class="def">awaitAny</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>params K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>[] ms<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L212" class="link">Source</a>
+<a href="#Prelude_0_awaitAny_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Awaits for any operation to complete</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ms</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Operations to await</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>If we get one success, then we'll return straight away and cancel the others.
+If we get any errors, we'll collect them in the hope that at least one works.
+If we have collected as many errors as we have forks, then we'll return them all.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_awaitAny_1" class="def">awaitAny</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>params IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>[] ms<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L225" class="link">Source</a>
+<a href="#Prelude_0_awaitAny_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Awaits for any IO to complete</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ms</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>IO operations to await</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>If we get one success, then we'll return straight away and cancel the others.
+If we get any errors, we'll collect them in the hope that at least one works.
+If we have collected as many errors as we have forks, then we'll return them all.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_awaitAny_1" class="def">awaitAny</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>params K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span>[] ms<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L237" class="link">Source</a>
+<a href="#Prelude_0_awaitAny_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Awaits for any IO to complete</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ms</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>IO operations to await</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>If we get one success, then we'll return straight away and cancel the others.
+If we get any errors, we'll collect them in the hope that at least one works.
+If we have collected as many errors as we have forks, then we'll return them all.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_awaitAny_2" class="def">awaitAny</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>params K<span class='generics'>&lt;</span>M<span class='comma'>, </span>ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>[] forks<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L249" class="link">Source</a>
+<a href="#Prelude_0_awaitAny_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Awaits for any forks to complete</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">forks</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Forks to await</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>If we get one success, then we'll return straight away and cancel the others.
+If we get any errors, we'll collect them in the hope that at least one works.
+If we have collected as many errors as we have forks, then we'll return them all.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_awaitAny_1" class="def">awaitAny</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>params IO<span class='generics'>&lt;</span>ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>[] forks<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L262" class="link">Source</a>
+<a href="#Prelude_0_awaitAny_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Awaits for any forks to complete</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">forks</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Forks to await</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>If we get one success, then we'll return straight away and cancel the others.
+If we get any errors, we'll collect them in the hope that at least one works.
+If we have collected as many errors as we have forks, then we'll return them all.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_awaitAny_1" class="def">awaitAny</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>params ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>[] forks<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L274" class="link">Source</a>
+<a href="#Prelude_0_awaitAny_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Awaits for any forks to complete</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">forks</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Forks to await</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>If we get one success, then we'll return straight away and cancel the others.
+If we get any errors, we'll collect them in the hope that at least one works.
+If we have collected as many errors as we have forks, then we'll return them all.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_awaitAny_2" class="def">awaitAny</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> forks<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L286" class="link">Source</a>
+<a href="#Prelude_0_awaitAny_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Awaits for any forks to complete</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">forks</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Forks to await</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>If we get one success, then we'll return straight away and cancel the others.
+If we get any errors, we'll collect them in the hope that at least one works.
+If we have collected as many errors as we have forks, then we'll return them all.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_awaitAny_2" class="def">awaitAny</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> forks<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L300" class="link">Source</a>
+<a href="#Prelude_0_awaitAny_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Awaits for operations to complete</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ms</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Operations to await</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>If we get one success, then we'll return straight away and cancel the others.
+If we get any errors, we'll collect them in the hope that at least one works.
+If we have collected as many errors as we have forks, then we'll return them all.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_awaitAny_1" class="def">awaitAny</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ms<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L314" class="link">Source</a>
+<a href="#Prelude_0_awaitAny_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Awaits for any IO to complete</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ms</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>IO operations to await</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>If we get one success, then we'll return straight away and cancel the others.
+If we get any errors, we'll collect them in the hope that at least one works.
+If we have collected as many errors as we have forks, then we'll return them all.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_awaitAny_1" class="def">awaitAny</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ms<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L326" class="link">Source</a>
+<a href="#Prelude_0_awaitAny_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Awaits for any IO to complete</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ms</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>IO operations to await</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>If we get one success, then we'll return straight away and cancel the others.
+If we get any errors, we'll collect them in the hope that at least one works.
+If we have collected as many errors as we have forks, then we'll return them all.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_awaitAny_1" class="def">awaitAny</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> forks<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L338" class="link">Source</a>
+<a href="#Prelude_0_awaitAny_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Awaits for any forks to complete</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">forks</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Forks to await</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>If we get one success, then we'll return straight away and cancel the others.
+If we get any errors, we'll collect them in the hope that at least one works.
+If we have collected as many errors as we have forks, then we'll return them all.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_awaitAny_1" class="def">awaitAny</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Seq<span class='generics'>&lt;</span>IO<span class='generics'>&lt;</span>ForkIO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> forks<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L350" class="link">Source</a>
+<a href="#Prelude_0_awaitAny_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Awaits for any forks to complete</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">forks</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Forks to await</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>If we get one success, then we'll return straight away and cancel the others.
+If we get any errors, we'll collect them in the hope that at least one works.
+If we have collected as many errors as we have forks, then we'll return them all.</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_timeout_2" class="def">timeout</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>TimeSpan timeout<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L361" class="link">Source</a>
+<a href="#Prelude_0_timeout_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Timeout operation if it takes too long</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_timeout_1" class="def">timeout</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>TimeSpan timeout<span class='comma'>, </span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L370" class="link">Source</a>
+<a href="#Prelude_0_timeout_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Timeout operation if it takes too long</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_repeat_2" class="def">repeat</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L381" class="link">Source</a>
+<a href="#Prelude_0_repeat_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Keeps repeating the computation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to repeat</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The result of the last invocation of <code>ma</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_repeat_1" class="def">repeat</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L391" class="link">Source</a>
+<a href="#Prelude_0_repeat_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Keeps repeating the computation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to repeat</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The result of the last invocation of <code>ma</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_repeat_2" class="def">repeat</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Schedule schedule<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L401" class="link">Source</a>
+<a href="#Prelude_0_repeat_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Keeps repeating the computation, until the scheduler expires</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">schedule</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Scheduler strategy for repeating</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to repeat</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The result of the last invocation of <code>ma</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_repeat_1" class="def">repeat</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Schedule schedule<span class='comma'>, </span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L412" class="link">Source</a>
+<a href="#Prelude_0_repeat_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Keeps repeating the computation until the scheduler expires</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">schedule</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Scheduler strategy for repeating</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to repeat</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The result of the last invocation of <code>ma</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_repeatWhile_2" class="def">repeatWhile</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L421" class="link">Source</a>
+<a href="#Prelude_0_repeatWhile_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Keeps repeating the computation until the predicate returns false</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to repeat</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The result of the last invocation of <code>ma</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_repeatWhile_1" class="def">repeatWhile</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L431" class="link">Source</a>
+<a href="#Prelude_0_repeatWhile_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Keeps repeating the computation until the predicate returns false</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to repeat</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The result of the last invocation of <code>ma</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_repeatWhile_2" class="def">repeatWhile</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Schedule schedule,
+        K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L441" class="link">Source</a>
+<a href="#Prelude_0_repeatWhile_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Keeps repeating the computation until the scheduler expires, or the predicate returns false</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">schedule</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Scheduler strategy for repeating</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to repeat</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The result of the last invocation of <code>ma</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_repeatWhile_1" class="def">repeatWhile</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Schedule schedule,
+        K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L455" class="link">Source</a>
+<a href="#Prelude_0_repeatWhile_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Keeps repeating the computation until the scheduler expires, or the predicate returns false</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">schedule</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Scheduler strategy for repeating</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to repeat</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The result of the last invocation of <code>ma</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_repeatUntil_2" class="def">repeatUntil</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L467" class="link">Source</a>
+<a href="#Prelude_0_repeatUntil_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Keeps repeating the computation until the predicate returns true</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to repeat</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The result of the last invocation of <code>ma</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_repeatUntil_1" class="def">repeatUntil</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L479" class="link">Source</a>
+<a href="#Prelude_0_repeatUntil_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Keeps repeating the computation until the predicate returns true</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to repeat</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The result of the last invocation of <code>ma</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_repeatUntil_2" class="def">repeatUntil</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Schedule schedule,
+        K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L491" class="link">Source</a>
+<a href="#Prelude_0_repeatUntil_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Keeps repeating the computation until the scheduler expires, or the predicate returns true</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">schedule</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Scheduler strategy for repeating</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to repeat</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The result of the last invocation of <code>ma</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_repeatUntil_1" class="def">repeatUntil</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Schedule schedule,
+        K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L505" class="link">Source</a>
+<a href="#Prelude_0_repeatUntil_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Keeps repeating the computation until the scheduler expires, or the predicate returns true</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">schedule</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Scheduler strategy for repeating</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to repeat</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The result of the last invocation of <code>ma</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_retry_2" class="def">retry</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L517" class="link">Source</a>
+<a href="#Prelude_0_retry_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Keeps retrying the computation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to retry</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The result of the last invocation of ma</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_retry_1" class="def">retry</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L527" class="link">Source</a>
+<a href="#Prelude_0_retry_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Keeps retrying the computation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to retry</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The result of the last invocation of ma</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_retry_2" class="def">retry</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Schedule schedule<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L537" class="link">Source</a>
+<a href="#Prelude_0_retry_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Keeps retrying the computation until the scheduler expires</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">schedule</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Scheduler strategy for retrying</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to retry</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The result of the last invocation of ma</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_retry_1" class="def">retry</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Schedule schedule<span class='comma'>, </span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L548" class="link">Source</a>
+<a href="#Prelude_0_retry_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Keeps retrying the computation until the scheduler expires</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">schedule</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Scheduler strategy for retrying</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to retry</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The result of the last invocation of ma</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_retryWhile_2" class="def">retryWhile</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
+        Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L557" class="link">Source</a>
+<a href="#Prelude_0_retryWhile_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Keeps retrying the computation until the predicate returns false</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to retry</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The result of the last invocation of ma</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_retryWhile_1" class="def">retryWhile</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
+        Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L569" class="link">Source</a>
+<a href="#Prelude_0_retryWhile_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Keeps retrying the computation until the predicate returns false</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to retry</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The result of the last invocation of ma</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_retryWhile_2" class="def">retryWhile</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Schedule schedule,
+        K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
+        Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L581" class="link">Source</a>
+<a href="#Prelude_0_retryWhile_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Keeps retrying the computation until the scheduler expires, or the predicate returns false</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">schedule</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Scheduler strategy for retrying</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to retry</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The result of the last invocation of ma</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_retryWhile_1" class="def">retryWhile</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Schedule schedule,
+        K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
+        Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L595" class="link">Source</a>
+<a href="#Prelude_0_retryWhile_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Keeps retrying the computation until the scheduler expires, or the predicate returns false</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">schedule</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Scheduler strategy for retrying</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to retry</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The result of the last invocation of ma</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_retryUntil_2" class="def">retryUntil</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
+        Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L607" class="link">Source</a>
+<a href="#Prelude_0_retryUntil_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Keeps retrying the computation until the predicate returns true</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to retry</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The result of the last invocation of ma</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_retryUntil_1" class="def">retryUntil</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
+        Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L619" class="link">Source</a>
+<a href="#Prelude_0_retryUntil_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Keeps retrying the computation until the predicate returns true</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to retry</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The result of the last invocation of ma</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_retryUntil_2" class="def">retryUntil</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Schedule schedule,
+        K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
+        Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L631" class="link">Source</a>
+<a href="#Prelude_0_retryUntil_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadUnliftIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Keeps retrying the computation until the scheduler expires, or the predicate returns true</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">schedule</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Scheduler strategy for retrying</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to retry</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The result of the last invocation of ma</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="Prelude_0_retryUntil_1" class="def">retryUntil</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        Schedule schedule,
+        K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma,
+        Func<span class='generics'>&lt;</span>Error<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.cs#L645" class="link">Source</a>
+<a href="#Prelude_0_retryUntil_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Keeps retrying the computation until the scheduler expires, or the predicate returns true</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">schedule</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Scheduler strategy for retrying</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to retry</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The result of the last invocation of ma</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_Prelude_0" class="def">Prelude</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.mapapply.cs#L6" class="link">Source</a>
+<a href="#_0_Prelude_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<a id="Prelude_0_map_2" class="def">map</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.mapapply.cs#L18" class="link">Source</a>
+<a href="#Prelude_0_map_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Functor map operation</p>
+</div>
+<div><p>Unwraps the value within the functor, passes it to the map function <code>f</code> provided, and
+then takes the mapped value and wraps it back up into a new functor.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Functor to map</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Mapped functor</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<a id="Prelude_0_action_2" class="def">action</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.mapapply.cs#L24" class="link">Source</a>
+<a href="#Prelude_0_action_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Applicative action: runs the first applicative, ignores the result, and returns the second applicative</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
+<a id="Prelude_0_apply_2" class="def">apply</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Effects/IO/Prelude/IO.Prelude.mapapply.cs#L37" class="link">Source</a>
+<a href="#Prelude_0_apply_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Applicative functor apply operation</p>
+</div>
+<div><p>Unwraps the value within the <code>ma</code> applicative-functor, passes it to the unwrapped function(s) within <code>mf</code>, and
+then takes the resulting value and wraps it back up into a new applicative-functor.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Value(s) applicative functor</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">mf</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function(s)</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Mapped applicative functor</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js" integrity="sha512-9khQRAUBYEJDCDVP2yw3LRUQvjJ0Pjx0EShmaQjcHa6AXiOv6qHQu9lCAIR8O+/D8FtaCoJ2c0Tf9Xo7hYH01Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-fTl/qcO1VgvKtOMApX2PdZzkziyr2stM65GYPLGuYMnuMm1z2JLJG6XVU7C/mR+E7xBUqCivykuhlzfqxXBXbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script></body></html>
