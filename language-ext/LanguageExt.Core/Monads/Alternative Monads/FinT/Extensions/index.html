@@ -1,0 +1,951 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>LanguageExt.Core/Monads/Alternative Monads/FinT/Extensions</title>
+<link href="style.css" rel="stylesheet" type="text/css"/></head>
+<body class="js-enabled"><div id="package-header"><ul class="links" id="page-menu"><li><a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/FinT/Extensions" class="link">Source</a></li>
+<li><a href="../index.html" class="link">Contents</a></li>
+<li><a href="../../../../../index.html" class="link">Index</a></li></ul>
+<p class="caption">LanguageExt.Core</p></div>
+<div id="content"><div id="module-header"><p class="caption"><a href="../../../../index.html" class="link">LanguageExt.Core</a>
+<span> ► </span>
+<a href="../../../index.html" class="link">Monads</a>
+<span> ► </span>
+<a href="../../index.html" class="link">Alternative Monads</a>
+<span> ► </span>
+<a href="../index.html" class="link">FinT</a>
+<span> ► </span>
+<a href="index.html" class="link">Extensions</a></p></div>
+
+<div id="table-of-contents"><p class="caption">Contents</p>
+<ul><li><a href="#_0_FinTExtensions_0" class="link"><div class="nowrap">FinTExtensions
+</div></a></li>
+<ul><li><a href="#FinTExtensions_0_Action_3" class="link"><div class="nowrap">Action
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#FinTExtensions_0_Apply_3" class="link"><div class="nowrap">Apply
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>FinT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#FinTExtensions_0_Apply_3" class="link"><div class="nowrap">Apply
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>FinT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>FinT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_FinTExtensions_0" class="link"><div class="nowrap">FinTExtensions
+</div></a></li>
+<ul><li><a href="#FinTExtensions_0_As_2" class="link"><div class="nowrap">As
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>FinT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#FinTExtensions_0_Run_2" class="link"><div class="nowrap">Run
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>FinT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#FinTExtensions_0_Bind_3" class="link"><div class="nowrap">Bind
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>FinT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#FinTExtensions_0_Flatten_1" class="link"><div class="nowrap">Flatten
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Task<span class='generics'>&lt;</span>FinT<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> tma<span class='parens'>)</span></div></a></li>
+<li><a href="#FinTExtensions_0_ToIO_2" class="link"><div class="nowrap">ToIO
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Task<span class='generics'>&lt;</span>Fin<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#FinTExtensions_0_Flatten_2" class="link"><div class="nowrap">Flatten
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mma<span class='parens'>)</span></div></a></li>
+<li><a href="#FinTExtensions_0_SelectMany_4" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>FinT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#FinTExtensions_0_SelectMany_4" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#FinTExtensions_0_SelectMany_4" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>FinT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#FinTExtensions_0_Partition_3" class="link"><div class="nowrap">Partition
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>F<span class='comma'>, </span>FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> self<span class='parens'>)</span></div></a></li>
+<li><a href="#FinTExtensions_0_Fails_3" class="link"><div class="nowrap">Fails
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>F<span class='comma'>, </span>FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> self<span class='parens'>)</span></div></a></li>
+<li><a href="#FinTExtensions_0_Succs_3" class="link"><div class="nowrap">Succs
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>F<span class='comma'>, </span>FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> self<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_FinTExtensions_0" class="link"><div class="nowrap">FinTExtensions
+</div></a></li>
+<ul><li><a href="#FinTExtensions_0_Map_3" class="link"><div class="nowrap">Map
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>FinT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#FinTExtensions_0_Map_3" class="link"><div class="nowrap">Map
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='comma'>, </span>FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_FinTGuardExtensions_0" class="link"><div class="nowrap">FinTGuardExtensions
+</div></a></li>
+<ul><li><a href="#FinTGuardExtensions_0_ToFinT_1" class="link"><div class="nowrap">ToFinT
+<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Guard<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> guard<span class='parens'>)</span></div></a></li>
+<li><a href="#FinTGuardExtensions_0_Bind_2" class="link"><div class="nowrap">Bind
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this Guard<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> guard,
+        Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#FinTGuardExtensions_0_SelectMany_3" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this Guard<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> guard,
+        Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#FinTGuardExtensions_0_SelectMany_2" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Guard<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Unit<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#FinTGuardExtensions_0_SelectMany_3" class="link"><div class="nowrap">SelectMany
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Guard<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Unit<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Unit<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li></ul></ul></div>
+<div class="interface">
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_FinTExtensions_0" class="def">FinTExtensions</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/FinT/Extensions/FinT.Extensions.Apply.cs#L6" class="link">Source</a>
+<a href="#_0_FinTExtensions_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="FinTExtensions_0_Action_3" class="def">Action</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/FinT/Extensions/FinT.Extensions.Apply.cs#L11" class="link">Source</a>
+<a href="#FinTExtensions_0_Action_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Applicative action: runs the first applicative, ignores the result, and returns the second applicative</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="FinTExtensions_0_Apply_3" class="def">Apply</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>FinT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/FinT/Extensions/FinT.Extensions.Apply.cs#L25" class="link">Source</a>
+<a href="#FinTExtensions_0_Apply_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Applicative functor apply operation</p>
+</div>
+<div><p>Unwraps the value within the <code>ma</code> applicative-functor, passes it to the unwrapped function(s) within <code>mf</code>, and
+then takes the resulting value and wraps it back up into a new applicative-functor.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Value(s) applicative functor</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">mf</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function(s)</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Mapped applicative functor</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="FinTExtensions_0_Apply_3" class="def">Apply</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>FinT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>FinT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/FinT/Extensions/FinT.Extensions.Apply.cs#L39" class="link">Source</a>
+<a href="#FinTExtensions_0_Apply_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Applicative functor apply operation</p>
+</div>
+<div><p>Unwraps the value within the <code>ma</code> applicative-functor, passes it to the unwrapped function(s) within <code>mf</code>, and
+then takes the resulting value and wraps it back up into a new applicative-functor.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Value(s) applicative functor</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">mf</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function(s)</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Mapped applicative functor</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_FinTExtensions_0" class="def">FinTExtensions</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/FinT/Extensions/FinT.Extensions.cs#L11" class="link">Source</a>
+<a href="#_0_FinTExtensions_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="FinTExtensions_0_As_2" class="def">As</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>FinT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/FinT/Extensions/FinT.Extensions.cs#L13" class="link">Source</a>
+<a href="#FinTExtensions_0_As_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Fin<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="FinTExtensions_0_Run_2" class="def">Run</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>FinT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/FinT/Extensions/FinT.Extensions.cs#L20" class="link">Source</a>
+<a href="#FinTExtensions_0_Run_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Runs the FinT exposing the outer monad with an inner wrapped <code>Fin</code></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="FinTExtensions_0_Bind_3" class="def">Bind</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>FinT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/FinT/Extensions/FinT.Extensions.cs#L30" class="link">Source</a>
+<a href="#FinTExtensions_0_Bind_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Monad bind operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>FinT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+FinT<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="FinTExtensions_0_Flatten_1" class="def">Flatten</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Task<span class='generics'>&lt;</span>FinT<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> tma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/FinT/Extensions/FinT.Extensions.cs#L37" class="link">Source</a>
+<a href="#FinTExtensions_0_Flatten_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Get the outer task and wrap it up in a new IO within the FinT IO</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+FinT<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="FinTExtensions_0_ToIO_2" class="def">ToIO</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Task<span class='generics'>&lt;</span>Fin<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/FinT/Extensions/FinT.Extensions.cs#L44" class="link">Source</a>
+<a href="#FinTExtensions_0_ToIO_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Lift the task</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="FinTExtensions_0_Flatten_2" class="def">Flatten</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/FinT/Extensions/FinT.Extensions.cs#L51" class="link">Source</a>
+<a href="#FinTExtensions_0_Flatten_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Monadic join</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="FinTExtensions_0_SelectMany_4" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>FinT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/FinT/Extensions/FinT.Extensions.cs#L64" class="link">Source</a>
+<a href="#FinTExtensions_0_SelectMany_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Monad bind operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Intermediate bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">C</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">bind</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monadic bind function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">project</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Projection function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>FinT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="FinTExtensions_0_SelectMany_4" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/FinT/Extensions/FinT.Extensions.cs#L80" class="link">Source</a>
+<a href="#FinTExtensions_0_SelectMany_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Monad bind operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Intermediate bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">C</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">bind</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monadic bind function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">project</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Projection function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>FinT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="FinTExtensions_0_SelectMany_4" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>FinT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/FinT/Extensions/FinT.Extensions.cs#L96" class="link">Source</a>
+<a href="#FinTExtensions_0_SelectMany_4" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Monad bind operation</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Intermediate bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">C</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Target bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">bind</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monadic bind function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">project</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Projection function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p><code>FinT</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>(Seq<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span> Fails<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> Succs)<span class='generics'>&gt;</span>
+<a id="FinTExtensions_0_Partition_3" class="def">Partition</a>
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>F<span class='comma'>, </span>FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> self<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/FinT/Extensions/FinT.Extensions.cs#L107" class="link">Source</a>
+<a href="#FinTExtensions_0_Partition_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> F : Foldable&lt;F&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Partitions a foldable of <code>FinT</code> into two sequences.</p>
+<p>All the <code>Fail</code> elements are extracted, in order, to the first component of the output.
+Similarly, the <code>Succ</code> elements are extracted to the second component of the output.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A pair containing the sequences of partitioned values</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>Error<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="FinTExtensions_0_Fails_3" class="def">Fails</a>
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>F<span class='comma'>, </span>FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> self<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/FinT/Extensions/FinT.Extensions.cs#L124" class="link">Source</a>
+<a href="#FinTExtensions_0_Fails_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> F : Foldable&lt;F&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Partitions a foldable of <code>FinT</code> into two lists and returns the <code>Fail</code> items only.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A sequence of partitioned items</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="FinTExtensions_0_Succs_3" class="def">Succs</a>
+<span class='generics'>&lt;</span>F<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>F<span class='comma'>, </span>FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> self<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/FinT/Extensions/FinT.Extensions.cs#L140" class="link">Source</a>
+<a href="#FinTExtensions_0_Succs_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> F : Foldable&lt;F&gt;
+        </span></div>
+<div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Partitions a foldable of <code>FinT</code> into two lists and returns the <code>Succ</code> items only.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A sequence of partitioned items</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_FinTExtensions_0" class="def">FinTExtensions</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/FinT/Extensions/FinT.Extensions.Map.cs#L6" class="link">Source</a>
+<a href="#_0_FinTExtensions_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="FinTExtensions_0_Map_3" class="def">Map</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>FinT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/FinT/Extensions/FinT.Extensions.Map.cs#L18" class="link">Source</a>
+<a href="#FinTExtensions_0_Map_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Functor map operation</p>
+</div>
+<div><p>Unwraps the value within the functor, passes it to the map function <code>f</code> provided, and
+then takes the mapped value and wraps it back up into a new functor.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Functor to map</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Mapped functor</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="FinTExtensions_0_Map_3" class="def">Map</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='comma'>, </span>FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/FinT/Extensions/FinT.Extensions.Map.cs#L32" class="link">Source</a>
+<a href="#FinTExtensions_0_Map_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Functor map operation</p>
+</div>
+<div><p>Unwraps the value within the functor, passes it to the map function <code>f</code> provided, and
+then takes the mapped value and wraps it back up into a new functor.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Functor to map</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Mapping function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Mapped functor</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_FinTGuardExtensions_0" class="def">FinTGuardExtensions</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/FinT/Extensions/FinT.Guard.cs#L7" class="link">Source</a>
+<a href="#_0_FinTGuardExtensions_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="FinTGuardExtensions_0_ToFinT_1" class="def">ToFinT</a>
+<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this Guard<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> guard<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/FinT/Extensions/FinT.Guard.cs#L12" class="link">Source</a>
+<a href="#FinTGuardExtensions_0_ToFinT_1" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Natural transformation to <code>FinT</code></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="FinTGuardExtensions_0_Bind_2" class="def">Bind</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this Guard<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> guard,
+        Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/FinT/Extensions/FinT.Guard.cs#L21" class="link">Source</a>
+<a href="#FinTGuardExtensions_0_Bind_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Monadic binding support for <code>FinT</code></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="FinTGuardExtensions_0_SelectMany_3" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this Guard<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> guard,
+        Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>Unit<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/FinT/Extensions/FinT.Guard.cs#L32" class="link">Source</a>
+<a href="#FinTGuardExtensions_0_SelectMany_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Monadic binding support for <code>FinT</code></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
+<a id="FinTGuardExtensions_0_SelectMany_2" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Guard<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Unit<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/FinT/Extensions/FinT.Guard.cs#L44" class="link">Source</a>
+<a href="#FinTGuardExtensions_0_SelectMany_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Monadic binding support for <code>FinT</code></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="FinTGuardExtensions_0_SelectMany_3" class="def">SelectMany</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Guard<span class='generics'>&lt;</span>Error<span class='comma'>, </span>Unit<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Unit<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Monads/Alternative Monads/FinT/Extensions/FinT.Guard.cs#L53" class="link">Source</a>
+<a href="#FinTGuardExtensions_0_SelectMany_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Monadic binding support for <code>FinT</code></p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js" integrity="sha512-9khQRAUBYEJDCDVP2yw3LRUQvjJ0Pjx0EShmaQjcHa6AXiOv6qHQu9lCAIR8O+/D8FtaCoJ2c0Tf9Xo7hYH01Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-fTl/qcO1VgvKtOMApX2PdZzkziyr2stM65GYPLGuYMnuMm1z2JLJG6XVU7C/mR+E7xBUqCivykuhlzfqxXBXbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script></body></html>
