@@ -10,230 +10,31 @@
 <a href="../index.html" class="link">Immutable Collections</a>
 <span> ► </span>
 <a href="index.html" class="link">IteratorAsync</a></p></div>
-<p><code>Iterator&lt;A&gt;</code> is a functional-wrapper for <code>IEnumerator&lt;A&gt;</code>.  The abstraction leaks a little, so it's worth
+<p><code>IteratorAsync&lt;A&gt;</code> is a functional-wrapper for <code>IAsyncEnumerator&lt;A&gt;</code>.  The abstraction leaks a little, so it's worth
 understanding how it works by reading the details below.  On the whole it behaves like an immutable stream
 that caches values as it goes, but there's some footguns that you should be aware of so that they can be
 avoided.</p>
-<h2>Problem: <code>IEnumerator&lt;A&gt;</code></h2>
+<h2>Problem: <code>IAsyncEnumerator&lt;A&gt;</code></h2>
 <ul>
 <li class='markdown-bullet'>It is mutable which means using it in immutable data-structures is problematic.</li>
-<li class='markdown-bullet'>If you pass an <code>IEnumerator</code> reference to two threads, each thread can
+<li class='markdown-bullet'>If you pass an <code>IAsyncEnumerator</code> reference to two threads, each thread can
 call <code>MoveNext</code>and it will move the enumeration position for other thread, or even worse, move past the end
 of the sequence due to race conditions.</li>
 <li class='markdown-bullet'>Enumerators start before the first item and use a complicated mechanism for accessing and testing the validity of
 the element value.</li>
 </ul>
-<p><em>Nobody in their right mind would invent an interface like <code>IEnumerator&lt;A&gt;</code> today.</em></p>
-<h2>Solution: <code>Iterator&lt;A&gt;</code></h2>
-<p><code>Iterator&lt;A&gt;</code> still uses <code>IEnumerator&lt;A&gt;</code> internally, but it makes it thread-safe and functional.  From the outside
+<p><em>Nobody in their right mind would invent an interface like <code>IAsyncEnumerator&lt;A&gt;</code> today.</em></p>
+<h2>Solution: <code>IteratorAsync&lt;A&gt;</code></h2>
+<p><code>IteratorAsync&lt;A&gt;</code> still uses <code>IAsyncEnumerator&lt;A&gt;</code> internally, but it makes it thread-safe and functional.  From the outside
 the type acts and works exactly like any other immutable sequence, but internally it does some quite complex
-processing to achieve this with an <code>IEnumerator&lt;A&gt;</code> reference.</p>
+processing to achieve this with an <code>IAsyncEnumerator&lt;A&gt;</code> reference.</p>
 <blockquote>
-<p>You may say &quot;Why not just drop <code>IEnumerator&lt;A&gt;</code>?&quot; - which is a completely valid position to hold. Unfortunately,
-<code>IEnumerable</code> and <code>IEnumerator</code> are baked into the CPS state-machine that is used for <code>yield return</code> and
+<p>You may say &quot;Why not just drop <code>IAsyncEnumerator&lt;A&gt;</code>?&quot; - which is a completely valid position to hold. Unfortunately,
+<code>IAsyncEnumerable</code> and <code>IAsyncEnumerator</code> are baked into the CPS state-machine that is used for <code>yield return</code> and
 <code>yield break</code>.  So, we don't get to ignore those types, and instead we need to make them play nice.</p>
 </blockquote>
-<p><code>IEnumerable&lt;A&gt;</code> has a method called <code>GetEnumerator()</code> which is used to access an <code>IEnumerator&lt;A&gt;</code>.  A new extension
-method is available called <code>GetIterator()</code>, this will yield an <code>Iterator&lt;A&gt;</code>.</p>
-<p>You can pattern-match an <code>Iterator&lt;A&gt;</code> like a functional 'cons' linked-list type:</p>
-<pre class='language-csharp'><code class="language-c#">static A Sum&lt;A&gt;(Iterator&lt;A&gt; iter) where A : INumber =&gt;
-    iter switch
-    {
-        Iterator&lt;A&gt;.Nil                 =&gt; A.Zero,
-        Iterator&lt;A&gt;.Cons(var x, var xs) =&gt; x + Sum(xs),
-    }
-</code></pre>
-<p>Or, use <code>IsEmpty</code> and <code>Head</code>:</p>
-<pre class='language-csharp'><code class="language-c#">static A Sum&lt;A&gt;(Iterator&lt;A&gt; iter) where A : INumber =&gt;
-    iter.IsEmpty
-        ? A.Zero
-        : iter.Head + Sum(iter.Tail);
-</code></pre>
-<p>Or, use built-in operators:</p>
-<pre class='language-csharp'><code class="language-c#">static A Sum&lt;A&gt;(Iterator&lt;A&gt; iter) where A : INumber =&gt;
-    iter.Fold(A.Zero, (s, x) =&gt; s + x);
-</code></pre>
-<p>Or, take an imperative approach:</p>
-<pre class='language-csharp'><code class="language-c#">static A Sum&lt;A&gt;(Iterator&lt;A&gt; iter) where A : INumber
-{
-    var total = A.Zero;
-    while(!iter.IsEmpty)
-    {
-        total += iter.Head;
-        iter = iter.Tail;
-    }
-    return total;
-}
-</code></pre>
-<p><code>Iterator&lt;A&gt;</code> is <code>abstract</code> and the first type returned from <code>GetIterator()</code> will be a <code>Iterator&lt;A&gt;.ConsFirst</code>, this type implements
-<code>Iterator&lt;A&gt;</code>.  The internal fields that <code>ConsFirst</code> contains are these:</p>
-<pre class='language-csharp'><code class="language-c#">IEnumerable&lt;A&gt; enumerable;
-int firstAcquired;
-Iterator&lt;A&gt;? firstValue;
-</code></pre>
-<p>So, you can see that it doesn't actually have an <code>IEnumerator&lt;A&gt;</code> as this point.</p>
-<p>The two key properties of <code>Iterator&lt;A&gt;</code> are <code>Head</code> (for accessing the current item) and <code>Tail</code> (for accessing
-the remaining items), so let's look at those for <code>ConsFirst</code>:</p>
-<pre class='language-csharp'><code class="language-c#">public override A Head =&gt;
-    First.Head;
-
-public override Iterator&lt;A&gt; Tail =&gt;
-    First.Tail;
-</code></pre>
-<p>They both access <code>First</code>, which is:</p>
-<pre class='language-csharp'><code class="language-c#">Iterator&lt;A&gt; First
-{
-    get
-    {
-        if (firstAcquired == 2) return firstValue!;
-        
-        SpinWait sw = default;
-        while (firstAcquired &lt; 2)
-        {
-            if (Interlocked.CompareExchange(ref firstAcquired, 1, 0) == 0)
-            {
-                try
-                {
-                    var enumerator = enumerable.GetEnumerator();
-                    if (enumerator.MoveNext())
-                    {
-                        firstValue = new ConsValueEnum(enumerator.Current, enumerator);
-                    }
-                    else
-                    {
-                        enumerator.Dispose();
-                        firstValue = Nil.Default;
-                    }
-
-                    firstAcquired = 2;
-                }
-                catch (Exception)
-                {
-                    firstAcquired = 0;
-                    throw;
-                }
-            }
-            else
-            {
-                sw.SpinOnce();
-            }
-        }
-
-        return firstValue!;
-    }
-}
-</code></pre>
-<p>This all looks quite complex, but you should be able to see that the <code>Interlocked.CompareExchange</code>
-then-block is where the <code>IEnumerator</code> is created.  We then either set <code>firstValue</code> to a new <code>ConsValueEnum</code> with
-the head-item and the <code>enumerator</code> as arguments; or we set it to <code>Nil</code>.</p>
-<p>Upon success we set <code>firstAcquired</code> to <code>2</code>.  So, subsequent calls to <code>First</code> will just return <code>firstValue</code>.  This
-locking technique without using locks is a way to efficiently protect the enumerator from race-conditions.</p>
-<p>So, upon first access to either <code>Head</code> or <code>Tail</code> we launch the <code>IEnumerator</code> and cache the first item in the sequence.
-All subsequent access goes to <code>Head</code> or <code>Tail</code> on either <code>Nil</code> or <code>ConsValueEnum</code>.  We never touch the <code>IEnumerator</code>
-again in <code>ConsFirst</code>.</p>
-<p>The <code>Nil</code> implementation isn't so surprising:</p>
-<pre class='language-csharp'><code class="language-c#">public override A Head =&gt;
-    throw new InvalidOperationException(&quot;Nil iterator has no head&quot;);
-
-public override Iterator&lt;A&gt; Tail =&gt;
-    this;
-</code></pre>
-<p><code>ConsValueEnum</code> is where it gets interesting.  It has the following internal fields:</p>
-<pre class='language-csharp'><code class="language-c#">Exception? exception;
-IEnumerator&lt;A&gt;? enumerator;
-int tailAcquired;
-Iterator&lt;A&gt;? tailValue;
-</code></pre>
-<p>It also has a <code>Head</code> property that is set in the constructor:</p>
-<pre class='language-csharp'><code class="language-c#">public override A Head { get; }
-</code></pre>
-<p>So, we can access the <code>Head</code> value at any time, but the <code>Tail</code> value isn't yet set:</p>
-<pre class='language-csharp'><code class="language-c#">public override Iterator&lt;A&gt; Tail
-{
-    get
-    {
-        if(tailAcquired == 2) return tailValue!;
-        if(tailAcquired == 3) exception!.Rethrow();
-
-        SpinWait sw = default;
-        while (tailAcquired &lt; 2)
-        {
-            if (Interlocked.CompareExchange(ref tailAcquired, 1, 0) == 0)
-            {   
-                try
-                {
-                    if (enumerator!.MoveNext())
-                    {
-                        tailValue = new ConsValueEnum(enumerator.Current, enumerator);
-                    }
-                    else
-                    {
-                        enumerator?.Dispose();
-                        enumerator = null;
-                        tailValue = Nil.Default;
-                    }
-
-                    tailAcquired = 2;
-                }
-                catch (Exception e)
-                {
-                    exception = e;
-                    tailAcquired = 3;
-                    throw;
-                }
-            }
-            else
-            {
-                sw.SpinOnce();
-            }
-        }
-
-        if(tailAcquired == 3) exception!.Rethrow();
-        return tailValue!;
-    }
-}
-</code></pre>
-<p>This does a similar thing to <code>ConsFirst</code> of protecting a section with <code>Interlocked.CompareExchange</code>.  So, we can
-only ever access the 'then' part [of that <code>if</code> statement] once.  In that block we <code>MoveNext</code> the <code>IEnumerator</code>
-which will either return <code>true</code> or <code>false</code>.</p>
-<p>If <code>true</code> then we create another <code>ConsValueEnum</code>, if <code>false</code> then we use <code>Nil</code>.  Whichever is created gets assigned
-to <code>tailValue</code> and <code>tailAcquired</code> gets set to <code>2</code>.  That means subsequent calls to <code>Tail</code> will just return
-<code>tailValue</code>.</p>
-<p>That process continues for each item of the sequence until the <code>IEnumerator</code> runs out of items to yield.  The end
-result is a linked-list of <code>ConsValueEnum</code> objects that have a <code>ConsFirst</code> object at the head of the linked-list.</p>
-<p>So, <code>Iterator&lt;A&gt;</code> effectively caches the sequence as you go.  If you hold on to the head of the sequence then the
-whole list may end up in memory at once.  This could be problematic when working with large lazy sequences or even
-infinite sequences.</p>
-<p>This for example is fine:</p>
-<pre class='language-csharp'><code class="language-c#">for(var iter = Naturals.GetIterator(); !iter.IsEmpty; iter = iter.Tail)
-{
-    Console.WriteLine(iter.Head);
-}
-</code></pre>
-<p>Because the <code>iter</code> reference keeps getting updated in-place, meaning that nothing is holding on to the head-item in
-the sequence, and so the garbage-collector can collect those unreferenced items.</p>
-<p>Whereas this will cause memory-usage to grow and grow:</p>
-<pre class='language-csharp'><code class="language-c#">var start = Naturals.GetIterator();
-for(var iter = start; !iter.IsEmpty; iter = iter.Tail)
-{
-    Console.WriteLine(iter.Head);
-}
-</code></pre>
-<p>Because <code>start</code> is holding a reference to the first item, so it must hold a reference (indirectly) to every
-subsequent item.  Meaning the garbage-collector can't collect.</p>
-<p>To get around this you can use <code>Clone</code>:</p>
-<pre class='language-csharp'><code class="language-c#">var start = Naturals.GetIterator();
-for(var iter = start.Clone(); !iter.IsEmpty; iter = iter.Tail)
-{
-    Console.WriteLine(iter.Head);
-}
-</code></pre>
-<p>This creates a new 'head' for the sequence and so <code>iter</code> is the only reference, meaning updates to <code>iter</code>
-make the head elements free for garbage collection.</p>
-<p>So, <code>Iterator&lt;A&gt;</code> is much, much more powerful than <code>IEnumerator&lt;A&gt;</code>.  It is mostly useful for immutable data-types
-that need to carry an <code>IEnumerator&lt;A&gt;</code>, but can't due it its limitations.  <code>Iterator&lt;A&gt;</code> has some limitations of its
-own, but they are relatively easy to workaround, whereas that isn't the case with <code>IEnumerator&lt;A&gt;</code> (without writing
-a type like <code>Iterator&lt;A&gt;</code>!).</p>
+<p><code>IAsyncEnumerable&lt;A&gt;</code> has a method called <code>GetAsyncEnumerator()</code> which is used to access an <code>IAsyncEnumerator&lt;A&gt;</code>.  A new extension
+method is available called <code>GetIteratorAsync()</code>, this will yield an <code>IteratorAsync&lt;A&gt;</code>.</p>
 
 <div id="table-of-contents"><p class="caption">Contents</p>
 <ul><li><a href="#_0_IteratorAsync_1" class="link"><div class="nowrap">IteratorAsync
@@ -342,14 +143,6 @@ a type like <code>Iterator&lt;A&gt;</code>!).</p>
 <ul><li><a href="#Cons_0_Deconstruct_0" class="link"><div class="nowrap">Deconstruct
 
 <span class='parens'>(</span>out ValueTask<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> head<span class='comma'>, </span>out ValueTask<span class='generics'>&lt;</span>IteratorAsync<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> tail<span class='parens'>)</span></div></a></li></ul>
-<li><a href="#_0_IteratorAsyncExtensions_0" class="link"><div class="nowrap">IteratorAsyncExtensions
-</div></a></li>
-<ul><li><a href="#IteratorAsyncExtensions_0_As_1" class="link"><div class="nowrap">As
-<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>this K<span class='generics'>&lt;</span>IteratorAsync<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
-<li><a href="#IteratorAsyncExtensions_0_GetIteratorAsync_1" class="link"><div class="nowrap">GetIteratorAsync
-<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>this IAsyncEnumerable<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> enumerable<span class='parens'>)</span></div></a></li></ul>
 <li><a href="#_0_IteratorAsync_0" class="link"><div class="nowrap">IteratorAsync
 </div></a></li>
 <ul><li><a href="#IteratorAsync_0_from_1" class="link"><div class="nowrap">from
@@ -366,11 +159,10 @@ a type like <code>Iterator&lt;A&gt;</code>!).</p>
 <span class='parens'>(</span>A head<span class='comma'>, </span>Func<span class='generics'>&lt;</span>IteratorAsync<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> tail<span class='parens'>)</span></div></a></li>
 <li><a href="#IteratorAsync_0_Nil_1" class="link"><div class="nowrap">Nil
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span><span class='parens'>)</span></div></a></li></ul>
-<li><a href="#_0_IteratorAsync_0" class="link"><div class="nowrap">IteratorAsync
-</div></a></li>
-<ul></ul></ul></div>
-<div class="interface">
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li></ul></ul></div>
+<div class="interface"><H1>Sub modules</H1>
+<table><tbody><tr><td class="src clearfix"><span class="inst-left"><a href="Extensions/index.html" class="link">Extensions</a></span></td></tr>
+<tr><td class="src clearfix"><span class="inst-left"><a href="Trait/index.html" class="link">Trait</a></span></td></tr></tbody></table>
 <div class="top"><p class="src"><span class="keyword">class</span>
 <a id="_0_IteratorAsync_1" class="def">IteratorAsync</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
@@ -1388,81 +1180,6 @@ void
 
 </div>
 <div class="top"><p class="src"><span class="keyword">class</span>
-<a id="_0_IteratorAsyncExtensions_0" class="def">IteratorAsyncExtensions</a>
-
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/IteratorAsync/IteratorAsync.Extensions.cs#L6" class="link">Source</a>
-<a href="#_0_IteratorAsyncExtensions_0" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-<div class="subs methods"><p class="caption">Methods</p>
-<div class="top"><p class="src"><span class="keyword">method</span>
-IteratorAsync<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<a id="IteratorAsyncExtensions_0_As_1" class="def">As</a>
-<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>this K<span class='generics'>&lt;</span>IteratorAsync<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/IteratorAsync/IteratorAsync.Extensions.cs#L11" class="link">Source</a>
-<a href="#IteratorAsyncExtensions_0_As_1" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div><p>Downcast operator</p>
-</div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-IteratorAsync<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<a id="IteratorAsyncExtensions_0_GetIteratorAsync_1" class="def">GetIteratorAsync</a>
-<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>this IAsyncEnumerable<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> enumerable<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/IteratorAsync/IteratorAsync.Extensions.cs#L17" class="link">Source</a>
-<a href="#IteratorAsyncExtensions_0_GetIteratorAsync_1" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div><p>Get an iterator for any <code>IAsyncEnumerable</code></p>
-</div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div></div>
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">class</span>
 <a id="_0_IteratorAsync_0" class="def">IteratorAsync</a>
 
 <a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/IteratorAsync/IteratorAsync.Module.cs#L6" class="link">Source</a>
@@ -1666,29 +1383,6 @@ IteratorAsync<span class='generics'>&lt;</span>A<span class='generics'>&gt;</spa
 
 
 </div></div>
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">class</span>
-<a id="_0_IteratorAsync_0" class="def">IteratorAsync</a>
-
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/IteratorAsync/IteratorAsync.Monad.cs#L8" class="link">Source</a>
-<a href="#_0_IteratorAsync_0" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
 
 
 

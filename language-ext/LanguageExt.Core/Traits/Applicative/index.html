@@ -18,14 +18,11 @@ including the collection-types, have applicative traits.</p>
 <p>The topic is too large to cover here, so take a look at <a href="https://paullouth.com/higher-kinds-in-c-with-language-ext-part-4-applicatives/">Paul Louth's Higher-Kinds series</a> for more information.</p>
 
 <div id="table-of-contents"><p class="caption">Contents</p>
-<ul><li><a href="#_0_ApplicativeExtensions_0" class="link"><div class="nowrap">ApplicativeExtensions
-</div></a></li>
-<ul><li><a href="#ApplicativeExtensions_0_Apply_0" class="link"><div class="nowrap">Apply
-
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
-<li><a href="#ApplicativeExtensions_0_Apply_0" class="link"><div class="nowrap">Apply
-
-<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li></ul>
+<ul><li><a href="#_0_Act_2" class="link"><div class="nowrap">Act
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#Act_2_fun =
+        _ => y => y_0" class="link"><div class="nowrap">fun =
+        _ =&gt; y =&gt; y</div></a></li></ul>
 <li><a href="#_0_ApplicativeLaw_1" class="link"><div class="nowrap">ApplicativeLaw
 <span class='generics'>&lt;</span>F<span class='generics'>&gt;</span></div></a></li>
 <ul><li><a href="#ApplicativeLaw_1_assert_0" class="link"><div class="nowrap">assert
@@ -49,143 +46,6 @@ including the collection-types, have applicative traits.</p>
 <li><a href="#ApplicativeLaw_1_functorLaw_0" class="link"><div class="nowrap">functorLaw
 
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>int<span class='generics'>&gt;</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> equals<span class='parens'>)</span></div></a></li></ul>
-<li><a href="#_0_Applicative_0" class="link"><div class="nowrap">Applicative
-</div></a></li>
-<ul><li><a href="#Applicative_0_pure_2" class="link"><div class="nowrap">pure
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>A value<span class='parens'>)</span></div></a></li>
-<li><a href="#Applicative_0_apply_3" class="link"><div class="nowrap">apply
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
-<li><a href="#Applicative_0_apply_4" class="link"><div class="nowrap">apply
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
-<li><a href="#Applicative_0_apply_4" class="link"><div class="nowrap">apply
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
-<li><a href="#Applicative_0_apply_5" class="link"><div class="nowrap">apply
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>C<span class='generics'>&gt;</span> mc<span class='parens'>)</span></div></a></li>
-<li><a href="#Applicative_0_apply_5" class="link"><div class="nowrap">apply
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
-<li><a href="#Applicative_0_apply_5" class="link"><div class="nowrap">apply
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
-<li><a href="#Applicative_0_action_3" class="link"><div class="nowrap">action
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
-<li><a href="#Applicative_0_actions_2" class="link"><div class="nowrap">actions
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
-<li><a href="#Applicative_0_when_1" class="link"><div class="nowrap">when
-<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span>
-<span class='parens'>(</span>bool flag<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> fx<span class='parens'>)</span></div></a></li>
-<li><a href="#Applicative_0_unless_1" class="link"><div class="nowrap">unless
-<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span>
-<span class='parens'>(</span>bool flag<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> fx<span class='parens'>)</span></div></a></li>
-<li><a href="#Applicative_0_lift_3" class="link"><div class="nowrap">lift
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
-<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> fa<span class='parens'>)</span></div></a></li>
-<li><a href="#Applicative_0_lift_4" class="link"><div class="nowrap">lift
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
-<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> fa<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> fb<span class='parens'>)</span></div></a></li>
-<li><a href="#Applicative_0_lift_4" class="link"><div class="nowrap">lift
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
-<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> fa<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> fb<span class='parens'>)</span></div></a></li>
-<li><a href="#Applicative_0_lift_5" class="link"><div class="nowrap">lift
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span>
-<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> fa<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> fb<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>C<span class='generics'>&gt;</span> fc<span class='parens'>)</span></div></a></li>
-<li><a href="#Applicative_0_lift_5" class="link"><div class="nowrap">lift
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span>
-<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>Func<span class='generics'>&lt;</span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> fa<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> fb<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>C<span class='generics'>&gt;</span> fc<span class='parens'>)</span></div></a></li></ul>
-<li><a href="#_0_ApplicativeExtensions_0" class="link"><div class="nowrap">ApplicativeExtensions
-</div></a></li>
-<ul><li><a href="#ApplicativeExtensions_0_>>>_0" class="link"><div class="nowrap">&gt;&gt;&gt;
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
-<li><a href="#ApplicativeExtensions_0_*_0" class="link"><div class="nowrap">*
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
-<li><a href="#ApplicativeExtensions_0_*_0" class="link"><div class="nowrap">*
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='parens'>)</span></div></a></li></ul>
-<li><a href="#_0_Prelude_0" class="link"><div class="nowrap">Prelude
-</div></a></li>
-<ul><li><a href="#Prelude_0_pure_2" class="link"><div class="nowrap">pure
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>A value<span class='parens'>)</span></div></a></li>
-<li><a href="#Prelude_0_applyM_3" class="link"><div class="nowrap">applyM
-<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
-<li><a href="#Prelude_0_apply_3" class="link"><div class="nowrap">apply
-<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
-<li><a href="#Prelude_0_apply_4" class="link"><div class="nowrap">apply
-<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
-<li><a href="#Prelude_0_apply_5" class="link"><div class="nowrap">apply
-<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
-<li><a href="#Prelude_0_apply_6" class="link"><div class="nowrap">apply
-<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
-<li><a href="#Prelude_0_apply_7" class="link"><div class="nowrap">apply
-<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
-<li><a href="#Prelude_0_apply_8" class="link"><div class="nowrap">apply
-<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
-<li><a href="#Prelude_0_apply_9" class="link"><div class="nowrap">apply
-<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
-<li><a href="#Prelude_0_apply_10" class="link"><div class="nowrap">apply
-<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
-<li><a href="#Prelude_0_apply_11" class="link"><div class="nowrap">apply
-<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
-<li><a href="#Prelude_0_apply_12" class="link"><div class="nowrap">apply
-<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='comma'>, </span>K<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='comma'>, </span>K<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
-<li><a href="#Prelude_0_action_3" class="link"><div class="nowrap">action
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
-<li><a href="#Prelude_0_actions_2" class="link"><div class="nowrap">actions
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
-<li><a href="#Prelude_0_actions_2" class="link"><div class="nowrap">actions
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>IAsyncEnumerable<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
-<li><a href="#Prelude_0_zip_3" class="link"><div class="nowrap">zip
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        <span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> First<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> Second<span class='parens'>)</span> tuple<span class='parens'>)</span></div></a></li>
-<li><a href="#Prelude_0_zip_4" class="link"><div class="nowrap">zip
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        <span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> First<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> Second<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>C<span class='generics'>&gt;</span> Third<span class='parens'>)</span> tuple<span class='parens'>)</span></div></a></li>
-<li><a href="#Prelude_0_zip_5" class="link"><div class="nowrap">zip
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        <span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> First<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> Second<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>C<span class='generics'>&gt;</span> Third<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>D<span class='generics'>&gt;</span> Fourth<span class='parens'>)</span> tuple<span class='parens'>)</span></div></a></li>
-<li><a href="#Prelude_0_zip_6" class="link"><div class="nowrap">zip
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        <span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> First<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> Second<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>C<span class='generics'>&gt;</span> Third<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>D<span class='generics'>&gt;</span> Fourth<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>E<span class='generics'>&gt;</span> Fifth<span class='parens'>)</span> tuple<span class='parens'>)</span></div></a></li>
-<li><a href="#Prelude_0_zip_3" class="link"><div class="nowrap">zip
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> First<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> Second<span class='parens'>)</span></div></a></li>
-<li><a href="#Prelude_0_zip_4" class="link"><div class="nowrap">zip
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> First<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> Second<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>C<span class='generics'>&gt;</span> Third<span class='parens'>)</span></div></a></li>
-<li><a href="#Prelude_0_zip_5" class="link"><div class="nowrap">zip
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> First<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> Second<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>C<span class='generics'>&gt;</span> Third<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>D<span class='generics'>&gt;</span> Fourth<span class='parens'>)</span></div></a></li>
-<li><a href="#Prelude_0_zip_6" class="link"><div class="nowrap">zip
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> First<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> Second<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>C<span class='generics'>&gt;</span> Third<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>D<span class='generics'>&gt;</span> Fourth<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>E<span class='generics'>&gt;</span> Fifth<span class='parens'>)</span></div></a></li></ul>
 <li><a href="#_0_Applicative_1" class="link"><div class="nowrap">Applicative
 <span class='generics'>&lt;</span>F<span class='generics'>&gt;</span></div></a></li>
 <ul><li><a href="#Applicative_1_Pure_1" class="link"><div class="nowrap">Pure
@@ -194,21 +54,27 @@ including the collection-types, have applicative traits.</p>
 <li><a href="#Applicative_1_Apply_2" class="link"><div class="nowrap">Apply
 <span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
-<li><a href="#Applicative_1_ApplyLazy_2" class="link"><div class="nowrap">ApplyLazy
+<li><a href="#Applicative_1_Apply_2" class="link"><div class="nowrap">Apply
 <span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>Memo<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#Applicative_1_Apply_2" class="link"><div class="nowrap">Apply
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Memo<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>Memo<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#Applicative_1_Apply_2" class="link"><div class="nowrap">Apply
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Memo<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
 <li><a href="#Applicative_1_Action_2" class="link"><div class="nowrap">Action
 <span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
-<li><a href="#Applicative_1_Apply_3" class="link"><div class="nowrap">Apply
-<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
-<li><a href="#Applicative_1_Apply_3" class="link"><div class="nowrap">Apply
-<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
-<li><a href="#Applicative_1_Apply_3" class="link"><div class="nowrap">Apply
-<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#Applicative_1_Action_2" class="link"><div class="nowrap">Action
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Memo<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#Applicative_1_Action_2" class="link"><div class="nowrap">Action
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Memo<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Memo<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
+<li><a href="#Applicative_1_Action_2" class="link"><div class="nowrap">Action
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Memo<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='parens'>)</span></div></a></li>
 <li><a href="#Applicative_1_Actions_1" class="link"><div class="nowrap">Actions
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>params K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>[] fas<span class='parens'>)</span></div></a></li>
@@ -220,34 +86,26 @@ including the collection-types, have applicative traits.</p>
 <span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> fas<span class='parens'>)</span></div></a></li>
 <li><a href="#Applicative_1_Actions_1" class="link"><div class="nowrap">Actions
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>IAsyncEnumerable<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> fas<span class='parens'>)</span></div></a></li></ul></ul></div>
-<div class="interface">
+<span class='parens'>(</span>IAsyncEnumerable<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> fas<span class='parens'>)</span></div></a></li>
+<li><a href="#Applicative_1_Between_3" class="link"><div class="nowrap">Between
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>OPEN<span class='comma'>, </span>CLOSE<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        K<span class='generics'>&lt;</span>F<span class='comma'>, </span>OPEN<span class='generics'>&gt;</span> open<span class='comma'>, </span>
+        K<span class='generics'>&lt;</span>F<span class='comma'>, </span>CLOSE<span class='generics'>&gt;</span> close<span class='comma'>, </span>
+        K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> p<span class='parens'>)</span></div></a></li>
+<li><a href="#Applicative_1_Replicate_1" class="link"><div class="nowrap">Replicate
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>int count<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> fa<span class='parens'>)</span></div></a></li></ul></ul></div>
+<div class="interface"><H1>Sub modules</H1>
+<table><tbody><tr><td class="src clearfix"><span class="inst-left"><a href="Extensions/index.html" class="link">Extensions</a></span></td></tr>
+<tr><td class="src clearfix"><span class="inst-left"><a href="Module/index.html" class="link">Module</a></span></td></tr>
+<tr><td class="src clearfix"><span class="inst-left"><a href="Operators/index.html" class="link">Operators</a></span></td></tr>
+<tr><td class="src clearfix"><span class="inst-left"><a href="Prelude/index.html" class="link">Prelude</a></span></td></tr></tbody></table>
 <div class="top"><p class="src"><span class="keyword">class</span>
-<a id="_0_ApplicativeExtensions_0" class="def">ApplicativeExtensions</a>
-
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Extensions.cs#L13" class="link">Source</a>
-<a href="#_0_ApplicativeExtensions_0" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div><p>Monad module</p>
-</div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-<div class="subs methods"><p class="caption">Methods</p>
-<div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>B<span class='generics'>&gt;</span>
-<a id="ApplicativeExtensions_0_Apply_0" class="def">Apply</a>
-
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Extensions.cs#L18" class="link">Source</a>
-<a href="#ApplicativeExtensions_0_Apply_0" class="selflink">#</a>
+<a id="_0_Act_2" class="def">Act</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Act.cs#L5" class="link">Source</a>
+<a href="#_0_Act_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
 <div></div>
@@ -256,23 +114,15 @@ K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>B<span class='
 
 
 
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>B<span class='generics'>&gt;</span>
-<a id="ApplicativeExtensions_0_Apply_0" class="def">Apply</a>
-
-<span class='parens'>(</span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Extensions.cs#L22" class="link">Source</a>
-<a href="#ApplicativeExtensions_0_Apply_0" class="selflink">#</a>
+<div class="subs methods"><p class="caption">Fields</p>
+<div class="top"><p class="src"><span class="keyword">field</span>
+Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Act_2_fun =
+        _ => y => y_0" class="def">fun =
+        _ =&gt; y =&gt; y</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Act.cs#L7" class="link">Source</a>
+<a href="#Act_2_fun =
+        _ => y => y_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
 <div></div>
@@ -291,6 +141,10 @@ K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>B<span class='
 
 
 </div></div>
+
+
+
+
 
 
 
@@ -541,1426 +395,10 @@ the optional <code>equals</code> parameter so that the equality of outcomes can 
 
 
 </div>
-<div class="top"><p class="src"><span class="keyword">class</span>
-<a id="_0_Applicative_0" class="def">Applicative</a>
-
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Module.cs#L10" class="link">Source</a>
-<a href="#_0_Applicative_0" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div><p>Applicative module</p>
-</div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-<div class="subs methods"><p class="caption">Methods</p>
-<div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
-<a id="Applicative_0_pure_2" class="def">pure</a>
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>A value<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Module.cs#L12" class="link">Source</a>
-<a href="#Applicative_0_pure_2" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> F : Applicative&lt;F&gt;</span></div></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span>
-<a id="Applicative_0_apply_3" class="def">apply</a>
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Module.cs#L17" class="link">Source</a>
-<a href="#Applicative_0_apply_3" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> F : Applicative&lt;F&gt;</span></div></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
-<a id="Applicative_0_apply_4" class="def">apply</a>
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Module.cs#L22" class="link">Source</a>
-<a href="#Applicative_0_apply_4" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> F : Applicative&lt;F&gt;</span></div></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>F<span class='comma'>, </span>C<span class='generics'>&gt;</span>
-<a id="Applicative_0_apply_4" class="def">apply</a>
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Module.cs#L27" class="link">Source</a>
-<a href="#Applicative_0_apply_4" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> F : Applicative&lt;F&gt;</span></div></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>F<span class='comma'>, </span>D<span class='generics'>&gt;</span>
-<a id="Applicative_0_apply_5" class="def">apply</a>
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>C<span class='generics'>&gt;</span> mc<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Module.cs#L32" class="link">Source</a>
-<a href="#Applicative_0_apply_5" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> F : Applicative&lt;F&gt;</span></div></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
-<a id="Applicative_0_apply_5" class="def">apply</a>
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Module.cs#L37" class="link">Source</a>
-<a href="#Applicative_0_apply_5" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> F : Applicative&lt;F&gt;</span></div></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B,Func<span class='generics'>&lt;</span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span>
-<a id="Applicative_0_apply_5" class="def">apply</a>
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Module.cs#L42" class="link">Source</a>
-<a href="#Applicative_0_apply_5" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> F : Applicative&lt;F&gt;</span></div></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span>
-<a id="Applicative_0_action_3" class="def">action</a>
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Module.cs#L47" class="link">Source</a>
-<a href="#Applicative_0_action_3" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> F : Applicative&lt;F&gt;</span></div></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
-<a id="Applicative_0_actions_2" class="def">actions</a>
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Module.cs#L52" class="link">Source</a>
-<a href="#Applicative_0_actions_2" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> F : Applicative&lt;F&gt;</span></div></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
-<a id="Applicative_0_when_1" class="def">when</a>
-<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span>
-<span class='parens'>(</span>bool flag<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> fx<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Module.cs#L57" class="link">Source</a>
-<a href="#Applicative_0_when_1" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> F : Applicative&lt;F&gt;</span></div></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Unit<span class='generics'>&gt;</span>
-<a id="Applicative_0_unless_1" class="def">unless</a>
-<span class='generics'>&lt;</span>F<span class='generics'>&gt;</span>
-<span class='parens'>(</span>bool flag<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> fx<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Module.cs#L62" class="link">Source</a>
-<a href="#Applicative_0_unless_1" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> F : Applicative&lt;F&gt;</span></div></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span>
-<a id="Applicative_0_lift_3" class="def">lift</a>
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
-<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> fa<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Module.cs#L67" class="link">Source</a>
-<a href="#Applicative_0_lift_3" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> F : Applicative&lt;F&gt;</span></div></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>F<span class='comma'>, </span>C<span class='generics'>&gt;</span>
-<a id="Applicative_0_lift_4" class="def">lift</a>
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
-<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> fa<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> fb<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Module.cs#L72" class="link">Source</a>
-<a href="#Applicative_0_lift_4" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> F : Applicative&lt;F&gt;</span></div></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>F<span class='comma'>, </span>C<span class='generics'>&gt;</span>
-<a id="Applicative_0_lift_4" class="def">lift</a>
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
-<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> fa<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> fb<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Module.cs#L77" class="link">Source</a>
-<a href="#Applicative_0_lift_4" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> F : Applicative&lt;F&gt;</span></div></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>F<span class='comma'>, </span>D<span class='generics'>&gt;</span>
-<a id="Applicative_0_lift_5" class="def">lift</a>
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span>
-<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> fa<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> fb<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>C<span class='generics'>&gt;</span> fc<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Module.cs#L82" class="link">Source</a>
-<a href="#Applicative_0_lift_5" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> F : Applicative&lt;F&gt;</span></div></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>F<span class='comma'>, </span>D<span class='generics'>&gt;</span>
-<a id="Applicative_0_lift_5" class="def">lift</a>
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span>
-<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>Func<span class='generics'>&lt;</span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> fa<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> fb<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>C<span class='generics'>&gt;</span> fc<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Module.cs#L87" class="link">Source</a>
-<a href="#Applicative_0_lift_5" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> F : Applicative&lt;F&gt;</span></div></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div></div>
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">class</span>
-<a id="_0_ApplicativeExtensions_0" class="def">ApplicativeExtensions</a>
-
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Operators.cs#L7" class="link">Source</a>
-<a href="#_0_ApplicativeExtensions_0" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-<div class="subs methods"><p class="caption">Operators</p>
-<div class="top"><p class="src"><span class="keyword">operator</span>
-<a id="ApplicativeExtensions_0_>>>_0" class="def">&gt;&gt;&gt;</a>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Operators.cs#L16" class="link">Source</a>
-<a href="#ApplicativeExtensions_0_>>>_0" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div><p>Applicative sequence operator</p>
-</div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">operator</span>
-<a id="ApplicativeExtensions_0_*_0" class="def">*</a>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Operators.cs#L22" class="link">Source</a>
-<a href="#ApplicativeExtensions_0_*_0" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div><p>Applicative apply operator</p>
-</div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">operator</span>
-<a id="ApplicativeExtensions_0_*_0" class="def">*</a>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Operators.cs#L28" class="link">Source</a>
-<a href="#ApplicativeExtensions_0_*_0" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div><p>Applicative apply operator</p>
-</div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div></div>
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">class</span>
-<a id="_0_Prelude_0" class="def">Prelude</a>
-
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Prelude.cs#L8" class="link">Source</a>
-<a href="#_0_Prelude_0" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-<div class="subs methods"><p class="caption">Methods</p>
-<div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
-<a id="Prelude_0_pure_2" class="def">pure</a>
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>A value<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Prelude.cs#L16" class="link">Source</a>
-<a href="#Prelude_0_pure_2" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> F : Applicative&lt;F&gt;</span></div></div></p>
-<div class="doc"><div><p>Construct an applicative structure from a pure value</p>
-</div>
-<div></div>
-<div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">value</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Pure value to lift into the applicative structure</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Applicative structure</p>
-</span></td></tr></tbody></table></div></div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
-<a id="Prelude_0_applyM_3" class="def">applyM</a>
-<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Prelude.cs#L21" class="link">Source</a>
-<a href="#Prelude_0_applyM_3" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> M : Monad&lt;M&gt;</span></div></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>B<span class='generics'>&gt;</span>
-<a id="Prelude_0_apply_3" class="def">apply</a>
-<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Prelude.cs#L26" class="link">Source</a>
-<a href="#Prelude_0_apply_3" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> AF : Applicative&lt;AF&gt;</span></div></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
-<a id="Prelude_0_apply_4" class="def">apply</a>
-<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Prelude.cs#L31" class="link">Source</a>
-<a href="#Prelude_0_apply_4" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> AF : Applicative&lt;AF&gt;</span></div></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B,Func<span class='generics'>&lt;</span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span>
-<a id="Prelude_0_apply_5" class="def">apply</a>
-<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Prelude.cs#L36" class="link">Source</a>
-<a href="#Prelude_0_apply_5" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> AF : Applicative&lt;AF&gt;</span></div></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B,Func<span class='generics'>&lt;</span>C<span class='comma'>, </span>Func<span class='generics'>&lt;</span>D<span class='comma'>, </span>E<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span>
-<a id="Prelude_0_apply_6" class="def">apply</a>
-<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Prelude.cs#L41" class="link">Source</a>
-<a href="#Prelude_0_apply_6" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> AF : Applicative&lt;AF&gt;</span></div></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B,Func<span class='generics'>&lt;</span>C<span class='comma'>, </span>Func<span class='generics'>&lt;</span>D<span class='comma'>, </span>Func<span class='generics'>&lt;</span>E<span class='comma'>, </span>F<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span>
-<a id="Prelude_0_apply_7" class="def">apply</a>
-<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Prelude.cs#L46" class="link">Source</a>
-<a href="#Prelude_0_apply_7" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> AF : Applicative&lt;AF&gt;</span></div></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B,Func<span class='generics'>&lt;</span>C<span class='comma'>, </span>Func<span class='generics'>&lt;</span>D<span class='comma'>, </span>Func<span class='generics'>&lt;</span>E<span class='comma'>, </span>Func<span class='generics'>&lt;</span>F<span class='comma'>, </span>G<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span>
-<a id="Prelude_0_apply_8" class="def">apply</a>
-<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Prelude.cs#L51" class="link">Source</a>
-<a href="#Prelude_0_apply_8" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> AF : Applicative&lt;AF&gt;</span></div></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B,Func<span class='generics'>&lt;</span>C<span class='comma'>, </span>Func<span class='generics'>&lt;</span>D<span class='comma'>, </span>Func<span class='generics'>&lt;</span>E<span class='comma'>, </span>Func<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>G<span class='comma'>, </span>H<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span>
-<a id="Prelude_0_apply_9" class="def">apply</a>
-<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Prelude.cs#L56" class="link">Source</a>
-<a href="#Prelude_0_apply_9" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> AF : Applicative&lt;AF&gt;</span></div></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B,Func<span class='generics'>&lt;</span>C<span class='comma'>, </span>Func<span class='generics'>&lt;</span>D<span class='comma'>, </span>Func<span class='generics'>&lt;</span>E<span class='comma'>, </span>Func<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>G<span class='comma'>, </span>Func<span class='generics'>&lt;</span>H<span class='comma'>, </span>I<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span>
-<a id="Prelude_0_apply_10" class="def">apply</a>
-<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Prelude.cs#L61" class="link">Source</a>
-<a href="#Prelude_0_apply_10" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> AF : Applicative&lt;AF&gt;</span></div></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B,Func<span class='generics'>&lt;</span>C<span class='comma'>, </span>Func<span class='generics'>&lt;</span>D<span class='comma'>, </span>Func<span class='generics'>&lt;</span>E<span class='comma'>, </span>Func<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>G<span class='comma'>, </span>Func<span class='generics'>&lt;</span>H<span class='comma'>, </span>Func<span class='generics'>&lt;</span>I<span class='comma'>, </span>J<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span>
-<a id="Prelude_0_apply_11" class="def">apply</a>
-<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Prelude.cs#L66" class="link">Source</a>
-<a href="#Prelude_0_apply_11" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> AF : Applicative&lt;AF&gt;</span></div></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B,Func<span class='generics'>&lt;</span>C<span class='comma'>, </span>Func<span class='generics'>&lt;</span>D<span class='comma'>, </span>Func<span class='generics'>&lt;</span>E<span class='comma'>, </span>Func<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>G<span class='comma'>, </span>Func<span class='generics'>&lt;</span>H<span class='comma'>, </span>Func<span class='generics'>&lt;</span>I<span class='comma'>, </span>Func<span class='generics'>&lt;</span>J<span class='comma'>, </span>K<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span>
-<a id="Prelude_0_apply_12" class="def">apply</a>
-<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='comma'>, </span>K<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='comma'>, </span>F<span class='comma'>, </span>G<span class='comma'>, </span>H<span class='comma'>, </span>I<span class='comma'>, </span>J<span class='comma'>, </span>K<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>AF<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Prelude.cs#L71" class="link">Source</a>
-<a href="#Prelude_0_apply_12" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> AF : Applicative&lt;AF&gt;</span></div></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span>
-<a id="Prelude_0_action_3" class="def">action</a>
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Prelude.cs#L76" class="link">Source</a>
-<a href="#Prelude_0_action_3" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> F : Applicative&lt;F&gt;</span></div></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
-<a id="Prelude_0_actions_2" class="def">actions</a>
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Prelude.cs#L81" class="link">Source</a>
-<a href="#Prelude_0_actions_2" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> F : Applicative&lt;F&gt;</span></div></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
-<a id="Prelude_0_actions_2" class="def">actions</a>
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>IAsyncEnumerable<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Prelude.cs#L86" class="link">Source</a>
-<a href="#Prelude_0_actions_2" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> F : Applicative&lt;F&gt;</span></div></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>F<span class='comma'>, </span>(A First<span class='comma'>, </span>B Second)<span class='generics'>&gt;</span>
-<a id="Prelude_0_zip_3" class="def">zip</a>
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        <span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> First<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> Second<span class='parens'>)</span> tuple<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Prelude.cs#L104" class="link">Source</a>
-<a href="#Prelude_0_zip_3" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> F : Applicative&lt;F&gt;</span></div></div></p>
-<div class="doc"><div><p>Zips applicatives into a tuple</p>
-</div>
-<div></div>
-<div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">F</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Applicative trait type</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>First applicative's bound value type</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Second applicative's bound value type</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">tuple</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Tuple of applicatives to run</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Zipped applicative</p>
-</span></td></tr></tbody></table></div></div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>F<span class='comma'>, </span>(A First<span class='comma'>, </span>B Second<span class='comma'>, </span>C Third)<span class='generics'>&gt;</span>
-<a id="Prelude_0_zip_4" class="def">zip</a>
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        <span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> First<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> Second<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>C<span class='generics'>&gt;</span> Third<span class='parens'>)</span> tuple<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Prelude.cs#L118" class="link">Source</a>
-<a href="#Prelude_0_zip_4" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> F : Applicative&lt;F&gt;</span></div></div></p>
-<div class="doc"><div><p>Zips applicatives into a tuple</p>
-</div>
-<div></div>
-<div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">F</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Applicative trait type</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>First applicative's bound value type</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Second applicative's bound value type</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">C</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Third applicative's bound value type</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">tuple</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Tuple of applicatives to run</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Zipped applicative</p>
-</span></td></tr></tbody></table></div></div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>F<span class='comma'>, </span>(A First<span class='comma'>, </span>B Second<span class='comma'>, </span>C Third<span class='comma'>, </span>D Fourth)<span class='generics'>&gt;</span>
-<a id="Prelude_0_zip_5" class="def">zip</a>
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        <span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> First<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> Second<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>C<span class='generics'>&gt;</span> Third<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>D<span class='generics'>&gt;</span> Fourth<span class='parens'>)</span> tuple<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Prelude.cs#L135" class="link">Source</a>
-<a href="#Prelude_0_zip_5" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> F : Applicative&lt;F&gt;</span></div></div></p>
-<div class="doc"><div><p>Zips applicatives into a tuple</p>
-</div>
-<div></div>
-<div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">F</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Applicative trait type</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>First applicative's bound value type</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Second applicative's bound value type</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">C</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Third applicative's bound value type</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">D</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Fourth applicative's bound value type</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">tuple</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Tuple of applicatives to run</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Zipped applicative</p>
-</span></td></tr></tbody></table></div></div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>F<span class='comma'>, </span>(A First<span class='comma'>, </span>B Second<span class='comma'>, </span>C Third<span class='comma'>, </span>D Fourth<span class='comma'>, </span>E Fifth)<span class='generics'>&gt;</span>
-<a id="Prelude_0_zip_6" class="def">zip</a>
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        <span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> First<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> Second<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>C<span class='generics'>&gt;</span> Third<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>D<span class='generics'>&gt;</span> Fourth<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>E<span class='generics'>&gt;</span> Fifth<span class='parens'>)</span> tuple<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Prelude.cs#L153" class="link">Source</a>
-<a href="#Prelude_0_zip_6" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> F : Applicative&lt;F&gt;</span></div></div></p>
-<div class="doc"><div><p>Zips applicatives into a tuple</p>
-</div>
-<div></div>
-<div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">F</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Applicative trait type</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>First applicative's bound value type</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Second applicative's bound value type</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">C</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Third applicative's bound value type</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">D</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Fourth applicative's bound value type</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">tuple</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Tuple of applicatives to run</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Zipped applicative</p>
-</span></td></tr></tbody></table></div></div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>F<span class='comma'>, </span>(A First<span class='comma'>, </span>B Second)<span class='generics'>&gt;</span>
-<a id="Prelude_0_zip_3" class="def">zip</a>
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> First<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> Second<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Prelude.cs#L171" class="link">Source</a>
-<a href="#Prelude_0_zip_3" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> F : Applicative&lt;F&gt;</span></div></div></p>
-<div class="doc"><div><p>Zips applicatives into a tuple</p>
-</div>
-<div></div>
-<div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">F</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Applicative trait type</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>First applicative's bound value type</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Second applicative's bound value type</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">First</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>First applicative</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">Second</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Second applicative</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Zipped applicative</p>
-</span></td></tr></tbody></table></div></div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>F<span class='comma'>, </span>(A First<span class='comma'>, </span>B Second<span class='comma'>, </span>C Third)<span class='generics'>&gt;</span>
-<a id="Prelude_0_zip_4" class="def">zip</a>
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> First<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> Second<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>C<span class='generics'>&gt;</span> Third<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Prelude.cs#L187" class="link">Source</a>
-<a href="#Prelude_0_zip_4" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> F : Applicative&lt;F&gt;</span></div></div></p>
-<div class="doc"><div><p>Zips applicatives into a tuple</p>
-</div>
-<div></div>
-<div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">F</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Applicative trait type</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>First applicative's bound value type</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Second applicative's bound value type</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">C</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Third applicative's bound value type</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">First</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>First applicative</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">Second</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Second applicative</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">Third</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Third applicative</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Zipped applicative</p>
-</span></td></tr></tbody></table></div></div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>F<span class='comma'>, </span>(A First<span class='comma'>, </span>B Second<span class='comma'>, </span>C Third<span class='comma'>, </span>D Fourth)<span class='generics'>&gt;</span>
-<a id="Prelude_0_zip_5" class="def">zip</a>
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> First<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> Second<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>C<span class='generics'>&gt;</span> Third<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>D<span class='generics'>&gt;</span> Fourth<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Prelude.cs#L207" class="link">Source</a>
-<a href="#Prelude_0_zip_5" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> F : Applicative&lt;F&gt;</span></div></div></p>
-<div class="doc"><div><p>Zips applicatives into a tuple</p>
-</div>
-<div></div>
-<div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">F</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Applicative trait type</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>First applicative's bound value type</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Second applicative's bound value type</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">C</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Third applicative's bound value type</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">D</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Fourth applicative's bound value type</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">First</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>First applicative</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">Second</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Second applicative</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">Third</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Third applicative</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">Fourth</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Fourth applicative</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Zipped applicative</p>
-</span></td></tr></tbody></table></div></div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>F<span class='comma'>, </span>(A First<span class='comma'>, </span>B Second<span class='comma'>, </span>C Third<span class='comma'>, </span>D Fourth<span class='comma'>, </span>E Fifth)<span class='generics'>&gt;</span>
-<a id="Prelude_0_zip_6" class="def">zip</a>
-<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='comma'>, </span>D<span class='comma'>, </span>E<span class='generics'>&gt;</span>
-<span class='parens'>(</span>
-        K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> First<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> Second<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>C<span class='generics'>&gt;</span> Third<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>D<span class='generics'>&gt;</span> Fourth<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>E<span class='generics'>&gt;</span> Fifth<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Prelude.cs#L229" class="link">Source</a>
-<a href="#Prelude_0_zip_6" class="selflink">#</a>
-<div class="constraints"><div class="constraint"><span class="keyword">where</span>
-<span> F : Applicative&lt;F&gt;</span></div></div></p>
-<div class="doc"><div><p>Zips applicatives into a tuple</p>
-</div>
-<div></div>
-<div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">F</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Applicative trait type</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>First applicative's bound value type</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Second applicative's bound value type</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">C</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Third applicative's bound value type</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">type</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">D</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Fourth applicative's bound value type</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">First</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>First applicative</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">Second</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Second applicative</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">Third</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Third applicative</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">Fourth</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Fourth applicative</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">param</span></td>
-<td class="src clearfix"><span class="inst-left"><span class="def">Fifth</span></span></td>
-<td class="src clearfix"><span class="instruction inst-left"><p>Fifth applicative</p>
-</span></td></tr>
-<tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Zipped applicative</p>
-</span></td></tr></tbody></table></div></div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div></div>
-
-
-
-
-</div>
 <div class="top"><p class="src"><span class="keyword">interface</span>
 <a id="_0_Applicative_1" class="def">Applicative</a>
 <span class='generics'>&lt;</span>F<span class='generics'>&gt;</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Trait.cs#L15" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Trait.cs#L16" class="link">Source</a>
 <a href="#_0_Applicative_1" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> F : Applicative&lt;F&gt;</span></div></div></p>
@@ -1990,12 +428,24 @@ K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='g
 <a id="Applicative_1_Pure_1" class="def">Pure</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>A value<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Trait.cs#L23" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Trait.cs#L30" class="link">Source</a>
 <a href="#Applicative_1_Pure_1" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div></div>
+<div class="doc"><div><p>Lift a pure value into the applicative structure</p>
+</div>
 <div></div>
-
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">value</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Value to lift</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Constructed applicative structure</p>
+</span></td></tr></tbody></table></div></div>
 </div>
 
 
@@ -2015,12 +465,34 @@ K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='g
 <a id="Applicative_1_Apply_2" class="def">Apply</a>
 <span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Trait.cs#L24" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Trait.cs#L45" class="link">Source</a>
 <a href="#Applicative_1_Apply_2" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div></div>
-<div></div>
-
+<div class="doc"><div><p>Apply the function to the argument.</p>
+</div>
+<div><p>This is like <code>delegate.Invoke</code> for lifted functions and lifted arguments.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Argument type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Return type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">mf</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted argument</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Applicative structure that represents the result of invoking the lifted function with
+the lifted argument</p>
+</span></td></tr></tbody></table></div></div>
 </div>
 
 
@@ -2037,15 +509,134 @@ K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='g
 </div>
 <div class="top"><p class="src"><span class="keyword">method</span>
 K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span>
-<a id="Applicative_1_ApplyLazy_2" class="def">ApplyLazy</a>
+<a id="Applicative_1_Apply_2" class="def">Apply</a>
 <span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>Func<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Trait.cs#L26" class="link">Source</a>
-<a href="#Applicative_1_ApplyLazy_2" class="selflink">#</a>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>Memo<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Trait.cs#L61" class="link">Source</a>
+<a href="#Applicative_1_Apply_2" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div></div>
-<div></div>
+<div class="doc"><div><p>Apply the function to the argument.
+This is like <code>delegate.Invoke</code> for lifted functions and lifted arguments.</p>
+</div>
+<div><p>Uses memoisation for lazy and then cached evaluation of the argument.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Argument type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Return type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">mf</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted argument</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Applicative structure that represents the result of invoking the lifted function with
+the lifted argument</p>
+</span></td></tr></tbody></table></div></div>
+</div>
 
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Applicative_1_Apply_2" class="def">Apply</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Memo<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>Memo<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Trait.cs#L82" class="link">Source</a>
+<a href="#Applicative_1_Apply_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Apply the function to the argument.
+This is like <code>delegate.Invoke</code> for lifted functions and lifted arguments.</p>
+</div>
+<div><p>Uses memoisation for lazy and then cached evaluation of the argument.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Argument type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Return type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">mf</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted argument</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Applicative structure that represents the result of invoking the lifted function with
+the lifted argument</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Applicative_1_Apply_2" class="def">Apply</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Memo<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Trait.cs#L99" class="link">Source</a>
+<a href="#Applicative_1_Apply_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Apply the function to the argument.
+This is like <code>delegate.Invoke</code> for lifted functions and lifted arguments.</p>
+</div>
+<div><p>Uses memoisation for lazy and then cached evaluation of the argument.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Argument type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Return type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">mf</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted function</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted argument</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Applicative structure that represents the result of invoking the lifted function with
+the lifted argument</p>
+</span></td></tr></tbody></table></div></div>
 </div>
 
 
@@ -2065,12 +656,32 @@ K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='g
 <a id="Applicative_1_Action_2" class="def">Action</a>
 <span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Trait.cs#L34" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Trait.cs#L111" class="link">Source</a>
 <a href="#Applicative_1_Action_2" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div></div>
+<div class="doc"><div><p>Applicative action.  Computes the first applicative action and then computes the second.</p>
+</div>
 <div></div>
-
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>First applicative structure bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Second applicative structure bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>First applicative structure</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">mb</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Second applicative structure</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The result of the second applicative action (if there wasn't a failure beforehand)</p>
+</span></td></tr></tbody></table></div></div>
 </div>
 
 
@@ -2086,16 +697,36 @@ K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='g
 
 </div>
 <div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>F<span class='comma'>, </span>C<span class='generics'>&gt;</span>
-<a id="Applicative_1_Apply_3" class="def">Apply</a>
-<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Trait.cs#L37" class="link">Source</a>
-<a href="#Applicative_1_Apply_3" class="selflink">#</a>
+K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Applicative_1_Action_2" class="def">Action</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Memo<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Trait.cs#L123" class="link">Source</a>
+<a href="#Applicative_1_Action_2" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div></div>
+<div class="doc"><div><p>Applicative action.  Computes the first applicative action and then computes the second.</p>
+</div>
 <div></div>
-
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>First applicative structure bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Second applicative structure bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>First applicative structure</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">mb</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Second applicative structure</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The result of the second applicative action (if there wasn't a failure beforehand)</p>
+</span></td></tr></tbody></table></div></div>
 </div>
 
 
@@ -2111,16 +742,36 @@ K<span class='generics'>&lt;</span>F<span class='comma'>, </span>C<span class='g
 
 </div>
 <div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
-<a id="Applicative_1_Apply_3" class="def">Apply</a>
-<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Trait.cs#L40" class="link">Source</a>
-<a href="#Applicative_1_Apply_3" class="selflink">#</a>
+K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Applicative_1_Action_2" class="def">Action</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Memo<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Memo<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Trait.cs#L135" class="link">Source</a>
+<a href="#Applicative_1_Action_2" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div></div>
+<div class="doc"><div><p>Applicative action.  Computes the first applicative action and then computes the second.</p>
+</div>
 <div></div>
-
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>First applicative structure bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Second applicative structure bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>First applicative structure</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">mb</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Second applicative structure</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The result of the second applicative action (if there wasn't a failure beforehand)</p>
+</span></td></tr></tbody></table></div></div>
 </div>
 
 
@@ -2136,16 +787,36 @@ K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class
 
 </div>
 <div class="top"><p class="src"><span class="keyword">method</span>
-K<span class='generics'>&lt;</span>F<span class='comma'>, </span>C<span class='generics'>&gt;</span>
-<a id="Applicative_1_Apply_3" class="def">Apply</a>
-<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
-<span class='parens'>(</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> mf<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Trait.cs#L43" class="link">Source</a>
-<a href="#Applicative_1_Apply_3" class="selflink">#</a>
+K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Applicative_1_Action_2" class="def">Action</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Memo<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>B<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Trait.cs#L147" class="link">Source</a>
+<a href="#Applicative_1_Action_2" class="selflink">#</a>
 <div class="constraints"></div></p>
-<div class="doc"><div></div>
+<div class="doc"><div><p>Applicative action.  Computes the first applicative action and then computes the second.</p>
+</div>
 <div></div>
-
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>First applicative structure bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Second applicative structure bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>First applicative structure</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">mb</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Second applicative structure</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The result of the second applicative action (if there wasn't a failure beforehand)</p>
+</span></td></tr></tbody></table></div></div>
 </div>
 
 
@@ -2165,7 +836,7 @@ K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='g
 <a id="Applicative_1_Actions_1" class="def">Actions</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>params K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>[] fas<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Trait.cs#L70" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Trait.cs#L175" class="link">Source</a>
 <a href="#Applicative_1_Actions_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Chains a sequence of applicative actions</p>
@@ -2213,7 +884,7 @@ K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='g
 <a id="Applicative_1_Actions_1" class="def">Actions</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Seq<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> fas<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Trait.cs#L97" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Trait.cs#L203" class="link">Source</a>
 <a href="#Applicative_1_Actions_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Chains a sequence of applicative actions</p>
@@ -2261,7 +932,7 @@ K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='g
 <a id="Applicative_1_Actions_1" class="def">Actions</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>IEnumerable<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> fas<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Trait.cs#L124" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Trait.cs#L231" class="link">Source</a>
 <a href="#Applicative_1_Actions_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Chains a sequence of applicative actions</p>
@@ -2309,7 +980,7 @@ K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='g
 <a id="Applicative_1_Actions_1" class="def">Actions</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>IAsyncEnumerable<span class='generics'>&lt;</span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> fas<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Trait.cs#L162" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Trait.cs#L270" class="link">Source</a>
 <a href="#Applicative_1_Actions_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Chains a sequence of applicative actions</p>
@@ -2338,6 +1009,103 @@ type within, then run that enumerable of IOs.</p>
 </span></td></tr>
 <tr><td class="src clearfix"><span class="keyword">returns</span></td>
 <td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Applicative_1_Between_3" class="def">Between</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>OPEN<span class='comma'>, </span>CLOSE<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        K<span class='generics'>&lt;</span>F<span class='comma'>, </span>OPEN<span class='generics'>&gt;</span> open<span class='comma'>, </span>
+        K<span class='generics'>&lt;</span>F<span class='comma'>, </span>CLOSE<span class='generics'>&gt;</span> close<span class='comma'>, </span>
+        K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> p<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Trait.cs#L289" class="link">Source</a>
+<a href="#Applicative_1_Between_3" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p><code>between(open, close, p) parses </code>open<code>, followed by </code>p<code>and</code>close`.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Return value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">OPEN</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>OPEN value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">CLOSE</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>CLOSE value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">open</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Open computation</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">close</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Close computation</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">p</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Between computation</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>The value returned by <code>p</code></p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>F<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Applicative_1_Replicate_1" class="def">Replicate</a>
+<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>int count<span class='comma'>, </span>K<span class='generics'>&lt;</span>F<span class='comma'>, </span>A<span class='generics'>&gt;</span> fa<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Applicative/Applicative.Trait.cs#L303" class="link">Source</a>
+<a href="#Applicative_1_Replicate_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Construct a sequence of <code>count</code> repetitions of <code>fa</code></p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">count</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Number of repetitions</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">fa</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Applicative computation to run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Applicative structure of <code>count</code> items</p>
+</span></td></tr></tbody></table></div></div>
 </div>
 
 

@@ -11,8 +11,8 @@
 <span> ► </span>
 <a href="index.html" class="link">Iterator</a></p></div>
 <p><code>Iterator&lt;A&gt;</code> is a functional-wrapper for <code>IEnumerator&lt;A&gt;</code>.  The abstraction leaks a little, so it's worth
-understanding how it works by reading the details below.  On the whole it behaves like an immutable stream
-that caches values as it goes, but there's some footguns that you should be aware of so that they can be
+understanding how it works by reading the details below.  On the whole, it behaves like an immutable stream
+that caches values as it goes, but there are some footguns that you should be aware of so that they can be
 avoided.</p>
 <h2>Problem: <code>IEnumerator&lt;A&gt;</code></h2>
 <ul>
@@ -61,6 +61,16 @@ method is available called <code>GetIterator()</code>, this will yield an <code>
     {
         total += iter.Head;
         iter = iter.Tail;
+    }
+    return total;
+}
+</code></pre>
+<p>And,</p>
+<pre class='language-csharp'><code class="language-c#">static A Sum&lt;A&gt;(Iterator&lt;A&gt; iter) where A : INumber
+{
+    for(var total = A.Zero; !iter.IsEmpty; iter = iter.Tail)
+    {
+        total += iter.Head;
     }
     return total;
 }
@@ -126,7 +136,7 @@ public override Iterator&lt;A&gt; Tail =&gt;
 <p>This all looks quite complex, but you should be able to see that the <code>Interlocked.CompareExchange</code>
 then-block is where the <code>IEnumerator</code> is created.  We then either set <code>firstValue</code> to a new <code>ConsValueEnum</code> with
 the head-item and the <code>enumerator</code> as arguments; or we set it to <code>Nil</code>.</p>
-<p>Upon success we set <code>firstAcquired</code> to <code>2</code>.  So, subsequent calls to <code>First</code> will just return <code>firstValue</code>.  This
+<p>Upon success, we set <code>firstAcquired</code> to <code>2</code>.  So, subsequent calls to <code>First</code> will just return <code>firstValue</code>.  This
 locking technique without using locks is a way to efficiently protect the enumerator from race-conditions.</p>
 <p>So, upon first access to either <code>Head</code> or <code>Tail</code> we launch the <code>IEnumerator</code> and cache the first item in the sequence.
 All subsequent access goes to <code>Head</code> or <code>Tail</code> on either <code>Nil</code> or <code>ConsValueEnum</code>.  We never touch the <code>IEnumerator</code>
@@ -201,18 +211,18 @@ to <code>tailValue</code> and <code>tailAcquired</code> gets set to <code>2</cod
 <code>tailValue</code>.</p>
 <p>That process continues for each item of the sequence until the <code>IEnumerator</code> runs out of items to yield.  The end
 result is a linked-list of <code>ConsValueEnum</code> objects that have a <code>ConsFirst</code> object at the head of the linked-list.</p>
-<p>So, <code>Iterator&lt;A&gt;</code> effectively caches the sequence as you go.  If you hold on to the head of the sequence then the
+<p>So, <code>Iterator&lt;A&gt;</code> effectively caches the sequence as you go.  If you hold on to the head of the sequence, then the
 whole list may end up in memory at once.  This could be problematic when working with large lazy sequences or even
 infinite sequences.</p>
-<p>This for example is fine:</p>
+<p>This, for example, is fine:</p>
 <pre class='language-csharp'><code class="language-c#">for(var iter = Naturals.GetIterator(); !iter.IsEmpty; iter = iter.Tail)
 {
     Console.WriteLine(iter.Head);
 }
 </code></pre>
-<p>Because the <code>iter</code> reference keeps getting updated in-place, meaning that nothing is holding on to the head-item in
+<p>Because the <code>iter</code> reference keeps getting updated, in-place, meaning that nothing is holding on to the head-item in
 the sequence, and so the garbage-collector can collect those unreferenced items.</p>
-<p>Whereas this will cause memory-usage to grow and grow:</p>
+<p>Whereas this (below) will cause memory-usage to grow and grow:</p>
 <pre class='language-csharp'><code class="language-c#">var start = Naturals.GetIterator();
 for(var iter = start; !iter.IsEmpty; iter = iter.Tail)
 {
@@ -231,8 +241,8 @@ for(var iter = start.Clone(); !iter.IsEmpty; iter = iter.Tail)
 <p>This creates a new 'head' for the sequence and so <code>iter</code> is the only reference, meaning updates to <code>iter</code>
 make the head elements free for garbage collection.</p>
 <p>So, <code>Iterator&lt;A&gt;</code> is much, much more powerful than <code>IEnumerator&lt;A&gt;</code>.  It is mostly useful for immutable data-types
-that need to carry an <code>IEnumerator&lt;A&gt;</code>, but can't due it its limitations.  <code>Iterator&lt;A&gt;</code> has some limitations of its
-own, but they are relatively easy to workaround, whereas that isn't the case with <code>IEnumerator&lt;A&gt;</code> (without writing
+that need to carry an <code>IEnumerator&lt;A&gt;</code>, but can't due to its mutable-limitations.  <code>Iterator&lt;A&gt;</code> has some limitations of
+its own, but they are relatively easy to work around, whereas that isn't the case with <code>IEnumerator&lt;A&gt;</code> (without writing
 a type like <code>Iterator&lt;A&gt;</code>!).</p>
 
 <div id="table-of-contents"><p class="caption">Contents</p>
@@ -376,38 +386,6 @@ a type like <code>Iterator&lt;A&gt;</code>!).</p>
 <li><a href="#Iterator_1_ToFullArrayString_0" class="link"><div class="nowrap">ToFullArrayString
 
 <span class='parens'>(</span>string separator = &quot;<span class='comma'>, </span>&quot;<span class='parens'>)</span></div></a></li></ul>
-<li><a href="#Iterator_1_Nil_0" class="link"><div class="nowrap">Nil
-</div></a></li>
-<ul><li><a href="#Nil_0_Default = new Nil()_0" class="link"><div class="nowrap">Default = new Nil()</div></a></li>
-<li><a href="#Nil_0_ToString_0" class="link"><div class="nowrap">ToString
-
-<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
-<li><a href="#Nil_0_Head_0" class="link"><div class="nowrap">Head</div></a></li>
-<li><a href="#Nil_0_Tail_0" class="link"><div class="nowrap">Tail</div></a></li>
-<li><a href="#Nil_0_IsEmpty_0" class="link"><div class="nowrap">IsEmpty</div></a></li>
-<li><a href="#Nil_0_Clone_0" class="link"><div class="nowrap">Clone
-
-<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
-<li><a href="#Nil_0_Split_0" class="link"><div class="nowrap">Split
-
-<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
-<li><a href="#Nil_0_Count_0" class="link"><div class="nowrap">Count</div></a></li>
-<li><a href="#Nil_0_Dispose_0" class="link"><div class="nowrap">Dispose
-
-<span class='parens'>(</span><span class='parens'>)</span></div></a></li></ul>
-<li><a href="#Iterator_1_Cons_0" class="link"><div class="nowrap">Cons
-</div></a></li>
-<ul><li><a href="#Cons_0_Deconstruct_0" class="link"><div class="nowrap">Deconstruct
-
-<span class='parens'>(</span>out A head<span class='comma'>, </span>out Iterator<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> tail<span class='parens'>)</span></div></a></li></ul>
-<li><a href="#_0_IteratorExtensions_0" class="link"><div class="nowrap">IteratorExtensions
-</div></a></li>
-<ul><li><a href="#IteratorExtensions_0_As_1" class="link"><div class="nowrap">As
-<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>this K<span class='generics'>&lt;</span>Iterator<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
-<li><a href="#IteratorExtensions_0_GetIterator_1" class="link"><div class="nowrap">GetIterator
-<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>this IEnumerable<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> enumerable<span class='parens'>)</span></div></a></li></ul>
 <li><a href="#_0_Iterator_0" class="link"><div class="nowrap">Iterator
 </div></a></li>
 <ul><li><a href="#Iterator_0_from_1" class="link"><div class="nowrap">from
@@ -424,15 +402,15 @@ a type like <code>Iterator&lt;A&gt;</code>!).</p>
 <span class='parens'>(</span>A head<span class='comma'>, </span>Func<span class='generics'>&lt;</span>Iterator<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> tail<span class='parens'>)</span></div></a></li>
 <li><a href="#Iterator_0_Nil_1" class="link"><div class="nowrap">Nil
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span><span class='parens'>)</span></div></a></li></ul>
-<li><a href="#_0_Iterator_0" class="link"><div class="nowrap">Iterator
-</div></a></li>
-<ul></ul></ul></div>
-<div class="interface">
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li></ul></ul></div>
+<div class="interface"><H1>Sub modules</H1>
+<table><tbody><tr><td class="src clearfix"><span class="inst-left"><a href="DSL/index.html" class="link">DSL</a></span></td></tr>
+<tr><td class="src clearfix"><span class="inst-left"><a href="Extensions/index.html" class="link">Extensions</a></span></td></tr>
+<tr><td class="src clearfix"><span class="inst-left"><a href="Trait/index.html" class="link">Trait</a></span></td></tr></tbody></table>
 <div class="top"><p class="src"><span class="keyword">class</span>
 <a id="_0_Iterator_1" class="def">Iterator</a>
 <span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L37" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L35" class="link">Source</a>
 <a href="#_0_Iterator_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Wrapper for <code>IEnumerator</code> that makes it work like an immutable sequence.</p>
@@ -466,7 +444,7 @@ previous <code>Iterator</code> values as you walk the sequence.</p>
 <div class="top"><p class="src"><span class="keyword">field</span>
 Iterator<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Iterator_1_Empty = new Nil()_0" class="def">Empty = new Nil()</a>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L46" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L44" class="link">Source</a>
 <a href="#Iterator_1_Empty = new Nil()_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Empty iterator</p>
@@ -492,7 +470,7 @@ Iterator<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <div class="top"><p class="src"><span class="keyword">property</span>
 A
 <a id="Iterator_1_Head_0" class="def">Head</a>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L51" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L49" class="link">Source</a>
 <a href="#Iterator_1_Head_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Head element</p>
@@ -516,7 +494,7 @@ A
 <div class="top"><p class="src"><span class="keyword">property</span>
 Iterator<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Iterator_1_Tail_0" class="def">Tail</a>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L57" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L55" class="link">Source</a>
 <a href="#Iterator_1_Tail_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Tail of the sequence</p>
@@ -540,7 +518,7 @@ Iterator<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <div class="top"><p class="src"><span class="keyword">property</span>
 bool
 <a id="Iterator_1_IsEmpty_0" class="def">IsEmpty</a>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L63" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L61" class="link">Source</a>
 <a href="#Iterator_1_IsEmpty_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Return true if there are no elements in the sequence.</p>
@@ -564,7 +542,7 @@ bool
 <div class="top"><p class="src"><span class="keyword">property</span>
 long
 <a id="Iterator_1_Count_0" class="def">Count</a>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L72" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L70" class="link">Source</a>
 <a href="#Iterator_1_Count_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Return the number of items in the sequence.</p>
@@ -593,7 +571,7 @@ Iterator<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Iterator_1_Clone_0" class="def">Clone</a>
 
 <span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L79" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L77" class="link">Source</a>
 <a href="#Iterator_1_Clone_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Clone the iterator so that we can consume it without having the head item referenced.
@@ -620,7 +598,7 @@ Iterator<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Iterator_1_Split_0" class="def">Split</a>
 
 <span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L93" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L91" class="link">Source</a>
 <a href="#Iterator_1_Split_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>When iterating a sequence, it is possible (before evaluation of the <code>Tail</code>) to Terminate the current
@@ -654,7 +632,7 @@ IEnumerable<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Iterator_1_AsEnumerable_0" class="def">AsEnumerable</a>
 
 <span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L98" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L96" class="link">Source</a>
 <a href="#Iterator_1_AsEnumerable_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Create an <code>IEnumerable</code> from an <code>Iterator</code></p>
@@ -680,7 +658,7 @@ Iterable<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Iterator_1_AsIterable_0" class="def">AsIterable</a>
 
 <span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L110" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L108" class="link">Source</a>
 <a href="#Iterator_1_AsIterable_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Create an <code>Iterable</code> from an <code>Iterator</code></p>
@@ -706,7 +684,7 @@ void
 <a id="Iterator_1_Deconstruct_0" class="def">Deconstruct</a>
 
 <span class='parens'>(</span>out A head<span class='comma'>, </span>out Iterator<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> tail<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L117" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L115" class="link">Source</a>
 <a href="#Iterator_1_Deconstruct_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Deconstructor</p>
@@ -732,7 +710,7 @@ Iterator<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <a id="Iterator_1_Select_1" class="def">Select</a>
 <span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L126" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L124" class="link">Source</a>
 <a href="#Iterator_1_Select_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Functor map</p>
@@ -758,7 +736,7 @@ Iterator<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <a id="Iterator_1_Map_1" class="def">Map</a>
 <span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L133" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L131" class="link">Source</a>
 <a href="#Iterator_1_Map_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Functor map</p>
@@ -784,7 +762,7 @@ Iterator<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <a id="Iterator_1_Bind_1" class="def">Bind</a>
 <span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Iterator<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L149" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L147" class="link">Source</a>
 <a href="#Iterator_1_Bind_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Monad bind</p>
@@ -810,7 +788,7 @@ Iterator<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
 <a id="Iterator_1_SelectMany_2" class="def">SelectMany</a>
 <span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Iterator<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L168" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L166" class="link">Source</a>
 <a href="#Iterator_1_SelectMany_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Monad bind</p>
@@ -836,7 +814,7 @@ Iterator<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <a id="Iterator_1_Apply_1" class="def">Apply</a>
 <span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Iterator<span class='generics'>&lt;</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ff<span class='comma'>, </span>Iterator<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> fa<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L187" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L185" class="link">Source</a>
 <a href="#Iterator_1_Apply_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Applicative apply</p>
@@ -862,7 +840,7 @@ Iterator<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Iterator_1_Concat_0" class="def">Concat</a>
 
 <span class='parens'>(</span>Iterator<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> other<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L206" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L204" class="link">Source</a>
 <a href="#Iterator_1_Concat_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Concatenate two iterators</p>
@@ -890,7 +868,7 @@ S
 <span class='parens'>(</span>
         S state,
         Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L226" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L224" class="link">Source</a>
 <a href="#Iterator_1_Fold_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Fold the sequence while there are more items remaining</p>
@@ -918,7 +896,7 @@ S
 <span class='parens'>(</span>        
         S state,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L241" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L239" class="link">Source</a>
 <a href="#Iterator_1_Fold_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Fold the sequence while there are more items remaining</p>
@@ -946,7 +924,7 @@ S
 <span class='parens'>(</span>
         S state,
         Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L256" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L254" class="link">Source</a>
 <a href="#Iterator_1_FoldBack_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Fold the sequence in reverse while there are more items remaining</p>
@@ -974,7 +952,7 @@ S
 <span class='parens'>(</span>        
         S state,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L271" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L269" class="link">Source</a>
 <a href="#Iterator_1_FoldBack_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Fold the sequence in reverse while there are more items remaining</p>
@@ -1003,7 +981,7 @@ S
         S state,
         Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
         Func<span class='generics'>&lt;</span><span class='parens'>(</span>S State<span class='comma'>, </span>A Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L286" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L284" class="link">Source</a>
 <a href="#Iterator_1_FoldWhile_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Fold the sequence while the predicate returns <code>true</code> and there are more items remaining</p>
@@ -1032,7 +1010,7 @@ S
         S state,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> f,
         Func<span class='generics'>&lt;</span><span class='parens'>(</span>S State<span class='comma'>, </span>A Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L303" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L301" class="link">Source</a>
 <a href="#Iterator_1_FoldWhile_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Fold the sequence while the predicate returns <code>true</code> and there are more items remaining</p>
@@ -1061,7 +1039,7 @@ S
         S state,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='comma'>, </span>
         Func<span class='generics'>&lt;</span><span class='parens'>(</span>S State<span class='comma'>, </span>A Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L320" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L318" class="link">Source</a>
 <a href="#Iterator_1_FoldBackWhile_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Fold the sequence in reverse while the predicate returns <code>true</code> and there are more items remaining</p>
@@ -1090,7 +1068,7 @@ S
         S state,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> f<span class='comma'>, </span>
         Func<span class='generics'>&lt;</span><span class='parens'>(</span>S State<span class='comma'>, </span>A Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L337" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L335" class="link">Source</a>
 <a href="#Iterator_1_FoldBackWhile_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Fold the sequence in reverse while the predicate returns <code>true</code> and there are more items remaining</p>
@@ -1119,7 +1097,7 @@ S
         S state,
         Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f,
         Func<span class='generics'>&lt;</span><span class='parens'>(</span>S State<span class='comma'>, </span>A Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L354" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L352" class="link">Source</a>
 <a href="#Iterator_1_FoldUntil_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Fold the sequence until the predicate returns <code>true</code> or the sequence ends</p>
@@ -1148,7 +1126,7 @@ S
         S state,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> f,
         Func<span class='generics'>&lt;</span><span class='parens'>(</span>S State<span class='comma'>, </span>A Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L371" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L369" class="link">Source</a>
 <a href="#Iterator_1_FoldUntil_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Fold the sequence until the predicate returns <code>true</code> or the sequence ends</p>
@@ -1177,7 +1155,7 @@ S
         S state,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='comma'>, </span>
         Func<span class='generics'>&lt;</span><span class='parens'>(</span>S State<span class='comma'>, </span>A Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L388" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L386" class="link">Source</a>
 <a href="#Iterator_1_FoldBackUntil_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Fold the sequence in reverse until the predicate returns <code>true</code> or the sequence ends</p>
@@ -1206,7 +1184,7 @@ S
         S state,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> f<span class='comma'>, </span>
         Func<span class='generics'>&lt;</span><span class='parens'>(</span>S State<span class='comma'>, </span>A Value<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L405" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L403" class="link">Source</a>
 <a href="#Iterator_1_FoldBackUntil_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Fold the sequence in reverse until the predicate returns <code>true</code> or the sequence ends</p>
@@ -1232,7 +1210,7 @@ Iterator<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Iterator_1_Merge_0" class="def">Merge</a>
 
 <span class='parens'>(</span>Iterator<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> other<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L426" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L424" class="link">Source</a>
 <a href="#Iterator_1_Merge_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Interleave two iterator sequences together</p>
@@ -1260,7 +1238,7 @@ Iterator<span class='generics'>&lt;</span>(A First <span class='comma'>, </span>
 <a id="Iterator_1_Zip_0" class="def">Zip</a>
 
 <span class='parens'>(</span>Iterator<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> other<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L468" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L466" class="link">Source</a>
 <a href="#Iterator_1_Zip_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Zips the items of two sequences together</p>
@@ -1287,7 +1265,7 @@ void
 <a id="Iterator_1_Dispose_0" class="def">Dispose</a>
 
 <span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L495" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L493" class="link">Source</a>
 <a href="#Iterator_1_Dispose_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Dispose</p>
@@ -1313,7 +1291,7 @@ bool
 <a id="Iterator_1_Equals_0" class="def">Equals</a>
 
 <span class='parens'>(</span>object? obj<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L1027" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L500" class="link">Source</a>
 <a href="#Iterator_1_Equals_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Equality test</p>
@@ -1346,7 +1324,7 @@ bool
 <a id="Iterator_1_Equals_0" class="def">Equals</a>
 
 <span class='parens'>(</span>Iterator<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>? rhs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L1036" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L509" class="link">Source</a>
 <a href="#Iterator_1_Equals_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Equality test</p>
@@ -1379,7 +1357,7 @@ int
 <a id="Iterator_1_GetHashCode_0" class="def">GetHashCode</a>
 
 <span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L1052" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L525" class="link">Source</a>
 <a href="#Iterator_1_GetHashCode_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -1404,7 +1382,7 @@ IEnumerator<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 <a id="Iterator_1_GetEnumerator_0" class="def">GetEnumerator</a>
 
 <span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L1074" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L547" class="link">Source</a>
 <a href="#Iterator_1_GetEnumerator_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Get enumerator</p>
@@ -1432,7 +1410,7 @@ string
 <a id="Iterator_1_ToString_0" class="def">ToString</a>
 
 <span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L1082" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L555" class="link">Source</a>
 <a href="#Iterator_1_ToString_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div></div>
@@ -1457,7 +1435,7 @@ string
 <a id="Iterator_1_ToFullString_0" class="def">ToFullString</a>
 
 <span class='parens'>(</span>string separator = &quot;<span class='comma'>, </span>&quot;<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L1089" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L562" class="link">Source</a>
 <a href="#Iterator_1_ToFullString_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Format the collection as <code>a, b, c, ...</code></p>
@@ -1483,7 +1461,7 @@ string
 <a id="Iterator_1_ToFullArrayString_0" class="def">ToFullArrayString</a>
 
 <span class='parens'>(</span>string separator = &quot;<span class='comma'>, </span>&quot;<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L1096" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L569" class="link">Source</a>
 <a href="#Iterator_1_ToFullArrayString_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Format the collection as <code>[a, b, c, ...]</code></p>
@@ -1508,7 +1486,7 @@ string
 <div class="top"><p class="src"><span class="keyword">operator</span>
 <a id="Iterator_1_+_0" class="def">+</a>
 <span class='parens'>(</span>Iterator<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Iterator<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> mb<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L489" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L487" class="link">Source</a>
 <a href="#Iterator_1_+_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Combine two sequences</p>
@@ -1529,385 +1507,6 @@ string
 
 
 </div></div>
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">class</span>
-<a id="Iterator_1_Nil_0" class="def">Nil</a>
-
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L502" class="link">Source</a>
-<a href="#Iterator_1_Nil_0" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div><p>Nil iterator case</p>
-<p>The end of the sequence.</p>
-</div>
-<div></div>
-
-</div>
-
-
-
-<div class="subs methods"><p class="caption">Fields</p>
-<div class="top"><p class="src"><span class="keyword">field</span>
-Iterator<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<a id="Nil_0_Default = new Nil()_0" class="def">Default = new Nil()</a>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L504" class="link">Source</a>
-<a href="#Nil_0_Default = new Nil()_0" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div></div>
-
-<div class="subs methods"><p class="caption">Properties</p>
-<div class="top"><p class="src"><span class="keyword">property</span>
-A
-<a id="Nil_0_Head_0" class="def">Head</a>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L512" class="link">Source</a>
-<a href="#Nil_0_Head_0" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div><p>Head element</p>
-</div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">property</span>
-Iterator<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<a id="Nil_0_Tail_0" class="def">Tail</a>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L518" class="link">Source</a>
-<a href="#Nil_0_Tail_0" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div><p>Tail of the sequence</p>
-</div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">property</span>
-bool
-<a id="Nil_0_IsEmpty_0" class="def">IsEmpty</a>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L524" class="link">Source</a>
-<a href="#Nil_0_IsEmpty_0" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div><p>Return true if there are no elements in the sequence.</p>
-</div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">property</span>
-long
-<a id="Nil_0_Count_0" class="def">Count</a>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L550" class="link">Source</a>
-<a href="#Nil_0_Count_0" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div><p>Return the number of items in the sequence.</p>
-</div>
-<div><p>Requires all items to be evaluated, this will happen only once however.</p>
-</div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div></div>
-
-<div class="subs methods"><p class="caption">Methods</p>
-<div class="top"><p class="src"><span class="keyword">method</span>
-string
-<a id="Nil_0_ToString_0" class="def">ToString</a>
-
-<span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L506" class="link">Source</a>
-<a href="#Nil_0_ToString_0" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-Iterator<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<a id="Nil_0_Clone_0" class="def">Clone</a>
-
-<span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L531" class="link">Source</a>
-<a href="#Nil_0_Clone_0" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div><p>Clone the iterator so that we can consume it without having the head item referenced.
-This will stop any GC pressure.</p>
-</div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-Iterator<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<a id="Nil_0_Split_0" class="def">Split</a>
-
-<span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L541" class="link">Source</a>
-<a href="#Nil_0_Split_0" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div><p>When iterating a sequence, it is possible (before evaluation of the <code>Tail</code>) to Terminate the current
-iterator and to take a new iterator that continues on from the current location.  The reasons for doing
-this are to break the linked-list chain so that there isn't a big linked-list of objects in memory that
-can't be garbage collected.</p>
-</div>
-<div></div>
-<div class="methods"><p class="caption">Parameters</p>
-<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
-<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>New iterator that starts from the current iterator position</p>
-</span></td></tr></tbody></table></div></div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-void
-<a id="Nil_0_Dispose_0" class="def">Dispose</a>
-
-<span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L554" class="link">Source</a>
-<a href="#Nil_0_Dispose_0" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div></div>
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">class</span>
-<a id="Iterator_1_Cons_0" class="def">Cons</a>
-
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L564" class="link">Source</a>
-<a href="#Iterator_1_Cons_0" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div><p>Cons iterator case.</p>
-<p>Contains a head value and a tail that represents the rest of the sequence.</p>
-</div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-<div class="subs methods"><p class="caption">Methods</p>
-<div class="top"><p class="src"><span class="keyword">method</span>
-void
-<a id="Cons_0_Deconstruct_0" class="def">Deconstruct</a>
-
-<span class='parens'>(</span>out A head<span class='comma'>, </span>out Iterator<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> tail<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.cs#L566" class="link">Source</a>
-<a href="#Cons_0_Deconstruct_0" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div></div>
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">class</span>
-<a id="_0_IteratorExtensions_0" class="def">IteratorExtensions</a>
-
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.Extensions.cs#L6" class="link">Source</a>
-<a href="#_0_IteratorExtensions_0" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-<div class="subs methods"><p class="caption">Methods</p>
-<div class="top"><p class="src"><span class="keyword">method</span>
-Iterator<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<a id="IteratorExtensions_0_As_1" class="def">As</a>
-<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>this K<span class='generics'>&lt;</span>Iterator<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.Extensions.cs#L11" class="link">Source</a>
-<a href="#IteratorExtensions_0_As_1" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div><p>Downcast operator</p>
-</div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">method</span>
-Iterator<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<a id="IteratorExtensions_0_GetIterator_1" class="def">GetIterator</a>
-<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
-<span class='parens'>(</span>this IEnumerable<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> enumerable<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.Extensions.cs#L17" class="link">Source</a>
-<a href="#IteratorExtensions_0_GetIterator_1" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div><p>Get an iterator for any <code>IEnumerable</code></p>
-</div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-</div></div>
-
 
 
 
@@ -2116,29 +1715,6 @@ Iterator<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
 
 
 </div></div>
-
-
-
-
-</div>
-<div class="top"><p class="src"><span class="keyword">class</span>
-<a id="_0_Iterator_0" class="def">Iterator</a>
-
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Immutable Collections/Iterator/Iterator.Monad.cs#L8" class="link">Source</a>
-<a href="#_0_Iterator_0" class="selflink">#</a>
-<div class="constraints"></div></p>
-<div class="doc"><div></div>
-<div></div>
-
-</div>
-
-
-
-
-
-
-
-
 
 
 

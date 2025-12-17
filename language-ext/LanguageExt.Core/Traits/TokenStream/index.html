@@ -1,0 +1,706 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>LanguageExt.Core/Traits/TokenStream</title>
+<link href="style.css" rel="stylesheet" type="text/css"/></head>
+<body class="js-enabled"><div id="package-header"><ul class="links" id="page-menu"><li><a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/TokenStream" class="link">Source</a></li>
+<li><a href="../index.html" class="link">Contents</a></li>
+<li><a href="../../../index.html" class="link">Index</a></li></ul>
+<p class="caption">LanguageExt.Core</p></div>
+<div id="content"><div id="module-header"><p class="caption"><a href="../../index.html" class="link">LanguageExt.Core</a>
+<span> ► </span>
+<a href="../index.html" class="link">Traits</a>
+<span> ► </span>
+<a href="index.html" class="link">TokenStream</a></p></div>
+
+<div id="table-of-contents"><p class="caption">Contents</p>
+<ul><li><a href="#_0_TokenStream_2" class="link"><div class="nowrap">TokenStream
+<span class='generics'>&lt;</span>TOKENS<span class='comma'>, </span>TOKEN<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#TokenStream_2_IsTab_0" class="link"><div class="nowrap">IsTab
+
+<span class='parens'>(</span>TOKEN token<span class='parens'>)</span></div></a></li>
+<li><a href="#TokenStream_2_IsNewline_0" class="link"><div class="nowrap">IsNewline
+
+<span class='parens'>(</span>TOKEN token<span class='parens'>)</span></div></a></li>
+<li><a href="#TokenStream_2_TokenToString_0" class="link"><div class="nowrap">TokenToString
+
+<span class='parens'>(</span>TOKEN token<span class='parens'>)</span></div></a></li>
+<li><a href="#TokenStream_2_TokenToChunk_0" class="link"><div class="nowrap">TokenToChunk
+
+<span class='parens'>(</span>in TOKEN token<span class='parens'>)</span></div></a></li>
+<li><a href="#TokenStream_2_TokensToChunk_0" class="link"><div class="nowrap">TokensToChunk
+
+<span class='parens'>(</span>in ReadOnlySpan<span class='generics'>&lt;</span>TOKEN<span class='generics'>&gt;</span> token<span class='parens'>)</span></div></a></li>
+<li><a href="#TokenStream_2_ChunkToTokens_0" class="link"><div class="nowrap">ChunkToTokens
+
+<span class='parens'>(</span>in TOKENS tokens<span class='parens'>)</span></div></a></li>
+<li><a href="#TokenStream_2_ChunkLength_0" class="link"><div class="nowrap">ChunkLength
+
+<span class='parens'>(</span>in TOKENS tokens<span class='parens'>)</span></div></a></li>
+<li><a href="#TokenStream_2_Take1_0" class="link"><div class="nowrap">Take1
+
+<span class='parens'>(</span>in TOKENS stream<span class='comma'>, </span>out TOKEN head<span class='comma'>, </span>out TOKENS tail<span class='parens'>)</span></div></a></li>
+<li><a href="#TokenStream_2_Take_0" class="link"><div class="nowrap">Take
+
+<span class='parens'>(</span>int amount<span class='comma'>, </span>in TOKENS stream<span class='comma'>, </span>out TOKENS head<span class='comma'>, </span>out TOKENS tail<span class='parens'>)</span></div></a></li>
+<li><a href="#TokenStream_2_TakeWhile_0" class="link"><div class="nowrap">TakeWhile
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>TOKEN<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='comma'>, </span>in TOKENS stream<span class='comma'>, </span>out TOKENS head<span class='comma'>, </span>out TOKENS tail<span class='parens'>)</span></div></a></li></ul>
+<li><a href="#_0_TokenStream_0" class="link"><div class="nowrap">TokenStream
+</div></a></li>
+<ul><li><a href="#TokenStream_0_tokenToChunk_2" class="link"><div class="nowrap">tokenToChunk
+<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>in A token<span class='parens'>)</span></div></a></li>
+<li><a href="#TokenStream_0_tokensToChunk_2" class="link"><div class="nowrap">tokensToChunk
+<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>in ReadOnlySpan<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> token<span class='parens'>)</span></div></a></li>
+<li><a href="#TokenStream_0_chunkToTokens_2" class="link"><div class="nowrap">chunkToTokens
+<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>in S tokens<span class='parens'>)</span></div></a></li>
+<li><a href="#TokenStream_0_chunkLength_2" class="link"><div class="nowrap">chunkLength
+<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>in S tokens<span class='parens'>)</span></div></a></li>
+<li><a href="#TokenStream_0_chunkEmpty_2" class="link"><div class="nowrap">chunkEmpty
+<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>in S tokens<span class='parens'>)</span></div></a></li>
+<li><a href="#TokenStream_0_take1_2" class="link"><div class="nowrap">take1
+<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>in S stream<span class='comma'>, </span>out A head<span class='comma'>, </span>out S tail<span class='parens'>)</span></div></a></li>
+<li><a href="#TokenStream_0_take_2" class="link"><div class="nowrap">take
+<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>int amount<span class='comma'>, </span>in S stream<span class='comma'>, </span>out S head<span class='comma'>, </span>out S tail<span class='parens'>)</span></div></a></li>
+<li><a href="#TokenStream_0_takeWhile_2" class="link"><div class="nowrap">takeWhile
+<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='comma'>, </span>in S stream<span class='comma'>, </span>out S head<span class='comma'>, </span>out S tail<span class='parens'>)</span></div></a></li></ul></ul></div>
+<div class="interface">
+<div class="top"><p class="src"><span class="keyword">interface</span>
+<a id="_0_TokenStream_2" class="def">TokenStream</a>
+<span class='generics'>&lt;</span>TOKENS<span class='comma'>, </span>TOKEN<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/TokenStream/TokenStream.cs#L9" class="link">Source</a>
+<a href="#_0_TokenStream_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> TOKENS : TokenStream&lt;TOKENS, TOKEN&gt;</span></div></div></p>
+<div class="doc"><div><p>Low-level streaming trait.  Used primarily by Megaparsec.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Token type</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="TokenStream_2_IsTab_0" class="def">IsTab</a>
+
+<span class='parens'>(</span>TOKEN token<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/TokenStream/TokenStream.cs#L18" class="link">Source</a>
+<a href="#TokenStream_2_IsTab_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>If the stream supports the concept of tabs, then this function
+should return true if the token is a tab.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">token</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Token to test</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if a tab</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="TokenStream_2_IsNewline_0" class="def">IsNewline</a>
+
+<span class='parens'>(</span>TOKEN token<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/TokenStream/TokenStream.cs#L26" class="link">Source</a>
+<a href="#TokenStream_2_IsNewline_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>If the stream supports the concept of newlines, then this function
+should return true if the token is a newline.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">token</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Token to test</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>True if a newline</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ReadOnlySpan<span class='generics'>&lt;</span>char<span class='generics'>&gt;</span>
+<a id="TokenStream_2_TokenToString_0" class="def">TokenToString</a>
+
+<span class='parens'>(</span>TOKEN token<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/TokenStream/TokenStream.cs#L33" class="link">Source</a>
+<a href="#TokenStream_2_TokenToString_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Create a textual respresentation of the token</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">token</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Token</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Text</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+TOKENS
+<a id="TokenStream_2_TokenToChunk_0" class="def">TokenToChunk</a>
+
+<span class='parens'>(</span>in TOKEN token<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/TokenStream/TokenStream.cs#L38" class="link">Source</a>
+<a href="#TokenStream_2_TokenToChunk_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Lift a single token to chunk of the stream</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+TOKENS
+<a id="TokenStream_2_TokensToChunk_0" class="def">TokensToChunk</a>
+
+<span class='parens'>(</span>in ReadOnlySpan<span class='generics'>&lt;</span>TOKEN<span class='generics'>&gt;</span> token<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/TokenStream/TokenStream.cs#L43" class="link">Source</a>
+<a href="#TokenStream_2_TokensToChunk_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Lift many tokens to chunk of the stream</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ReadOnlySpan<span class='generics'>&lt;</span>TOKEN<span class='generics'>&gt;</span>
+<a id="TokenStream_2_ChunkToTokens_0" class="def">ChunkToTokens</a>
+
+<span class='parens'>(</span>in TOKENS tokens<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/TokenStream/TokenStream.cs#L48" class="link">Source</a>
+<a href="#TokenStream_2_ChunkToTokens_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Turn a chunk into a sequence of tokens</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+int
+<a id="TokenStream_2_ChunkLength_0" class="def">ChunkLength</a>
+
+<span class='parens'>(</span>in TOKENS tokens<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/TokenStream/TokenStream.cs#L53" class="link">Source</a>
+<a href="#TokenStream_2_ChunkLength_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Get the length of a chunk</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="TokenStream_2_Take1_0" class="def">Take1</a>
+
+<span class='parens'>(</span>in TOKENS stream<span class='comma'>, </span>out TOKEN head<span class='comma'>, </span>out TOKENS tail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/TokenStream/TokenStream.cs#L60" class="link">Source</a>
+<a href="#TokenStream_2_Take1_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Take the first element of the stream if it exists.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">stream</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Stream</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Head element taken from the stream and a Tail of remaining stream items</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="TokenStream_2_Take_0" class="def">Take</a>
+
+<span class='parens'>(</span>int amount<span class='comma'>, </span>in TOKENS stream<span class='comma'>, </span>out TOKENS head<span class='comma'>, </span>out TOKENS tail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/TokenStream/TokenStream.cs#L76" class="link">Source</a>
+<a href="#TokenStream_2_Take_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p><code>Take</code> should try to extract a chunk of length <code>amount</code>, or if the
+stream is too short, the rest of the stream. Valid implementation
+should follow the rules:</p>
+<ul>
+<li class='markdown-bullet'>If the requested length <code>amount</code> is <code>0</code> (or less), <code>None</code> should never be returned, instead <code>Some([], s)</code>
+should be returned, where <code>[]</code> stands for the empty chunk, and <code>s</code> is the original stream (second argument).</li>
+<li class='markdown-bullet'>If the requested length is greater than <code>0</code> and the stream is empty, <code>None</code> should be returned indicating end-of-input.</li>
+<li class='markdown-bullet'>In other cases, take chunk of length <code>amount</code> (or shorter if the   stream is not long enough) from the input
+stream and return the chunk along with the rest of the stream.</li>
+</ul>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">amount</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Number of elements to take</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">stream</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Stream</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Head element taken from the stream and a Tail of remaining stream items</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+void
+<a id="TokenStream_2_TakeWhile_0" class="def">TakeWhile</a>
+
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>TOKEN<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='comma'>, </span>in TOKENS stream<span class='comma'>, </span>out TOKENS head<span class='comma'>, </span>out TOKENS tail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/TokenStream/TokenStream.cs#L88" class="link">Source</a>
+<a href="#TokenStream_2_TakeWhile_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Extract chunk of the stream taking tokens while the supplied predicate returns 'True'. Return the chunk and the
+rest of the stream.</p>
+<p>For many types of streams, the method allows for significant performance improvements, although it is not
+strictly necessary from a conceptual point-of-view.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">predicate</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Token testing predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">stream</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Stream to read from</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_TokenStream_0" class="def">TokenStream</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/TokenStream/TokenStream.Module.cs#L6" class="link">Source</a>
+<a href="#_0_TokenStream_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+S
+<a id="TokenStream_0_tokenToChunk_2" class="def">tokenToChunk</a>
+<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>in A token<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/TokenStream/TokenStream.Module.cs#L11" class="link">Source</a>
+<a href="#TokenStream_0_tokenToChunk_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> S : TokenStream&lt;S, A&gt;</span></div></div></p>
+<div class="doc"><div><p>Lift a single token to chunk of the stream</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+S
+<a id="TokenStream_0_tokensToChunk_2" class="def">tokensToChunk</a>
+<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>in ReadOnlySpan<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> token<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/TokenStream/TokenStream.Module.cs#L18" class="link">Source</a>
+<a href="#TokenStream_0_tokensToChunk_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> S : TokenStream&lt;S, A&gt;</span></div></div></p>
+<div class="doc"><div><p>Lift many tokens to chunk of the stream</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+ReadOnlySpan<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span>
+<a id="TokenStream_0_chunkToTokens_2" class="def">chunkToTokens</a>
+<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>in S tokens<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/TokenStream/TokenStream.Module.cs#L25" class="link">Source</a>
+<a href="#TokenStream_0_chunkToTokens_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> S : TokenStream&lt;S, A&gt;</span></div></div></p>
+<div class="doc"><div><p>Turn a chunk into a sequence of tokens</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+int
+<a id="TokenStream_0_chunkLength_2" class="def">chunkLength</a>
+<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>in S tokens<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/TokenStream/TokenStream.Module.cs#L32" class="link">Source</a>
+<a href="#TokenStream_0_chunkLength_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> S : TokenStream&lt;S, A&gt;</span></div></div></p>
+<div class="doc"><div><p>Get the length of a chunk</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="TokenStream_0_chunkEmpty_2" class="def">chunkEmpty</a>
+<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>in S tokens<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/TokenStream/TokenStream.Module.cs#L39" class="link">Source</a>
+<a href="#TokenStream_0_chunkEmpty_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> S : TokenStream&lt;S, A&gt;</span></div></div></p>
+<div class="doc"><div><p>Is the chunk empty?</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="TokenStream_0_take1_2" class="def">take1</a>
+<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>in S stream<span class='comma'>, </span>out A head<span class='comma'>, </span>out S tail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/TokenStream/TokenStream.Module.cs#L48" class="link">Source</a>
+<a href="#TokenStream_0_take1_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> S : TokenStream&lt;S, A&gt;</span></div></div></p>
+<div class="doc"><div><p>Take the first element of the stream if it exists.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">stream</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Stream</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Head element taken from the stream and a Tail of remaining stream items</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+bool
+<a id="TokenStream_0_take_2" class="def">take</a>
+<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>int amount<span class='comma'>, </span>in S stream<span class='comma'>, </span>out S head<span class='comma'>, </span>out S tail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/TokenStream/TokenStream.Module.cs#L66" class="link">Source</a>
+<a href="#TokenStream_0_take_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> S : TokenStream&lt;S, A&gt;</span></div></div></p>
+<div class="doc"><div><p><code>Take</code> should try to extract a chunk of length <code>amount</code>, or if the
+stream is too short, the rest of the stream. Valid implementation
+should follow the rules:</p>
+<ul>
+<li class='markdown-bullet'>If the requested length <code>amount</code> is <code>0</code> (or less), <code>None</code> should never be returned, instead <code>Some([], s)</code>
+should be returned, where <code>[]</code> stands for the empty chunk, and <code>s</code> is the original stream (second argument).</li>
+<li class='markdown-bullet'>If the requested length is greater than <code>0</code> and the stream is empty, <code>None</code> should be returned indicating end-of-input.</li>
+<li class='markdown-bullet'>In other cases, take chunk of length <code>amount</code> (or shorter if the   stream is not long enough) from the input
+stream and return the chunk along with the rest of the stream.</li>
+</ul>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">amount</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Number of elements to take</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">stream</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Stream</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Head element taken from the stream and a Tail of remaining stream items</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+void
+<a id="TokenStream_0_takeWhile_2" class="def">takeWhile</a>
+<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='comma'>, </span>in S stream<span class='comma'>, </span>out S head<span class='comma'>, </span>out S tail<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/TokenStream/TokenStream.Module.cs#L80" class="link">Source</a>
+<a href="#TokenStream_0_takeWhile_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> S : TokenStream&lt;S, A&gt;</span></div></div></p>
+<div class="doc"><div><p>Extract chunk of the stream taking tokens while the supplied predicate returns 'True'. Return the chunk and the
+rest of the stream.</p>
+<p>For many types of streams, the method allows for significant performance improvements, although it is not
+strictly necessary from a conceptual point-of-view.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">predicate</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Token testing predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">stream</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Stream to read from</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js" integrity="sha512-9khQRAUBYEJDCDVP2yw3LRUQvjJ0Pjx0EShmaQjcHa6AXiOv6qHQu9lCAIR8O+/D8FtaCoJ2c0Tf9Xo7hYH01Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-fTl/qcO1VgvKtOMApX2PdZzkziyr2stM65GYPLGuYMnuMm1z2JLJG6XVU7C/mR+E7xBUqCivykuhlzfqxXBXbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script></body></html>
