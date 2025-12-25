@@ -1,0 +1,371 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>LanguageExt.Core/DataTypes/Next</title>
+<link href="style.css" rel="stylesheet" type="text/css"/></head>
+<body class="js-enabled"><div id="package-header"><ul class="links" id="page-menu"><li><a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Next" class="link">Source</a></li>
+<li><a href="../index.html" class="link">Contents</a></li>
+<li><a href="../../../index.html" class="link">Index</a></li></ul>
+<p class="caption">LanguageExt.Core</p></div>
+<div id="content"><div id="module-header"><p class="caption"><a href="../../index.html" class="link">LanguageExt.Core</a>
+<span> ► </span>
+<a href="../index.html" class="link">DataTypes</a>
+<span> ► </span>
+<a href="index.html" class="link">Next</a></p></div>
+
+<div id="table-of-contents"><p class="caption">Contents</p>
+<ul><li><a href="#_0_Next_2" class="link"><div class="nowrap">Next
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span></div></a></li>
+<ul><li><a href="#Next_2_Match_1" class="link"><div class="nowrap">Match
+<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span> Loop<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> Done<span class='parens'>)</span></div></a></li>
+<li><a href="#Next_2_Map_1" class="link"><div class="nowrap">Map
+<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Next_2_ToEither_0" class="link"><div class="nowrap">ToEither
+
+<span class='parens'>(</span><span class='parens'>)</span></div></a></li>
+<li><a href="#Next_2_IsLoop_0" class="link"><div class="nowrap">IsLoop</div></a></li>
+<li><a href="#Next_2_IsDone_0" class="link"><div class="nowrap">IsDone</div></a></li>
+<li><a href="#Next_2_Loop_0" class="link"><div class="nowrap">Loop</div></a></li>
+<li><a href="#Next_2_Done_0" class="link"><div class="nowrap">Done</div></a></li></ul>
+<li><a href="#_0_Next_0" class="link"><div class="nowrap">Next
+</div></a></li>
+<ul><li><a href="#Next_0_Loop_2" class="link"><div class="nowrap">Loop
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='parens'>)</span></div></a></li>
+<li><a href="#Next_0_Done_2" class="link"><div class="nowrap">Done
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>B value<span class='parens'>)</span></div></a></li></ul></ul></div>
+<div class="interface">
+<div class="top"><p class="src"><span class="keyword">struct</span>
+<a id="_0_Next_2" class="def">Next</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Next/Next.cs#L33" class="link">Source</a>
+<a href="#_0_Next_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Simple data type that helps indicate whether a recursive function should loop or not.</p>
+</div>
+<div><p>This was created to pair with the <code>Monad</code> trait <code>Tail</code> function and is extremely lightweight.</p>
+
+<p>It's designed to cause no additional allocations when used in a tail-recursive manner.  That does mean there
+are some footguns in here if you're not careful.  So, make sure that before you access <code>Loop</code> or <code>Done</code>
+that you've confirmed the state of the structure by using <code>IsLoop</code> or <code>IsDone</code>.</p>
+<p>You can then use C#'s pattern-matching to extract the value from the structure:</p>
+<pre class='language-csharp'><code>var result = next switch
+{
+    { IsLoop: true, Loop: var value } =&gt; ...,
+    { IsDone: true, Done: var value } =&gt; ...,
+    _                                 =&gt; throw new Exception(&quot;Invalid state&quot;)
+};
+</code></pre>
+
+<p>If we ever get real struct discriminated unions, then this can be replaced with that.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Loop value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Done value type</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+<div class="subs methods"><p class="caption">Properties</p>
+<div class="top"><p class="src"><span class="keyword">property</span>
+bool
+<a id="Next_2_IsLoop_0" class="def">IsLoop</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Next/Next.cs#L76" class="link">Source</a>
+<a href="#Next_2_IsLoop_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns true if we should loop</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+bool
+<a id="Next_2_IsDone_0" class="def">IsDone</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Next/Next.cs#L85" class="link">Source</a>
+<a href="#Next_2_IsDone_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Returns true if we should complete and return</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+A
+<a id="Next_2_Loop_0" class="def">Loop</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Next/Next.cs#L96" class="link">Source</a>
+<a href="#Next_2_Loop_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Try to access the loop-value type</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Either a valid <code>A</code> value or will throw an exception</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">property</span>
+B
+<a id="Next_2_Done_0" class="def">Done</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Next/Next.cs#L109" class="link">Source</a>
+<a href="#Next_2_Done_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Try to access the done-value type</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Either a valid <code>B</code> value or will throw an exception</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+C
+<a id="Next_2_Match_1" class="def">Match</a>
+<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span> Loop<span class='comma'>, </span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> Done<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Next/Next.cs#L49" class="link">Source</a>
+<a href="#Next_2_Match_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Pattern match</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Next<span class='generics'>&lt;</span>A<span class='comma'>, </span>C<span class='generics'>&gt;</span>
+<a id="Next_2_Map_1" class="def">Map</a>
+<span class='generics'>&lt;</span>C<span class='generics'>&gt;</span>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Next/Next.cs#L57" class="link">Source</a>
+<a href="#Next_2_Map_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Either<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Next_2_ToEither_0" class="def">ToEither</a>
+
+<span class='parens'>(</span><span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Next/Next.cs#L65" class="link">Source</a>
+<a href="#Next_2_ToEither_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div></div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">class</span>
+<a id="_0_Next_0" class="def">Next</a>
+
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Next/Next.Module.cs#L6" class="link">Source</a>
+<a href="#_0_Next_0" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Module for the <code>Next</code> data-type</p>
+</div>
+<div></div>
+
+</div>
+
+
+
+
+
+
+
+<div class="subs methods"><p class="caption">Methods</p>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Next<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Next_0_Loop_2" class="def">Loop</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>A value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Next/Next.Module.cs#L15" class="link">Source</a>
+<a href="#Next_0_Loop_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Continue the recursion</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Loop value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Done value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">value</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Value to pass back to the recursive function to 'go around'</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Next structure</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+Next<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Next_0_Done_2" class="def">Done</a>
+<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>B value<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/DataTypes/Next/Next.Module.cs#L25" class="link">Source</a>
+<a href="#Next_0_Done_2" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Cancel the recursion and return</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Loop value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Loop value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">value</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Final value</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Next structure</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div></div>
+
+
+
+
+</div></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js" integrity="sha512-9khQRAUBYEJDCDVP2yw3LRUQvjJ0Pjx0EShmaQjcHa6AXiOv6qHQu9lCAIR8O+/D8FtaCoJ2c0Tf9Xo7hYH01Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-fTl/qcO1VgvKtOMApX2PdZzkziyr2stM65GYPLGuYMnuMm1z2JLJG6XVU7C/mR+E7xBUqCivykuhlzfqxXBXbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script></body></html>
