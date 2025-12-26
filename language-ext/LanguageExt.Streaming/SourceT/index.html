@@ -14,10 +14,16 @@
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span></div></a></li>
 <ul><li><a href="#SourceT_2_Reduce_1" class="link"><div class="nowrap">Reduce
 <span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
-<span class='parens'>(</span>S state<span class='comma'>, </span>ReducerM<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> reducer<span class='parens'>)</span></div></a></li>
+<span class='parens'>(</span>S state<span class='comma'>, </span>Reducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> reducer<span class='parens'>)</span></div></a></li>
+<li><a href="#SourceT_2_FoldReduce_1" class="link"><div class="nowrap">FoldReduce
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>S state<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> reducer<span class='parens'>)</span></div></a></li>
 <li><a href="#SourceT_2_ReduceM_1" class="link"><div class="nowrap">ReduceM
 <span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
-<span class='parens'>(</span>S state<span class='comma'>, </span>ReducerM<span class='generics'>&lt;</span>M<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='comma'>, </span>S<span class='generics'>&gt;</span> reducer<span class='parens'>)</span></div></a></li>
+<span class='parens'>(</span>S state<span class='comma'>, </span>ReducerM<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> reducer<span class='parens'>)</span></div></a></li>
+<li><a href="#SourceT_2_FoldReduce_1" class="link"><div class="nowrap">FoldReduce
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>S state<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> reducer<span class='parens'>)</span></div></a></li>
 <li><a href="#SourceT_2_Empty_0" class="link"><div class="nowrap">Empty</div></a></li>
 <li><a href="#SourceT_2_Transform_1" class="link"><div class="nowrap">Transform
 <span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
@@ -113,7 +119,13 @@
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
 <li><a href="#SourceT_2_SelectMany_2" class="link"><div class="nowrap">SelectMany
 <span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
-<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Pure<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li></ul>
+<span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Pure<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#SourceT_2_ReduceInternal_1" class="link"><div class="nowrap">ReduceInternal
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>S state<span class='comma'>, </span>ReducerM<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> reducer<span class='parens'>)</span></div></a></li>
+<li><a href="#SourceT_2_ReduceInternalM_1" class="link"><div class="nowrap">ReduceInternalM
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>S state<span class='comma'>, </span>ReducerM<span class='generics'>&lt;</span>M<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='comma'>, </span>S<span class='generics'>&gt;</span> reducer<span class='parens'>)</span></div></a></li></ul>
 <li><a href="#_0_SourceTExtensions_0" class="link"><div class="nowrap">SourceTExtensions
 </div></a></li>
 <ul><li><a href="#SourceTExtensions_0_As_2" class="link"><div class="nowrap">As
@@ -357,7 +369,7 @@
 <div class="top"><p class="src"><span class="keyword">record</span>
 <a id="_0_SourceT_2" class="def">SourceT</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L13" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L12" class="link">Source</a>
 <a href="#_0_SourceT_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : MonadIO&lt;M&gt;, Alternative&lt;M&gt;</span></div></div></p>
@@ -379,7 +391,7 @@
 <div class="top"><p class="src"><span class="keyword">property</span>
 SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <a id="SourceT_2_Empty_0" class="def">Empty</a>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L48" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L76" class="link">Source</a>
 <a href="#SourceT_2_Empty_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>A source that never yields a value</p>
@@ -406,9 +418,54 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span cl
 K<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span class='generics'>&gt;</span>
 <a id="SourceT_2_Reduce_1" class="def">Reduce</a>
 <span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
-<span class='parens'>(</span>S state<span class='comma'>, </span>ReducerM<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> reducer<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L29" class="link">Source</a>
+<span class='parens'>(</span>S state<span class='comma'>, </span>Reducer<span class='generics'>&lt;</span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> reducer<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L28" class="link">Source</a>
 <a href="#SourceT_2_Reduce_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Iterate the stream, flowing values downstream to the reducer, which aggregates a
+result value.  This is returned lifted.</p>
+</div>
+<div><p>Note, this is recursive, so <code>M</code> needs to be able to support recursion without
+blowing the stack.  If you have the <code>IO</code> monad in your stack, then this will automatically
+be the case.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>State type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">state</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Initial state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">reducer</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Reducer</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Lifted aggregate state</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<a id="SourceT_2_FoldReduce_1" class="def">FoldReduce</a>
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>S state<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> reducer<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L42" class="link">Source</a>
+<a href="#SourceT_2_FoldReduce_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Iterate the stream, flowing values downstream to the reducer, which aggregates a
 result value.  This is returned lifted.</p>
@@ -451,9 +508,54 @@ be the case.</p>
 K<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span class='generics'>&gt;</span>
 <a id="SourceT_2_ReduceM_1" class="def">ReduceM</a>
 <span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
-<span class='parens'>(</span>S state<span class='comma'>, </span>ReducerM<span class='generics'>&lt;</span>M<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='comma'>, </span>S<span class='generics'>&gt;</span> reducer<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L43" class="link">Source</a>
+<span class='parens'>(</span>S state<span class='comma'>, </span>ReducerM<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> reducer<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L56" class="link">Source</a>
 <a href="#SourceT_2_ReduceM_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Iterate the stream, flowing values downstream to the reducer, which aggregates a
+result value.  This is returned lifted.</p>
+</div>
+<div><p>Note, this is recursive, so <code>M</code> needs to be able to support recursion without
+blowing the stack.  If you have the <code>IO</code> monad in your stack, then this will automatically
+be the case.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>State type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">state</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Initial state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">reducer</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Reducer</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Lifted aggregate state</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span class='generics'>&gt;</span>
+<a id="SourceT_2_FoldReduce_1" class="def">FoldReduce</a>
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>S state<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span> reducer<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L70" class="link">Source</a>
+<a href="#SourceT_2_FoldReduce_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Iterate the stream, flowing values downstream to the reducer, which aggregates a
 result value.  This is returned lifted.</p>
@@ -497,7 +599,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span cl
 <a id="SourceT_2_Transform_1" class="def">Transform</a>
 <span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>TransducerM<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> transducer<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L57" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L85" class="link">Source</a>
 <a href="#SourceT_2_Transform_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Transform with a transducer</p>
@@ -534,7 +636,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span cl
 <a id="SourceT_2_Map_1" class="def">Map</a>
 <span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L63" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L91" class="link">Source</a>
 <a href="#SourceT_2_Map_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Functor map</p>
@@ -560,7 +662,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span cl
 <a id="SourceT_2_Bind_1" class="def">Bind</a>
 <span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L69" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L97" class="link">Source</a>
 <a href="#SourceT_2_Bind_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Monad bind</p>
@@ -586,7 +688,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span cl
 <a id="SourceT_2_Bind_1" class="def">Bind</a>
 <span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>SourceT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L75" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L103" class="link">Source</a>
 <a href="#SourceT_2_Bind_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Monad bind</p>
@@ -612,7 +714,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span cl
 <a id="SourceT_2_Bind_1" class="def">Bind</a>
 <span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L81" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L109" class="link">Source</a>
 <a href="#SourceT_2_Bind_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Monad bind</p>
@@ -638,7 +740,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span cl
 <a id="SourceT_2_Where_0" class="def">Where</a>
 
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L89" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L117" class="link">Source</a>
 <a href="#SourceT_2_Where_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Filter values.  Yielding downstream when <code>true</code></p>
@@ -671,7 +773,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span cl
 <a id="SourceT_2_Filter_0" class="def">Filter</a>
 
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L97" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L125" class="link">Source</a>
 <a href="#SourceT_2_Filter_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Filter values.  Yielding downstream when <code>true</code></p>
@@ -704,7 +806,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span cl
 <a id="SourceT_2_ApplyBack_1" class="def">ApplyBack</a>
 <span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> ff<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L103" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L131" class="link">Source</a>
 <a href="#SourceT_2_ApplyBack_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Applicative apply</p>
@@ -730,7 +832,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span cl
 <a id="SourceT_2_Combine_0" class="def">Combine</a>
 
 <span class='parens'>(</span>SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L112" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L140" class="link">Source</a>
 <a href="#SourceT_2_Combine_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Concatenate streams</p>
@@ -767,7 +869,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span cl
 <a id="SourceT_2_Choose_0" class="def">Choose</a>
 
 <span class='parens'>(</span>SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L132" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L160" class="link">Source</a>
 <a href="#SourceT_2_Choose_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Combine two sources into a single source.  The value streams are both
@@ -806,7 +908,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span cl
 <a id="SourceT_2_Choose_0" class="def">Choose</a>
 
 <span class='parens'>(</span>Memo<span class='generics'>&lt;</span>SourceT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L152" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L180" class="link">Source</a>
 <a href="#SourceT_2_Choose_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Combine two sources into a single source.  The value streams are both
@@ -845,7 +947,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span cl
 <a id="SourceT_2_Skip_0" class="def">Skip</a>
 
 <span class='parens'>(</span>int amount<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L160" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L188" class="link">Source</a>
 <a href="#SourceT_2_Skip_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Skip items in the source</p>
@@ -878,7 +980,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span cl
 <a id="SourceT_2_Take_0" class="def">Take</a>
 
 <span class='parens'>(</span>int amount<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L168" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L196" class="link">Source</a>
 <a href="#SourceT_2_Take_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Limit the number of items processed</p>
@@ -911,7 +1013,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span cl
 <a id="SourceT_2_Fold_1" class="def">Fold</a>
 <span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> Fold<span class='comma'>, </span>S Init<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L178" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L206" class="link">Source</a>
 <a href="#SourceT_2_Fold_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Fold the values flowing through.  A value is only yielded downstream upon completion of the stream.</p>
@@ -952,7 +1054,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span cl
 <a id="SourceT_2_Fold_1" class="def">Fold</a>
 <span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Schedule Time<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> Fold<span class='comma'>, </span>S Init<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L190" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L218" class="link">Source</a>
 <a href="#SourceT_2_Fold_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Fold the values flowing through.  Values are yielded downstream when either the schedule expires, or the
@@ -998,7 +1100,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span cl
 <a id="SourceT_2_FoldWhile_1" class="def">FoldWhile</a>
 <span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> Fold<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>S Init<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L202" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L230" class="link">Source</a>
 <a href="#SourceT_2_FoldWhile_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Fold the values flowing through.  Values are yielded downstream when either the predicate returns
@@ -1044,7 +1146,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span cl
 <a id="SourceT_2_FoldUntil_1" class="def">FoldUntil</a>
 <span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> Fold<span class='comma'>, </span>Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>S Init<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L214" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L242" class="link">Source</a>
 <a href="#SourceT_2_FoldUntil_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Fold the values flowing through.  Values are yielded downstream when either the predicate returns
@@ -1094,7 +1196,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span cl
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> Fold,
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred,
         S Init<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L227" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L255" class="link">Source</a>
 <a href="#SourceT_2_FoldWhile_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Fold the values flowing through.  Values are yielded downstream when either the schedule expires, the
@@ -1148,7 +1250,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>S<span cl
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> Fold<span class='comma'>, </span>
         Func<span class='generics'>&lt;</span>S<span class='comma'>, </span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>
         S Init<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L244" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L272" class="link">Source</a>
 <a href="#SourceT_2_FoldUntil_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Fold the values flowing through.  Values are yielded downstream when either the schedule expires, the
@@ -1197,7 +1299,7 @@ ProducerT<span class='generics'>&lt;</span>A<span class='comma'>, </span>M<span 
 <a id="SourceT_2_ToProducerT_0" class="def">ToProducerT</a>
 
 <span class='parens'>(</span><span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L256" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L284" class="link">Source</a>
 <a href="#SourceT_2_ToProducerT_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Convert <code>SourceT</code> to a <code>ProducerT</code> pipe component</p>
@@ -1230,7 +1332,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span cl
 <a id="SourceT_2_Select_1" class="def">Select</a>
 <span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L331" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L359" class="link">Source</a>
 <a href="#SourceT_2_Select_1" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Functor map</p>
@@ -1256,7 +1358,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span cl
 <a id="SourceT_2_SelectMany_2" class="def">SelectMany</a>
 <span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L337" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L365" class="link">Source</a>
 <a href="#SourceT_2_SelectMany_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Monad bind</p>
@@ -1282,7 +1384,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span cl
 <a id="SourceT_2_SelectMany_2" class="def">SelectMany</a>
 <span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L343" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L371" class="link">Source</a>
 <a href="#SourceT_2_SelectMany_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Monad bind</p>
@@ -1308,7 +1410,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span cl
 <a id="SourceT_2_SelectMany_2" class="def">SelectMany</a>
 <span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IO<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L349" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L377" class="link">Source</a>
 <a href="#SourceT_2_SelectMany_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Monad bind</p>
@@ -1334,7 +1436,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span cl
 <a id="SourceT_2_SelectMany_2" class="def">SelectMany</a>
 <span class='generics'>&lt;</span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>Pure<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L355" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L383" class="link">Source</a>
 <a href="#SourceT_2_SelectMany_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Monad bind</p>
@@ -1354,12 +1456,102 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span cl
 
 
 
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Reduced<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="SourceT_2_ReduceInternal_1" class="def">ReduceInternal</a>
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>S state<span class='comma'>, </span>ReducerM<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>S<span class='generics'>&gt;</span> reducer<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L402" class="link">Source</a>
+<a href="#SourceT_2_ReduceInternal_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Iterate the stream, flowing values downstream to the reducer, which aggregates a
+result value.  This is returned lifted.</p>
+</div>
+<div><p>Note, this is recursive, so <code>M</code> needs to be able to support recursion without
+blowing the stack.  If you have the <code>IO</code> monad in your stack, then this will automatically
+be the case.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>State type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">state</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Initial state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">reducer</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Reducer</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Lifted aggregate state</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Reduced<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="SourceT_2_ReduceInternalM_1" class="def">ReduceInternalM</a>
+<span class='generics'>&lt;</span>S<span class='generics'>&gt;</span>
+<span class='parens'>(</span>S state<span class='comma'>, </span>ReducerM<span class='generics'>&lt;</span>M<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='comma'>, </span>S<span class='generics'>&gt;</span> reducer<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L416" class="link">Source</a>
+<a href="#SourceT_2_ReduceInternalM_1" class="selflink">#</a>
+<div class="constraints"></div></p>
+<div class="doc"><div><p>Iterate the stream, flowing values downstream to the reducer, which aggregates a
+result value.  This is returned lifted.</p>
+</div>
+<div><p>Note, this is recursive, so <code>M</code> needs to be able to support recursion without
+blowing the stack.  If you have the <code>IO</code> monad in your stack, then this will automatically
+be the case.</p>
+</div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">S</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>State type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">state</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Initial state</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">reducer</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Reducer</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>Lifted aggregate state</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
 </div></div>
 <div class="subs methods"><p class="caption">Operators</p>
 <div class="top"><p class="src"><span class="keyword">operator</span>
 <a id="SourceT_2_+_0" class="def">+</a>
 <span class='parens'>(</span>SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L265" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L293" class="link">Source</a>
 <a href="#SourceT_2_+_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Concatenate streams</p>
@@ -1394,7 +1586,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span cl
 <div class="top"><p class="src"><span class="keyword">operator</span>
 <a id="SourceT_2_|_0" class="def">|</a>
 <span class='parens'>(</span>SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L276" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L304" class="link">Source</a>
 <a href="#SourceT_2_|_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Combine two sources into a single source.  The value streams are both
@@ -1431,7 +1623,7 @@ regardless of which stream yields it.</p>
 <div class="top"><p class="src"><span class="keyword">operator</span>
 <a id="SourceT_2_>>_0" class="def">&gt;&gt;</a>
 <span class='parens'>(</span>SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L286" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L314" class="link">Source</a>
 <a href="#SourceT_2_>>_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Sequentially compose two actions, discarding any value produced by the first, like sequencing operators (such
@@ -1467,7 +1659,7 @@ as the semicolon) in C#.</p>
 <div class="top"><p class="src"><span class="keyword">operator</span>
 <a id="SourceT_2_>>_0" class="def">&gt;&gt;</a>
 <span class='parens'>(</span>SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>K<span class='generics'>&lt;</span>SourceT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L296" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L324" class="link">Source</a>
 <a href="#SourceT_2_>>_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Sequentially compose two actions, discarding any value produced by the first, like sequencing operators (such
@@ -1503,7 +1695,7 @@ as the semicolon) in C#.</p>
 <div class="top"><p class="src"><span class="keyword">operator</span>
 <a id="SourceT_2_>>_0" class="def">&gt;&gt;</a>
 <span class='parens'>(</span>SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L306" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L334" class="link">Source</a>
 <a href="#SourceT_2_>>_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Sequentially compose two actions.  The second action is a unit returning action, so the result of the
@@ -1539,7 +1731,7 @@ first action is propagated.</p>
 <div class="top"><p class="src"><span class="keyword">operator</span>
 <a id="SourceT_2_>>_0" class="def">&gt;&gt;</a>
 <span class='parens'>(</span>SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> lhs<span class='comma'>, </span>K<span class='generics'>&lt;</span>SourceT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>Unit<span class='generics'>&gt;</span> rhs<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L316" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/SourceT.cs#L344" class="link">Source</a>
 <a href="#SourceT_2_>>_0" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Sequentially compose two actions.  The second action is a unit returning action, so the result of the
