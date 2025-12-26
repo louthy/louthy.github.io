@@ -95,6 +95,27 @@
 <li><a href="#Monad_0_bind_4" class="link"><div class="nowrap">bind
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>MB<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>MB<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Monad_0_forever_2" class="link"><div class="nowrap">forever
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#Monad_0_forever_3" class="link"><div class="nowrap">forever
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#Monad_0_replicate_2" class="link"><div class="nowrap">replicate
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>int count<span class='parens'>)</span></div></a></li>
+<li><a href="#Monad_0_accumUntil_2" class="link"><div class="nowrap">accumUntil
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Monad_0_accumUntilM_2" class="link"><div class="nowrap">accumUntilM
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>bool<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Monad_0_accumWhile_2" class="link"><div class="nowrap">accumWhile
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
+<li><a href="#Monad_0_accumWhileM_2" class="link"><div class="nowrap">accumWhileM
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>bool<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span></div></a></li>
 <li><a href="#Monad_0_done_3" class="link"><div class="nowrap">done
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>B value<span class='parens'>)</span></div></a></li>
@@ -1030,11 +1051,345 @@ MB
 
 </div>
 <div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="Monad_0_forever_2" class="def">forever</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L49" class="link">Source</a>
+<a href="#Monad_0_forever_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>This is equivalent to the infinite loop below without the stack-overflow issues:</p>
+<pre class='language-csharp'><code>K〈M, A〉go =&gt;
+    ma.Bind(_ =&gt; go);
+</code></pre>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monad</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>'Result' type, there will never be a result of <code>B</code>, but the monad rules may exit the loop
+with an alternative value; and so <code>B</code> is still valid</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Computation to recursively run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A looped computation</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<a id="Monad_0_forever_3" class="def">forever</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L67" class="link">Source</a>
+<a href="#Monad_0_forever_3" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>This is equivalent to the infinite loop below without the stack-overflow issues:</p>
+<pre class='language-csharp'><code>K〈M, A〉go =&gt;
+    ma.Bind(_ =&gt; go);
+</code></pre>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monad</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">B</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>'Result' type, there will never be a result of <code>B</code>, but the monad rules may exit the loop
+with an alternative value; and so <code>B</code> is still valid</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monadic computation to recursively run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A looped computation</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Iterable<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Monad_0_replicate_2" class="def">replicate</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>int count<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L80" class="link">Source</a>
+<a href="#Monad_0_replicate_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Running the monadic computation <code>ma</code> a fixed number of times (<code>count</code>) collecting the results</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monad</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monadic computation to repeatedly run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">count</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Number of times to replicate monadic computation</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A lifted iterable of values collected</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Iterable<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Monad_0_accumUntil_2" class="def">accumUntil</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L98" class="link">Source</a>
+<a href="#Monad_0_accumUntil_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Keep running the monadic computation <code>ma</code> collecting the result values until a result value
+yielded triggers a <code>true</code> value when passed to the <code>f</code> predicate</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monad</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monadic computation to repeatedly run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A lifted iterable of values collected</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Iterable<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Monad_0_accumUntilM_2" class="def">accumUntilM</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>bool<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L115" class="link">Source</a>
+<a href="#Monad_0_accumUntilM_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Keep running the monadic computation <code>ma</code> collecting the result values until a result value
+yielded triggers a <code>true</code> value when passed to the <code>f</code> predicate</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monad</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monadic computation to repeatedly run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A lifted iterable of values collected</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Iterable<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Monad_0_accumWhile_2" class="def">accumWhile</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>bool<span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L132" class="link">Source</a>
+<a href="#Monad_0_accumWhile_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Keep running the monadic computation <code>ma</code> collecting the result values until a result value
+yielded triggers a <code>true</code> value when passed to the <code>f</code> predicate</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monad</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monadic computation to repeatedly run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A lifted iterable of values collected</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Iterable<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="Monad_0_accumWhileM_2" class="def">accumWhileM</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>bool<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L149" class="link">Source</a>
+<a href="#Monad_0_accumWhileM_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : Monad&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Keep running the monadic computation <code>ma</code> collecting the result values until a result value
+yielded triggers a <code>true</code> value when passed to the <code>f</code> predicate</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monad</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Monadic computation to repeatedly run</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">f</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Predicate</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>A lifted iterable of values collected</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
 K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Next<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
 <a id="Monad_0_done_3" class="def">done</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>B value<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L39" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L160" class="link">Source</a>
 <a href="#Monad_0_done_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -1061,7 +1416,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Next<span class
 <a id="Monad_0_loop_3" class="def">loop</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>A value<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L47" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L168" class="link">Source</a>
 <a href="#Monad_0_loop_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -1088,7 +1443,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='g
 <a id="Monad_0_recur_3" class="def">recur</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>A value<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Next<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L67" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L188" class="link">Source</a>
 <a href="#Monad_0_recur_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -1142,7 +1497,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='g
 <a id="Monad_0_unsafeRecur_3" class="def">unsafeRecur</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>A value<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Next<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L87" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L208" class="link">Source</a>
 <a href="#Monad_0_unsafeRecur_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -1197,7 +1552,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='g
 <a id="Monad_0_iterableRecur_3" class="def">iterableRecur</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>A value<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Next<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L113" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L234" class="link">Source</a>
 <a href="#Monad_0_iterableRecur_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Natural&lt;M, Iterable&gt;, CoNatural&lt;M, Iterable&gt;</span></div></div></p>
@@ -1252,7 +1607,7 @@ IEnumerable<span class='generics'>&lt;</span>B<span class='generics'>&gt;</span>
 <a id="Monad_0_enumerableRecur_2" class="def">enumerableRecur</a>
 <span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>A value<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>IEnumerable<span class='generics'>&lt;</span>Next<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L171" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L292" class="link">Source</a>
 <a href="#Monad_0_enumerableRecur_2" class="selflink">#</a>
 <div class="constraints"></div></p>
 <div class="doc"><div><p>Allow for tail-recursion by using a trampoline function that returns an enumerable monad with the bound value
@@ -1305,7 +1660,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Unit<span class
 <a id="Monad_0_when_1" class="def">when</a>
 <span class='generics'>&lt;</span>M<span class='generics'>&gt;</span>
 <span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> Then<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L215" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L336" class="link">Source</a>
 <a href="#Monad_0_when_1" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -1347,7 +1702,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Unit<span class
 <a id="Monad_0_when_1" class="def">when</a>
 <span class='generics'>&lt;</span>M<span class='generics'>&gt;</span>
 <span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>Pure<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> Then<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L227" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L348" class="link">Source</a>
 <a href="#Monad_0_when_1" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -1389,7 +1744,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Unit<span class
 <a id="Monad_0_unless_1" class="def">unless</a>
 <span class='generics'>&lt;</span>M<span class='generics'>&gt;</span>
 <span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Unit<span class='generics'>&gt;</span> Then<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L239" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L360" class="link">Source</a>
 <a href="#Monad_0_unless_1" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -1431,7 +1786,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Unit<span class
 <a id="Monad_0_unless_1" class="def">unless</a>
 <span class='generics'>&lt;</span>M<span class='generics'>&gt;</span>
 <span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>Pure<span class='generics'>&lt;</span>Unit<span class='generics'>&gt;</span> Then<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L251" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L372" class="link">Source</a>
 <a href="#Monad_0_unless_1" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -1473,7 +1828,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <a id="Monad_0_iff_2" class="def">iff</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> Then<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> Else<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L264" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L385" class="link">Source</a>
 <a href="#Monad_0_iff_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -1519,7 +1874,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <a id="Monad_0_iff_2" class="def">iff</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> Then<span class='comma'>, </span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> Else<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L277" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L398" class="link">Source</a>
 <a href="#Monad_0_iff_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -1565,7 +1920,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <a id="Monad_0_iff_2" class="def">iff</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> Then<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> Else<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L290" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L411" class="link">Source</a>
 <a href="#Monad_0_iff_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -1611,7 +1966,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <a id="Monad_0_iff_2" class="def">iff</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> Then<span class='comma'>, </span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> Else<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L303" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L424" class="link">Source</a>
 <a href="#Monad_0_iff_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -1657,7 +2012,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <a id="Monad_0_iff_2" class="def">iff</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> Then<span class='comma'>, </span>Pure<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> Else<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L316" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L437" class="link">Source</a>
 <a href="#Monad_0_iff_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -1703,7 +2058,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <a id="Monad_0_iff_2" class="def">iff</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>Pure<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> Then<span class='comma'>, </span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> Else<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L329" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L450" class="link">Source</a>
 <a href="#Monad_0_iff_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -1749,7 +2104,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <a id="Monad_0_iff_2" class="def">iff</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>Pure<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> Then<span class='comma'>, </span>Pure<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> Else<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L342" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L463" class="link">Source</a>
 <a href="#Monad_0_iff_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -1795,7 +2150,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <a id="Monad_0_iff_2" class="def">iff</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>Pure<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> Then<span class='comma'>, </span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> Else<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L355" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L476" class="link">Source</a>
 <a href="#Monad_0_iff_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
@@ -1841,7 +2196,7 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 <a id="Monad_0_iff_2" class="def">iff</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>K<span class='generics'>&lt;</span>M<span class='comma'>, </span>bool<span class='generics'>&gt;</span> Pred<span class='comma'>, </span>K<span class='generics'>&lt;</span>IO<span class='comma'>, </span>A<span class='generics'>&gt;</span> Then<span class='comma'>, </span>Pure<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> Else<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L368" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Core/Traits/Monads/Monad/Monad.Module.cs#L489" class="link">Source</a>
 <a href="#Monad_0_iff_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : Monad&lt;M&gt;</span></div></div></p>
