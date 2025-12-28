@@ -53,6 +53,16 @@
 <li><a href="#SourceTExtensions_0_Last_2" class="link"><div class="nowrap">Last
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this K<span class='generics'>&lt;</span>SourceT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
+<li><a href="#SourceTExtensions_0_CollectWhile_2" class="link"><div class="nowrap">CollectWhile
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>SourceT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span><span class='parens'>(</span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> Items<span class='comma'>, </span>A Item<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span></div></a></li>
+<li><a href="#SourceTExtensions_0_CollectUntil_2" class="link"><div class="nowrap">CollectUntil
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>SourceT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span><span class='parens'>(</span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> Items<span class='comma'>, </span>A Item<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span></div></a></li>
 <li><a href="#SourceTExtensions_0_Collect_2" class="link"><div class="nowrap">Collect
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this K<span class='generics'>&lt;</span>SourceT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span></div></a></li>
@@ -74,6 +84,12 @@
 <li><a href="#SourceTExtensions_0_SelectMany_4" class="link"><div class="nowrap">SelectMany
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this Pure<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span></div></a></li>
+<li><a href="#SourceTExtensions_0_TakeFor_2" class="link"><div class="nowrap">TakeFor
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>SourceT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Duration duration<span class='parens'>)</span></div></a></li>
+<li><a href="#SourceTExtensions_0_TakeFor_2" class="link"><div class="nowrap">TakeFor
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>SourceT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>TimeSpan duration<span class='parens'>)</span></div></a></li>
 <li><a href="#SourceTExtensions_0_Zip_3" class="link"><div class="nowrap">Zip
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>
@@ -539,10 +555,90 @@ K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='g
 </div>
 <div class="top"><p class="src"><span class="keyword">method</span>
 K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="SourceTExtensions_0_CollectWhile_2" class="def">CollectWhile</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>SourceT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span><span class='parens'>(</span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> Items<span class='comma'>, </span>A Item<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L103" class="link">Source</a>
+<a href="#SourceTExtensions_0_CollectWhile_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;, Alternative&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Collect all the values into a <code>Seq</code> while the predicate holds.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"></span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"></span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"></span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
+<a id="SourceTExtensions_0_CollectUntil_2" class="def">CollectUntil</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>
+        this K<span class='generics'>&lt;</span>SourceT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>
+        Func<span class='generics'>&lt;</span><span class='parens'>(</span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> Items<span class='comma'>, </span>A Item<span class='parens'>)</span><span class='comma'>, </span>bool<span class='generics'>&gt;</span> predicate<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L121" class="link">Source</a>
+<a href="#SourceTExtensions_0_CollectUntil_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;, Alternative&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Collect all the values into a <code>Seq</code> while the predicate holds.</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"></span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"></span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"></span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"></span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+K<span class='generics'>&lt;</span>M<span class='comma'>, </span>Seq<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span>
 <a id="SourceTExtensions_0_Collect_2" class="def">Collect</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this K<span class='generics'>&lt;</span>SourceT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L99" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L135" class="link">Source</a>
 <a href="#SourceTExtensions_0_Collect_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : MonadIO&lt;M&gt;, Alternative&lt;M&gt;</span></div></div></p>
@@ -569,7 +665,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span cl
 <a id="SourceTExtensions_0_Bind_3" class="def">Bind</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L107" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L143" class="link">Source</a>
 <a href="#SourceTExtensions_0_Bind_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : MonadIO&lt;M&gt;, Alternative&lt;M&gt;</span></div></div></p>
@@ -596,7 +692,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span cl
 <a id="SourceTExtensions_0_Bind_3" class="def">Bind</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this Pure<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L115" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L151" class="link">Source</a>
 <a href="#SourceTExtensions_0_Bind_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : MonadIO&lt;M&gt;, Alternative&lt;M&gt;</span></div></div></p>
@@ -623,7 +719,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span cl
 <a id="SourceTExtensions_0_Bind_3" class="def">Bind</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> f<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L123" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L159" class="link">Source</a>
 <a href="#SourceTExtensions_0_Bind_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : MonadIO&lt;M&gt;, Alternative&lt;M&gt;</span></div></div></p>
@@ -650,7 +746,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span cl
 <a id="SourceTExtensions_0_SelectMany_4" class="def">SelectMany</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this K<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L131" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L167" class="link">Source</a>
 <a href="#SourceTExtensions_0_SelectMany_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : MonadIO&lt;M&gt;, Alternative&lt;M&gt;</span></div></div></p>
@@ -677,7 +773,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span cl
 <a id="SourceTExtensions_0_SelectMany_4" class="def">SelectMany</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this IO<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L139" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L175" class="link">Source</a>
 <a href="#SourceTExtensions_0_SelectMany_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : MonadIO&lt;M&gt;, Alternative&lt;M&gt;</span></div></div></p>
@@ -704,7 +800,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span cl
 <a id="SourceTExtensions_0_SelectMany_4" class="def">SelectMany</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this Pure<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>B<span class='generics'>&gt;</span><span class='generics'>&gt;</span> bind<span class='comma'>, </span>Func<span class='generics'>&lt;</span>A<span class='comma'>, </span>B<span class='comma'>, </span>C<span class='generics'>&gt;</span> project<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L147" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L183" class="link">Source</a>
 <a href="#SourceTExtensions_0_SelectMany_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : MonadIO&lt;M&gt;, Alternative&lt;M&gt;</span></div></div></p>
@@ -727,13 +823,105 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>C<span cl
 
 </div>
 <div class="top"><p class="src"><span class="keyword">method</span>
+SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="SourceTExtensions_0_TakeFor_2" class="def">TakeFor</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>SourceT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>Duration duration<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L196" class="link">Source</a>
+<a href="#SourceTExtensions_0_TakeFor_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;, Fallible&lt;Error, M&gt;, Alternative&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Take values from the source for a period of time</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted monad trait</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Source</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">duration</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Duration to take values for</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>SourceT</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
+SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<a id="SourceTExtensions_0_TakeFor_2" class="def">TakeFor</a>
+<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
+<span class='parens'>(</span>this K<span class='generics'>&lt;</span>SourceT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> ma<span class='comma'>, </span>TimeSpan duration<span class='parens'>)</span>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L209" class="link">Source</a>
+<a href="#SourceTExtensions_0_TakeFor_2" class="selflink">#</a>
+<div class="constraints"><div class="constraint"><span class="keyword">where</span>
+<span> M : MonadIO&lt;M&gt;, Fallible&lt;Error, M&gt;, Alternative&lt;M&gt;</span></div></div></p>
+<div class="doc"><div><p>Take values from the source for a period of time</p>
+</div>
+<div></div>
+<div class="methods"><p class="caption">Parameters</p>
+<div class="params-and-returns"><table><tbody><tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">M</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Lifted monad trait</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">type</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">A</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Bound value type</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">ma</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Source</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">param</span></td>
+<td class="src clearfix"><span class="inst-left"><span class="def">duration</span></span></td>
+<td class="src clearfix"><span class="instruction inst-left"><p>Duration to take values for</p>
+</span></td></tr>
+<tr><td class="src clearfix"><span class="keyword">returns</span></td>
+<td colspan="2" class="src clearfix"><span class="instruction inst-left"><p>SourceT</p>
+</span></td></tr></tbody></table></div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<div class="top"><p class="src"><span class="keyword">method</span>
 SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>(A First<span class='comma'>, </span>B Second)<span class='generics'>&gt;</span>
 <a id="SourceTExtensions_0_Zip_3" class="def">Zip</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='comma'>, </span>B<span class='generics'>&gt;</span>
 <span class='parens'>(</span>
         this K<span class='generics'>&lt;</span>SourceT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> first<span class='comma'>, </span>
         K<span class='generics'>&lt;</span>SourceT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> second<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L159" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L220" class="link">Source</a>
 <a href="#SourceTExtensions_0_Zip_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : MonadUnliftIO&lt;M&gt;, Alternative&lt;M&gt;</span></div></div></p>
@@ -774,7 +962,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>(A First<
         this K<span class='generics'>&lt;</span>SourceT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>A<span class='generics'>&gt;</span> first<span class='comma'>, </span>
         K<span class='generics'>&lt;</span>SourceT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> second<span class='comma'>, </span>
         K<span class='generics'>&lt;</span>SourceT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>C<span class='generics'>&gt;</span> third<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L172" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L233" class="link">Source</a>
 <a href="#SourceTExtensions_0_Zip_4" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : MonadUnliftIO&lt;M&gt;, Alternative&lt;M&gt;</span></div></div></p>
@@ -820,7 +1008,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>(A First<
         K<span class='generics'>&lt;</span>SourceT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>B<span class='generics'>&gt;</span> second<span class='comma'>, </span>
         K<span class='generics'>&lt;</span>SourceT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>C<span class='generics'>&gt;</span> third<span class='comma'>, </span>
         K<span class='generics'>&lt;</span>SourceT<span class='generics'>&lt;</span>M<span class='generics'>&gt;</span><span class='comma'>, </span>D<span class='generics'>&gt;</span> fourth<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L187" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L248" class="link">Source</a>
 <a href="#SourceTExtensions_0_Zip_5" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : MonadUnliftIO&lt;M&gt;, Alternative&lt;M&gt;</span></div></div></p>
@@ -866,7 +1054,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span cl
 <a id="SourceTExtensions_0_SomeSource_2" class="def">SomeSource</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this IAsyncEnumerable<span class='generics'>&lt;</span>OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> stream<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L202" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L263" class="link">Source</a>
 <a href="#SourceTExtensions_0_SomeSource_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : MonadIO&lt;M&gt;, Alternative&lt;M&gt;</span></div></div></p>
@@ -908,7 +1096,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span cl
 <a id="SourceTExtensions_0_SomeSource_2" class="def">SomeSource</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this IAsyncEnumerable<span class='generics'>&lt;</span>Option<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> stream<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L217" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L278" class="link">Source</a>
 <a href="#SourceTExtensions_0_SomeSource_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : MonadIO&lt;M&gt;, Alternative&lt;M&gt;</span></div></div></p>
@@ -950,7 +1138,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span cl
 <a id="SourceTExtensions_0_SomeSource_2" class="def">SomeSource</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this IEnumerable<span class='generics'>&lt;</span>OptionT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> stream<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L231" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L292" class="link">Source</a>
 <a href="#SourceTExtensions_0_SomeSource_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : MonadIO&lt;M&gt;, Alternative&lt;M&gt;</span></div></div></p>
@@ -992,7 +1180,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span cl
 <a id="SourceTExtensions_0_SomeSource_2" class="def">SomeSource</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this IEnumerable<span class='generics'>&lt;</span>Option<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> stream<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L246" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L307" class="link">Source</a>
 <a href="#SourceTExtensions_0_SomeSource_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : MonadIO&lt;M&gt;, Alternative&lt;M&gt;</span></div></div></p>
@@ -1034,7 +1222,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span cl
 <a id="SourceTExtensions_0_RightSource_3" class="def">RightSource</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this IAsyncEnumerable<span class='generics'>&lt;</span>EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> stream<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L260" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L321" class="link">Source</a>
 <a href="#SourceTExtensions_0_RightSource_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : MonadIO&lt;M&gt;, Alternative&lt;M&gt;</span></div></div></p>
@@ -1076,7 +1264,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span cl
 <a id="SourceTExtensions_0_RightSource_3" class="def">RightSource</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this IAsyncEnumerable<span class='generics'>&lt;</span>Either<span class='generics'>&lt;</span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> stream<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L275" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L336" class="link">Source</a>
 <a href="#SourceTExtensions_0_RightSource_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : MonadIO&lt;M&gt;, Alternative&lt;M&gt;</span></div></div></p>
@@ -1118,7 +1306,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span cl
 <a id="SourceTExtensions_0_RightSource_3" class="def">RightSource</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this IEnumerable<span class='generics'>&lt;</span>EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> stream<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L289" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L350" class="link">Source</a>
 <a href="#SourceTExtensions_0_RightSource_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : MonadIO&lt;M&gt;, Alternative&lt;M&gt;</span></div></div></p>
@@ -1160,7 +1348,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span cl
 <a id="SourceTExtensions_0_RightSource_3" class="def">RightSource</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this IEnumerable<span class='generics'>&lt;</span>Either<span class='generics'>&lt;</span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> stream<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L304" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L365" class="link">Source</a>
 <a href="#SourceTExtensions_0_RightSource_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : MonadIO&lt;M&gt;, Alternative&lt;M&gt;</span></div></div></p>
@@ -1202,7 +1390,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>L<span cl
 <a id="SourceTExtensions_0_LeftSource_3" class="def">LeftSource</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this IAsyncEnumerable<span class='generics'>&lt;</span>EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> stream<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L318" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L379" class="link">Source</a>
 <a href="#SourceTExtensions_0_LeftSource_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : MonadIO&lt;M&gt;, Alternative&lt;M&gt;</span></div></div></p>
@@ -1244,7 +1432,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>L<span cl
 <a id="SourceTExtensions_0_LeftSource_3" class="def">LeftSource</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this IAsyncEnumerable<span class='generics'>&lt;</span>Either<span class='generics'>&lt;</span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> stream<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L333" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L394" class="link">Source</a>
 <a href="#SourceTExtensions_0_LeftSource_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : MonadIO&lt;M&gt;, Alternative&lt;M&gt;</span></div></div></p>
@@ -1286,7 +1474,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>L<span cl
 <a id="SourceTExtensions_0_LeftSource_3" class="def">LeftSource</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this IEnumerable<span class='generics'>&lt;</span>EitherT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> stream<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L347" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L408" class="link">Source</a>
 <a href="#SourceTExtensions_0_LeftSource_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : MonadIO&lt;M&gt;, Alternative&lt;M&gt;</span></div></div></p>
@@ -1328,7 +1516,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>L<span cl
 <a id="SourceTExtensions_0_LeftSource_3" class="def">LeftSource</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this IEnumerable<span class='generics'>&lt;</span>Either<span class='generics'>&lt;</span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> stream<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L362" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L423" class="link">Source</a>
 <a href="#SourceTExtensions_0_LeftSource_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : MonadIO&lt;M&gt;, Alternative&lt;M&gt;</span></div></div></p>
@@ -1370,7 +1558,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span cl
 <a id="SourceTExtensions_0_SuccSource_2" class="def">SuccSource</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this IAsyncEnumerable<span class='generics'>&lt;</span>FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> stream<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L376" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L437" class="link">Source</a>
 <a href="#SourceTExtensions_0_SuccSource_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : MonadIO&lt;M&gt;, Alternative&lt;M&gt;</span></div></div></p>
@@ -1412,7 +1600,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span cl
 <a id="SourceTExtensions_0_SuccSource_2" class="def">SuccSource</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this IAsyncEnumerable<span class='generics'>&lt;</span>Fin<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> stream<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L391" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L452" class="link">Source</a>
 <a href="#SourceTExtensions_0_SuccSource_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : MonadIO&lt;M&gt;, Alternative&lt;M&gt;</span></div></div></p>
@@ -1454,7 +1642,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span cl
 <a id="SourceTExtensions_0_SuccSource_2" class="def">SuccSource</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this IEnumerable<span class='generics'>&lt;</span>FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> stream<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L405" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L466" class="link">Source</a>
 <a href="#SourceTExtensions_0_SuccSource_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : MonadIO&lt;M&gt;, Alternative&lt;M&gt;</span></div></div></p>
@@ -1496,7 +1684,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span cl
 <a id="SourceTExtensions_0_SuccSource_2" class="def">SuccSource</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this IEnumerable<span class='generics'>&lt;</span>Fin<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> stream<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L420" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L481" class="link">Source</a>
 <a href="#SourceTExtensions_0_SuccSource_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : MonadIO&lt;M&gt;, Alternative&lt;M&gt;</span></div></div></p>
@@ -1538,7 +1726,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>Error<spa
 <a id="SourceTExtensions_0_FailSource_2" class="def">FailSource</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this IAsyncEnumerable<span class='generics'>&lt;</span>FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> stream<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L434" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L495" class="link">Source</a>
 <a href="#SourceTExtensions_0_FailSource_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : MonadIO&lt;M&gt;, Alternative&lt;M&gt;</span></div></div></p>
@@ -1580,7 +1768,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>Error<spa
 <a id="SourceTExtensions_0_FailSource_2" class="def">FailSource</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this IAsyncEnumerable<span class='generics'>&lt;</span>Fin<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> stream<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L449" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L510" class="link">Source</a>
 <a href="#SourceTExtensions_0_FailSource_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : MonadIO&lt;M&gt;, Alternative&lt;M&gt;</span></div></div></p>
@@ -1622,7 +1810,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>Error<spa
 <a id="SourceTExtensions_0_FailSource_2" class="def">FailSource</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this IEnumerable<span class='generics'>&lt;</span>FinT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> stream<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L463" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L524" class="link">Source</a>
 <a href="#SourceTExtensions_0_FailSource_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : MonadIO&lt;M&gt;, Alternative&lt;M&gt;</span></div></div></p>
@@ -1664,7 +1852,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>Error<spa
 <a id="SourceTExtensions_0_FailSource_2" class="def">FailSource</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this IEnumerable<span class='generics'>&lt;</span>Fin<span class='generics'>&lt;</span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> stream<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L478" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L539" class="link">Source</a>
 <a href="#SourceTExtensions_0_FailSource_2" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> M : MonadIO&lt;M&gt;, Alternative&lt;M&gt;</span></div></div></p>
@@ -1706,7 +1894,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span cl
 <a id="SourceTExtensions_0_SuccSource_3" class="def">SuccSource</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this IAsyncEnumerable<span class='generics'>&lt;</span>ValidationT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> stream<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L492" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L553" class="link">Source</a>
 <a href="#SourceTExtensions_0_SuccSource_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> L : Monoid&lt;L&gt; 
@@ -1751,7 +1939,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span cl
 <a id="SourceTExtensions_0_SuccSource_3" class="def">SuccSource</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this IAsyncEnumerable<span class='generics'>&lt;</span>Validation<span class='generics'>&lt;</span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> stream<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L508" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L569" class="link">Source</a>
 <a href="#SourceTExtensions_0_SuccSource_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> L : Monoid&lt;L&gt; 
@@ -1796,7 +1984,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span cl
 <a id="SourceTExtensions_0_SuccSource_3" class="def">SuccSource</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this IEnumerable<span class='generics'>&lt;</span>ValidationT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> stream<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L523" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L584" class="link">Source</a>
 <a href="#SourceTExtensions_0_SuccSource_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> L : Monoid&lt;L&gt; 
@@ -1841,7 +2029,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>A<span cl
 <a id="SourceTExtensions_0_SuccSource_3" class="def">SuccSource</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this IEnumerable<span class='generics'>&lt;</span>Validation<span class='generics'>&lt;</span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> stream<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L539" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L600" class="link">Source</a>
 <a href="#SourceTExtensions_0_SuccSource_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> L : Monoid&lt;L&gt; 
@@ -1886,7 +2074,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>L<span cl
 <a id="SourceTExtensions_0_FailSource_3" class="def">FailSource</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this IAsyncEnumerable<span class='generics'>&lt;</span>ValidationT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> stream<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L554" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L615" class="link">Source</a>
 <a href="#SourceTExtensions_0_FailSource_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> L : Monoid&lt;L&gt; 
@@ -1931,7 +2119,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>L<span cl
 <a id="SourceTExtensions_0_FailsStream_3" class="def">FailsStream</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this IAsyncEnumerable<span class='generics'>&lt;</span>Validation<span class='generics'>&lt;</span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> stream<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L570" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L631" class="link">Source</a>
 <a href="#SourceTExtensions_0_FailsStream_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> L : Monoid&lt;L&gt; 
@@ -1976,7 +2164,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>L<span cl
 <a id="SourceTExtensions_0_FailSource_3" class="def">FailSource</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this IEnumerable<span class='generics'>&lt;</span>ValidationT<span class='generics'>&lt;</span>L<span class='comma'>, </span>M<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> stream<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L585" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L646" class="link">Source</a>
 <a href="#SourceTExtensions_0_FailSource_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> L : Monoid&lt;L&gt; 
@@ -2021,7 +2209,7 @@ SourceT<span class='generics'>&lt;</span>M<span class='comma'>, </span>L<span cl
 <a id="SourceTExtensions_0_FailSource_3" class="def">FailSource</a>
 <span class='generics'>&lt;</span>M<span class='comma'>, </span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span>
 <span class='parens'>(</span>this IEnumerable<span class='generics'>&lt;</span>Validation<span class='generics'>&lt;</span>L<span class='comma'>, </span>A<span class='generics'>&gt;</span><span class='generics'>&gt;</span> stream<span class='parens'>)</span>
-<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L601" class="link">Source</a>
+<a href="https://github.com/louthy/language-ext/tree/main/LanguageExt.Streaming/SourceT/Extensions/SourceT.Extensions.cs#L662" class="link">Source</a>
 <a href="#SourceTExtensions_0_FailSource_3" class="selflink">#</a>
 <div class="constraints"><div class="constraint"><span class="keyword">where</span>
 <span> L : Monoid&lt;L&gt; 
